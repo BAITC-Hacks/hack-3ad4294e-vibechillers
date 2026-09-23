@@ -1,42 +1,30 @@
-# Three-minute demo
+# Демонстрация reviewer workspace
 
-This is the planned two-edition demo, not a completed live rehearsal.
-Follow README host prerequisites and the isolated launch procedure in
-`docs/evidence/kt-launch.md`; runtime and UI acceptance remain pending.
+## Предпосылки
 
-## Script
+Используйте точную ревизию и локальные команды из README/`docs/evidence/kt-launch.md`. Подтвердите `/healthz`, источник данных и отсутствие личных ключей. DOCX v8/v9 — обезличенный материал организатора; временные format/contract probes явно синтетические и не являются control bundle Алиби или измерением точности.
 
-**0:00-0:35 — Problem.** Internal audit and HR need to compare two regulation
-editions during a reorganisation. A plausible sentence is not enough: each
-finding must point back to its exact clause, and an ambiguous match must remain
-unresolved.
+## Основной проход
 
-**0:35-1:20 — Inputs.** Start the stack, then run `bash scripts/demo.sh`. It sends
-`v8.docx` as `before_files` and `v9.docx` as `after_files` to `POST /audits`,
-with `use_llm=false`, and writes the verified final payload to
-`data/demo-report.json`.
+1. **Вход.** Откройте «Аудит реорганизации», выберите комплекты «До» и «После». UI принимает DOCX/PDF/XLSX и TXT. DOC/XLS нужно предварительно конвертировать. Не включайте модель для неразрешённых к передаче данных.
+2. **Запуск и действия.** «Начать аудит» отправляет реальные multipart-файлы в `POST /audits`. В «Фактических действиях» показываются события сервера, а не анимация предполагаемой работы. Системные шаги парсинга не доказывают участие модели.
+3. **Режим и область.** Сверьте режим Report и статус агента, stop reason, число ходов/вызовов и исследованное подмножество. Частичный результат и fallback не называйте completed; null/missing agent означает отсутствие оценки Stage 3.
+4. **Подразделения.** Откройте таблицу сохранённых/созданных/реорганизованных/неопределённых подразделений. Проверьте обе стороны N:M-перехода, определяющую цитату и контекст. Если backend не предоставил оценку — показывайте «не оценивалось», не выдумывайте реорганизацию.
+5. **Функции.** В «Функциях» используйте фильтры потерь, дублирования и неопределённости. Раскройте основание, откройте каждую из двух цитат и родительский/ролевой контекст. «Возможная потеря» не является доказанной утратой.
+6. **Риски.** В отдельной таблице откройте потенциальное межподразделенческое дублирование и конфликт интересов. Проверьте обе обязанности и основание несовместимости. Это рекомендательные сигналы, не нарушения; пустой список не доказывает отсутствие риска.
+7. **Заключение.** Ссылка из заключения должна выбрать нужную таблицу, сбросить мешающий фильтр и открыть соответствующую страницу/строку. Цитата должна выделяться дословно; страница/лист/ячейки показываются только при наличии координат.
+8. **Повторное открытие.** Скопируйте ID, откройте его через форму или `?run=...`. Report и фактический trace загружаются отдельно. Воспроизведение trace не является повторным запуском агента.
+9. **Сохранение.** «Скачать Report JSON» сохраняет полный публичный отчёт. Проверьте локальное открытие этого JSON без отправки на сервер. Выполните `uv run --no-sync python scripts/export_report.py --report data/demo-report.json --out data/demo-report.html`; откройте HTML через `file://` без сервера, пройдите ссылки и предупреждения.
 
-**1:20-2:05 — Finding.** Show one returned finding, both before/after refs,
-its source quote, and the exact clause locator. The presenter must read the
-quote from the saved JSON, not invent it from memory.
+## Как экспертам проверять настоящий агентный режим
 
-**2:05-2:35 — Refusal.** Show an unresolved case. The auditor should say that
-the evidence is insufficient rather than guess that two similarly worded
-functions are equivalent.
+Нужен предварительно согласованный provider/model, разрешённый набор входных данных, лимит расходов и неперсональный demo/test access либо реально проверенный локальный model-host. Подписка разработчика и BYO-key сами по себе этот gate не закрывают.
 
-**2:35-3:00 — Reproducibility.** Run
-`uv run --no-sync python scripts/export_report.py --report data/demo-report.json
---out data/demo-report.html`, open the HTML without the server, then call
-`GET /audits/{run_id}` and compare the complete JSON using the README command.
-Before starting Compose, explicitly clear the shell's `LLM_API_KEY` as well
-as the `.env` value. The expected no-model behavior is a deterministic Report;
-`use_llm=true` should add a fallback warning. Confirm this on the live stack
-before presenting it as a measured result.
+На одном разрешённом комплекте выполните keyless и agent run, сохраните оба Report и реальные `/runs/{id}/trace`. В agent run проверьте последовательность tool_call → tool_result → следующего выбранного по результату действия, точные источники, финальные status/stop reason и непроверенные области. Recorded trace, синтетический provider и отмеченный checkbox не заменяют работающий доступ к агенту. Не показывайте скрытые рассуждения модели.
 
-## Questions for the organiser
+## Фактические ограничения текущей проверки
 
-- What exact evaluation criteria and judging evidence are required?
-- Is a deterministic keyless report with optional LLM adjudication acceptable?
-
-Send the answers to Batyrkhan before presenting the demo. Do not add a
-personal key to the repository or the script.
+- Реальные DOCX, сохранение/чтение, обе цитаты и честный fallback проверены локально; см. run IDs в launch evidence.
+- Новые экраны и координаты дополнительно проверены на локальном синтетическом Report JSON — это проверка потребителей, не backend-результатов M1/M3.
+- Handoff `4da4390` фиксирует схемы. Публичный синтетический control bundle Алиби получен в `9a633fc`: DOCX/PDF/XLSX и auxiliary table загружены через настоящий production UI. Это подтвердило transport/reviewer path, но не результаты M1/M3: backend вернул пустые `unit_changes`/`risks` и `agent: null`.
+- Docker и согласованный live-model путь не проверены. В XLSX backend пока не интерпретирует двухколоночную таблицу обязанностей; location остаётся null. Не представляйте их как пройденные пункты демо.

@@ -1,5 +1,13 @@
 # Progress
 
+## Stage 3 Askat delivery — 2026-09-23
+
+- Works now: Russian reviewer workspace consumes the published Stage 3 schema; N:M unit/function/risk navigation, exact sources and Stage 2 context, explicit agent scope/status, real SSE/trace replay, complete JSON persistence/import and safe offline HTML. Missing/null fields are not assessed, never proof of no risk.
+- Changed: parallel builders delivered frontend, audit flow, exporter and deployment preparation. Main integrated `4da4390` and public control bundle through `9a633fc`; implementation commit is `8b896c1`. Backend, eval/gold/seeds, root deployment and dependency manifests/locks were not edited by Askat.
+- Verified: a fresh pinned clone of `8b896c15d56f0730a6c4fc3173c944d76c29dea8`, frozen installs by the sole authorised owner, production build, loopback API/browser, real DOCX run `c016312b07cd41958640dfa6d90bc003`, full API/download JSON equality, offline navigation and six exporter regressions. Control DOCX/PDF/XLSX plus auxiliary table were uploaded through the real production UI; synthetic local JSON separately checks Stage 3 consumer boundaries. Full facts and run IDs are in `docs/evidence/kt-launch.md`.
+- Open external gates: tested backend still returns empty unit_changes/risks and null agent; source locations, PDF line-wrap/XLSX-table semantics and organiser TXT byte preservation need backend/seed owners. No approved live inference route was called; Docker/OCR/public deployment are not verified.
+- Next: Batyrkhan integrates the genuine bounded agent/domain producer and parser fixes; rerun paired deterministic/agent control on a permitted route. These are explicit handoff dependencies, not deferred frontend screens or invented successes. This is a current checkpoint, not a backdated hourly entry.
+
 ## Stage 2 integration and Stage 3 handoff
 
 - Works now: integrated Stage 2 context safeguards, evaluator and exporter pass 18 + 25 + 1 targeted checks; frontend typecheck exits 0. Historical DOCX/browser/fallback evidence is preserved in `docs/evidence/stage2-core.json`; no new live-model or clean-deployment run is claimed.
