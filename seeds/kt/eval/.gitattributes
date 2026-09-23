@@ -3,3 +3,4 @@
 *.json -text
 mutations/** -text
 independent-review/** -text
+control/** -text

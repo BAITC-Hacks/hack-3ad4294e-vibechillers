@@ -1,5 +1,27 @@
 # Alibi → Batyrkhan: development error brief
 
+## Stage 3 early synthetic inputs (2026-09-23)
+
+Ready for development: `seeds/kt/eval/control/before.txt` and `after.txt`.
+These are authored synthetic documents, NOT organiser sources. Proposals in
+`control/expectations.preliminary.md` are source-first and `pending_human`.
+Use the pair immediately; do not wait for all gold/holdout review.
+
+```powershell
+curl.exe -N -X POST http://127.0.0.1:8000/audits -F "before_files=@seeds/kt/eval/control/before.txt" -F "after_files=@seeds/kt/eval/control/after.txt" -F "use_llm=false"
+```
+
+The pair contains explicit retained/created/renamed/split/merged units, archive-duty
+loss, overlapping request registration, procurement self-review and scoped cooperation.
+DOCX/PDF/XLSX representations and their hashes follow in this same control directory.
+At intake core `c0658ff` still has the Stage 2 Report: no unit_changes/risks/agent fields.
+Please supply the frozen Stage 3 schema and integrated core revision for controlled capture.
+The current environment has no running HTTP API and lacks FastAPI/uvicorn; no live
+agent quality is claimed. Provider/model, exact synthetic inputs and spend approval
+must be resolved under Stage 3 §6 before inference. Holdout remains closed.
+
+## Historical Stage 2 brief
+
 Stage 2 source review, baseline core at `94f216c`, public deterministic API capture after freeze `07a1708`. Only development examples below. Human confirmation by Alibi is pending; treat these as source-backed diagnoses to verify, not answers to hardcode. Do not read or tune on `hold-*` rows in `challenge.jsonl`, their fixture folders, the holdout sections of `REVIEW.md` or the source-first construction in `make_mutations.py`. `split.json` records membership and exact hashes. If any held-out example informs a fix, notify Alibi so it is moved to development before claiming results.
 
 | Class | Development example and evidence | Required behavior to investigate |
