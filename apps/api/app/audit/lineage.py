@@ -40,6 +40,7 @@ _EXECUTE = {
     "исполнение": re.compile(r"\b(?:исполнени\w*|исполня(?:ет|ют|ть)|выполнени\w*|выполня(?:ет|ют|ть)|проведени\w*|провод(?:ит|ят|ить))\b", re.I),
     "регистрация": re.compile(r"\b(?:регистраци\w*|регистриру(?:ет|ют|ть)|учитыва(?:ет|ют|ть))\b", re.I),
     "оформление": re.compile(r"\b(?:оформлени\w*|оформля(?:ет|ют|ть)|обработк\w*|обрабатыва(?:ет|ют|ть)|внос(?:ит|ят|ить))\b", re.I),
+    "выбор": re.compile(r"\b(?:выбор\w*|выбира(?:ет|ют|ть))\b", re.I),
 }
 _REVIEW = re.compile(r"\b(?:проверк\w*|проверя\w*|проверит\w*|сверк\w*|сверя\w*|ревизи\w*|аудит(?:а|у|ом|ы|е)?)\b", re.I)
 _CONTROL_WORK = re.compile(
@@ -410,6 +411,13 @@ class _Duty:
     review: bool
     object_words: frozenset[str]
     scopes: frozenset[str]
+    action_targets: tuple[tuple[str, frozenset[str]], ...]
+
+
+def _primary_statement(text: str) -> str:
+    # A later explanation is not part of the object assigned by the first predicate.
+    # Scope/restriction checks still read the complete source and its parents.
+    return re.split(r"(?<=[.!?])\s+(?=[А-ЯЁA-Z])", text, maxsplit=1)[0]
 
 
 def _scope(d: _Domain, clause: Clause) -> frozenset[str]:
@@ -449,27 +457,51 @@ def _duty(d: _Domain, clause: Clause) -> _Duty | None:
     if len(matches) != 1 or not matches[0].citations:
         return None  # ambiguous title, or mere unit mention rather than an accountable owner
     owner = matches[0]
-    actions = frozenset(
-        name for name, pattern in _EXECUTE.items()
-        if any(_active_verb(clause.text, match) and not re.search(
-            r"\b(?:провер\w*|контрол\w*|свер\w*|ревизи\w*|аудит\w*)\b",
-            re.split(r"[;:.]", clause.text[:match.start()])[-1], re.I,
-        ) for match in pattern.finditer(clause.text))
-    )
-    review = any(_active_verb(clause.text, match) for match in _REVIEW.finditer(clause.text))
-    review = review or bool(_CONTROL_WORK.search(clause.text))
+    text = _primary_statement(clause.text)
+    matches = [
+        (name, match) for name, pattern in _EXECUTE.items() for match in pattern.finditer(text)
+        if _active_verb(text, match) and not re.search(
+            r"\b(?:провер\w*|контрол\w*|свер\w*|ревизи\w*|аудит\w*|согласу\w*|утвержда\w*)\b",
+            re.split(r"[;:.]", text[:match.start()])[-1], re.I,
+        )
+    ]
+    actions = frozenset(name for name, _ in matches)
+    review = any(_active_verb(text, match) for match in _REVIEW.finditer(text))
+    review = review or bool(_CONTROL_WORK.search(text))
     if not actions and not review:
         return None
-    words = stems(clause.text) - _GENERIC - stems(owner.name)
+    owner_words = stems(owner.name)
+    words = stems(text) - _GENERIC - owner_words
+    targets = []
+    for name, match in matches:
+        phrase = re.split(r"\s+(?:и|по|в|на|согласно|после|перед|для)\b|[.,;:]",
+                          text[match.end():], maxsplit=1, flags=re.I)[0]
+        target = frozenset(stems(phrase) - _GENERIC - owner_words)
+        if target:
+            targets.append((name, target))
     for pattern in (*_EXECUTE.values(), _REVIEW):
-        words -= stems(" ".join(match.group() for match in pattern.finditer(clause.text)))
-    return _Duty(clause, owner, actions, review, frozenset(words), _scope(d, clause))
+        words -= stems(" ".join(match.group() for match in pattern.finditer(text)))
+    return _Duty(clause, owner, actions, review, frozenset(words), _scope(d, clause), tuple(targets))
 
 
 def _same_object(a: _Duty, b: _Duty) -> bool:
     shared = a.object_words & b.object_words
     return (len(shared) >= 2 and len(shared) / max(len(a.object_words), len(b.object_words)) >= .65
             and a.scopes == b.scopes)
+
+
+def _self_review_product(execution: _Duty, review: _Duty) -> bool:
+    if not execution.actions or not review.review or execution.scopes != review.scopes:
+        return False
+    if _same_object(execution, review) and _shared_product(execution.clause, review.clause):
+        return True
+    text = _primary_statement(review.clause.text)
+    if not re.search(r"\bсобственн\w*|\b(?:выполненн|подготовленн|составленн)\w*\s+(?:им|ими)\b", text, re.I):
+        return False
+    # Explicitly reviewing one's own operation can name its direct object rather
+    # than repeat the entire execution sentence (criteria, procedure, side effects).
+    return any(_EXECUTE[action].search(text) and target <= review.object_words
+               for action, target in execution.action_targets)
 
 
 def _object_label(a: _Duty, b: _Duty) -> str:
@@ -499,9 +531,16 @@ def _related_risk_citation(d: _Domain, citation: Citation, duties: list[_Duty],
             # A real quote from a long clause still must state the action AND
             # the shared object. An unrelated sentence in the same clause is
             # not evidence for the claimed overlap.
-            return bool((any(p.search(citation.quote) for p in _EXECUTE.values())
-                         or _REVIEW.search(citation.quote) or _CONTROL_WORK.search(citation.quote))
-                        and len(stems(citation.quote) & common) >= 2)
+            has_action = any(_EXECUTE[action].search(citation.quote) for action in duty.actions)
+            has_review = duty.review and (
+                _REVIEW.search(citation.quote) or _CONTROL_WORK.search(citation.quote)
+            )
+            object_count = len(stems(citation.quote) & common)
+            # A single direct-object anchor is sufficient only for the full
+            # validated duty, never for a fragment omitting self-ownership.
+            return bool(common and (has_action or has_review) and (
+                object_count >= 2 or (object_count == 1 and citation.quote == source.text)
+            ))
         if source.doc != duty.clause.doc:
             continue
         parent = duty.clause.parent_id
@@ -552,10 +591,8 @@ def validate_risk(risk: Risk, documents: list[Document], clauses: list[Clause], 
         execution, review = duties
         if not execution.actions or not review.review:
             execution, review = review, execution
-        if not execution.actions or not review.review or not _same_object(execution, review):
+        if not _self_review_product(execution, review):
             return "same actor's execution and review of the same work product are not evidenced"
-        if not _shared_product(execution.clause, review.clause):
-            return "both duties do not identify the same reviewed work product"
     else:
         return "unknown risk kind"
     if not risk.reason.strip() or _UNSUPPORTED_LEGAL.search(risk.reason):
@@ -728,14 +765,12 @@ def analyze_domain(
 
     for i, first in enumerate(duties):
         for second in duties[i + 1:]:
-            if _key(first.owner) != _key(second.owner) or not _same_object(first, second):
+            if _key(first.owner) != _key(second.owner):
                 continue
             execution, review = first, second
             if not execution.actions or not review.review:
                 execution, review = second, first
-            if not execution.actions or not review.review:
-                continue
-            if not _shared_product(execution.clause, review.clause):
+            if not _self_review_product(execution, review):
                 continue
             refs = [_clause_ref(execution.clause), _clause_ref(review.clause)]
             anchor = _object_label(first, second)

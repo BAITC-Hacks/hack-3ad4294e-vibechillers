@@ -15,12 +15,14 @@ from unittest.mock import patch
 from .. import db
 from ..agent.audit_tools import AuditContext, create_audit_registry
 from ..agent.loop import drive_audit
+from ..agent.audit_llm import adjudicate_report
 from ..api.audits import IngestedAudit, stream_audit
 from ..config import Settings
 from ..ingest import pipeline
 from ..ingest.parsers import parse_any
 from .models import ClauseRef, Finding
 from .parser import owner_keys, parse_document
+from .align import align_functions
 from .report import resolve_alignment
 from .test_context import audit
 from .test_lineage import document, source, unit
@@ -45,6 +47,17 @@ class SourceGuardTests(unittest.TestCase):
             for body, doc in zip(payloads, docs):
                 self.assertEqual(doc.doc_id, hashlib.sha256(body).hexdigest()[:16])
                 self.assertEqual(''.join(p['text'] for p in doc.pages), body.decode())
+
+    def test_structural_definitions_are_not_function_loss_predictions(self):
+        clauses = [
+            source('before','1','Отдел закупок'), source('after','2','Отдел снабжения'),
+            source('before','1.1','Ведение реестра оборудования.','function','1',unit_ids=['1']),
+            source('after','2.1','Ведение реестра оборудования.','function','2',unit_ids=['2']),
+        ]
+        units = [unit('before','1','Отдел закупок'),unit('after','2','Отдел снабжения')]
+        findings = align_functions(clauses,units,['before'],['after'])
+        self.assertEqual({(r.doc,r.clause_id) for f in findings for r in f.before+f.after},
+                         {('before','1.1'),('after','2.1')})
 
     def test_duplicate_needs_distinct_successors_and_no_raw_rationale(self):
         report = audit('1. Функции\n1.1. Подготовка финансового отчета.', '1. Функции\n1.1. Подготовка технического отчета.')
@@ -116,6 +129,29 @@ class AgentGuardTests(unittest.IsolatedAsyncioTestCase):
         self.assertFalse(stats.finalized)
         self.assertEqual(stats.invalid_calls,1)
         self.assertIsNone(context.last_report)
+
+    async def test_idempotent_offer_and_abstention_allow_valid_finalization(self):
+        report = audit('1. Функции\n1.1. Ведение реестра.', '1. Функции\n1.1. Ведение реестра.')
+        pending = report.findings[0].model_copy(update={'status':'unresolved','method':'lexical','review_required':True})
+        report = report.model_copy(update={'findings':[pending]})
+        offer = {'finding_id':pending.id,'before':[r.model_dump() for r in pending.before],
+                 'after':[r.model_dump() for r in pending.after]}
+        responses = iter([
+            [('inspect_findings',{'finding_ids':[pending.id]})],
+            [('offer_candidates',offer),('resolve_alignment',{'finding_id':pending.id,'before':[],
+                'after':[],'status':'unresolved','reason':'Недостаточно данных для решения.'})],
+            [('build_report',{'finding_ids':[],'conclusion':None})],
+        ])
+        async def provider(*args,**kwargs):
+            yield {'done':{'tool_calls':[{'id':str(i),'type':'function','function':{
+                'name':name,'arguments':json.dumps(params)}} for i,(name,params) in enumerate(next(responses))]}}
+        settings = SimpleNamespace(llm_configured=True,llm_model='guard',llm_max_tokens=2048,llm_timeout_s=1)
+        with patch('app.agent.loop.llm.stream',provider),patch('app.agent.loop.get_settings',return_value=settings),patch('app.agent.audit_llm.get_settings',return_value=settings):
+            result = await adjudicate_report(report)
+        self.assertEqual(result.agent.status,'completed')
+        self.assertEqual(result.findings[0].status,'unresolved')
+        self.assertEqual(result.findings[0].before,pending.before)
+        self.assertEqual(result.findings[0].after,pending.after)
 
     async def test_cancelled_tool_cannot_commit_after_deadline(self):
         report=audit('1. Функции\n1.1. Ведение реестра.', '1. Функции\n1.1. Ведение реестра.')

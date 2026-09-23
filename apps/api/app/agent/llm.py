@@ -81,6 +81,7 @@ def get_client() -> AsyncOpenAI:
             base_url=settings.llm_base_url,
             api_key=settings.llm_api_key,
             timeout=settings.llm_timeout_s,
+            max_retries=0,  # The host owns call/deadline budgets; no hidden provider retries.
         )
         _client_key = key
         _client_loop = weakref.ref(loop) if loop is not None else None
@@ -140,7 +141,7 @@ async def _create(
     kwargs: dict[str, Any] = {
         "model": settings.llm_model,
         "messages": messages,
-        "max_tokens": max_tokens,
+        "max_completion_tokens": max_tokens,
     }
     if tools:
         kwargs["tools"] = list(tools)
@@ -221,7 +222,7 @@ async def stream(
     kwargs: dict[str, Any] = {
         "model": settings.llm_model,
         "messages": msgs,
-        "max_tokens": budget,
+        "max_completion_tokens": budget,
         "stream": True,
         "stream_options": {"include_usage": True},
     }

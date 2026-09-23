@@ -147,6 +147,8 @@ Old saved Reports accept omitted additions: lists default empty, Clause.location
 null. **Null/missing agent means Stage 3 not assessed**, not "no risks". Every new producer explicitly sets
 AgentExecution, including keyless `not_requested` and requested-but-unavailable. Completed means a bounded
 investigation finished, not that every finding was reviewed. Capped/unreviewed scope is disclosed.
+New `Finding.before/after` refs contain function clauses only. Structural definitions are represented in
+`unit_changes`, not duplicated as function losses/additions. Context citations may still refer to units/roles.
 
 `POST /audits` retains multipart `before_files`, `after_files`, `use_llm`; `GET /audits/{run_id}` returns
 the saved Report. Audit API alone sequences and persists SSE, with exactly one `final` or `error`;
@@ -161,6 +163,10 @@ Tool mutations are committed only after successful completion on isolated mutabl
 tool cannot modify the report later. Finalization requires nonempty inspection evidence from an earlier model
 turn, not a blind inspect/finalize batch. Model rationale stays in the trace; published alignment explanations
 are generated from validated statuses/refs. Audit final is emitted only after successful SQLite persistence.
+Re-offering existing valid candidates and explicitly retaining an unresolved decision are successful no-ops,
+not invalid tool calls. A real rejected/invalid proposal remains visible and does not become a supported claim.
+`LLM_MAX_TOKENS` bounds visible and reasoning tokens through `max_completion_tokens`; SDK HTTP retries are
+disabled so the host's deadline and request budget are not multiplied by hidden retries.
 
 Unit refs resolve to correct-edition structural units; mentioned roles cannot establish unit lineage.
 Created needs predecessor search; renamed/split/merged units need cited change evidence. Before-only units

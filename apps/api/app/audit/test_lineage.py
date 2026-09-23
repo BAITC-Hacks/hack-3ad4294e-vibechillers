@@ -138,6 +138,42 @@ class DomainLineageTests(unittest.TestCase):
                 _, risks, _ = analyze_domain(documents, clauses, units, [])
                 self.assertFalse(any(risk.kind == "potential_duplication" for risk in risks))
 
+    def test_explanatory_sentence_does_not_change_assigned_work_object(self) -> None:
+        documents = [document("before"), document("after")]
+        units = [unit("after", "1", "Центр приёма"), unit("after", "2", "Группа сервиса")]
+        assignment = "Регистрирует входящие письма граждан в общем журнале."
+        clauses = [
+            source("after", "1", "Центр приёма"), source("after", "2", "Группа сервиса"),
+            source("after", "1.1", assignment, "function", "1", unit_ids=["1"]),
+            source("after", "2.1", assignment + " Разделение потоков и этапов обработки не установлено.",
+                   "function", "2", unit_ids=["2"]),
+        ]
+        risks = analyze_domain(documents, clauses, units, [])[1]
+        self.assertEqual([risk.kind for risk in risks], ["potential_duplication"])
+        self.assertIsNone(validate_risk(risks[0], documents, clauses, units))
+        clauses[-1] = clauses[-1].model_copy(update={
+            "text": assignment + " Работа ограничена в части внутренних обращений."
+        })
+        self.assertEqual(analyze_domain(documents, clauses, units, [])[1], [])
+
+    def test_own_operation_review_needs_the_same_direct_object(self) -> None:
+        documents = [document("before"), document("after")]
+        units = [unit("after", "1", "Комитет организации работ")]
+        clauses = [
+            source("after", "1", "Комитет организации работ"),
+            source("after", "1.1", "Выбирает подрядчика по опубликованным требованиям и оформляет решение.",
+                   "function", "1", unit_ids=["1"]),
+            source("after", "1.2", "Проверяет обоснованность собственного выбора подрядчика и утверждает заключение.",
+                   "function", "1", unit_ids=["1"]),
+        ]
+        risks = analyze_domain(documents, clauses, units, [])[1]
+        self.assertEqual([risk.kind for risk in risks], ["potential_conflict_of_interest"])
+        self.assertIsNone(validate_risk(risks[0], documents, clauses, units))
+        clauses[-1] = clauses[-1].model_copy(update={
+            "text": "Проверяет обоснованность собственного выбора оборудования и утверждает заключение."
+        })
+        self.assertEqual(analyze_domain(documents, clauses, units, [])[1], [])
+
 
 if __name__ == "__main__":
     unittest.main()

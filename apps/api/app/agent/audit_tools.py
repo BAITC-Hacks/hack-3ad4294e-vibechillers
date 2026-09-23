@@ -585,7 +585,7 @@ class AuditContext:
             new_before = list({_key(r): r for r in [*current.before, *before]}.values())
             new_after = list({_key(r): r for r in [*current.after, *after]}.values())
             if len(new_before) == len(current.before) and len(new_after) == len(current.after):
-                return {"accepted": False, "reason": "every candidate was already offered", "finding": current.model_dump(mode="json")}
+                return {"accepted": True, "changed": False, "reason": "every candidate was already offered", "finding": current.model_dump(mode="json")}
             proposed = current.model_copy(update={
                 "status": "unresolved", "before": new_before, "after": new_after,
                 "citations": cite_context(new_before + new_after, clause_index(self.clauses),
@@ -645,7 +645,7 @@ class AuditContext:
             if current.status != "unresolved" or current.method == "llm":
                 raise ValueError("only currently unresolved findings can be resolved")
             if status == "unresolved":
-                return {"accepted": False, "reason": "abstained; candidate refs remain unresolved",
+                return {"accepted": True, "changed": False, "reason": "abstained; candidate refs remain unresolved",
                         "finding": current.model_dump(mode="json")}
             unread = [f"{r.doc}:{r.clause_id}" for r in before + after if not self._fully_read(r)]
             if unread:

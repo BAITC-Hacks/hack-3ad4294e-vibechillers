@@ -25,7 +25,7 @@ import re
 
 from .citations import cite_context, clause_index
 from .models import Clause, ClauseRef, Finding, Unit
-from .parser import owner_keys, unit_key
+from .parser import owner_keys
 from .text import normalize, similarity, stems
 
 STRONG = 0.72
@@ -427,70 +427,6 @@ def _leftovers(before, after, scorer: _Scorer, out: _Builder, paired_b, paired_a
         handled_a.add(ai)
 
 
-def _unit_rows(clauses: list[Clause], units: list[Unit], before_docs: list[str], after_docs: list[str], out: _Builder):
-    """Align explicitly defined structure entries by identity, not their letter position."""
-    by_clause = {(c.doc, c.clause_id): c for c in clauses}
-    by_unit = {(u.doc, u.unit_id): u for u in units}
-    before_set, after_set = set(before_docs), set(after_docs)
-    grouped: dict[tuple[str, str], tuple[list[tuple[Unit, Clause]], list[tuple[Unit, Clause]]]] = {}
-    for unit in units:
-        if not unit.citations:
-            continue
-        clause = by_clause.get((unit.doc, unit.citations[0].clause_id))
-        if clause is None or clause.kind != "structure":
-            continue
-        side = 0 if unit.doc in before_set else 1 if unit.doc in after_set else None
-        if side is not None:
-            grouped.setdefault((unit.kind, unit_key(unit)), ([], []))[side].append((unit, clause))
-
-    def owner(unit: Unit) -> str | None:
-        parent = by_unit.get((unit.doc, unit.parent_unit_id)) if unit.parent_unit_id else None
-        return unit_key(parent) if parent else None
-
-    def item(clause: Clause) -> _Item:
-        return _Item(clause=clause, norm="", stems=frozenset(),
-                     base_id=_base_id(clause.clause_id), owners=frozenset())
-
-    for (kind, _), (old, new) in grouped.items():
-        remaining_old, remaining_new = list(old), list(new)
-        pairs: list[tuple[tuple[Unit, Clause], tuple[Unit, Clause]]] = []
-        # A unique identity is a supported move even if its explicit owner changed.
-        if len(old) == len(new) == 1:
-            pairs.append((old[0], new[0]))
-            remaining_old.clear()
-            remaining_new.clear()
-        else:
-            # Repeated names require unique owner evidence; never pair by list position.
-            for entry in old:
-                matches = [candidate for candidate in remaining_new
-                           if owner(entry[0]) is not None and owner(entry[0]) == owner(candidate[0])]
-                rivals = [candidate for candidate in remaining_old if owner(candidate[0]) == owner(entry[0])]
-                if len(matches) == len(rivals) == 1:
-                    pairs.append((entry, matches[0]))
-                    remaining_old.remove(entry)
-                    remaining_new.remove(matches[0])
-        for (old_unit, old_clause), (new_unit, new_clause) in pairs:
-            changed = old_clause.clause_id != new_clause.clause_id or owner(old_unit) != owner(new_unit)
-            status = "moved" if changed else "unchanged"
-            reason = (
-                f"{'Роль' if kind == 'role' else 'Подразделение'} сохранено; "
-                f"пункт {old_clause.clause_id} → {new_clause.clause_id}"
-                + (f", владелец {owner(old_unit) or 'не указан'} → {owner(new_unit) or 'не указан'}"
-                   if owner(old_unit) != owner(new_unit) else "")
-                + "."
-            ) if changed else "Структурная единица и её положение сохранены."
-            out.add(status, [item(old_clause)], [item(new_clause)], reason, "exact", changed)
-        if remaining_old and remaining_new:
-            out.add("unresolved", [item(c) for _, c in remaining_old], [item(c) for _, c in remaining_new],
-                    "Повторяющиеся названия структурных единиц не позволяют установить преемника "
-                    "без однозначного контекста владельца.", "exact", True)
-        else:
-            for _, clause in remaining_old:
-                out.add("missing", [item(clause)], [],
-                        "Роль или подразделение из исходной структуры не найдены в новой редакции.", "exact", True)
-            for _, clause in remaining_new:
-                out.add("added", [], [item(clause)],
-                        "Роль или подразделение добавлены в новую структуру.", "exact", True)
 
 
 def align_functions(clauses: list[Clause], units: list[Unit], before_docs: list[str], after_docs: list[str]) -> list[Finding]:
@@ -506,7 +442,6 @@ def align_functions(clauses: list[Clause], units: list[Unit], before_docs: list[
     _exact_phase(before, after, out, paired_b, paired_a, handled_b, handled_a)
     _lexical_phase(before, after, scorer, out, paired_b, paired_a, handled_b, handled_a)
     _leftovers(before, after, scorer, out, paired_b, paired_a, handled_b, handled_a)
-    _unit_rows(clauses, units, before_docs, after_docs, out)
 
     order = {doc: i for i, doc in enumerate(list(before_docs) + list(after_docs))}
 
