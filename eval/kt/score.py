@@ -150,8 +150,6 @@ def score_group(kind: str, matched: list[tuple[dict, dict, dict[str, str]]]) -> 
             if i not in claimed and (before | after) & unresolved_refs:
                 abstained[status] += 1
     for status in STATUSES:
-        if status == "unresolved" and not gold[status] and not tp[status] and not fp[status]:
-            continue
         precision = format_ratio(tp[status], tp[status] + fp[status])
         recall = format_ratio(tp[status], gold[status])
         abstentions = format_ratio(abstained[status], gold[status])
