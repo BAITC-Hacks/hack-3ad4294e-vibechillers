@@ -1,0 +1,461 @@
+{
+  "schema_version": 1,
+  "frozen_at_utc": "2026-09-23T09:57:01.138313+00:00",
+  "source_revision": "94f216c3c1ca17fe4acc391f8ee7e28aee941098",
+  "independence": "procedural shared-repository source-first; not technically blind; pending human confirmation",
+  "selection_rule": "All baseline unresolved; first 3 per confident status by SHA256(seed + canonical refs), outside regression/holdout; report-selected cases are development.",
+  "selection_seed": "alibi-stage2-2026-09-23",
+  "datasets": {
+    "seeds/kt/eval/labels.jsonl": "87965da85193a0420dd2383fae056211c7cba5b1976bdc0e3f2783534526b7ed",
+    "seeds/kt/eval/regression.jsonl": "87965da85193a0420dd2383fae056211c7cba5b1976bdc0e3f2783534526b7ed",
+    "seeds/kt/eval/challenge.jsonl": "7215fb71bbb40285bedf1c07a83c77e9a5624d8193124712153b0774c08c5319"
+  },
+  "fixtures": {
+    "seeds/kt/v8.txt": "f5ce4518f22ecad2701f1fed8929d93ff09bb45af6e35e8fd60726362b6bfbc8",
+    "seeds/kt/v9.txt": "7ab6a7fc5396dffbcd9228149b47ed28e0c3338284ad6c2180f8acb94fdd738b",
+    "seeds/kt/eval/mutations/deleted-function.txt": "25f83e8b16d006726095903a15c5a0e595e30c5b415a435f2483767c51e0352a",
+    "seeds/kt/eval/mutations/duplicated-function.txt": "b668949ceddd4c536db21d9acf09e7eabdc426ec64f132cf1e005990d54efff7",
+    "seeds/kt/eval/mutations/moved-function.txt": "7551dd32a4a6634d10aadbefe95b7ae9cc4751521c75150810f5f98b7c25660b",
+    "seeds/kt/eval/mutations/renumbered-section.txt": "da37e98bff8d933789a86d29d6ca3ade1bc3ce18dd6318acc8e085629e010822",
+    "seeds/kt/eval/mutations/whitespace-only.txt": "af77254cc29d23299b43e3da667b85dc1758fca04217888cb5e2873243fd1ee0",
+    "seeds/kt/eval/mutations/stage2/dev-owner/before-1.txt": "5b78e765bf22e7a6276db0bcb9900c323b6a386b0de4a3b826533665fc8d11bd",
+    "seeds/kt/eval/mutations/stage2/dev-owner/after-1.txt": "49d0d35b784b8f0dc117170738cf4497b06cab3cc7ef8b08ff928db69608244d",
+    "seeds/kt/eval/mutations/stage2/dev-delegate/before-1.txt": "68a720271ef17a676fd7955bc231d7a97d416eb23d08d8661563de057eb7f768",
+    "seeds/kt/eval/mutations/stage2/dev-delegate/after-1.txt": "47581a28739f17fbb4eed20a1fb5a3a9fbff1edd1d2924b1aec37571b6328739",
+    "seeds/kt/eval/mutations/stage2/dev-prohibition/before-1.txt": "2df5a76eea96a1499e1e5817b43653d5f228a1eaf42608aed5be5d35abb75491",
+    "seeds/kt/eval/mutations/stage2/dev-prohibition/after-1.txt": "d3826ba39bcf099b6594e84ae0a012cdf4f1168448cd41a72b749502613b1ca0",
+    "seeds/kt/eval/mutations/stage2/dev-split/before-1.txt": "08d436545a6e4abe50e6fb3f8c4bf47e9d3bd28066e7c9b24ed740c1396521be",
+    "seeds/kt/eval/mutations/stage2/dev-split/after-1.txt": "892cb62256c049894ba20e6e70d79c9477f83639bcd74b063f82e01fe37c9af0",
+    "seeds/kt/eval/mutations/stage2/dev-merge/before-1.txt": "87c1a4f930f3e21ce8fa2cd1bb0f462926a537f8ab09457a53f1b92a5767db56",
+    "seeds/kt/eval/mutations/stage2/dev-merge/after-1.txt": "844f227acc84e4eb95830fdbbd2c3349fec9dec150cc5f29aecfdd34cff084a5",
+    "seeds/kt/eval/mutations/stage2/dev-shared-dnm/before-1.txt": "808d821dae1a187eeeeed05618495c15ed95ea1e4483fa3b5d91617aff1ebd7c",
+    "seeds/kt/eval/mutations/stage2/dev-shared-dnm/after-1.txt": "808d821dae1a187eeeeed05618495c15ed95ea1e4483fa3b5d91617aff1ebd7c",
+    "seeds/kt/eval/mutations/stage2/dev-shared-dkkm/before-1.txt": "808d821dae1a187eeeeed05618495c15ed95ea1e4483fa3b5d91617aff1ebd7c",
+    "seeds/kt/eval/mutations/stage2/dev-shared-dkkm/after-1.txt": "808d821dae1a187eeeeed05618495c15ed95ea1e4483fa3b5d91617aff1ebd7c",
+    "seeds/kt/eval/mutations/stage2/dev-identical-inline/identical.txt": "426d282749b74b7b09979f634a46d3294bf5393779479f2ec3db8ddfda4a972f",
+    "seeds/kt/eval/mutations/stage2/dev-identical-repeated/identical.txt": "426d282749b74b7b09979f634a46d3294bf5393779479f2ec3db8ddfda4a972f",
+    "seeds/kt/eval/mutations/stage2/dev-multidoc/before-1.txt": "b367c875b90ad8c23ccff9c1957b45976cc410b5cf8ae67aade2b494f03191cb",
+    "seeds/kt/eval/mutations/stage2/dev-multidoc/before-2.txt": "48a1aa12cd7b7feced9053f5c89f3f317202084a18859fcc20b975b5d1fafd12",
+    "seeds/kt/eval/mutations/stage2/dev-multidoc/after-1.txt": "9e1792633b4600e56e8d356c9d355f9ef45e8c6227ed03bb9bdabdf003d453a9",
+    "seeds/kt/eval/mutations/stage2/dev-multidoc/after-2.txt": "48a1aa12cd7b7feced9053f5c89f3f317202084a18859fcc20b975b5d1fafd12",
+    "seeds/kt/eval/mutations/stage2/hold-owner/before-1.txt": "4e48bd58878202641f1168f65dfe79f575d3f9d5e56db1ec08be083bb16c3c15",
+    "seeds/kt/eval/mutations/stage2/hold-owner/after-1.txt": "9da238249bb39cac93a1ffe0db07d66cced1afb0c34a77dbda15ca0eeee05fa8",
+    "seeds/kt/eval/mutations/stage2/hold-delegate/before-1.txt": "c0e3f287ee6d921e6a46aaeacc50674b96f2cdbbf250f3977494a3ad1d5e85eb",
+    "seeds/kt/eval/mutations/stage2/hold-delegate/after-1.txt": "531ff182fd546dbc0b1992bf897b1d77cb7b5a0ec2e00df0f4a3742fe3a8f276",
+    "seeds/kt/eval/mutations/stage2/hold-parent/before-1.txt": "5c39a1e24e80b69b33a6a176eae7561490434260096057ebf71edff5218853f2",
+    "seeds/kt/eval/mutations/stage2/hold-parent/after-1.txt": "c02c34561dfcb51d1e3c4cd165cfc2849f27cfabce2d5a6e67c64f5843629933",
+    "seeds/kt/eval/mutations/stage2/hold-split/before-1.txt": "80c0f0ef7e2eb99dd00b37cfb399bf68f17f07f33871903988ad38cc5a748775",
+    "seeds/kt/eval/mutations/stage2/hold-split/after-1.txt": "50ec660e2995d42b86413f5f73c0f48e10af6105ee595030faa12198d363ad26",
+    "seeds/kt/eval/mutations/stage2/hold-shared/before-1.txt": "5de5905b6f473ed7ea0d6edd1ac07c503dbe538c8c547a7d8a419b2b915a9d2b",
+    "seeds/kt/eval/mutations/stage2/hold-shared/after-1.txt": "5de5905b6f473ed7ea0d6edd1ac07c503dbe538c8c547a7d8a419b2b915a9d2b",
+    "seeds/kt/eval/mutations/stage2/hold-uncertainty/before-1.txt": "3ce496c5a71c67fcb70c3986aca8378781b2964302338153fb09572bf9cebc9a",
+    "seeds/kt/eval/mutations/stage2/hold-uncertainty/after-1.txt": "842237ccd70248a4c9368406707415130b1cd21229c771e520472945f66bcf77"
+  },
+  "cases": {
+    "dev-owner": {
+      "partition": "development",
+      "kind": "synthetic",
+      "categories": [
+        "owner_change"
+      ],
+      "review_status": "pending_human",
+      "selection": "source-first authored fixture",
+      "label_sha256": "9ef3a54fee111ae76f45b54e44e8b098352fd3798d4d1bcdedde3f784a974acf"
+    },
+    "dev-delegate": {
+      "partition": "development",
+      "kind": "synthetic",
+      "categories": [
+        "delegate_change"
+      ],
+      "review_status": "pending_human",
+      "selection": "source-first authored fixture",
+      "label_sha256": "57b8b2890d936dd1c458001656faf00f54639c0c903dc777baea24e656f5612d"
+    },
+    "dev-prohibition": {
+      "partition": "development",
+      "kind": "synthetic",
+      "categories": [
+        "parent_prohibition"
+      ],
+      "review_status": "pending_human",
+      "selection": "source-first authored fixture",
+      "label_sha256": "f3f31dca4c953e8eab735d08c7664b535401dd063378b434bf179d22f31bdeaf"
+    },
+    "dev-split": {
+      "partition": "development",
+      "kind": "synthetic",
+      "categories": [
+        "split"
+      ],
+      "review_status": "pending_human",
+      "selection": "source-first authored fixture",
+      "label_sha256": "b7421f91a5d34c78d550d3546b5ef7d2b0a7d6c92294ea1ff8482f80eb5cf680"
+    },
+    "dev-merge": {
+      "partition": "development",
+      "kind": "synthetic",
+      "categories": [
+        "merge"
+      ],
+      "review_status": "pending_human",
+      "selection": "source-first authored fixture",
+      "label_sha256": "a59fc73133808cbfac7af902e398924df88a3dc83f3360e7645867666920f472"
+    },
+    "dev-shared-dnm": {
+      "partition": "development",
+      "kind": "synthetic",
+      "categories": [
+        "legitimate_shared"
+      ],
+      "review_status": "pending_human",
+      "selection": "source-first authored fixture",
+      "label_sha256": "79978000fd44ccdfe74dd92d98591108d789ab682a15e4c573d9a437c09143c9"
+    },
+    "dev-shared-dkkm": {
+      "partition": "development",
+      "kind": "synthetic",
+      "categories": [
+        "legitimate_shared"
+      ],
+      "review_status": "pending_human",
+      "selection": "source-first authored fixture",
+      "label_sha256": "5a4aa9e129e65ff9a1ac6092b4a09980a8ecc76cc0b290665ee39acadbbaf34b"
+    },
+    "dev-identical-inline": {
+      "partition": "development",
+      "kind": "synthetic",
+      "categories": [
+        "identical_file_markers"
+      ],
+      "review_status": "pending_human",
+      "selection": "source-first authored fixture",
+      "label_sha256": "1c99e9a03170a8a0e25b01378ae2ff1e6576caa961d86d978284377e45e587ba"
+    },
+    "dev-identical-repeated": {
+      "partition": "development",
+      "kind": "synthetic",
+      "categories": [
+        "identical_file_markers"
+      ],
+      "review_status": "pending_human",
+      "selection": "source-first authored fixture",
+      "label_sha256": "d786d5dba901bbcca771dd5f869aa3c82326d72f993ae7c4ff1b7973fd9e15bb"
+    },
+    "dev-multidoc": {
+      "partition": "development",
+      "kind": "synthetic",
+      "categories": [
+        "multi_document_aliases"
+      ],
+      "review_status": "pending_human",
+      "selection": "source-first authored fixture",
+      "label_sha256": "7c3ab5579154ed21d8dcd26201f95a333c2e41ad6d83ba09dd73b9c248de9ef0"
+    },
+    "hold-owner": {
+      "partition": "holdout",
+      "kind": "synthetic",
+      "categories": [
+        "owner_change"
+      ],
+      "review_status": "pending_human",
+      "selection": "source-first authored fixture",
+      "label_sha256": "bd35a22cdd3b0427051db28fc79dcd0359dbfed8cfd0fe630d92037f95a26f92"
+    },
+    "hold-delegate": {
+      "partition": "holdout",
+      "kind": "synthetic",
+      "categories": [
+        "delegate_change"
+      ],
+      "review_status": "pending_human",
+      "selection": "source-first authored fixture",
+      "label_sha256": "8de96aed6518541244c2f8763454db335f8e6223dcaa9b657660c9be2bff1c6b"
+    },
+    "hold-parent": {
+      "partition": "holdout",
+      "kind": "synthetic",
+      "categories": [
+        "parent_prohibition"
+      ],
+      "review_status": "pending_human",
+      "selection": "source-first authored fixture",
+      "label_sha256": "16d6ad49bcf81e0252aa01bd529464753250beb357e6c4286e0c3971c5046d1d"
+    },
+    "hold-split": {
+      "partition": "holdout",
+      "kind": "synthetic",
+      "categories": [
+        "split"
+      ],
+      "review_status": "pending_human",
+      "selection": "source-first authored fixture",
+      "label_sha256": "481f15d7063ffc5e36b0ad54fbf5c4527bb398cb86adf989fc7d79c161e7466f"
+    },
+    "hold-shared": {
+      "partition": "holdout",
+      "kind": "synthetic",
+      "categories": [
+        "legitimate_shared"
+      ],
+      "review_status": "pending_human",
+      "selection": "source-first authored fixture",
+      "label_sha256": "341f9cc453b2c9bd42c6a046639337371d012236d5a0836e9c1cc4b641719e24"
+    },
+    "hold-uncertainty": {
+      "partition": "holdout",
+      "kind": "synthetic",
+      "categories": [
+        "appropriate_abstention"
+      ],
+      "review_status": "pending_human",
+      "selection": "source-first authored fixture",
+      "label_sha256": "9fa01b95c7076b00aa6652f89c2b0b92c50292bbeb68095f26ceb919cb8f5bb8"
+    },
+    "hold-real-01": {
+      "partition": "holdout",
+      "kind": "real",
+      "categories": [
+        "responsibility_context"
+      ],
+      "selection": "source-first: 7.1 responsibility and 8.11 resource escalation",
+      "review_status": "pending_human",
+      "label_sha256": "4eb1e9f242483d9a5bf5258526ff5b39b58242cc21cb31027c75754d30fbe5a5"
+    },
+    "hold-real-02": {
+      "partition": "holdout",
+      "kind": "real",
+      "categories": [
+        "responsibility_context"
+      ],
+      "selection": "source-first: 7.1 responsibility and 8.11 resource escalation",
+      "review_status": "pending_human",
+      "label_sha256": "562a70321c1a72867116b0426f83701be63c859ebce55653b8a30bafbb45ccb2"
+    },
+    "real-001": {
+      "partition": "regression",
+      "kind": "real",
+      "categories": [
+        "stage1"
+      ],
+      "review_status": "legacy_accepted",
+      "label_sha256": "87ad3319f6eae585cc3c03b421cc68801afc5b154fbef593e105b1f2d431429e"
+    },
+    "real-002": {
+      "partition": "regression",
+      "kind": "real",
+      "categories": [
+        "stage1"
+      ],
+      "review_status": "legacy_accepted",
+      "label_sha256": "22694333b33e95fa417cca5d3acebe2bff7f8cfb43f16b093ad842d0cd836297"
+    },
+    "real-003": {
+      "partition": "regression",
+      "kind": "real",
+      "categories": [
+        "stage1"
+      ],
+      "review_status": "legacy_accepted",
+      "label_sha256": "4d8e3f9d52c618a4f33c9bf4f84e3ab6b80377ad42c995d50f3ad3e3be8aac53"
+    },
+    "real-004": {
+      "partition": "regression",
+      "kind": "real",
+      "categories": [
+        "stage1"
+      ],
+      "review_status": "legacy_accepted",
+      "label_sha256": "a28f9977a49667798c86a6137de2fe1677fb3df24c99a42b6fe67aa4e4ae71a1"
+    },
+    "real-005": {
+      "partition": "regression",
+      "kind": "real",
+      "categories": [
+        "stage1"
+      ],
+      "review_status": "legacy_accepted",
+      "label_sha256": "069da95390bae566bbbd3642013ab855a39fbaddd4146e0dfc11cab3e3d4c99d"
+    },
+    "real-006": {
+      "partition": "regression",
+      "kind": "real",
+      "categories": [
+        "stage1"
+      ],
+      "review_status": "legacy_accepted",
+      "label_sha256": "72f95ab362901568be81af5c1c925f6665f2318bfaafcbd679867036294c94f6"
+    },
+    "real-007": {
+      "partition": "regression",
+      "kind": "real",
+      "categories": [
+        "stage1"
+      ],
+      "review_status": "legacy_accepted",
+      "label_sha256": "2ba95b754863de12e1b374f18c919a46be7e49d095fed96c486fe0d78cc25927"
+    },
+    "real-008": {
+      "partition": "regression",
+      "kind": "real",
+      "categories": [
+        "stage1"
+      ],
+      "review_status": "legacy_accepted",
+      "label_sha256": "6c4bab7b93146c5a8fdf6e2ba08cb8bb8dfa341544fd2ab0710b0db0786fab6a"
+    },
+    "real-009": {
+      "partition": "regression",
+      "kind": "real",
+      "categories": [
+        "stage1"
+      ],
+      "review_status": "legacy_accepted",
+      "label_sha256": "0ce05c7038a7fc838df1c5a508117a24677c6db50dce8f0c18f293fb4cc2a525"
+    },
+    "real-010": {
+      "partition": "regression",
+      "kind": "real",
+      "categories": [
+        "stage1"
+      ],
+      "review_status": "legacy_accepted",
+      "label_sha256": "a985690c0c715ca445e172c5682226aacefa57ea2b4a81bb16aa593990c245f4"
+    },
+    "real-011": {
+      "partition": "regression",
+      "kind": "real",
+      "categories": [
+        "stage1"
+      ],
+      "review_status": "legacy_accepted",
+      "label_sha256": "8d53ae38b8301e999bee3f0d6fa984e2a56583b2d0f0ca3ba9fab3fa5e274f3f"
+    },
+    "real-012": {
+      "partition": "regression",
+      "kind": "real",
+      "categories": [
+        "stage1"
+      ],
+      "review_status": "legacy_accepted",
+      "label_sha256": "2101ea190923b16e1a561e3999e5cc4e9241110a947de7423d7e4497e9bcc3c6"
+    },
+    "real-013": {
+      "partition": "regression",
+      "kind": "real",
+      "categories": [
+        "stage1"
+      ],
+      "review_status": "legacy_accepted",
+      "label_sha256": "6d57d688d26caaf3d1e2621cf6f4f2ef4c6916b707029fb792a3f9f99b82b23b"
+    },
+    "real-014": {
+      "partition": "regression",
+      "kind": "real",
+      "categories": [
+        "stage1"
+      ],
+      "review_status": "legacy_accepted",
+      "label_sha256": "d424d98857429d260e2711923dcb82173038370143dd0d3f2b8f708aea101fed"
+    },
+    "real-015": {
+      "partition": "regression",
+      "kind": "real",
+      "categories": [
+        "stage1"
+      ],
+      "review_status": "legacy_accepted",
+      "label_sha256": "f521207dcb39ce30c3effa14aec2132ff50763d8cd5b0b8ddc4f655af56ad26a"
+    },
+    "real-016": {
+      "partition": "regression",
+      "kind": "real",
+      "categories": [
+        "stage1"
+      ],
+      "review_status": "legacy_accepted",
+      "label_sha256": "6eb9d8c91b12d7a4ed0e0a55629ac9766dfdd1e0ff40fb3a166c0bf66575c8c1"
+    },
+    "real-017": {
+      "partition": "regression",
+      "kind": "real",
+      "categories": [
+        "stage1"
+      ],
+      "review_status": "legacy_accepted",
+      "label_sha256": "a2a8bf6542aebb99364bf6a0e96226ae2519a1a9bccd19e5cd8390048a32a0ee"
+    },
+    "real-018": {
+      "partition": "regression",
+      "kind": "real",
+      "categories": [
+        "stage1"
+      ],
+      "review_status": "legacy_accepted",
+      "label_sha256": "96608e315bb73f9527b45bf00fd6cb6a049b4fb183a9e27ebf3f71abf4b48a02"
+    },
+    "real-019": {
+      "partition": "regression",
+      "kind": "real",
+      "categories": [
+        "stage1"
+      ],
+      "review_status": "legacy_accepted",
+      "label_sha256": "c0393e15a640eebf583197839b2be72ef92969178d39898d554f9c63b1c8e981"
+    },
+    "real-020": {
+      "partition": "regression",
+      "kind": "real",
+      "categories": [
+        "stage1"
+      ],
+      "review_status": "legacy_accepted",
+      "label_sha256": "93a74058232b34feb09c9c57a6f34b363f48c30e13441f9a02220ac251b45669"
+    },
+    "synthetic-deleted-function": {
+      "partition": "regression",
+      "kind": "synthetic",
+      "categories": [
+        "stage1"
+      ],
+      "review_status": "legacy_accepted",
+      "label_sha256": "dfd621bef08f642a0958cd4cc3c9bb05c2fdf02d288765594f0099f7a279de51"
+    },
+    "synthetic-duplicated-function": {
+      "partition": "regression",
+      "kind": "synthetic",
+      "categories": [
+        "stage1"
+      ],
+      "review_status": "legacy_accepted",
+      "label_sha256": "f5f89cd97d9e78f4754ebf1903c27851742a0e435e19e8e30fd50b13c13ae540"
+    },
+    "synthetic-moved-function": {
+      "partition": "regression",
+      "kind": "synthetic",
+      "categories": [
+        "stage1"
+      ],
+      "review_status": "legacy_accepted",
+      "label_sha256": "d4d0bc0f8d44cc3edec4c77a621942a1d9882fdf914cffecbf6a58f90a7548a6"
+    },
+    "synthetic-renumbered-section": {
+      "partition": "regression",
+      "kind": "synthetic",
+      "categories": [
+        "stage1"
+      ],
+      "review_status": "legacy_accepted",
+      "label_sha256": "88dd6ab2e39d6d4dbdccd0bc94152898ed1ee74988dc9154032f8f6c27ef7e43"
+    },
+    "synthetic-whitespace-only": {
+      "partition": "regression",
+      "kind": "synthetic",
+      "categories": [
+        "stage1"
+      ],
+      "review_status": "legacy_accepted",
+      "label_sha256": "836d82d6bc0af7e91e40f7767bc8514e41ac38fa8446016cc6d44239432e1ffe"
+    }
+  }
+}

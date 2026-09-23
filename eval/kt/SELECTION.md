@@ -1,0 +1,13 @@
+# Stage 2 selection, fixed before reading the new baseline
+
+Baseline checkout at start: `94f216c`. Original 25 examples are copied byte-for-byte to `seeds/kt/eval/regression.jsonl`; `labels.jsonl` stays the backward-compatible default. The Stage 1 answer correction to real-019 is inherited as regression, not presented as independent evidence.
+
+Source-first reservations: two real clauses outside the original §§2–5 and six newly authored synthetic cases are assigned holdout in `split.json`. Their proposed answers, source hashes and label hashes are committed before any evaluation of those cases. Human confirmation is pending and tracked separately. This shared-repository holdout is procedural, not technically blind. The real holdout shares source editions with development and therefore is not an independent-document sample. Core contributors must not inspect the holdout examples for tuning. Any case used for a core fix must be reassigned to development, with the reason recorded.
+
+Report-derived development selection: inspect all 33 recorded baseline unresolved findings. If the new capture differs in count, preserve both the recorded count and the actual result. Among confident (`status != unresolved`) changed/moved/missing/duplicate findings, exclude every finding intersecting original regression or reserved holdout refs. Sort each status pool by SHA-256 of `alibi-stage2-2026-09-23` followed by canonical JSON of `[status,before,after]` (sorted keys, UTF-8, compact separators); take the first three, or all when fewer exist. Record eligible and selected counts. This is a reproducible purposive development sample, not a population-accuracy estimate.
+
+Read the cited source spans and governing headings independently for each selected finding. The system's status is a selection attribute, never the source of the expected answer. Triage categories distinguish wrong match/status, parsing issue, justified uncertainty, review needed and source-supported agreement. Candidate absence/recall cannot be inferred from a Report: candidate lists are not available in this contract.
+
+New gold requires Alibi's human review of `seeds/kt/eval/REVIEW.md`. AI proposals and any scored drafts must be identified as such. Reviewer/disagreement/provenance metadata lives in `reviews.json` and `split.json`, not in invented fields inside the binding JSONL label schema. Only Alibi's workstream edits final labels.
+
+Raw captures go to the ignored owned directory `seeds/kt/eval/data/`. Compact run metadata, selection membership, triage and results are tracked. No shared builds, dependency changes or private aligner imports are part of this workstream.
