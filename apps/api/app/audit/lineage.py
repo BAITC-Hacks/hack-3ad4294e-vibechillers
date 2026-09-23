@@ -734,14 +734,13 @@ def analyze_domain(
                 f"Подразделение {old.name} есть в исходной структуре, но достоверное прекращение или преемник не установлены.")
 
     duties = [duty for clause in d.clauses if (duty := _duty(d, clause)) is not None]
-    existing_duplicates = [frozenset(_key(r) for r in f.after) for f in findings if f.status == "duplicate"]
     seen_pairs: set[frozenset[_Key]] = set()
     for i, first in enumerate(duties):
         for second in duties[i + 1:]:
             if _key(first.owner) == _key(second.owner) or unit_key(first.owner) == unit_key(second.owner):
                 continue
             pair = frozenset((_key(first.clause), _key(second.clause)))
-            if pair in seen_pairs or any(pair <= existing for existing in existing_duplicates):
+            if pair in seen_pairs:
                 continue
             if not first.actions.intersection(second.actions) or not _same_object(first, second):
                 continue
