@@ -1,0 +1,201 @@
+{
+  "archive": {
+    "path": "docs/evidence/stage3-capture-e1e87ba-openai.zip",
+    "sha256": "597996bbdd0d8d6e653d1ae7b7d34481848005e459450cce62d7820b734047f8",
+    "bytes": 153467,
+    "entries": 22,
+    "credential_matches": 0
+  },
+  "core_sha": "e1e87ba85a8d4f68908cf07922bb5a180f18b14d",
+  "schema_revision": "4da43907919867ce4e8579360fe5b2ff43f9a37c",
+  "deterministic_run": "eae733c57bda4802a8bea574f5011054",
+  "agent_run": "6e3c64a1aceb4f2c99ba8ed58a2917f7",
+  "agent": {
+    "status": "completed",
+    "model": "gpt-5.5-2026-04-23",
+    "turns": 9,
+    "tool_calls": 20,
+    "investigated_finding_ids": [
+      "F001",
+      "F002",
+      "F003",
+      "F004",
+      "F005",
+      "F006",
+      "F007",
+      "F008",
+      "F009",
+      "F010",
+      "F011",
+      "F012"
+    ],
+    "stop_reason": "Model inspected run-local evidence and finalized the verified report."
+  },
+  "backend_tests_passed": 41,
+  "integrity_checks": 39,
+  "integrity_failures": 0,
+  "source_quotes_each_mode": 209,
+  "source_quote_failures": 0,
+  "metrics_each_mode": {
+    "functions": {
+      "tp": 9,
+      "fp": 0,
+      "fn": 0
+    },
+    "units": {
+      "tp": 7,
+      "fp": 0,
+      "fn": 0
+    },
+    "risks": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "negative_control": "1/1"
+    }
+  },
+  "measurement": "19 pending_human labels; development source-informed corrections; no holdout opened; no product-wide accuracy claim; independent review of this new core pending",
+  "usage_estimate_usd": 3.1713609999999988,
+  "prior_evidence": [
+    {
+      "path": "docs/evidence/stage3-capture-b392d9b-openai.zip",
+      "sha256": "d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d",
+      "bytes": 223337,
+      "entries": 24,
+      "credential_matches": 0
+    },
+    {
+      "path": "docs/evidence/stage3-capture-b392d9b-budget-limited.zip",
+      "sha256": "d52753f0c406533ba1228caa4560daaa1fe93b38e5978df5198f00293869fbe9",
+      "bytes": 109780,
+      "entries": 14,
+      "credential_matches": 0
+    },
+    {
+      "path": "docs/evidence/stage3-prior-attempts.zip",
+      "sha256": "0ce1b32b2eddfe6f4f4278127166c7bc3d6711cc07d405f23a85c450cd261c80",
+      "bytes": 133945,
+      "entries": 15,
+      "credential_matches": 0
+    }
+  ],
+  "formats": {
+    "xlsx": {
+      "run_id": "6a022cf76cb6406ea49a29116b3d90a7",
+      "mode": "deterministic",
+      "agent": {
+        "status": "not_requested",
+        "model": null,
+        "turns": 0,
+        "tool_calls": 0,
+        "investigated_finding_ids": [],
+        "stop_reason": "Model investigation not requested."
+      },
+      "coverage": {
+        "before_total": 11,
+        "after_total": 12,
+        "before_accounted": 11,
+        "after_accounted": 12,
+        "unresolved": 2
+      },
+      "source_sha256": {
+        "seeds\\kt\\eval\\control\\before.xlsx": "fe41fb5d32a9cd31943c93d8e02cabbab7198c001feb732d7bd288c70aac4aed",
+        "seeds\\kt\\eval\\control\\after.xlsx": "7a8fd8054153913bbe03cef7ae2233f8dd235210e41cb53240ac0049b23f9256"
+      },
+      "findings": {
+        "moved": 6,
+        "missing": 1,
+        "duplicate": 1,
+        "unresolved": 1,
+        "changed": 2,
+        "added": 1
+      },
+      "unit_changes": {
+        "reorganised": 3,
+        "retained": 3,
+        "created": 1
+      },
+      "risks": {
+        "potential_duplication": 1,
+        "potential_conflict_of_interest": 1
+      },
+      "exact_citations": 194,
+      "located_clauses": 72,
+      "event_count": 5,
+      "tool_names": [],
+      "terminal_count": 1,
+      "saved_equal": true,
+      "trace_equal": true,
+      "warnings": [
+        "before-1: 2 unlabelled block(s) kept as kind=other and excluded from alignment.",
+        "before-1: 1 governing/completeness statement(s) retained as source context, not counted as operational duties.",
+        "after-1: 2 unlabelled block(s) kept as kind=other and excluded from alignment.",
+        "after-1: 7 governing/completeness statement(s) retained as source context, not counted as operational duties.",
+        "Выводы рекомендательные и требуют проверки ответственным сотрудником. Отсутствие отмеченного риска не доказывает отсутствие пересечения или конфликта."
+      ]
+    },
+    "pdf": {
+      "run_id": "5fb6c2a895614e5fba1cf0f1e4334b44",
+      "mode": "deterministic",
+      "agent": {
+        "status": "not_requested",
+        "model": null,
+        "turns": 0,
+        "tool_calls": 0,
+        "investigated_finding_ids": [],
+        "stop_reason": "Model investigation not requested."
+      },
+      "coverage": {
+        "before_total": 11,
+        "after_total": 12,
+        "before_accounted": 11,
+        "after_accounted": 12,
+        "unresolved": 2
+      },
+      "source_sha256": {
+        "seeds\\kt\\eval\\control\\before.pdf": "a867051f06c9bc5ef963eb136428319653bf3748c74a9f275c62432f45211dd4",
+        "seeds\\kt\\eval\\control\\after.pdf": "ec9e741b6d13b5d1a8de53340ffbaa72fcb14812f4a30ea958d151b4d9013ce5"
+      },
+      "findings": {
+        "moved": 6,
+        "missing": 1,
+        "duplicate": 1,
+        "unresolved": 1,
+        "changed": 2,
+        "added": 1
+      },
+      "unit_changes": {
+        "reorganised": 2,
+        "retained": 3,
+        "unresolved": 2,
+        "created": 1
+      },
+      "risks": {
+        "potential_duplication": 1,
+        "potential_conflict_of_interest": 1
+      },
+      "exact_citations": 192,
+      "located_clauses": 74,
+      "event_count": 5,
+      "tool_names": [],
+      "terminal_count": 1,
+      "saved_equal": true,
+      "trace_equal": true,
+      "warnings": [
+        "before-1: 3 unlabelled block(s) kept as kind=other and excluded from alignment.",
+        "before-1: 1 governing/completeness statement(s) retained as source context, not counted as operational duties.",
+        "after-1: 3 unlabelled block(s) kept as kind=other and excluded from alignment.",
+        "after-1: 7 governing/completeness statement(s) retained as source context, not counted as operational duties.",
+        "Для неустановленной преемственности требуется просмотр приложений и решений о реорганизации человеком.",
+        "Выводы рекомендательные и требуют проверки ответственным сотрудником. Отсутствие отмеченного риска не доказывает отсутствие пересечения или конфликта."
+      ]
+    }
+  },
+  "limitations": [
+    "PDF still has two unresolved unit-lineage rows; uppercase/terminal-punctuation continuations and ambiguous layouts are not flattened.",
+    "No diagram semantics, no fabricated DOCX page numbers; legacy DOC/XLS require conversion; image-only PDF OCR not verified.",
+    "Keyless fallback is not full model execution. New core requires separate independent acceptance; old b392d9b review is not its verdict.",
+    "User clarified no external deployment is required. Backend key remains private; startup instructions are owned by Askat.",
+    "Current final capture has actual backend and offline-export evidence; earlier full browser source navigation/export proof is pinned to b392d9b and not relabelled."
+  ]
+}
