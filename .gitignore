@@ -1,0 +1,9 @@
+.venv/
+data/
+.env
+__pycache__/
+node_modules/
+.next/
+# team working memory, never graded
+.omp/
+research/
