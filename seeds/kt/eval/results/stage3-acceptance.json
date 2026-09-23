@@ -1,128 +1,420 @@
 {
-  "record_scope": "Historical evaluation of f104c91 only; not a result of the new backend core.",
-  "pending_final_intake": "seeds/kt/eval/results/stage3-final-intake.json",
-  "schema_version": 2,
+  "schema_version": 3,
+  "record_scope": "Independent review of delivered b392d9b DOCX pair; historical partial stored separately.",
+  "final_intake": "seeds/kt/eval/results/stage3-final-intake.json",
+  "verdict": "seeds/kt/eval/results/b392d9b-9c7199f3-independent/verdict.json",
+  "previous_snapshot": "seeds/kt/eval/results/b392d9b-9c7199f3-independent/acceptance-before-b392d9b.json",
+  "captured_core_revision": "b392d9bd18687eb4905f296897399d0a5eb581e9",
   "schema_commit_received": "4da43907919867ce4e8579360fe5b2ff43f9a37c",
+  "immutable_archive": "docs/evidence/stage3-capture-b392d9b-openai.zip",
+  "archive_sha256": "d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d",
   "inputs_ready": true,
   "evaluator_ready_for_schema": true,
-  "capture_command": "eval/kt/BATYRKHAN-CAPTURE.md",
   "inference_executor": "Batyrkhan in his authorised environment",
   "evaluation_owner": "Alibi",
-  "external_paired_packages_received": 1,
-  "actual_agent_quality_metrics": {
-    "interpretation": "Provisional agreement of saved actual attempted-agent output; not completed-agent or confirmed accuracy. Both analytic payloads equal.",
-    "runs": [
-      {
-        "run_id": "6b5120b9b2c244c589d36d3cb90c655c",
-        "requested": "deterministic",
-        "actual_mode": "deterministic",
-        "agent_status": "not_requested",
-        "counts": [
-          {
-            "group": "development/synthetic",
-            "gold": 9,
-            "tp": 4,
-            "fp": 6,
-            "fn": 5,
-            "precision_denominator": 10,
-            "recall_denominator": 9
-          },
-          {
-            "group": "development/synthetic/risk",
-            "gold": 2,
-            "tp": 0,
-            "fp": 0,
-            "fn": 2,
-            "precision_denominator": 0,
-            "recall_denominator": 2
-          },
-          {
-            "group": "development/synthetic/unit_change",
-            "gold": 7,
-            "tp": 7,
-            "fp": 0,
-            "fn": 0,
-            "precision_denominator": 7,
-            "recall_denominator": 7
-          }
-        ],
-        "citation_checks": 343,
-        "citation_failures": 0
+  "external_paired_packages_independently_reviewed": 2,
+  "current_pair_attempted_agent_runs": 1,
+  "current_pair_agent_completed": 1,
+  "current_pair_agent_partial": 0,
+  "metric_interpretation": "Provisional agreement with19pending_human labels;0human confirmations. Same frozen counts in both modes; F009 source-supported change is outside frozen function labels and is not an added TP.",
+  "actual_saved_run_metrics": [
+    {
+      "requested": "deterministic",
+      "run_id": "2a5b5e1e16b1423193dcff0be2323447",
+      "mode": "deterministic",
+      "agent": {
+        "status": "not_requested",
+        "model": null,
+        "turns": 0,
+        "tool_calls": 0,
+        "investigated_finding_ids": [],
+        "stop_reason": "Model investigation not requested."
       },
-      {
-        "run_id": "76f223b2a6b44a9b8b68ac0386152e6f",
-        "requested": "agent",
-        "actual_mode": "deterministic",
-        "agent_status": "partial",
-        "counts": [
-          {
-            "group": "development/synthetic",
-            "gold": 9,
-            "tp": 4,
-            "fp": 6,
-            "fn": 5,
-            "precision_denominator": 10,
-            "recall_denominator": 9
-          },
-          {
-            "group": "development/synthetic/risk",
-            "gold": 2,
-            "tp": 0,
-            "fp": 0,
-            "fn": 2,
-            "precision_denominator": 0,
-            "recall_denominator": 2
-          },
-          {
-            "group": "development/synthetic/unit_change",
-            "gold": 7,
-            "tp": 7,
-            "fp": 0,
-            "fn": 0,
-            "precision_denominator": 7,
-            "recall_denominator": 7
+      "groups": [
+        {
+          "group": "development/synthetic",
+          "semantic_gold": 9,
+          "tp": 4,
+          "fp": 6,
+          "fn": 5,
+          "precision_denominator": 10,
+          "recall_denominator": 9,
+          "counts": {
+            "findings_total": 19,
+            "scoped_findings": 10,
+            "unlabelled_findings": 9,
+            "unknown_status_findings": 0,
+            "scoped_unresolved_findings": 0,
+            "appropriate_abstention_gold": 0,
+            "appropriate_abstention_matches": 0,
+            "other_unresolved_findings": 0,
+            "partial_overlap_refusal_labels": 0
           }
-        ],
-        "citation_checks": 343,
-        "citation_failures": 0
+        },
+        {
+          "group": "development/synthetic/risk",
+          "semantic_gold": 2,
+          "tp": 2,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 2,
+          "recall_denominator": 2,
+          "counts": {
+            "assessed_labels": 3,
+            "not_assessed_labels": 0,
+            "outputs_total": 2,
+            "scoped_outputs": 2,
+            "unlabelled_outputs": 0,
+            "unknown_value_outputs": 0,
+            "invalid_prediction_fp": 0,
+            "scoped_unresolved_outputs": 0,
+            "appropriate_abstention_gold": 0,
+            "appropriate_abstention_matches": 0,
+            "other_unresolved_outputs": 0,
+            "abstention_on_resolvable": 0,
+            "negative_gold": 1,
+            "negative_correct": 1,
+            "negative_violations": 0,
+            "source_locations_expected": 1,
+            "source_locations_matched": 1
+          }
+        },
+        {
+          "group": "development/synthetic/unit_change",
+          "semantic_gold": 7,
+          "tp": 7,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 7,
+          "recall_denominator": 7,
+          "counts": {
+            "assessed_labels": 7,
+            "not_assessed_labels": 0,
+            "outputs_total": 7,
+            "scoped_outputs": 7,
+            "unlabelled_outputs": 0,
+            "unknown_value_outputs": 0,
+            "invalid_prediction_fp": 0,
+            "scoped_unresolved_outputs": 0,
+            "appropriate_abstention_gold": 0,
+            "appropriate_abstention_matches": 0,
+            "other_unresolved_outputs": 0,
+            "abstention_on_resolvable": 0,
+            "negative_gold": 0,
+            "negative_correct": 0,
+            "negative_violations": 0,
+            "source_locations_expected": 2,
+            "source_locations_matched": 2
+          }
+        }
+      ],
+      "citation_checks": {
+        "report": "C:\\Users\\torre\\Documents\\GitHub\\hack-3ad4294e-vibechillers\\seeds\\kt\\eval\\data\\b392d9b-9c7199f3\\capture-docx\\deterministic.json",
+        "run_id": "2a5b5e1e16b1423193dcff0be2323447",
+        "scope": "Report-internal only; not proof of source extraction completeness or semantic truth",
+        "citations_checked": 243,
+        "failures": 0,
+        "locations_shape_checked": 72,
+        "stage3_sections": {
+          "unit_changes": "present",
+          "risks": "present"
+        },
+        "duplicate_clause_keys": 0,
+        "errors": [],
+        "source_backed": {
+          "citations_checked": 243,
+          "failures": 0,
+          "errors": [],
+          "scope": "Pinned numbered text source; representation equivalence requires independent review"
+        }
       }
-    ]
+    },
+    {
+      "requested": "agent",
+      "run_id": "9c7199f33a9f4ca3a9a47abfd65b8c6f",
+      "mode": "llm_assisted",
+      "agent": {
+        "status": "completed",
+        "model": "gpt-5.5-2026-04-23",
+        "turns": 7,
+        "tool_calls": 22,
+        "investigated_finding_ids": [
+          "F001",
+          "F002",
+          "F003",
+          "F004",
+          "F005",
+          "F006",
+          "F007",
+          "F008",
+          "F009",
+          "F010",
+          "F011",
+          "F012",
+          "F013",
+          "F014",
+          "F015",
+          "F016",
+          "F017",
+          "F018",
+          "F019"
+        ],
+        "stop_reason": "Model inspected run-local evidence and finalized the verified report."
+      },
+      "groups": [
+        {
+          "group": "development/synthetic",
+          "semantic_gold": 9,
+          "tp": 4,
+          "fp": 6,
+          "fn": 5,
+          "precision_denominator": 10,
+          "recall_denominator": 9,
+          "counts": {
+            "findings_total": 19,
+            "scoped_findings": 10,
+            "unlabelled_findings": 9,
+            "unknown_status_findings": 0,
+            "scoped_unresolved_findings": 0,
+            "appropriate_abstention_gold": 0,
+            "appropriate_abstention_matches": 0,
+            "other_unresolved_findings": 0,
+            "partial_overlap_refusal_labels": 0
+          }
+        },
+        {
+          "group": "development/synthetic/risk",
+          "semantic_gold": 2,
+          "tp": 2,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 2,
+          "recall_denominator": 2,
+          "counts": {
+            "assessed_labels": 3,
+            "not_assessed_labels": 0,
+            "outputs_total": 2,
+            "scoped_outputs": 2,
+            "unlabelled_outputs": 0,
+            "unknown_value_outputs": 0,
+            "invalid_prediction_fp": 0,
+            "scoped_unresolved_outputs": 0,
+            "appropriate_abstention_gold": 0,
+            "appropriate_abstention_matches": 0,
+            "other_unresolved_outputs": 0,
+            "abstention_on_resolvable": 0,
+            "negative_gold": 1,
+            "negative_correct": 1,
+            "negative_violations": 0,
+            "source_locations_expected": 1,
+            "source_locations_matched": 1
+          }
+        },
+        {
+          "group": "development/synthetic/unit_change",
+          "semantic_gold": 7,
+          "tp": 7,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 7,
+          "recall_denominator": 7,
+          "counts": {
+            "assessed_labels": 7,
+            "not_assessed_labels": 0,
+            "outputs_total": 7,
+            "scoped_outputs": 7,
+            "unlabelled_outputs": 0,
+            "unknown_value_outputs": 0,
+            "invalid_prediction_fp": 0,
+            "scoped_unresolved_outputs": 0,
+            "appropriate_abstention_gold": 0,
+            "appropriate_abstention_matches": 0,
+            "other_unresolved_outputs": 0,
+            "abstention_on_resolvable": 0,
+            "negative_gold": 0,
+            "negative_correct": 0,
+            "negative_violations": 0,
+            "source_locations_expected": 2,
+            "source_locations_matched": 2
+          }
+        }
+      ],
+      "citation_checks": {
+        "report": "C:\\Users\\torre\\Documents\\GitHub\\hack-3ad4294e-vibechillers\\seeds\\kt\\eval\\data\\b392d9b-9c7199f3\\capture-docx\\agent.json",
+        "run_id": "9c7199f33a9f4ca3a9a47abfd65b8c6f",
+        "scope": "Report-internal only; not proof of source extraction completeness or semantic truth",
+        "citations_checked": 243,
+        "failures": 0,
+        "locations_shape_checked": 72,
+        "stage3_sections": {
+          "unit_changes": "present",
+          "risks": "present"
+        },
+        "duplicate_clause_keys": 0,
+        "errors": [],
+        "source_backed": {
+          "citations_checked": 243,
+          "failures": 0,
+          "errors": [],
+          "scope": "Pinned numbered text source; representation equivalence requires independent review"
+        }
+      }
+    }
+  ],
+  "actions": {
+    "calls": 22,
+    "paired_successes": 22,
+    "trace_events": 53,
+    "reported_turns": 7,
+    "current_window_receipts": 7,
+    "proposal_family_accepted": 2,
+    "proposal_family_rejected": 0,
+    "accepted_offer_noop": 1,
+    "findings_actually_changed": 1,
+    "unit_proposals": 0,
+    "risk_proposals": 0,
+    "build_report_calls": 1,
+    "investigated_ids": 19,
+    "findings_total": 19
   },
-  "result_dependent_action_review": "Completed separate offline AI review of all 25 arguments/results; result-derived IDs, paging offset and discovered refs reused. 23/31 investigated IDs represent exposure, not validated decisions. No proposals or model finalizer.",
+  "source_action_trace_review_complete": true,
   "holdout_scored": false,
   "control_human_confirmed": 0,
   "control_pending_human": 19,
-  "local_diagnostic_scope": "Four actual public deterministic domain-API runs on pre-Stage3 core; no HTTP/provider inference",
-  "evaluator_tests_passed": 53,
-  "capture_guard_tests_passed": 15,
-  "required_for_paired_measurement": [],
+  "C0_integrity_checks": 39,
+  "C0_integrity_failures": 0,
+  "C0_supplemental_checks": 16,
+  "C0_supplemental_failures": 0,
+  "contextual_checks": 13,
+  "contextual_failures": 0,
+  "saved_agent_behavior_acceptance": true,
+  "F1_acceptance": false,
+  "stage3_exit": "not_complete; M2/M5/F1 functional blockers and D1 full-exit evidence gap",
+  "criteria": [
+    {
+      "id": "C0",
+      "status": "passes",
+      "evidence": "39 custody +16 supplemental +13 contextual checks; raw36core files,24archive members, schema ancestry, distinct expected new IDs and pinned identical DOCX bytes; Report/GET/SSE/trace agree.",
+      "owner": "Alibi verifies; Batyrkhan supplies",
+      "scope": "Main paired DOCX capture; operator attestation is not authentication of a remote process.",
+      "reproduction": {
+        "command": "python -B eval/kt/review_saved_capture.py --archive docs/evidence/stage3-capture-b392d9b-openai.zip --sha256 d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d --extract-to seeds/kt/eval/data/b392d9b-recheck --output seeds/kt/eval/data/b392d9b-recheck-results --core-revision b392d9bd18687eb4905f296897399d0a5eb581e9",
+        "inspect": "integrity-git.json; intake-context.json; summary.json"
+      }
+    },
+    {
+      "id": "A1",
+      "status": "passes",
+      "evidence": "F009 evidence result18 ->read21 ->source results22/32/42 ->resolve45/result46 ->verify47/result48 ->build49/result50 ->completed51/mode52/final53.22/22 calls, one effective validated change; same-response batch not treated as dependent.",
+      "owner": "Batyrkhan",
+      "scope": "This saved completed run; not reliability across prior development attempts.",
+      "reproduction": {
+        "command": "python -B eval/kt/review_saved_capture.py --archive docs/evidence/stage3-capture-b392d9b-openai.zip --sha256 d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d --extract-to seeds/kt/eval/data/b392d9b-recheck --output seeds/kt/eval/data/b392d9b-recheck-results --core-revision b392d9bd18687eb4905f296897399d0a5eb581e9",
+        "inspect": "trace-review.json; trace-review.md"
+      }
+    },
+    {
+      "id": "M1",
+      "status": "passes",
+      "evidence": "7/7 source-supported unit mappings:3retained,3reorganised,1created; actual predecessor_for search35/36 returns7/7beforeunits. Created row still omits direct after2.5citation.",
+      "owner": "Batyrkhan",
+      "scope": "Existing DOCX control, pending-human agreement; citation-completeness limitation S06.",
+      "reproduction": {
+        "command": "python -B eval/kt/review_saved_capture.py --archive docs/evidence/stage3-capture-b392d9b-openai.zip --sha256 d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d --extract-to seeds/kt/eval/data/b392d9b-recheck --output seeds/kt/eval/data/b392d9b-recheck-results --core-revision b392d9bd18687eb4905f296897399d0a5eb581e9",
+        "inspect": "source-review.json; trace-review.json"
+      }
+    },
+    {
+      "id": "M2",
+      "status": "blocker",
+      "evidence": "F003/F018 fail complete duplicate lineage before3.1 ->after4.1+10.1; F004/F005/F006/F008 label preserved split/merge duties changed instead of provisional moved. Known lossF002 is correct.",
+      "owner": "Batyrkhan; Alibi for annotation alternatives",
+      "scope": "Frozen9function labels:4TP/6FP/5FN per mode; no new labels or threshold.",
+      "reproduction": {
+        "command": "python -B eval/kt/review_saved_capture.py --archive docs/evidence/stage3-capture-b392d9b-openai.zip --sha256 d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d --extract-to seeds/kt/eval/data/b392d9b-recheck --output seeds/kt/eval/data/b392d9b-recheck-results --core-revision b392d9bd18687eb4905f296897399d0a5eb581e9",
+        "inspect": "source-review.md S01/S02; deterministic-score.json; agent-score.json"
+      }
+    },
+    {
+      "id": "M3",
+      "status": "passes",
+      "evidence": "Both potential risks are supported:after4.1+10.1 duplication,7.2+7.4 self-review. Existing8.1/9.1 cooperation negative remains unflagged,1/1.",
+      "owner": "Batyrkhan",
+      "scope": "Existing DOCX controls, provisional; both risks already in deterministic, not agent uplift.",
+      "reproduction": {
+        "command": "python -B eval/kt/review_saved_capture.py --archive docs/evidence/stage3-capture-b392d9b-openai.zip --sha256 d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d --extract-to seeds/kt/eval/data/b392d9b-recheck --output seeds/kt/eval/data/b392d9b-recheck-results --core-revision b392d9bd18687eb4905f296897399d0a5eb581e9",
+        "inspect": "source-review.json; both score JSON"
+      }
+    },
+    {
+      "id": "M4",
+      "status": "passes",
+      "evidence": "243/243 scorer citations,72/72 independently checked DOCX physical clauses/blocks,28/28 output links and3/3 frozen coordinate probes.",
+      "owner": "Batyrkhan for Report; Askat for navigation/export",
+      "scope": "DOCX source resolution/coordinates only; semantic conclusions and complete cross-format source support remain limited by M2/M5/F1.",
+      "reproduction": {
+        "command": "python -B eval/kt/review_saved_capture.py --archive docs/evidence/stage3-capture-b392d9b-openai.zip --sha256 d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d --extract-to seeds/kt/eval/data/b392d9b-recheck --output seeds/kt/eval/data/b392d9b-recheck-results --core-revision b392d9bd18687eb4905f296897399d0a5eb581e9",
+        "inspect": "source-review.json; format-ui-review.json"
+      }
+    },
+    {
+      "id": "M5",
+      "status": "blocker",
+      "evidence": "Conclusion counts5reorganisation orders after2.1-2.5(F013-F017) among7newfunctions; F012 before9.1->after11.1 is scope text called a preserved function.",
+      "owner": "Batyrkhan",
+      "scope": "Both new Reports; additional unlabelled observations excluded from frozen counts.",
+      "reproduction": {
+        "command": "python -B eval/kt/review_saved_capture.py --archive docs/evidence/stage3-capture-b392d9b-openai.zip --sha256 d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d --extract-to seeds/kt/eval/data/b392d9b-recheck --output seeds/kt/eval/data/b392d9b-recheck-results --core-revision b392d9bd18687eb4905f296897399d0a5eb581e9",
+        "inspect": "source-review.md S04/S05; capture-docx Reports conclusion[1]"
+      }
+    },
+    {
+      "id": "F1",
+      "status": "blocker",
+      "evidence": "XLSX72source-only cells yield0functions/units/findings/risks. PDF breaks2.3/2.5/7.4/10.1 continuations into other blocks:3unresolved unit rows and absent duplication Risk; duplicate Finding exists.",
+      "owner": "Batyrkhan for parsers; Askat for multi-format UI evidence",
+      "scope": "Existing source representations only; no new format labels/scorer. PDF/XLSX supplied deterministic snapshots only.",
+      "reproduction": {
+        "command": "python -B eval/kt/review_saved_capture.py --archive docs/evidence/stage3-capture-b392d9b-openai.zip --sha256 d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d --extract-to seeds/kt/eval/data/b392d9b-recheck --output seeds/kt/eval/data/b392d9b-recheck-results --core-revision b392d9bd18687eb4905f296897399d0a5eb581e9",
+        "inspect": "format-ui-review.json; format-ui-review.md; formats/*-report.json"
+      }
+    },
+    {
+      "id": "D1",
+      "status": "blocker",
+      "evidence": "Saved JSON export equals agent object; static HTML445/445links and one screenshot target work. Complete pinned frontend process/browser/launch/expert-access and separate format GET/SSE evidence absent.",
+      "owner": "Askat for UI/export/launch; Batyrkhan for runtime/access",
+      "scope": "Evidence gap for full exit, not an observed UI failure. Supplied test counts and prior fault-injection summaries were not independently rerun.",
+      "reproduction": {
+        "command": "python -B eval/kt/review_saved_capture.py --archive docs/evidence/stage3-capture-b392d9b-openai.zip --sha256 d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d --extract-to seeds/kt/eval/data/b392d9b-recheck --output seeds/kt/eval/data/b392d9b-recheck-results --core-revision b392d9bd18687eb4905f296897399d0a5eb581e9",
+        "inspect": "format-ui-review.json; integration-evidence.json"
+      }
+    },
+    {
+      "id": "Q",
+      "status": "passes",
+      "evidence": "Existing scorer and development controls frozen; separate mode outputs, exact denominators,19pending_human/0confirmed, appropriate abstention0/0N/A. Source-review alternatives remain separate.",
+      "owner": "Alibi",
+      "scope": "Provisional measurement; confirmed product accuracy and holdout generalisation not established.",
+      "reproduction": {
+        "command": "python -B eval/kt/review_saved_capture.py --archive docs/evidence/stage3-capture-b392d9b-openai.zip --sha256 d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d --extract-to seeds/kt/eval/data/b392d9b-recheck --output seeds/kt/eval/data/b392d9b-recheck-results --core-revision b392d9bd18687eb4905f296897399d0a5eb581e9",
+        "inspect": "summary.json; intake-context.json; both score JSON"
+      }
+    }
+  ],
   "required_for_confirmed_accuracy": [
-    "Human source confirmation with versioned review events; current AI agreement remains provisional"
+    "Explicit human adjudication with versioned events; unchanged AI agreement remains provisional."
   ],
-  "stage3_exit": "not_complete; actual paired partial reviewed; successful agent completion and remaining format/UI/release evidence pending",
-  "previous_snapshot": "seeds/kt/eval/results/f104c91-independent/acceptance-before-f104c91.json",
-  "captured_core_revision": "f104c91006c8d3d6a993881823863030e70aa4af",
-  "immutable_archive": "docs/evidence/stage3-capture-f104c91.zip",
-  "archive_sha256": "b4e484134c1122cd20b00632241b56a39ea0ee8bf30210aeacc80aba900e10a8",
-  "independent_review": "seeds/kt/eval/results/f104c91-independent/summary.json",
-  "actual_agent_attempts": 1,
-  "actual_agent_partial": 1,
-  "actual_agent_completed": 0,
-  "actual_agent_validated_proposal_calls": 0,
-  "actual_agent_build_report_calls": 0,
-  "trace_review": "seeds/kt/eval/results/f104c91-independent/trace-review.json",
-  "source_error_review": "seeds/kt/eval/results/f104c91-independent/source-errors.json",
-  "archive_guard_tests_passed": 10,
-  "custody_checks": 39,
-  "custody_failures": 0,
-  "supplemental_checks": 16,
-  "supplemental_failures": 0,
-  "initial_checkout_verification": "36 checks / 1 failure preserved; 31 Windows CRLF files differ. Explicit raw Git verification matches 36/36 captured blobs, without line-ending normalization.",
   "remaining_evidence_limits": [
-    "Provider identity, token use and cost cannot be independently authenticated from saved host traces and operator attestation; upstream response/request evidence absent.",
-    "Captured DOCX attempt is partial; integrated PDF/XLSX and complete UI/export/release acceptance are not established by this package.",
-    "New source-review findings outside frozen labels were not added retrospectively to FP/FN."
+    "One synthetic DOCX pair on current core; both modes are repeated evaluations of same cases, not doubled sample.",
+    "Other captures/attempts are historical and not pooled into this pair or a success-rate claim.",
+    "Raw upstream response bodies, proxy source and authenticated live cap enforcement not included; no inference on this reviewer machine.",
+    "New whole-organizer product regression, complete format equivalence and full launch/expert route not demonstrated by this package.",
+    "Post-capture AI source/trace/format reviews are not human label confirmation."
   ],
-  "procedure_deviation": "Source reviewer made private-helper diagnostic calls contrary to Alibi instructions. Disclosed in source-errors; no helper-derived gold, scorer imports, model calls or metric changes. No further helper calls.",
-  "F1_acceptance": false
+  "historical_capture": {
+    "path": "seeds/kt/eval/results/f104c91-independent",
+    "unchanged": true,
+    "applies_to_new_core": false
+  }
 }

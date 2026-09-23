@@ -1,0 +1,783 @@
+{
+  "archive": "docs/evidence/stage3-capture-b392d9b-openai.zip",
+  "archive_sha256": "d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d",
+  "archive_members_sha256": {
+    "capture-docx/capture-manifest.json": "30c3cc5dec8fc0f60f8824748b67d429057a0c014badf4ec2f7a6b36ad02c7d9",
+    "capture-docx/agent-trace.json": "0779fd75528bf5390961aff5a9033d2eb4c8715d83f75b87560e06f4bb90c6ee",
+    "capture-docx/agent-reopened.json": "b3a53883f99d79be75ec5383740c1956c8aedc2dfafda4d7c532e67e0e710c09",
+    "capture-docx/agent.json": "b3a53883f99d79be75ec5383740c1956c8aedc2dfafda4d7c532e67e0e710c09",
+    "capture-docx/agent.sse": "9e1b6cbaa5a2b2b3dfbab744e336346646dab78d77965516f1f187e4d2a66ee7",
+    "capture-docx/deterministic-trace.json": "4c947d55ccc72a1bda73b50eb28bab6d2bfe0ed6ff58290620cc2c0ab5cf8610",
+    "capture-docx/deterministic-reopened.json": "75057382a291842e1a44a3585bdf8de53fd40646b2d2d52c9c40fe38c249446c",
+    "capture-docx/deterministic.json": "75057382a291842e1a44a3585bdf8de53fd40646b2d2d52c9c40fe38c249446c",
+    "capture-docx/deterministic.sse": "d1473275cfba7f5696b5c7c231afad96c965dec723a3018382ace91871670cfa",
+    "server-attestation.json": "465e5baffb09b131d33a276ad4d002a4863f6bb3ae024cb211e0eec983e99ceb",
+    "capture-integrity.json": "d32369404806ca93c23c3a3c3ed0e4f9993fafa3d0325a379af81e7337aea3f6",
+    "control-deterministic-score.json": "23aa6e75ca282f422f19f0a4cd2598edda1ef26a825f62c4abe228cc15bca4dc",
+    "control-agent-score.json": "7e550231bf2f5b842159f23caebf0f83dcd5e71908067b7a5b68332dafeaa255",
+    "provider-usage.json": "73a3d9a6f90d8c859d503e453e52af0446651c5138cdc79ee052626dd322ab77",
+    "integration-evidence.json": "3d206d9cbe2861f44233ba8b78bca06cabc8f8e13d04689f52596ae5d4f2c682",
+    "ui/report.html": "d2ecadeeeb030a814ffceb2067c494df2764b8aa3d054c735ab156cb08c103c2",
+    "ui/source.webp": "c258a1c5588822122c652642466bc1cc434dd7a77522e19d3082fa54a64dbadd",
+    "ui/exported-report.json": "84517857f0610347b521e0b58d5926dbb9c005fdf6059d5774cf460ecc0c41f5",
+    "formats/pdf-summary.json": "71880f61631b223fdb270959a939dea302bc66e4218c5faab54604171a97f73b",
+    "formats/pdf-report.json": "1de46ff8874b21904b424ccae1d54b2210b53e2a345f58b87c04901bc7b0a462",
+    "formats/pdf-trace.json": "3953069cddf18b68ab647403692ae2653d22a759381a7b694691b9fddec2f348",
+    "formats/xlsx-summary.json": "83eaad3d4fafb51aa621b4d35abdc0490daed586d1e2fd253d40baf3851db34a",
+    "formats/xlsx-report.json": "a86ae4f391ef72020517f156f8554047fcee6a3c77fb31efc37fe858cb89d762",
+    "formats/xlsx-trace.json": "56adb7ae80c8191ed3aa3c5d0db6b7293dd2ca113388377d0eccb225c6ee23b7"
+  },
+  "capture_revision": "b392d9bd18687eb4905f296897399d0a5eb581e9",
+  "schema_revision": "4da43907919867ce4e8579360fe5b2ff43f9a37c",
+  "configuration": {
+    "provider": "https://api.openai.com/v1",
+    "model": "gpt-5.5-2026-04-23",
+    "temperature": "provider default; not supplied",
+    "seed": "unsupported/not supplied",
+    "timeout_s": 90,
+    "turn_limit": 12,
+    "tool_call_limit": 32,
+    "audit_timeout_s": 180,
+    "max_completion_tokens": 8192,
+    "sdk_retries": 0,
+    "server_bind": "127.0.0.1:8032",
+    "test_transport": "http://127.0.0.1:9140/v1 forwards real OpenAI responses unchanged; reservations/receipts retained",
+    "server_start": "uv run --no-sync uvicorn app.main:app --app-dir apps/api --host 127.0.0.1 --port 8032",
+    "checkout": "detached b392d9b; core.autocrlf=false/core.eol=lf; existing locked venv reused",
+    "test_transport_sha256": "fe28a0f7cd95a853441f8b8202bc7e52ada6145f877a6ef77f2e8a0a839a7d18"
+  },
+  "labels_sha256": "462d75c6d39bf30ab0c71c816232904b27019496355f3b0494685e26bdf02d7c",
+  "evaluator_sha256": "6a503bb7b6b5bced0a78398899d397f2ceacdcf5a5fb67b40e953103a3c59059",
+  "integrity_checks": 39,
+  "integrity_failures": 0,
+  "supplemental_checks": {
+    "attestation_sha256": true,
+    "attested_core_revision": true,
+    "attested_schema_revision": true,
+    "attested_core_hashes": true,
+    "attested_configuration": true,
+    "attested_server_started": true,
+    "approved_input_bytes": true,
+    "frozen_control_manifest": true,
+    "captured_revision_bytes:seeds/kt/eval/control/labels.jsonl": true,
+    "captured_revision_bytes:seeds/kt/eval/split.json": true,
+    "captured_revision_bytes:seeds/kt/eval/reviews.json": true,
+    "captured_revision_bytes:eval/kt/score.py": true,
+    "supplied_metrics:deterministic": true,
+    "supplied_metrics:agent": true,
+    "tool_pairs_ids_names_order": true,
+    "investigated_ids_exist": true
+  },
+  "supplemental_failures": 0,
+  "runs": [
+    {
+      "requested": "deterministic",
+      "run_id": "2a5b5e1e16b1423193dcff0be2323447",
+      "mode": "deterministic",
+      "execution": {
+        "status": "not_requested",
+        "model": null,
+        "turns": 0,
+        "tool_calls": 0,
+        "investigated_finding_ids": [],
+        "stop_reason": "Model investigation not requested."
+      },
+      "groups": [
+        {
+          "group": "development/synthetic",
+          "label_evaluations": 9,
+          "statuses": {
+            "unchanged": {
+              "gold": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision_denominator": 0,
+              "recall_denominator": 0,
+              "overlap_abstentions": 0
+            },
+            "changed": {
+              "gold": 2,
+              "tp": 2,
+              "fp": 5,
+              "fn": 0,
+              "precision_denominator": 7,
+              "recall_denominator": 2,
+              "overlap_abstentions": 0
+            },
+            "moved": {
+              "gold": 5,
+              "tp": 1,
+              "fp": 0,
+              "fn": 4,
+              "precision_denominator": 1,
+              "recall_denominator": 5,
+              "overlap_abstentions": 0
+            },
+            "added": {
+              "gold": 0,
+              "tp": 0,
+              "fp": 1,
+              "fn": 0,
+              "precision_denominator": 1,
+              "recall_denominator": 0,
+              "overlap_abstentions": 0
+            },
+            "missing": {
+              "gold": 1,
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision_denominator": 1,
+              "recall_denominator": 1,
+              "overlap_abstentions": 0
+            },
+            "duplicate": {
+              "gold": 1,
+              "tp": 0,
+              "fp": 0,
+              "fn": 1,
+              "precision_denominator": 0,
+              "recall_denominator": 1,
+              "overlap_abstentions": 0
+            }
+          },
+          "semantic_gold": 9,
+          "tp": 4,
+          "fp": 6,
+          "fn": 5,
+          "counts": {
+            "findings_total": 19,
+            "scoped_findings": 10,
+            "unlabelled_findings": 9,
+            "unknown_status_findings": 0,
+            "scoped_unresolved_findings": 0,
+            "appropriate_abstention_gold": 0,
+            "appropriate_abstention_matches": 0,
+            "other_unresolved_findings": 0,
+            "partial_overlap_refusal_labels": 0
+          },
+          "error_counts": {
+            "wrong_match": 1,
+            "wrong_status": 4
+          },
+          "errors": [
+            {
+              "label_id": "ctrl-function-duplicate",
+              "run_id": "2a5b5e1e16b1423193dcff0be2323447",
+              "categories": [
+                "wrong_match"
+              ],
+              "missing_report_refs": [],
+              "exact_ref_abstention": false,
+              "finding_ids": [
+                "F003",
+                "F018"
+              ]
+            },
+            {
+              "label_id": "ctrl-function-split-intake",
+              "run_id": "2a5b5e1e16b1423193dcff0be2323447",
+              "categories": [
+                "wrong_status"
+              ],
+              "missing_report_refs": [],
+              "exact_ref_abstention": false,
+              "finding_ids": [
+                "F004"
+              ]
+            },
+            {
+              "label_id": "ctrl-function-split-survey",
+              "run_id": "2a5b5e1e16b1423193dcff0be2323447",
+              "categories": [
+                "wrong_status"
+              ],
+              "missing_report_refs": [],
+              "exact_ref_abstention": false,
+              "finding_ids": [
+                "F005"
+              ]
+            },
+            {
+              "label_id": "ctrl-function-merge-contracts",
+              "run_id": "2a5b5e1e16b1423193dcff0be2323447",
+              "categories": [
+                "wrong_status"
+              ],
+              "missing_report_refs": [],
+              "exact_ref_abstention": false,
+              "finding_ids": [
+                "F006"
+              ]
+            },
+            {
+              "label_id": "ctrl-function-merge-stock",
+              "run_id": "2a5b5e1e16b1423193dcff0be2323447",
+              "categories": [
+                "wrong_status"
+              ],
+              "missing_report_refs": [],
+              "exact_ref_abstention": false,
+              "finding_ids": [
+                "F008"
+              ]
+            }
+          ],
+          "candidate_recall": "unmeasured: Report does not expose complete candidate sets",
+          "extraction_completeness": "unmeasured: missing gold refs checks only labelled source points",
+          "source_locations": {
+            "expected": 0,
+            "matched": 0,
+            "errors": [],
+            "scope": "Label-location evaluations; absent expected coordinates are not assessed"
+          },
+          "review_status_counts": {
+            "pending_human": 9
+          }
+        },
+        {
+          "group": "development/synthetic/risk",
+          "target": "risk",
+          "label_evaluations": 3,
+          "statuses": {
+            "potential_duplication": {
+              "gold": 1,
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision_denominator": 1,
+              "recall_denominator": 1
+            },
+            "potential_conflict_of_interest": {
+              "gold": 1,
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision_denominator": 1,
+              "recall_denominator": 1
+            }
+          },
+          "semantic_gold": 2,
+          "tp": 2,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 2,
+          "recall_denominator": 2,
+          "counts": {
+            "assessed_labels": 3,
+            "not_assessed_labels": 0,
+            "outputs_total": 2,
+            "scoped_outputs": 2,
+            "unlabelled_outputs": 0,
+            "unknown_value_outputs": 0,
+            "invalid_prediction_fp": 0,
+            "scoped_unresolved_outputs": 0,
+            "appropriate_abstention_gold": 0,
+            "appropriate_abstention_matches": 0,
+            "other_unresolved_outputs": 0,
+            "abstention_on_resolvable": 0,
+            "negative_gold": 1,
+            "negative_correct": 1,
+            "negative_violations": 0,
+            "source_locations_expected": 1,
+            "source_locations_matched": 1
+          },
+          "error_counts": {},
+          "errors": [],
+          "source_locations": {
+            "expected": 1,
+            "matched": 1,
+            "errors": [],
+            "scope": "Label-location evaluations; absent expected coordinates are not assessed"
+          },
+          "source_location_errors": [],
+          "risk_abstention": "unmeasured: Risk has no explicit abstention output; [] is assessed no-risk output",
+          "scope": "Exact sets and status/kind; precision on intersecting labelled refs; provenance separate; missing/null agent or sections excluded",
+          "review_status_counts": {
+            "pending_human": 3
+          }
+        },
+        {
+          "group": "development/synthetic/unit_change",
+          "target": "unit_change",
+          "label_evaluations": 7,
+          "statuses": {
+            "retained": {
+              "gold": 3,
+              "tp": 3,
+              "fp": 0,
+              "fn": 0,
+              "precision_denominator": 3,
+              "recall_denominator": 3
+            },
+            "reorganised": {
+              "gold": 3,
+              "tp": 3,
+              "fp": 0,
+              "fn": 0,
+              "precision_denominator": 3,
+              "recall_denominator": 3
+            },
+            "created": {
+              "gold": 1,
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision_denominator": 1,
+              "recall_denominator": 1
+            }
+          },
+          "semantic_gold": 7,
+          "tp": 7,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 7,
+          "recall_denominator": 7,
+          "counts": {
+            "assessed_labels": 7,
+            "not_assessed_labels": 0,
+            "outputs_total": 7,
+            "scoped_outputs": 7,
+            "unlabelled_outputs": 0,
+            "unknown_value_outputs": 0,
+            "invalid_prediction_fp": 0,
+            "scoped_unresolved_outputs": 0,
+            "appropriate_abstention_gold": 0,
+            "appropriate_abstention_matches": 0,
+            "other_unresolved_outputs": 0,
+            "abstention_on_resolvable": 0,
+            "negative_gold": 0,
+            "negative_correct": 0,
+            "negative_violations": 0,
+            "source_locations_expected": 2,
+            "source_locations_matched": 2
+          },
+          "error_counts": {},
+          "errors": [],
+          "source_locations": {
+            "expected": 2,
+            "matched": 2,
+            "errors": [],
+            "scope": "Label-location evaluations; absent expected coordinates are not assessed"
+          },
+          "source_location_errors": [],
+          "risk_abstention": "unmeasured: Risk has no explicit abstention output; [] is assessed no-risk output",
+          "scope": "Exact sets and status/kind; precision on intersecting labelled refs; provenance separate; missing/null agent or sections excluded",
+          "review_status_counts": {
+            "pending_human": 7
+          }
+        }
+      ],
+      "citations": {
+        "report": "C:\\Users\\torre\\Documents\\GitHub\\hack-3ad4294e-vibechillers\\seeds\\kt\\eval\\data\\b392d9b-9c7199f3\\capture-docx\\deterministic.json",
+        "run_id": "2a5b5e1e16b1423193dcff0be2323447",
+        "scope": "Report-internal only; not proof of source extraction completeness or semantic truth",
+        "citations_checked": 243,
+        "failures": 0,
+        "locations_shape_checked": 72,
+        "stage3_sections": {
+          "unit_changes": "present",
+          "risks": "present"
+        },
+        "duplicate_clause_keys": 0,
+        "errors": [],
+        "source_backed": {
+          "citations_checked": 243,
+          "failures": 0,
+          "errors": [],
+          "scope": "Pinned numbered text source; representation equivalence requires independent review"
+        }
+      },
+      "metrics_sha256": "e54c76c20bb9829359c8981fd02b9824af043b63f13c2c3e4a87efd2fd2e4b0b"
+    },
+    {
+      "requested": "agent",
+      "run_id": "9c7199f33a9f4ca3a9a47abfd65b8c6f",
+      "mode": "llm_assisted",
+      "execution": {
+        "status": "completed",
+        "model": "gpt-5.5-2026-04-23",
+        "turns": 7,
+        "tool_calls": 22,
+        "investigated_finding_ids": [
+          "F001",
+          "F002",
+          "F003",
+          "F004",
+          "F005",
+          "F006",
+          "F007",
+          "F008",
+          "F009",
+          "F010",
+          "F011",
+          "F012",
+          "F013",
+          "F014",
+          "F015",
+          "F016",
+          "F017",
+          "F018",
+          "F019"
+        ],
+        "stop_reason": "Model inspected run-local evidence and finalized the verified report."
+      },
+      "groups": [
+        {
+          "group": "development/synthetic",
+          "label_evaluations": 9,
+          "statuses": {
+            "unchanged": {
+              "gold": 0,
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision_denominator": 0,
+              "recall_denominator": 0,
+              "overlap_abstentions": 0
+            },
+            "changed": {
+              "gold": 2,
+              "tp": 2,
+              "fp": 5,
+              "fn": 0,
+              "precision_denominator": 7,
+              "recall_denominator": 2,
+              "overlap_abstentions": 0
+            },
+            "moved": {
+              "gold": 5,
+              "tp": 1,
+              "fp": 0,
+              "fn": 4,
+              "precision_denominator": 1,
+              "recall_denominator": 5,
+              "overlap_abstentions": 0
+            },
+            "added": {
+              "gold": 0,
+              "tp": 0,
+              "fp": 1,
+              "fn": 0,
+              "precision_denominator": 1,
+              "recall_denominator": 0,
+              "overlap_abstentions": 0
+            },
+            "missing": {
+              "gold": 1,
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision_denominator": 1,
+              "recall_denominator": 1,
+              "overlap_abstentions": 0
+            },
+            "duplicate": {
+              "gold": 1,
+              "tp": 0,
+              "fp": 0,
+              "fn": 1,
+              "precision_denominator": 0,
+              "recall_denominator": 1,
+              "overlap_abstentions": 0
+            }
+          },
+          "semantic_gold": 9,
+          "tp": 4,
+          "fp": 6,
+          "fn": 5,
+          "counts": {
+            "findings_total": 19,
+            "scoped_findings": 10,
+            "unlabelled_findings": 9,
+            "unknown_status_findings": 0,
+            "scoped_unresolved_findings": 0,
+            "appropriate_abstention_gold": 0,
+            "appropriate_abstention_matches": 0,
+            "other_unresolved_findings": 0,
+            "partial_overlap_refusal_labels": 0
+          },
+          "error_counts": {
+            "wrong_match": 1,
+            "wrong_status": 4
+          },
+          "errors": [
+            {
+              "label_id": "ctrl-function-duplicate",
+              "run_id": "9c7199f33a9f4ca3a9a47abfd65b8c6f",
+              "categories": [
+                "wrong_match"
+              ],
+              "missing_report_refs": [],
+              "exact_ref_abstention": false,
+              "finding_ids": [
+                "F003",
+                "F018"
+              ]
+            },
+            {
+              "label_id": "ctrl-function-split-intake",
+              "run_id": "9c7199f33a9f4ca3a9a47abfd65b8c6f",
+              "categories": [
+                "wrong_status"
+              ],
+              "missing_report_refs": [],
+              "exact_ref_abstention": false,
+              "finding_ids": [
+                "F004"
+              ]
+            },
+            {
+              "label_id": "ctrl-function-split-survey",
+              "run_id": "9c7199f33a9f4ca3a9a47abfd65b8c6f",
+              "categories": [
+                "wrong_status"
+              ],
+              "missing_report_refs": [],
+              "exact_ref_abstention": false,
+              "finding_ids": [
+                "F005"
+              ]
+            },
+            {
+              "label_id": "ctrl-function-merge-contracts",
+              "run_id": "9c7199f33a9f4ca3a9a47abfd65b8c6f",
+              "categories": [
+                "wrong_status"
+              ],
+              "missing_report_refs": [],
+              "exact_ref_abstention": false,
+              "finding_ids": [
+                "F006"
+              ]
+            },
+            {
+              "label_id": "ctrl-function-merge-stock",
+              "run_id": "9c7199f33a9f4ca3a9a47abfd65b8c6f",
+              "categories": [
+                "wrong_status"
+              ],
+              "missing_report_refs": [],
+              "exact_ref_abstention": false,
+              "finding_ids": [
+                "F008"
+              ]
+            }
+          ],
+          "candidate_recall": "unmeasured: Report does not expose complete candidate sets",
+          "extraction_completeness": "unmeasured: missing gold refs checks only labelled source points",
+          "source_locations": {
+            "expected": 0,
+            "matched": 0,
+            "errors": [],
+            "scope": "Label-location evaluations; absent expected coordinates are not assessed"
+          },
+          "review_status_counts": {
+            "pending_human": 9
+          }
+        },
+        {
+          "group": "development/synthetic/risk",
+          "target": "risk",
+          "label_evaluations": 3,
+          "statuses": {
+            "potential_duplication": {
+              "gold": 1,
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision_denominator": 1,
+              "recall_denominator": 1
+            },
+            "potential_conflict_of_interest": {
+              "gold": 1,
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision_denominator": 1,
+              "recall_denominator": 1
+            }
+          },
+          "semantic_gold": 2,
+          "tp": 2,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 2,
+          "recall_denominator": 2,
+          "counts": {
+            "assessed_labels": 3,
+            "not_assessed_labels": 0,
+            "outputs_total": 2,
+            "scoped_outputs": 2,
+            "unlabelled_outputs": 0,
+            "unknown_value_outputs": 0,
+            "invalid_prediction_fp": 0,
+            "scoped_unresolved_outputs": 0,
+            "appropriate_abstention_gold": 0,
+            "appropriate_abstention_matches": 0,
+            "other_unresolved_outputs": 0,
+            "abstention_on_resolvable": 0,
+            "negative_gold": 1,
+            "negative_correct": 1,
+            "negative_violations": 0,
+            "source_locations_expected": 1,
+            "source_locations_matched": 1
+          },
+          "error_counts": {},
+          "errors": [],
+          "source_locations": {
+            "expected": 1,
+            "matched": 1,
+            "errors": [],
+            "scope": "Label-location evaluations; absent expected coordinates are not assessed"
+          },
+          "source_location_errors": [],
+          "risk_abstention": "unmeasured: Risk has no explicit abstention output; [] is assessed no-risk output",
+          "scope": "Exact sets and status/kind; precision on intersecting labelled refs; provenance separate; missing/null agent or sections excluded",
+          "review_status_counts": {
+            "pending_human": 3
+          }
+        },
+        {
+          "group": "development/synthetic/unit_change",
+          "target": "unit_change",
+          "label_evaluations": 7,
+          "statuses": {
+            "retained": {
+              "gold": 3,
+              "tp": 3,
+              "fp": 0,
+              "fn": 0,
+              "precision_denominator": 3,
+              "recall_denominator": 3
+            },
+            "reorganised": {
+              "gold": 3,
+              "tp": 3,
+              "fp": 0,
+              "fn": 0,
+              "precision_denominator": 3,
+              "recall_denominator": 3
+            },
+            "created": {
+              "gold": 1,
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision_denominator": 1,
+              "recall_denominator": 1
+            }
+          },
+          "semantic_gold": 7,
+          "tp": 7,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 7,
+          "recall_denominator": 7,
+          "counts": {
+            "assessed_labels": 7,
+            "not_assessed_labels": 0,
+            "outputs_total": 7,
+            "scoped_outputs": 7,
+            "unlabelled_outputs": 0,
+            "unknown_value_outputs": 0,
+            "invalid_prediction_fp": 0,
+            "scoped_unresolved_outputs": 0,
+            "appropriate_abstention_gold": 0,
+            "appropriate_abstention_matches": 0,
+            "other_unresolved_outputs": 0,
+            "abstention_on_resolvable": 0,
+            "negative_gold": 0,
+            "negative_correct": 0,
+            "negative_violations": 0,
+            "source_locations_expected": 2,
+            "source_locations_matched": 2
+          },
+          "error_counts": {},
+          "errors": [],
+          "source_locations": {
+            "expected": 2,
+            "matched": 2,
+            "errors": [],
+            "scope": "Label-location evaluations; absent expected coordinates are not assessed"
+          },
+          "source_location_errors": [],
+          "risk_abstention": "unmeasured: Risk has no explicit abstention output; [] is assessed no-risk output",
+          "scope": "Exact sets and status/kind; precision on intersecting labelled refs; provenance separate; missing/null agent or sections excluded",
+          "review_status_counts": {
+            "pending_human": 7
+          }
+        }
+      ],
+      "citations": {
+        "report": "C:\\Users\\torre\\Documents\\GitHub\\hack-3ad4294e-vibechillers\\seeds\\kt\\eval\\data\\b392d9b-9c7199f3\\capture-docx\\agent.json",
+        "run_id": "9c7199f33a9f4ca3a9a47abfd65b8c6f",
+        "scope": "Report-internal only; not proof of source extraction completeness or semantic truth",
+        "citations_checked": 243,
+        "failures": 0,
+        "locations_shape_checked": 72,
+        "stage3_sections": {
+          "unit_changes": "present",
+          "risks": "present"
+        },
+        "duplicate_clause_keys": 0,
+        "errors": [],
+        "source_backed": {
+          "citations_checked": 243,
+          "failures": 0,
+          "errors": [],
+          "scope": "Pinned numbered text source; representation equivalence requires independent review"
+        }
+      },
+      "metrics_sha256": "7132030ada2f90998c1279185d2f0e7b0b905b0d76f289b6c5f153810829b14f"
+    }
+  ],
+  "different_top_level_report_fields": [
+    "agent",
+    "conclusion",
+    "coverage",
+    "findings",
+    "mode",
+    "run_id",
+    "warnings"
+  ],
+  "identical_product_sections": {
+    "documents": true,
+    "clauses": true,
+    "units": true,
+    "findings": false,
+    "unit_changes": true,
+    "risks": true,
+    "conclusion": false,
+    "coverage": false
+  },
+  "observed_tools": {
+    "list_findings": 2,
+    "inspect_domain": 2,
+    "inspect_findings": 3,
+    "read_clauses": 4,
+    "search_clauses": 4,
+    "inspect_units": 2,
+    "search_units": 1,
+    "offer_candidates": 1,
+    "resolve_alignment": 1,
+    "verify_citations": 1,
+    "build_report": 1
+  },
+  "tool_calls": 22,
+  "tool_results": 22,
+  "tool_results_ok": 22,
+  "inspection_scope": {
+    "findings": 19,
+    "listed_as_investigated": 19,
+    "not_listed_as_investigated": [],
+    "unresolved_findings": 0,
+    "coverage_unresolved_refs": 0
+  },
+  "full_agent_acceptance": false,
+  "F1_acceptance": false,
+  "review_status": "19 pending_human; provisional agreement; no holdout scored",
+  "inference_provenance": "This offline intake checks supplied HTTP/SSE/persisted tool trace and nonsecret server attestation. Independently inspect any supplemental provider evidence and disclose its actual availability and limits; host custody alone does not authenticate upstream identity or usage. No model call was executed during this independent review.",
+  "interpretation": "Read trace-review and source-errors for action dependencies and semantic errors; tool counts alone establish neither decisions nor model quality."
+}

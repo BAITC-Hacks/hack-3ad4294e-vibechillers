@@ -1,0 +1,2513 @@
+{
+  "review_schema": "saved-trace-review/1",
+  "reviewer": "Independent Codex subagent final_trace_audit; no gold/labels/holdout/private helper execution/provider calls",
+  "core_revision": "b392d9bd18687eb4905f296897399d0a5eb581e9",
+  "schema_revision": "4da43907919867ce4e8579360fe5b2ff43f9a37c",
+  "agent_run_id": "9c7199f33a9f4ca3a9a47abfd65b8c6f",
+  "deterministic_run_id": "2a5b5e1e16b1423193dcff0be2323447",
+  "input_artifacts_sha256": {
+    "capture-docx/agent-trace.json": "0779fd75528bf5390961aff5a9033d2eb4c8715d83f75b87560e06f4bb90c6ee",
+    "capture-docx/agent.sse": "9e1b6cbaa5a2b2b3dfbab744e336346646dab78d77965516f1f187e4d2a66ee7",
+    "capture-docx/agent.json": "b3a53883f99d79be75ec5383740c1956c8aedc2dfafda4d7c532e67e0e710c09",
+    "capture-docx/deterministic.json": "75057382a291842e1a44a3585bdf8de53fd40646b2d2d52c9c40fe38c249446c",
+    "provider-usage.json": "73a3d9a6f90d8c859d503e453e52af0446651c5138cdc79ee052626dd322ab77",
+    "server-attestation.json": "465e5baffb09b131d33a276ad4d002a4863f6bb3ae024cb211e0eec983e99ceb"
+  },
+  "event_integrity": {
+    "events": 53,
+    "sequential_unique_seq_1_to_53": true,
+    "tool_pairs": 22,
+    "ok_pairs": 22,
+    "unique_call_ids": 22,
+    "sse_matching_events": 53,
+    "timestamp_comparison": "trace rounded to3decimals equals SSE",
+    "final_events": 1,
+    "terminal_payload_equals_report": true,
+    "reopened_report_equals_report": true,
+    "investigation_seconds_status6_to_final53": 50.622443
+  },
+  "tool_counts": {
+    "list_findings": 2,
+    "inspect_domain": 2,
+    "inspect_findings": 3,
+    "read_clauses": 4,
+    "search_clauses": 4,
+    "inspect_units": 2,
+    "search_units": 1,
+    "offer_candidates": 1,
+    "resolve_alignment": 1,
+    "verify_citations": 1,
+    "build_report": 1
+  },
+  "turns": {
+    "reported": 7,
+    "corroborating_provider_rows": 7,
+    "provider_request_numbers": [
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22
+    ],
+    "inferred_call_seq_batches": [
+      [
+        7,
+        9,
+        11,
+        13
+      ],
+      [
+        15,
+        17,
+        19
+      ],
+      [
+        21,
+        23,
+        25,
+        27,
+        29,
+        31,
+        33,
+        35
+      ],
+      [
+        37,
+        39,
+        41,
+        43
+      ],
+      [
+        45
+      ],
+      [
+        47
+      ],
+      [
+        49
+      ]
+    ],
+    "limit": "No explicit turn IDs or run_id linkage in ledger. Timing and host stats corroborate7turns. Within-batch calls do not consume prior same-batch results. loop.py pump can delay last result emission until next stream step; event timestamps are emission times."
+  },
+  "execution": {
+    "status": "completed",
+    "mode": "llm_assisted",
+    "terminal_sequences": {
+      "build_call": 49,
+      "build_result": 50,
+      "completed_status": 51,
+      "mode_status": 52,
+      "final": 53
+    },
+    "mutating_family_calls": 2,
+    "accepted_mutating_family_calls": 2,
+    "rejected_mutating_family_calls": 0,
+    "actual_changed_findings": 1,
+    "accepted_no_op_offers": 1,
+    "unit_proposals": 0,
+    "risk_proposals": 0,
+    "verification_quotes_valid": 7,
+    "verification_quotes_invalid": 0,
+    "build_report_calls": 1,
+    "host_actions": "Initial deterministic19findings/7units/2risks; tool guards; final rebuild/Russian conclusion; finalpayload/status. Host conclusion not attributed to model prose."
+  },
+  "scope": {
+    "listed_findings": 19,
+    "inspected_findings": 19,
+    "report_investigated_ids": [
+      "F001",
+      "F002",
+      "F003",
+      "F004",
+      "F005",
+      "F006",
+      "F007",
+      "F008",
+      "F009",
+      "F010",
+      "F011",
+      "F012",
+      "F013",
+      "F014",
+      "F015",
+      "F016",
+      "F017",
+      "F018",
+      "F019"
+    ],
+    "uninspected_finding_ids": [],
+    "parsed_function_full_texts_exposed": 31,
+    "parsed_function_total": 31,
+    "full_text_refs": [
+      {
+        "doc": "before-1",
+        "clause_id": "2.1"
+      },
+      {
+        "doc": "before-1",
+        "clause_id": "2.2"
+      },
+      {
+        "doc": "before-1",
+        "clause_id": "3.1"
+      },
+      {
+        "doc": "before-1",
+        "clause_id": "4.1"
+      },
+      {
+        "doc": "before-1",
+        "clause_id": "4.2"
+      },
+      {
+        "doc": "before-1",
+        "clause_id": "5.1"
+      },
+      {
+        "doc": "before-1",
+        "clause_id": "5.2"
+      },
+      {
+        "doc": "before-1",
+        "clause_id": "6.1"
+      },
+      {
+        "doc": "before-1",
+        "clause_id": "7.1"
+      },
+      {
+        "doc": "before-1",
+        "clause_id": "7.2"
+      },
+      {
+        "doc": "before-1",
+        "clause_id": "8.1"
+      },
+      {
+        "doc": "before-1",
+        "clause_id": "9.1"
+      },
+      {
+        "doc": "after-1",
+        "clause_id": "2.1"
+      },
+      {
+        "doc": "after-1",
+        "clause_id": "2.2"
+      },
+      {
+        "doc": "after-1",
+        "clause_id": "2.3"
+      },
+      {
+        "doc": "after-1",
+        "clause_id": "2.4"
+      },
+      {
+        "doc": "after-1",
+        "clause_id": "2.5"
+      },
+      {
+        "doc": "after-1",
+        "clause_id": "2.6"
+      },
+      {
+        "doc": "after-1",
+        "clause_id": "3.1"
+      },
+      {
+        "doc": "after-1",
+        "clause_id": "4.1"
+      },
+      {
+        "doc": "after-1",
+        "clause_id": "5.1"
+      },
+      {
+        "doc": "after-1",
+        "clause_id": "6.1"
+      },
+      {
+        "doc": "after-1",
+        "clause_id": "7.1"
+      },
+      {
+        "doc": "after-1",
+        "clause_id": "7.2"
+      },
+      {
+        "doc": "after-1",
+        "clause_id": "7.3"
+      },
+      {
+        "doc": "after-1",
+        "clause_id": "7.4"
+      },
+      {
+        "doc": "after-1",
+        "clause_id": "8.1"
+      },
+      {
+        "doc": "after-1",
+        "clause_id": "9.1"
+      },
+      {
+        "doc": "after-1",
+        "clause_id": "10.1"
+      },
+      {
+        "doc": "after-1",
+        "clause_id": "10.2"
+      },
+      {
+        "doc": "after-1",
+        "clause_id": "11.1"
+      }
+    ],
+    "listed_unit_changes": 7,
+    "listed_risks": 2,
+    "distinct_inspected_unit_definitions": 15,
+    "omissions_declared": [
+      {
+        "path": "8.omitted_after",
+        "count": 3
+      },
+      {
+        "path": "10.omitted_before",
+        "count": 16
+      },
+      {
+        "path": "12.unit_changes[0].omitted_citations",
+        "count": 1
+      },
+      {
+        "path": "12.unit_changes[1].omitted_citations",
+        "count": 2
+      },
+      {
+        "path": "12.unit_changes[2].omitted_citations",
+        "count": 2
+      },
+      {
+        "path": "14.risks[0].omitted_citations",
+        "count": 4
+      },
+      {
+        "path": "14.risks[1].omitted_citations",
+        "count": 2
+      },
+      {
+        "path": "16.findings[0].omitted_citations",
+        "count": 2
+      },
+      {
+        "path": "16.findings[2].omitted_citations",
+        "count": 2
+      },
+      {
+        "path": "16.findings[3].omitted_citations",
+        "count": 2
+      },
+      {
+        "path": "16.findings[4].omitted_citations",
+        "count": 2
+      },
+      {
+        "path": "16.findings[5].omitted_citations",
+        "count": 2
+      },
+      {
+        "path": "16.findings[6].omitted_citations",
+        "count": 2
+      },
+      {
+        "path": "16.findings[7].omitted_citations",
+        "count": 2
+      },
+      {
+        "path": "18.findings[0].omitted_citations",
+        "count": 4
+      },
+      {
+        "path": "18.findings[1].omitted_citations",
+        "count": 2
+      },
+      {
+        "path": "18.findings[2].omitted_citations",
+        "count": 2
+      },
+      {
+        "path": "26.omitted_after",
+        "count": 11
+      },
+      {
+        "path": "28.omitted_after",
+        "count": 23
+      },
+      {
+        "path": "30.omitted_after",
+        "count": 4
+      },
+      {
+        "path": "32.omitted_after",
+        "count": 11
+      }
+    ],
+    "interpretation": "All31parsed function texts were exposed in intermediate inspection results; not31correct decisions. Four searches truncate8items each. Domain citations bounded; later reads include transition and risk clauses."
+  },
+  "result_dependent_chains": [
+    {
+      "result_seqs": [
+        8,
+        10
+      ],
+      "later_call_seqs": [
+        15,
+        17,
+        19
+      ],
+      "meaning": "Listed finding IDs guide later inspection; within-response list8→pagination9 is excluded from adaptive proof."
+    },
+    {
+      "result_seqs": [
+        18
+      ],
+      "later_call_seqs": [
+        21
+      ],
+      "meaning": "F009 unresolved candidates before7.1,after7.4+2.6 guide explicit reading."
+    },
+    {
+      "result_seqs": [
+        22,
+        32
+      ],
+      "later_call_seqs": [
+        37
+      ],
+      "meaning": "Read transfer/self-review and search results lead to offering the same evidence; offer accepted but no-op."
+    },
+    {
+      "result_seqs": [
+        22,
+        38,
+        42,
+        44
+      ],
+      "later_call_seqs": [
+        45
+      ],
+      "meaning": "Later resolve reason uses explicit2.6 transfer and7.4 self-review change; accepted46 mutates F009."
+    },
+    {
+      "result_seqs": [
+        24,
+        42,
+        46
+      ],
+      "later_call_seqs": [
+        47
+      ],
+      "meaning": "Seven exact returned source quotes are selected for later verification; result48 validates7/7."
+    },
+    {
+      "result_seqs": [
+        48
+      ],
+      "later_call_seqs": [
+        49
+      ],
+      "meaning": "After citation verification, later model-selected build includes all findings and null conclusion. Host validated50, completed51, mode52, final53."
+    }
+  ],
+  "report_difference": {
+    "changed_top_level_fields": [
+      "run_id",
+      "mode",
+      "findings",
+      "conclusion",
+      "coverage",
+      "warnings",
+      "agent"
+    ],
+    "identical_top_level_fields": [
+      "documents",
+      "clauses",
+      "units",
+      "unit_changes",
+      "risks"
+    ],
+    "findings_equal": 18,
+    "findings_total": 19,
+    "changed_findings": [
+      {
+        "id": "F009",
+        "changed_fields": {
+          "method": {
+            "deterministic": "lexical",
+            "agent": "llm"
+          },
+          "reason": {
+            "deterministic": "Найдены только неоднозначные или слабые кандидаты (сходство до 0.69); преемник не подтверждён.",
+            "agent": "Предложение модели: статус «changed» для указанных пунктов до и после. Сопоставление основано на приведённых источниках и требует проверки ответственным сотрудником."
+          },
+          "status": {
+            "deterministic": "unresolved",
+            "agent": "changed"
+          }
+        }
+      }
+    ],
+    "unit_changes_equal": 7,
+    "risks_equal": 2,
+    "coverage_deterministic": {
+      "before_total": 12,
+      "after_total": 19,
+      "before_accounted": 12,
+      "after_accounted": 19,
+      "unresolved": 3
+    },
+    "coverage_agent": {
+      "before_total": 12,
+      "after_total": 19,
+      "before_accounted": 12,
+      "after_accounted": 19,
+      "unresolved": 0
+    },
+    "conclusion_row_counts": {
+      "deterministic": 10,
+      "agent": 9
+    },
+    "conclusion_effect": "Host removes unresolved F009 bullet and adds F009 to changed group8→9; no free-form model conclusion."
+  },
+  "provider_usage": {
+    "provider": "https://api.openai.com/v1",
+    "model": "gpt-5.5-2026-04-23",
+    "current_run_window_totals": {
+      "requests": 7,
+      "prompt_tokens": 130312,
+      "completion_tokens": 3339,
+      "total_tokens": 133651,
+      "cached_input_tokens": 1664,
+      "reasoning_tokens_within_completion": 1625,
+      "estimated_ledger_cost_usd": "0.744242"
+    },
+    "cumulative_totals": {
+      "requests": 22,
+      "prompt_tokens": 426556,
+      "completion_tokens": 10613,
+      "total_tokens": 437169,
+      "cached_input_tokens": 3328,
+      "reasoning_tokens_within_completion": 5075,
+      "estimated_ledger_cost_usd": "2.436194"
+    },
+    "earlier_attempts_totals": {
+      "requests": 15,
+      "prompt_tokens": 296244,
+      "completion_tokens": 7274,
+      "total_tokens": 303518,
+      "cached_input_tokens": 1664,
+      "reasoning_tokens_within_completion": 3450,
+      "estimated_ledger_cost_usd": "1.691952"
+    },
+    "current_receipts": [
+      {
+        "number": 16,
+        "started_unix": 1790165763.4295132,
+        "input_bytes": 13757,
+        "max_completion_tokens": 8192,
+        "reservation_usd": 0.7257,
+        "status": "completed",
+        "http_status": 200,
+        "request_id": "req_99abb7633eae42eca44192a78e0aecda",
+        "usage": {
+          "prompt_tokens": 2299,
+          "completion_tokens": 103,
+          "total_tokens": 2402,
+          "prompt_tokens_details": {
+            "cached_tokens": 1664,
+            "audio_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0,
+            "audio_tokens": 0,
+            "accepted_prediction_tokens": 0,
+            "rejected_prediction_tokens": 0
+          }
+        },
+        "response_id": "chatcmpl-ERGBGJoCl39oSIm7671ev7Xm5aXbp",
+        "response_model": "gpt-5.5-2026-04-23",
+        "actual_token_cost_usd": 0.007097
+      },
+      {
+        "number": 17,
+        "started_unix": 1790165765.4240057,
+        "input_bytes": 26933,
+        "max_completion_tokens": 8192,
+        "reservation_usd": 0.98922,
+        "status": "completed",
+        "http_status": 200,
+        "request_id": "req_5da23ec1c3c14bcfb71257c602b47790",
+        "usage": {
+          "prompt_tokens": 5716,
+          "completion_tokens": 204,
+          "total_tokens": 5920,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "audio_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 62,
+            "audio_tokens": 0,
+            "accepted_prediction_tokens": 0,
+            "rejected_prediction_tokens": 0
+          }
+        },
+        "response_id": "chatcmpl-ERGBIQ5RCt50hQCMXnUmWpQpQWfvk",
+        "response_model": "gpt-5.5-2026-04-23",
+        "actual_token_cost_usd": 0.0347
+      },
+      {
+        "number": 18,
+        "started_unix": 1790165768.392582,
+        "input_bytes": 53341,
+        "max_completion_tokens": 8192,
+        "reservation_usd": 1.51738,
+        "status": "completed",
+        "http_status": 200,
+        "request_id": "req_3907937e25014b3693d728feee8270db",
+        "usage": {
+          "prompt_tokens": 12161,
+          "completion_tokens": 865,
+          "total_tokens": 13026,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "audio_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 344,
+            "audio_tokens": 0,
+            "accepted_prediction_tokens": 0,
+            "rejected_prediction_tokens": 0
+          }
+        },
+        "response_id": "chatcmpl-ERGBLvFjsFoMnJg92hPy0rJoWtCMK",
+        "response_model": "gpt-5.5-2026-04-23",
+        "actual_token_cost_usd": 0.086755
+      },
+      {
+        "number": 19,
+        "started_unix": 1790165778.8897085,
+        "input_bytes": 95502,
+        "max_completion_tokens": 8192,
+        "reservation_usd": 2.3606,
+        "status": "completed",
+        "http_status": 200,
+        "request_id": "req_543cd13ea4ab4c56abb7b23187d6f945",
+        "usage": {
+          "prompt_tokens": 23050,
+          "completion_tokens": 899,
+          "total_tokens": 23949,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "audio_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 512,
+            "audio_tokens": 0,
+            "accepted_prediction_tokens": 0,
+            "rejected_prediction_tokens": 0
+          }
+        },
+        "response_id": "chatcmpl-ERGBWWVjDcr3aPBS3aejACQZriJcH",
+        "response_model": "gpt-5.5-2026-04-23",
+        "actual_token_cost_usd": 0.14222
+      },
+      {
+        "number": 20,
+        "started_unix": 1790165791.2041876,
+        "input_bytes": 115842,
+        "max_completion_tokens": 8192,
+        "reservation_usd": 2.7674,
+        "status": "completed",
+        "http_status": 200,
+        "request_id": "req_9d42d5510f0b4243a9b57ffbaa609e78",
+        "usage": {
+          "prompt_tokens": 28353,
+          "completion_tokens": 563,
+          "total_tokens": 28916,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "audio_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 375,
+            "audio_tokens": 0,
+            "accepted_prediction_tokens": 0,
+            "rejected_prediction_tokens": 0
+          }
+        },
+        "response_id": "chatcmpl-ERGBiDn0jTp3LWdwLoPSJTfEPQXfc",
+        "response_model": "gpt-5.5-2026-04-23",
+        "actual_token_cost_usd": 0.158655
+      },
+      {
+        "number": 21,
+        "started_unix": 1790165801.434786,
+        "input_bytes": 119258,
+        "max_completion_tokens": 8192,
+        "reservation_usd": 2.83572,
+        "status": "completed",
+        "http_status": 200,
+        "request_id": "req_9f5ff248161248a6b27ad4354ed2c52b",
+        "usage": {
+          "prompt_tokens": 29006,
+          "completion_tokens": 618,
+          "total_tokens": 29624,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "audio_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 273,
+            "audio_tokens": 0,
+            "accepted_prediction_tokens": 0,
+            "rejected_prediction_tokens": 0
+          }
+        },
+        "response_id": "chatcmpl-ERGBsZBhZlmTz35pb5t5yDm9ZUATS",
+        "response_model": "gpt-5.5-2026-04-23",
+        "actual_token_cost_usd": 0.16357
+      },
+      {
+        "number": 22,
+        "started_unix": 1790165810.6428792,
+        "input_bytes": 123605,
+        "max_completion_tokens": 8192,
+        "reservation_usd": 2.92266,
+        "status": "completed",
+        "http_status": 200,
+        "request_id": "req_787fb7b45e7342a3924279477fa0f118",
+        "usage": {
+          "prompt_tokens": 29727,
+          "completion_tokens": 87,
+          "total_tokens": 29814,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "audio_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 59,
+            "audio_tokens": 0,
+            "accepted_prediction_tokens": 0,
+            "rejected_prediction_tokens": 0
+          }
+        },
+        "response_id": "chatcmpl-ERGC292IK61TkdlV3tdjH849efaf1",
+        "response_model": "gpt-5.5-2026-04-23",
+        "actual_token_cost_usd": 0.151245
+      }
+    ],
+    "all_token_sum_checks": 22,
+    "all_cost_arithmetic_checks": 22,
+    "cost_check_basis": "Estimated at rates implied by ledger: input5USD/M,cached0.5USD/M,output30USD/M. No live-pricing/invoice verification. Reasoning/output and cached/input are subcounts. Reservations not additional charges.",
+    "limit_usd": 10,
+    "charged_or_reserved_usd": 2.4361939999999995,
+    "historical_ledger_inconsistency": "Earlier request7 says started despite HTTP200/usage/actual_cost. Outside current window. Current16–22 all completed.",
+    "identity_limits": "Saved request/response IDs,response_model,HTTP200 and server attestation; no raw upstream bodies,bill,explicit request-run linkage. Transport source absent(only attested hash),so passthrough authenticity/live cap enforcement not independently proven."
+  },
+  "calls": [
+    {
+      "call_seq": 7,
+      "result_seq": 8,
+      "call_id": "call_V3ZRAUMFj4LC4QSSlOAfZRbg",
+      "tool": "list_findings",
+      "arguments": {
+        "limit": 16,
+        "offset": 0
+      },
+      "ok": true,
+      "result_canonical_sha256": "7ca20f34208a7b5a778d394dca85836eb150c0c3bf750992dc4fa42becdaad80",
+      "result_refs": [],
+      "result_object_ids": [
+        "F001",
+        "F002",
+        "F003",
+        "F004",
+        "F005",
+        "F006",
+        "F007",
+        "F008",
+        "F009",
+        "F010",
+        "F011",
+        "F012",
+        "F013",
+        "F014",
+        "F015",
+        "F016"
+      ],
+      "total": 19,
+      "next_offset": 16
+    },
+    {
+      "call_seq": 9,
+      "result_seq": 10,
+      "call_id": "call_nMT0buCVq7Y84O3nr4xgNDV7",
+      "tool": "list_findings",
+      "arguments": {
+        "limit": 16,
+        "offset": 16
+      },
+      "ok": true,
+      "result_canonical_sha256": "cf12de33492ffce2264ac94db6665194d6f605b97f07fe09b132565fabbcecef",
+      "result_refs": [],
+      "result_object_ids": [
+        "F017",
+        "F018",
+        "F019"
+      ],
+      "total": 19,
+      "next_offset": null
+    },
+    {
+      "call_seq": 11,
+      "result_seq": 12,
+      "call_id": "call_9vKPkg4DPjMd23675ghR8huB",
+      "tool": "inspect_domain",
+      "arguments": {
+        "kind": "unit_changes",
+        "limit": 8,
+        "offset": 0
+      },
+      "ok": true,
+      "result_canonical_sha256": "258092b66ff7a5eccf24ffde2e6ec0ff14db1340511d9142d37edf318a41b5ce",
+      "result_refs": [
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/б"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/б"
+        },
+        {
+          "doc": "before-1",
+          "unit_id": "1.1/б"
+        },
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/б"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/в"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/в"
+        },
+        {
+          "doc": "before-1",
+          "unit_id": "1.1/в"
+        },
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/в"
+        },
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/г"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/г"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/д"
+        },
+        {
+          "doc": "before-1",
+          "unit_id": "1.1/г"
+        },
+        {
+          "doc": "before-1",
+          "unit_id": "1.1/д"
+        },
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/д"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/а"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/а"
+        },
+        {
+          "doc": "before-1",
+          "unit_id": "1.1/а"
+        },
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/а"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/е"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/е"
+        },
+        {
+          "doc": "before-1",
+          "unit_id": "1.1/е"
+        },
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/е"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/ж"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/ж"
+        },
+        {
+          "doc": "before-1",
+          "unit_id": "1.1/ж"
+        },
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/ж"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/з"
+        },
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/з"
+        }
+      ],
+      "result_object_ids": [
+        "U0263620b5635",
+        "U1b7df4635313",
+        "U404bb470e002",
+        "U538fd261f400",
+        "Uab4589f3a040",
+        "U5f8777edfa21",
+        "U0def3b8dea71"
+      ],
+      "total": 7,
+      "next_offset": null
+    },
+    {
+      "call_seq": 13,
+      "result_seq": 14,
+      "call_id": "call_GF2LVUuklhDtBJ8kZJSJKa3b",
+      "tool": "inspect_domain",
+      "arguments": {
+        "kind": "risks",
+        "limit": 8,
+        "offset": 0
+      },
+      "ok": true,
+      "result_canonical_sha256": "3eb9d731c08851d6a28a928127ef5cb80297cc25ba4a0f7940c46f13895f4319",
+      "result_refs": [
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/б"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "4"
+        },
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/б"
+        },
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/з"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "4.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "10.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/д"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "7"
+        },
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/д"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "7.2"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "7.4"
+        }
+      ],
+      "result_object_ids": [
+        "R00742d711177",
+        "R1573e6f06e8c"
+      ],
+      "total": 2,
+      "next_offset": null
+    },
+    {
+      "call_seq": 15,
+      "result_seq": 16,
+      "call_id": "call_3pHEkXWLUgxrZ5Wh5lrIzWn2",
+      "tool": "inspect_findings",
+      "arguments": {
+        "finding_ids": [
+          "F001",
+          "F002",
+          "F003",
+          "F004",
+          "F005",
+          "F006",
+          "F007",
+          "F008"
+        ],
+        "ref_limit": 16
+      },
+      "ok": true,
+      "result_canonical_sha256": "ade1ba8468f6a0cc0bb322d2549d7e074333c6008b760dd2378b41957e5dbac2",
+      "result_refs": [
+        {
+          "doc": "before-1",
+          "clause_id": "2.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "3.1"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/а"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "2"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "2.2"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "3.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "4.1"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/б"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "3"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "4.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "5.1"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/в"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "4"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "4.2"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "6.1"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "5.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "7.1"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/г"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "5"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "5.2"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "7.2"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "6.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "7.3"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/д"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "6"
+        }
+      ],
+      "result_object_ids": [
+        "F001",
+        "F002",
+        "F003",
+        "F004",
+        "F005",
+        "F006",
+        "F007",
+        "F008"
+      ],
+      "total_requested": 8
+    },
+    {
+      "call_seq": 17,
+      "result_seq": 18,
+      "call_id": "call_GWO6oywkqzy1G1lEmQTly4cm",
+      "tool": "inspect_findings",
+      "arguments": {
+        "finding_ids": [
+          "F009",
+          "F010",
+          "F011",
+          "F012",
+          "F013",
+          "F014",
+          "F015",
+          "F016"
+        ],
+        "ref_limit": 16
+      },
+      "ok": true,
+      "result_canonical_sha256": "73fc71b224b66c064b8353a2d5d4e5cd2b2da32d6924bfe876c83110974f02ad",
+      "result_refs": [
+        {
+          "doc": "before-1",
+          "clause_id": "7.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "7.4"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.6"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/е"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "7.2"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "8.1"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "7"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "8.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "9.1"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/ж"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "8"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "9.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "11.1"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "9"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "11"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.2"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.3"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.4"
+        }
+      ],
+      "result_object_ids": [
+        "F009",
+        "F010",
+        "F011",
+        "F012",
+        "F013",
+        "F014",
+        "F015",
+        "F016"
+      ],
+      "total_requested": 8
+    },
+    {
+      "call_seq": 19,
+      "result_seq": 20,
+      "call_id": "call_JmZdViHWQel7IUpxGDNzn9Jk",
+      "tool": "inspect_findings",
+      "arguments": {
+        "finding_ids": [
+          "F017",
+          "F018",
+          "F019"
+        ],
+        "ref_limit": 16
+      },
+      "ok": true,
+      "result_canonical_sha256": "6cbd11378cd6d44270627256dcce7818eb6cc83306c7c682bd4f2cfbcef0d500",
+      "result_refs": [
+        {
+          "doc": "after-1",
+          "clause_id": "2.5"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "10.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/б"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/з"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "10"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "10.2"
+        }
+      ],
+      "result_object_ids": [
+        "F017",
+        "F018",
+        "F019"
+      ],
+      "total_requested": 3
+    },
+    {
+      "call_seq": 21,
+      "result_seq": 22,
+      "call_id": "call_bo4ZgxKX2y4j1xMeBF5hmdOL",
+      "tool": "read_clauses",
+      "arguments": {
+        "refs": [
+          {
+            "doc": "before-1",
+            "clause_id": "2.2"
+          },
+          {
+            "doc": "before-1",
+            "clause_id": "7.1"
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "7.4"
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "2.6"
+          }
+        ],
+        "limit": 1400,
+        "offset": 0
+      },
+      "ok": true,
+      "result_canonical_sha256": "d0df83603b08627514dd1bd47f3c1986bc2210cbe51cd627e4b5b94c12ef7b40",
+      "result_refs": [
+        {
+          "doc": "before-1",
+          "clause_id": "2.2"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "2"
+        },
+        {
+          "doc": "before-1",
+          "unit_id": "1.1/а"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/а"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "7.1"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "7"
+        },
+        {
+          "doc": "before-1",
+          "unit_id": "1.1/е"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/е"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "7.4"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "7"
+        },
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/д"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/д"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.6"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2"
+        }
+      ],
+      "result_object_ids": [],
+      "total_requested": 4
+    },
+    {
+      "call_seq": 23,
+      "result_seq": 24,
+      "call_id": "call_gbdDSvYlA8loHOHTiquJ5q7O",
+      "tool": "read_clauses",
+      "arguments": {
+        "refs": [
+          {
+            "doc": "after-1",
+            "clause_id": "10.1"
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "10.2"
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "2.5"
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "2.4"
+          }
+        ],
+        "limit": 1400,
+        "offset": 0
+      },
+      "ok": true,
+      "result_canonical_sha256": "29214d8c4461a19a4c88e0d3b5e2839b5198180f2da17a84b597328aa1981312",
+      "result_refs": [
+        {
+          "doc": "after-1",
+          "clause_id": "10.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "10"
+        },
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/б"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/б"
+        },
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/з"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/з"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "10.2"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.5"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.4"
+        }
+      ],
+      "result_object_ids": [],
+      "total_requested": 4
+    },
+    {
+      "call_seq": 25,
+      "result_seq": 26,
+      "call_id": "call_la9BEOcxAlYcPgBqpNzrQo2s",
+      "tool": "search_clauses",
+      "arguments": {
+        "query": "сроки хранения архивных дел акт достижении срока хранения",
+        "edition": "after",
+        "kind": "function",
+        "limit": 8
+      },
+      "ok": true,
+      "result_canonical_sha256": "54350d6ea3628febb20ea41eaf8b366576f447fa9370c40b9dab7cb06cfa8408",
+      "result_refs": [
+        {
+          "doc": "after-1",
+          "clause_id": "3.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "7.3"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "7.2"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "6.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.6"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "5.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.3"
+        }
+      ],
+      "result_object_ids": [],
+      "total": 19,
+      "next_offset": 8,
+      "scanned_scope": 19
+    },
+    {
+      "call_seq": 27,
+      "result_seq": 28,
+      "call_id": "call_zI2SyBpOQbURfOnBi62TLDFt",
+      "tool": "search_clauses",
+      "arguments": {
+        "query": "регистрирует все входящие заявки клиентов в едином журнале заявок",
+        "edition": null,
+        "kind": "function",
+        "limit": 8
+      },
+      "ok": true,
+      "result_canonical_sha256": "33622173e55a80feb7c15e1725684bb3cbbfdeaa33bf1a5443920230484c3523",
+      "result_refs": [
+        {
+          "doc": "before-1",
+          "clause_id": "3.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "4.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "10.1"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "4.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "5.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "10.2"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "4.2"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "6.1"
+        }
+      ],
+      "result_object_ids": [],
+      "total": 31,
+      "next_offset": 8,
+      "scanned_scope": 31
+    },
+    {
+      "call_seq": 29,
+      "result_seq": 30,
+      "call_id": "call_xfq9c3D5aPUFGJKGbv3TNBz4",
+      "tool": "search_clauses",
+      "arguments": {
+        "query": "учетные записи сотрудников портал самообслуживания",
+        "edition": "before",
+        "kind": "function",
+        "limit": 8
+      },
+      "ok": true,
+      "result_canonical_sha256": "4b563091b5481a67792a9b92adaaa369cbd05f1beb6608aaead552f26e14102b",
+      "result_refs": [
+        {
+          "doc": "before-1",
+          "clause_id": "3.1"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "5.1"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "7.1"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "6.1"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "2.2"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "5.2"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "8.1"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "4.1"
+        }
+      ],
+      "result_object_ids": [],
+      "total": 12,
+      "next_offset": 8,
+      "scanned_scope": 12
+    },
+    {
+      "call_seq": 31,
+      "result_seq": 32,
+      "call_id": "call_ci4QVASruOHcqjM3PYv6a6TL",
+      "tool": "search_clauses",
+      "arguments": {
+        "query": "проверяет обоснованность выбора поставщика утверждает заключение соблюдении процедуры закупки",
+        "edition": "after",
+        "kind": "function",
+        "limit": 8
+      },
+      "ok": true,
+      "result_canonical_sha256": "57f597c0f636f8e4fa4593fbf682db9ebd82d13f288bfacb2c3b4153ec7c2882",
+      "result_refs": [
+        {
+          "doc": "after-1",
+          "clause_id": "2.6"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "7.4"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "7.2"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "7.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "8.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "4.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.2"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "7.3"
+        }
+      ],
+      "result_object_ids": [],
+      "total": 19,
+      "next_offset": 8,
+      "scanned_scope": 19
+    },
+    {
+      "call_seq": 33,
+      "result_seq": 34,
+      "call_id": "call_bNu2yWVixfibnI6JIEiENggK",
+      "tool": "inspect_units",
+      "arguments": {
+        "units": [
+          {
+            "doc": "before-1",
+            "unit_id": "1.1/а"
+          },
+          {
+            "doc": "before-1",
+            "unit_id": "1.1/б"
+          },
+          {
+            "doc": "before-1",
+            "unit_id": "1.1/в"
+          },
+          {
+            "doc": "before-1",
+            "unit_id": "1.1/г"
+          },
+          {
+            "doc": "before-1",
+            "unit_id": "1.1/д"
+          },
+          {
+            "doc": "before-1",
+            "unit_id": "1.1/е"
+          },
+          {
+            "doc": "before-1",
+            "unit_id": "1.1/ж"
+          },
+          {
+            "doc": "after-1",
+            "unit_id": "1.1/з"
+          }
+        ]
+      },
+      "ok": true,
+      "result_canonical_sha256": "7b2ad64827f4bee82ac8d02dfdc3a6eac9a588a8a69d521a0f20f7100491abc1",
+      "result_refs": [
+        {
+          "doc": "before-1",
+          "unit_id": "1.1/а"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/а"
+        },
+        {
+          "doc": "before-1",
+          "unit_id": "1.1/б"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/б"
+        },
+        {
+          "doc": "before-1",
+          "unit_id": "1.1/в"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/в"
+        },
+        {
+          "doc": "before-1",
+          "unit_id": "1.1/г"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/г"
+        },
+        {
+          "doc": "before-1",
+          "unit_id": "1.1/д"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/д"
+        },
+        {
+          "doc": "before-1",
+          "unit_id": "1.1/е"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/е"
+        },
+        {
+          "doc": "before-1",
+          "unit_id": "1.1/ж"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/ж"
+        },
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/з"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/з"
+        }
+      ],
+      "result_object_ids": [],
+      "total_requested": 8
+    },
+    {
+      "call_seq": 35,
+      "result_seq": 36,
+      "call_id": "call_intWJtiS7n7bolL6l3A36pXV",
+      "tool": "search_units",
+      "arguments": {
+        "predecessor_for": {
+          "doc": "after-1",
+          "unit_id": "1.1/з"
+        },
+        "limit": 12
+      },
+      "ok": true,
+      "result_canonical_sha256": "4489561c967eeaf631fd3d67b30644aa9eca38c856c80d6d39c8ff32298c09b5",
+      "result_refs": [
+        {
+          "doc": "before-1",
+          "unit_id": "1.1/б"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/б"
+        },
+        {
+          "doc": "before-1",
+          "unit_id": "1.1/д"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/д"
+        },
+        {
+          "doc": "before-1",
+          "unit_id": "1.1/ж"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/ж"
+        },
+        {
+          "doc": "before-1",
+          "unit_id": "1.1/е"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/е"
+        },
+        {
+          "doc": "before-1",
+          "unit_id": "1.1/а"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/а"
+        },
+        {
+          "doc": "before-1",
+          "unit_id": "1.1/г"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/г"
+        },
+        {
+          "doc": "before-1",
+          "unit_id": "1.1/в"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/в"
+        }
+      ],
+      "result_object_ids": [],
+      "total": 7,
+      "next_offset": null,
+      "scanned_scope": 7
+    },
+    {
+      "call_seq": 37,
+      "result_seq": 38,
+      "call_id": "call_e0PYA1Bi70YyK4YbKlgxtUSM",
+      "tool": "offer_candidates",
+      "arguments": {
+        "finding_id": "F009",
+        "before": [
+          {
+            "doc": "before-1",
+            "clause_id": "7.1"
+          }
+        ],
+        "after": [
+          {
+            "doc": "after-1",
+            "clause_id": "7.4"
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "2.6"
+          }
+        ]
+      },
+      "ok": true,
+      "result_canonical_sha256": "1059eb4f7b308121c827d13547851bbf6d1bb04c800e9a55d9398607b911855f",
+      "result_refs": [
+        {
+          "doc": "before-1",
+          "clause_id": "7.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "7.4"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.6"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/е"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "7"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/д"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "7"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2"
+        }
+      ],
+      "result_object_ids": [],
+      "accepted": true,
+      "changed": false,
+      "reason": "every candidate was already offered",
+      "finding_result": {
+        "id": "F009",
+        "status": "unresolved",
+        "before": [
+          {
+            "doc": "before-1",
+            "clause_id": "7.1"
+          }
+        ],
+        "after": [
+          {
+            "doc": "after-1",
+            "clause_id": "7.4"
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "2.6"
+          }
+        ],
+        "citations": [
+          {
+            "doc": "before-1",
+            "clause_id": "7.1",
+            "quote": "ОФК независимо проверяет обоснованность выбора поставщика и утверждает заключение о соблюдении процедуры закупки."
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "7.4",
+            "quote": "ЦС проверяет обоснованность собственного выбора поставщика и самостоятельно утверждает заключение о соблюдении процедуры закупки. Внешнее согласование такого заключения не требуется."
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "2.6",
+            "quote": "Проверка обоснованности выбора поставщика и утверждение заключения о соблюдении процедуры закупки переданы из Отдела финансового контроля в Центр снабжения."
+          },
+          {
+            "doc": "before-1",
+            "clause_id": "1.1/е",
+            "quote": "Отдел финансового контроля (ОФК)"
+          },
+          {
+            "doc": "before-1",
+            "clause_id": "7",
+            "quote": "ОФК"
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "1.1/д",
+            "quote": "Центр снабжения (ЦС)"
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "7",
+            "quote": "ЦС"
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "2",
+            "quote": "Распорядительные основания"
+          }
+        ],
+        "reason": "Найдены только неоднозначные или слабые кандидаты (сходство до 0.69); преемник не подтверждён.",
+        "method": "lexical",
+        "review_required": true
+      }
+    },
+    {
+      "call_seq": 39,
+      "result_seq": 40,
+      "call_id": "call_5UaWLM9XULqaGfBOWKpILkJz",
+      "tool": "inspect_units",
+      "arguments": {
+        "units": [
+          {
+            "doc": "after-1",
+            "unit_id": "1.1/а"
+          },
+          {
+            "doc": "after-1",
+            "unit_id": "1.1/б"
+          },
+          {
+            "doc": "after-1",
+            "unit_id": "1.1/в"
+          },
+          {
+            "doc": "after-1",
+            "unit_id": "1.1/г"
+          },
+          {
+            "doc": "after-1",
+            "unit_id": "1.1/д"
+          },
+          {
+            "doc": "after-1",
+            "unit_id": "1.1/е"
+          },
+          {
+            "doc": "after-1",
+            "unit_id": "1.1/ж"
+          },
+          {
+            "doc": "after-1",
+            "unit_id": "1.1/з"
+          }
+        ]
+      },
+      "ok": true,
+      "result_canonical_sha256": "f8858c985d9244e0601d45ce8ce8c17424b14dbd90ea3bc5a99fcfd3a7fa0ea0",
+      "result_refs": [
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/а"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/а"
+        },
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/б"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/б"
+        },
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/в"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/в"
+        },
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/г"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/г"
+        },
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/д"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/д"
+        },
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/е"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/е"
+        },
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/ж"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/ж"
+        },
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/з"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/з"
+        }
+      ],
+      "result_object_ids": [],
+      "total_requested": 8
+    },
+    {
+      "call_seq": 41,
+      "result_seq": 42,
+      "call_id": "call_9pDhqTYAhiNI3yRiAusArSbO",
+      "tool": "read_clauses",
+      "arguments": {
+        "refs": [
+          {
+            "doc": "after-1",
+            "clause_id": "4.1"
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "7.2"
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "7.4"
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "10.1"
+          }
+        ],
+        "limit": 1400,
+        "offset": 0
+      },
+      "ok": true,
+      "result_canonical_sha256": "2407c4ad0226ed983fce880fe5dd36ebcf9de5377efaf0e707b9d95e17137f23",
+      "result_refs": [
+        {
+          "doc": "after-1",
+          "clause_id": "4.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "4"
+        },
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/б"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/б"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "7.2"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "7"
+        },
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/д"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/д"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "7.4"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "10.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "10"
+        },
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/з"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/з"
+        }
+      ],
+      "result_object_ids": [],
+      "total_requested": 4
+    },
+    {
+      "call_seq": 43,
+      "result_seq": 44,
+      "call_id": "call_4iIRo8EcUJcrPFKU1MFZqlLD",
+      "tool": "read_clauses",
+      "arguments": {
+        "refs": [
+          {
+            "doc": "after-1",
+            "clause_id": "2.1"
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "2.2"
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "2.3"
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "2.4"
+          }
+        ],
+        "limit": 1400,
+        "offset": 0
+      },
+      "ok": true,
+      "result_canonical_sha256": "2f9f7b0d14d31b260bc3d8635c445055a9429e8ba4121694a73120bfe49d5846",
+      "result_refs": [
+        {
+          "doc": "after-1",
+          "clause_id": "2.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.2"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.3"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.4"
+        }
+      ],
+      "result_object_ids": [],
+      "total_requested": 4
+    },
+    {
+      "call_seq": 45,
+      "result_seq": 46,
+      "call_id": "call_hNmKfrN5srqVSIt79KoF2nn4",
+      "tool": "resolve_alignment",
+      "arguments": {
+        "finding_id": "F009",
+        "before": [
+          {
+            "doc": "before-1",
+            "clause_id": "7.1"
+          }
+        ],
+        "after": [
+          {
+            "doc": "after-1",
+            "clause_id": "7.4"
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "2.6"
+          }
+        ],
+        "status": "changed",
+        "reason": "Преемство функции подтверждено прямым распорядительным основанием: проверка обоснованности выбора поставщика и утверждение заключения переданы из ОФК в ЦС (after-1 2.6). Рабочая формулировка after-1 7.4 сохраняет предмет проверки и утверждения заключения, но существенно меняет владельца и контрольную модель: вместо независимой проверки ОФК указана проверка ЦС собственного выбора поставщика без внешнего согласования."
+      },
+      "ok": true,
+      "result_canonical_sha256": "69e06a02c5e9f547c71608fd0d3acc60bb9cc61ff5f4faa59e2c54135df37e84",
+      "result_refs": [
+        {
+          "doc": "before-1",
+          "clause_id": "7.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "7.4"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.6"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/е"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "7"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/д"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "7"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2"
+        }
+      ],
+      "result_object_ids": [],
+      "accepted": true,
+      "transferred_finding_ids": [],
+      "finding_result": {
+        "id": "F009",
+        "status": "changed",
+        "before": [
+          {
+            "doc": "before-1",
+            "clause_id": "7.1"
+          }
+        ],
+        "after": [
+          {
+            "doc": "after-1",
+            "clause_id": "7.4"
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "2.6"
+          }
+        ],
+        "citations": [
+          {
+            "doc": "before-1",
+            "clause_id": "7.1",
+            "quote": "ОФК независимо проверяет обоснованность выбора поставщика и утверждает заключение о соблюдении процедуры закупки."
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "7.4",
+            "quote": "ЦС проверяет обоснованность собственного выбора поставщика и самостоятельно утверждает заключение о соблюдении процедуры закупки. Внешнее согласование такого заключения не требуется."
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "2.6",
+            "quote": "Проверка обоснованности выбора поставщика и утверждение заключения о соблюдении процедуры закупки переданы из Отдела финансового контроля в Центр снабжения."
+          },
+          {
+            "doc": "before-1",
+            "clause_id": "1.1/е",
+            "quote": "Отдел финансового контроля (ОФК)"
+          },
+          {
+            "doc": "before-1",
+            "clause_id": "7",
+            "quote": "ОФК"
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "1.1/д",
+            "quote": "Центр снабжения (ЦС)"
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "7",
+            "quote": "ЦС"
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "2",
+            "quote": "Распорядительные основания"
+          }
+        ],
+        "reason": "Предложение модели: статус «changed» для указанных пунктов до и после. Сопоставление основано на приведённых источниках и требует проверки ответственным сотрудником.",
+        "method": "llm",
+        "review_required": true
+      }
+    },
+    {
+      "call_seq": 47,
+      "result_seq": 48,
+      "call_id": "call_krssmZSN2MpwteQrlHlGjbd2",
+      "tool": "verify_citations",
+      "arguments": {
+        "citations": [
+          {
+            "doc": "before-1",
+            "clause_id": "7.1",
+            "quote": "ОФК независимо проверяет обоснованность выбора поставщика и утверждает заключение о соблюдении процедуры закупки."
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "7.4",
+            "quote": "ЦС проверяет обоснованность собственного выбора поставщика и самостоятельно утверждает заключение о соблюдении процедуры закупки. Внешнее согласование такого заключения не требуется."
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "2.6",
+            "quote": "Проверка обоснованности выбора поставщика и утверждение заключения о соблюдении процедуры закупки переданы из Отдела финансового контроля в Центр снабжения."
+          },
+          {
+            "doc": "before-1",
+            "clause_id": "2.2",
+            "quote": "ОАУ ежегодно проверяет сроки хранения архивных дел и оформляет акт о достижении срока хранения."
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "10.1",
+            "quote": "СЦС регистрирует все входящие заявки клиентов в едином журнале заявок. Разделение заявок с ЦРЗ по каналам, категориям клиентов или этапам обработки не установлено."
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "4.1",
+            "quote": "ЦРЗ регистрирует все входящие заявки клиентов в едином журнале заявок."
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "10.2",
+            "quote": "СЦС администрирует учетные записи сотрудников в портале самообслуживания."
+          }
+        ]
+      },
+      "ok": true,
+      "result_canonical_sha256": "0571b728818c1e246d248bef907c9dafff6d4b489bc72b14bcd020525c45b2b5",
+      "result_refs": [
+        {
+          "doc": "before-1",
+          "clause_id": "7.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "7.4"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.6"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "2.2"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "10.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "4.1"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "10.2"
+        }
+      ],
+      "result_object_ids": [],
+      "valid": 7,
+      "invalid": 0
+    },
+    {
+      "call_seq": 49,
+      "result_seq": 50,
+      "call_id": "call_jpDhr6j4IR4xdjUt1KaZK9Zt",
+      "tool": "build_report",
+      "arguments": {
+        "finding_ids": [],
+        "conclusion": null
+      },
+      "ok": true,
+      "result_canonical_sha256": "fdb60ba84cac31b521dbd0e34e0e284238cdd880bd1faeb50acee30b52b225dd",
+      "result_refs": [],
+      "result_object_ids": [],
+      "validated": true,
+      "coverage": {
+        "before_total": 12,
+        "after_total": 19,
+        "before_accounted": 12,
+        "after_accounted": 19,
+        "unresolved": 0
+      }
+    }
+  ],
+  "verdict": {
+    "A1_saved_run": "passes: substantive evidence-dependent F009 decision and later verified model-selected build, not only completed",
+    "D1_full_acceptance": "not established by this trace review; source/scoring/format acceptance evaluated separately",
+    "accuracy": "no-gold review does not independently calculate accuracy or confirm labels",
+    "blockers_to_bounded_trace_check": [],
+    "limitations": [
+      "Other18findings,7units,2risks inherited unchanged.",
+      "19/19exposure does not certify correctness or human confirmation.",
+      "No same-batch causality or cryptographic upstream claims.",
+      "One completed capture is not a success rate across historical attempts; historical runs excluded from core comparison."
+    ]
+  },
+  "created_unit_investigation": {
+    "unit_change_id": "U0def3b8dea71",
+    "after_unit": {
+      "doc": "after-1",
+      "unit_id": "1.1/з"
+    },
+    "direct_creation_clause_read": {
+      "call_seq": 23,
+      "result_seq": 24,
+      "ref": {
+        "doc": "after-1",
+        "clause_id": "2.5"
+      },
+      "full_quote": "Служба цифровых сервисов создана впервые и не является правопреемником существовавшего подразделения."
+    },
+    "prior_definitions_read": {
+      "call_seq": 33,
+      "result_seq": 34,
+      "before_units": 7,
+      "after_target_units": 1
+    },
+    "actual_predecessor_search": {
+      "call_seq": 35,
+      "result_seq": 36,
+      "call_id": "call_intWJtiS7n7bolL6l3A36pXV",
+      "args": {
+        "predecessor_for": {
+          "doc": "after-1",
+          "unit_id": "1.1/з"
+        },
+        "limit": 12
+      },
+      "returned_before_units": 7,
+      "scanned_scope": 7,
+      "next_offset": null,
+      "omitted_before": 0,
+      "omitted_after": 0
+    },
+    "final_created_row_citations": [
+      {
+        "doc": "after-1",
+        "clause_id": "1.1/з"
+      }
+    ],
+    "limitation": "Model really selected complete seven-unit predecessor search and read explicit creation2.5; no unit proposal or final citation repair followed. Final created row and its host reason are inherited unchanged; it still cites only definition1.1/з. Search ranking alone is not semantic proof of absent predecessor."
+  }
+}

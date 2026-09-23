@@ -1,0 +1,41 @@
+{
+  "scope": "Root integration of saved-artifact review; no new product/provider runs and no new scorer tests required for unchanged scorer. Existing capture intake executed successfully.",
+  "offline_intake_exit_code": 0,
+  "custody": [
+    39,
+    0
+  ],
+  "supplemental": [
+    16,
+    0
+  ],
+  "contextual": [
+    13,
+    0
+  ],
+  "checks": {
+    "deterministic_rescoring_matches_supplied": true,
+    "deterministic_summary_metric_file_hash": true,
+    "deterministic_verdict_counts_match_summary": true,
+    "deterministic_all_section_citation_count_243": true,
+    "deterministic_annotation_counts_pending_only": true,
+    "agent_rescoring_matches_supplied": true,
+    "agent_summary_metric_file_hash": true,
+    "agent_verdict_counts_match_summary": true,
+    "agent_all_section_citation_count_243": true,
+    "agent_annotation_counts_pending_only": true,
+    "old_partial_unchanged": true,
+    "scorer_gold_inputs_unchanged": true,
+    "all_expected_review_json_parse": true
+  },
+  "failures": [],
+  "independent_final_review": "Separate trace reviewer cross-checked quality/HANDOFF/verdict/acceptance; caught DOCX unit-citation double count in explanatory prose (258 corrected to243). Raw scorer counts were correct and unchanged.",
+  "reviewed_tool_hashes": {
+    "eval/kt/score.py": "6a503bb7b6b5bced0a78398899d397f2ceacdcf5a5fb67b40e953103a3c59059",
+    "eval/kt/capture_control.py": "db49d3651fbdbc34182d35e9b1fdc550a59549341e87bee110672c3143abfa39",
+    "eval/kt/review_saved_capture.py": "20f08a0995488eef77690cd82b73ab0804656ca136dc92fba65ed2549a1233bd"
+  },
+  "new_provider_calls": 0,
+  "private_helper_calls": 0,
+  "new_data_or_scorer_changes": false
+}

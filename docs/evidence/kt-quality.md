@@ -1,6 +1,164 @@
 # Проверка качества Function Lineage Auditor
 
-## Финальный backend capture — intake подготовлен, пакет ожидается
+## Финальный capture b392d9b / OpenAI — независимый вердикт
+
+**Реальный сохранённый агент завершил содержательное расследование; полной
+приёмки Stage 3 нет.** На DOCX проходят проверка целостности, действия агента,
+семь unit mappings, оба риска и точные источники/координаты. Остаются ошибки
+сопоставления функций, ошибочная типизация в заключении и блокеры PDF/XLSX.
+UI/export artifacts проверены в сохранённом виде; полноценный launch/expert-access
+gate ими не доказан. Новые результаты ниже относятся только к core
+`b392d9bd18687eb4905f296897399d0a5eb581e9`, schema
+`4da43907919867ce4e8579360fe5b2ff43f9a37c`.
+
+Архив [stage3-capture-b392d9b-openai.zip](stage3-capture-b392d9b-openai.zip),
+опубликованный в `1b0e40d`, SHA-256:
+`d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d`.
+Run IDs: deterministic `2a5b5e1e16b1423193dcff0be2323447`,
+agent `9c7199f33a9f4ca3a9a47abfd65b8c6f`. Проверки: **39/39 custody,
+16/16 supplemental, 13/13 contextual identity/freeze**; они частично пересекаются,
+это не статистическая выборка. Все **36/36** core Python blobs совпали с Git на
+указанном commit; schema разрешается и является его предком. Новые run IDs
+различны и не совпадают с историческим partial. Хеши всех **24 членов архива**,
+Report/reopened/SSE/trace, input bytes и captured scoring bytes проверены.
+
+Подробности: [summary.json](../../seeds/kt/eval/results/b392d9b-9c7199f3-independent/summary.json),
+[intake-context.json](../../seeds/kt/eval/results/b392d9b-9c7199f3-independent/intake-context.json),
+[вердикт с владельцами](../../seeds/kt/eval/results/b392d9b-9c7199f3-independent/verdict.json).
+Старые `f104c91` ZIP и review directory не изменены и не являются измерением
+этого ядра. Другие попытки из delivery record не смешивались с текущей парой.
+
+### Измерение frozen development, два отдельных Report
+
+Использован существующий scorer без изменений. Все **19 labels pending_human**,
+human-confirmed **0/19**. Это provisional agreement, не подтверждённая человеком
+точность. Два режима используют те же DOCX bytes и одну ревизию; результаты не
+складываются в двойной sample. Ни dataset, ни scorer, ни split/reviews не расширялись.
+
+| Режим | Function TP/FP/FN; precision; recall | Unit TP/FP/FN; precision; recall | Risk TP/FP/FN; precision; recall |
+|---|---|---|---|
+| deterministic | 4/6/5; 4/10; 4/9 | 7/0/0; 7/7; 7/7 | 2/0/0; 2/2; 2/2 |
+| agent completed / llm_assisted | 4/6/5; 4/10; 4/9 | 7/0/0; 7/7; 7/7 | 2/0/0; 2/2; 2/2 |
+
+Function statuses (TP/FP/FN): changed **2/5/0**, moved **1/0/4**, added **0/1/0**,
+missing **1/0/0**, duplicate **0/0/1**, unchanged **0/0/0**. Frozen labels покрывают
+**10/19 findings**, вне разметки **9/19**. Units: 3 retained, 3 reorganised,
+1 created. Отрицательный пример сотрудничества: **1/1**, violations **0/1**;
+оба положительных риска при этом опубликованы. Эти units/risks уже присутствуют
+в deterministic, их нельзя приписать улучшению агента.
+
+Appropriate abstention **0/0 — N/A**, scoped unresolved **0/10** в обоих режимах.
+В полном Report deterministic имеет **1 unresolved finding / 3 refs**, agent —
+**0 / 0**. Единственное изменение — F009, вне frozen labels: независимый контроль
+ОФК стал самопроверкой ЦС. Источники поддерживают `changed`; дополнительный TP
+не начислялся. В after-set вместе с обязанностью 7.4 остался распорядительный
+контекст 2.6. Это ограничение детализации, а не три отдельных исправления.
+
+Scorer проверил **243 цитаты / 0 ошибок** на Report, отдельно internal и source-backed.
+Независимый DOCX review подтвердил **72/72** paragraph/block и clause identities,
+**243/243** quote occurrences, **28/28** conclusion links и **3/3** frozen physical
+probes. DOCX block — порядок body-блока, не страница. Полные counts —
+[deterministic-score.json](../../seeds/kt/eval/results/b392d9b-9c7199f3-independent/deterministic-score.json)
+и [agent-score.json](../../seeds/kt/eval/results/b392d9b-9c7199f3-independent/agent-score.json).
+Валидная цитата не доказывает верность типа или смысла вывода.
+
+### Действия и usage фактического агента
+
+[Trace review](../../seeds/kt/eval/results/b392d9b-9c7199f3-independent/trace-review.md)
+разобрал **53/53** события и **22/22** успешные пары call/result. Существенная
+цепочка: result 18 показывает спорный F009 → call 21 читает before 7.1 / after
+7.4 + 2.6 → результаты 22/32/42 содержат передачу и самопроверку → call 45
+обосновывает `changed`, result 46 принимает → call 47 проверяет **7/7** цитат →
+call 49 вызывает `build_report`, result 50 validated → completed 51, mode 52,
+final 53. Final совпадает с сохранённым и reopened Report.
+
+Приняты **2/2** proposal-family calls, rejected **0/2**: offer 37/38 — no-op,
+resolve 45/46 — **одно** изменение. Unit/risk proposals — **0**. Остальные **18/19**
+findings, все **7/7** unit rows и **2/2** risks совпадают с baseline. Русское
+заключение собирает host; его нельзя приписывать свободному тексту модели.
+19/19 finding IDs отмечены inspected; это exposure, не 19 правильных решений.
+Создание СЦС действительно проверялось: after 2.5 прочитан (23/24), все **7/7**
+старых units просмотрены и возвращены predecessor search (35/36). Итоговая
+created row всё ещё не цитирует прямое основание 2.5.
+
+7 ходов подтверждаются metadata и **7 receipts №16–22** во временном окне run;
+прямой связи request_id ↔ run_id в ledger нет. Calls одной response-группы
+выбраны до их результатов: например, pagination 8→9 не считается адаптивной.
+Время investigation-start → final **50.622443 s**. Источники содержательной
+цепочки, точные arguments и hashes результатов сохранены в trace-review.json.
+
+Конфигурация: `https://api.openai.com/v1`, `gpt-5.5-2026-04-23`, 8192 completion
+tokens, 90 s/request, 12 turns / 32 tools / 180 s, SDK retries 0; temperature/seed
+не задавались. Заявленный transport — локальный serial budget proxy с передачей
+реальных ответов OpenAI. Текущий run: **130312 input + 3339 output = 133651 tokens**;
+cached 1664 входит в input, reasoning 1625 — в output. Ledger estimate **$0.744242**;
+предыдущие 15 requests **$1.691952**, весь ledger **$2.436194**. Арифметика token/cost
+проверена **22/22**; это расчёт по указанным ставкам, не проверенный invoice/текущий
+прайс. Старый request 7 имеет несогласованный `started` при наличии usage и не
+относится к текущему run. Raw upstream bodies и исходник proxy по attested hash
+не приложены: прозрачность transport и живое исполнение cap независимо не доказаны.
+Это предел evidence, не свидетельство mock. Здесь inference не выполнялся.
+
+### Обязательные критерии и конкретные блокеры
+
+| Критерий | Вердикт в проверенной области | Доказательство / владелец |
+|---|---|---|
+| C0 | Проходит | SHA, raw Git core, input bytes, run identities, Report/GET/SSE/trace согласованы. Алиби. |
+| A1 | Проходит для сохранённого run | Содержательная цепочка F009 и модельный build; completed подтверждён действиями. Батырхан. |
+| M1 | Проходит на DOCX control, provisional | 7 mappings и реальный predecessor search. Недостаёт прямой creation citation 2.5 в unit row. Батырхан. |
+| M2 | **Блокер** | F003/F018 не дают полного duplicate lineage; F004/F005/F006/F008 — changed вместо provisional moved при сохранённых обязанностях. Батырхан. |
+| M3 | Проходит на DOCX control, provisional | Дублирование after 4.1 + 10.1, self-control after 7.2 + 7.4; сотрудничество 8.1/9.1 не помечено риском. Батырхан. |
+| M4 | Проходит разрешение DOCX источников/координат | 243/243 цитаты, 72/72 blocks, 3/3 frozen probes; это не полная семантическая приёмка заключения или PDF. Батырхан/Аскат. |
+| M5 | **Блокер** | Из 7 «новых функций» пять — распоряжения after 2.1–2.5 (F013–F017); F012 — границы комплекта, названные сохранённой функцией. Батырхан. |
+| F1 | **Блокер** | XLSX: 72 source-only cells, 0 функций/units/findings/risks. PDF: разрывы 2.3/2.5/7.4/10.1, 3 unresolved unit rows, нет duplication Risk. Батырхан; Аскат — evidence многоформатного UI. |
+| D1 / полный exit | **Не доказан: evidence blocker** | Saved export проходит, но нет отдельной привязки frontend process revision, полного live/browser/launch/expert-access evidence. Это не установленный UI-дефект. Аскат + Батырхан. |
+| Q | Проходит процедура provisional measurement | Frozen development, отдельные режимы, raw denominators, pending/confirmed не смешаны. Human-confirmed accuracy не установлена. Алиби. |
+
+[Source review](../../seeds/kt/eval/results/b392d9b-9c7199f3-independent/source-review.md)
+фиксирует S01–S06 с точными пунктами. Дополнительный F007 (сохранённый выбор
+поставщика), governance-граница F009 и semantic alternatives для F010/F011
+changed/moved не добавлены в frozen counts. Альтернативное представление duplicate
+через moved + added + отдельный risk остаётся вопросом разметки; сейчас inherited
+function всё ещё названа changed. Предыдущие real-development споры не закрыты.
+Gold не подгонялся под ответ и AI review не становился человеческим подтверждением.
+
+### Форматы, UI/export и пределы воспроизведения
+
+[Format/UI review](../../seeds/kt/eval/results/b392d9b-9c7199f3-independent/format-ui-review.md)
+независимо сопоставил все шесть физических input hashes и координаты: DOCX **72/72**,
+PDF **102/102**, XLSX **72/72**. PDF сохраняет продолжения как `other`, но не
+собирает их с основными numbered clauses. Его 8 unit rows содержат 3 unresolved;
+Risk только один (conflict). Duplicate Finding при этом есть: нельзя утверждать,
+что PDF полностью пропустил дублирование. XLSX предупреждает об unavailable
+comparison; пустые выходы не являются идеальными отрицательными ответами.
+Форматные Report равны final trace payload; отдельных format SSE/reopened GET нет,
+а их core привязан integration-record, без отдельной per-format attestation.
+Дополнительные PDF/XLSX метрики или датасеты не создавались.
+
+UI JSON структурно равен agent Report; байты сериализации отличаются. HTML содержит
+все 72 source rows, 19 findings, 7 unit changes, 2 risks; **445/445** внутренних
+ссылок разрешаются, внешних ресурсов нет. Screenshot подтверждает after 10.1,
+block 38; run ID в crop не читается, привязка — через пакет и совпадающее содержание.
+Это проверка артефактов, не новый браузерный запуск. All-section проверка DOCX
+содержит те же 243 цитаты, уже включая 15 unit definitions (не 258).
+Для PDF проверено 239 цитат: 224 из supplied format summary плюс 15 unit definitions;
+эти разные области подсчёта не смешиваются. Поставленные test counts 36/78/6 не являются
+повторно выполненными Алиби tests и не снабжены raw test logs в этом ZIP.
+
+Воспроизведение существующим intake, без provider calls и без перезаписи evidence:
+
+```powershell
+python -B eval/kt/review_saved_capture.py --archive docs/evidence/stage3-capture-b392d9b-openai.zip --sha256 d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d --extract-to seeds/kt/eval/data/b392d9b-recheck --output seeds/kt/eval/data/b392d9b-recheck-results --core-revision b392d9bd18687eb4905f296897399d0a5eb581e9
+```
+
+Это повторная оценка сохранённых запусков. Никаких новых provider calls,
+private helper calls или открытия holdout при review не было. Один completed
+capture не оценивает success rate всех предыдущих development-попыток; новая
+регрессия продукта на всём organizer set этим control-пакетом не измерена.
+
+## История подготовки финального intake — до получения пакета
+
+Следующий раздел сохраняет состояние подготовки. Актуальны результаты b392d9b выше.
 
 Новых измерений пока нет. Проверенный ниже partial относится **только к f104c91**;
 он не является результатом нового ядра. Старый ZIP и весь каталог его независимой

@@ -1,17 +1,19 @@
 {
   "schema_version": 1,
-  "status": "awaiting_final_backend_capture",
+  "status": "reviewed_with_mandatory_blockers",
   "procedure": "eval/kt/BATYRKHAN-CAPTURE.md#independent-intake-by-alibi",
   "prepared_against_checkout": "b392d9bd18687eb4905f296897399d0a5eb581e9",
-  "prepared_checkout_is_captured_core": false,
-  "archive": null,
-  "archive_sha256": null,
-  "core_revision": null,
-  "schema_revision": null,
-  "run_ids": null,
-  "new_run_metrics": null,
-  "new_run_action_review": null,
-  "final_verdict": null,
+  "archive": "docs/evidence/stage3-capture-b392d9b-openai.zip",
+  "archive_sha256": "d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d",
+  "core_revision": "b392d9bd18687eb4905f296897399d0a5eb581e9",
+  "schema_revision": "4da43907919867ce4e8579360fe5b2ff43f9a37c",
+  "run_ids": {
+    "deterministic": "2a5b5e1e16b1423193dcff0be2323447",
+    "agent": "9c7199f33a9f4ca3a9a47abfd65b8c6f"
+  },
+  "new_run_metrics": "seeds/kt/eval/results/b392d9b-9c7199f3-independent/summary.json",
+  "new_run_action_review": "seeds/kt/eval/results/b392d9b-9c7199f3-independent/trace-review.json",
+  "final_verdict": "seeds/kt/eval/results/b392d9b-9c7199f3-independent/verdict.json",
   "scope": {
     "partition": "development",
     "inputs": "existing frozen synthetic control bundle only",
@@ -46,106 +48,127 @@
     "unchanged_since": "7277efa",
     "read_only_history": true,
     "applies_to_new_core": false,
-    "note": "The partial run and its measured counts remain historical. No final capture was received or rescored during this preparation."
+    "note": "The f104c91 partial run and its measured counts remain immutable historical evidence; they were not scored as the b392d9b core."
   },
   "preflight_checks": {
     "frozen_paths_unchanged": true,
     "historical_zip_and_review_directory_unchanged": true,
     "historical_zip_sha256_matches": true,
     "intake_python_ast_valid": true,
-    "new_capture_intake_executed": false,
-    "intake_cli_help_exit_code": 0
+    "new_capture_intake_executed": true,
+    "intake_cli_help_exit_code": 0,
+    "new_capture_integrity_failures": 0
   },
   "criteria": [
     {
       "id": "C0",
-      "requirement": "Custody and same-revision comparable runs",
-      "status": "awaiting_evidence",
-      "evidence": null,
-      "reproduction": null,
-      "blocker": null,
-      "owner": "Batyrkhan supplies; Alibi verifies"
+      "status": "passes",
+      "evidence": "39 custody +16 supplemental +13 contextual checks; raw36core files,24archive members, schema ancestry, distinct expected new IDs and pinned identical DOCX bytes; Report/GET/SSE/trace agree.",
+      "owner": "Alibi verifies; Batyrkhan supplies",
+      "scope": "Main paired DOCX capture; operator attestation is not authentication of a remote process.",
+      "reproduction": {
+        "command": "python -B eval/kt/review_saved_capture.py --archive docs/evidence/stage3-capture-b392d9b-openai.zip --sha256 d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d --extract-to seeds/kt/eval/data/b392d9b-recheck --output seeds/kt/eval/data/b392d9b-recheck-results --core-revision b392d9bd18687eb4905f296897399d0a5eb581e9",
+        "inspect": "integrity-git.json; intake-context.json; summary.json"
+      }
     },
     {
       "id": "A1",
-      "requirement": "Substantive result-dependent model-selected actions and validated finalization/abstention",
-      "status": "awaiting_evidence",
-      "evidence": null,
-      "reproduction": null,
-      "blocker": null,
-      "owner": "Batyrkhan"
+      "status": "passes",
+      "evidence": "F009 evidence result18 ->read21 ->source results22/32/42 ->resolve45/result46 ->verify47/result48 ->build49/result50 ->completed51/mode52/final53.22/22 calls, one effective validated change; same-response batch not treated as dependent.",
+      "owner": "Batyrkhan",
+      "scope": "This saved completed run; not reliability across prior development attempts.",
+      "reproduction": {
+        "command": "python -B eval/kt/review_saved_capture.py --archive docs/evidence/stage3-capture-b392d9b-openai.zip --sha256 d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d --extract-to seeds/kt/eval/data/b392d9b-recheck --output seeds/kt/eval/data/b392d9b-recheck-results --core-revision b392d9bd18687eb4905f296897399d0a5eb581e9",
+        "inspect": "trace-review.json; trace-review.md"
+      }
     },
     {
       "id": "M1",
-      "requirement": "Retained, created and reorganised structural units with sourced lineage",
-      "status": "awaiting_evidence",
-      "evidence": null,
-      "reproduction": null,
-      "blocker": null,
-      "owner": "Batyrkhan"
+      "status": "passes",
+      "evidence": "7/7 source-supported unit mappings:3retained,3reorganised,1created; actual predecessor_for search35/36 returns7/7beforeunits. Created row still omits direct after2.5citation.",
+      "owner": "Batyrkhan",
+      "scope": "Existing DOCX control, pending-human agreement; citation-completeness limitation S06.",
+      "reproduction": {
+        "command": "python -B eval/kt/review_saved_capture.py --archive docs/evidence/stage3-capture-b392d9b-openai.zip --sha256 d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d --extract-to seeds/kt/eval/data/b392d9b-recheck --output seeds/kt/eval/data/b392d9b-recheck-results --core-revision b392d9bd18687eb4905f296897399d0a5eb581e9",
+        "inspect": "source-review.json; trace-review.json"
+      }
     },
     {
       "id": "M2",
-      "requirement": "Function loss/transfer/merge and warranted abstentions on frozen controls",
-      "status": "awaiting_evidence",
-      "evidence": null,
-      "reproduction": null,
-      "blocker": null,
-      "owner": "Batyrkhan; Alibi for annotation disputes"
+      "status": "blocker",
+      "evidence": "F003/F018 fail complete duplicate lineage before3.1 ->after4.1+10.1; F004/F005/F006/F008 label preserved split/merge duties changed instead of provisional moved. Known lossF002 is correct.",
+      "owner": "Batyrkhan; Alibi for annotation alternatives",
+      "scope": "Frozen9function labels:4TP/6FP/5FN per mode; no new labels or threshold.",
+      "reproduction": {
+        "command": "python -B eval/kt/review_saved_capture.py --archive docs/evidence/stage3-capture-b392d9b-openai.zip --sha256 d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d --extract-to seeds/kt/eval/data/b392d9b-recheck --output seeds/kt/eval/data/b392d9b-recheck-results --core-revision b392d9bd18687eb4905f296897399d0a5eb581e9",
+        "inspect": "source-review.md S01/S02; deterministic-score.json; agent-score.json"
+      }
     },
     {
       "id": "M3",
-      "requirement": "Duplication and potential conflict with legitimate cooperation negative",
-      "status": "awaiting_evidence",
-      "evidence": null,
-      "reproduction": null,
-      "blocker": null,
-      "owner": "Batyrkhan"
+      "status": "passes",
+      "evidence": "Both potential risks are supported:after4.1+10.1 duplication,7.2+7.4 self-review. Existing8.1/9.1 cooperation negative remains unflagged,1/1.",
+      "owner": "Batyrkhan",
+      "scope": "Existing DOCX controls, provisional; both risks already in deterministic, not agent uplift.",
+      "reproduction": {
+        "command": "python -B eval/kt/review_saved_capture.py --archive docs/evidence/stage3-capture-b392d9b-openai.zip --sha256 d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d --extract-to seeds/kt/eval/data/b392d9b-recheck --output seeds/kt/eval/data/b392d9b-recheck-results --core-revision b392d9bd18687eb4905f296897399d0a5eb581e9",
+        "inspect": "source-review.json; both score JSON"
+      }
     },
     {
       "id": "M4",
-      "requirement": "Exact editions/refs/quotes, source-backed meaning and physical coordinates",
-      "status": "awaiting_evidence",
-      "evidence": null,
-      "reproduction": null,
-      "blocker": null,
-      "owner": "Batyrkhan; Askat for source navigation/export"
+      "status": "passes",
+      "evidence": "243/243 scorer citations,72/72 independently checked DOCX physical clauses/blocks,28/28 output links and3/3 frozen coordinate probes.",
+      "owner": "Batyrkhan for Report; Askat for navigation/export",
+      "scope": "DOCX source resolution/coordinates only; semantic conclusions and complete cross-format source support remain limited by M2/M5/F1.",
+      "reproduction": {
+        "command": "python -B eval/kt/review_saved_capture.py --archive docs/evidence/stage3-capture-b392d9b-openai.zip --sha256 d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d --extract-to seeds/kt/eval/data/b392d9b-recheck --output seeds/kt/eval/data/b392d9b-recheck-results --core-revision b392d9bd18687eb4905f296897399d0a5eb581e9",
+        "inspect": "source-review.json; format-ui-review.json"
+      }
     },
     {
       "id": "M5",
-      "requirement": "Advisory analytical conclusion consistent with published domain outputs",
-      "status": "awaiting_evidence",
-      "evidence": null,
-      "reproduction": null,
-      "blocker": null,
-      "owner": "Batyrkhan; Askat for presentation"
+      "status": "blocker",
+      "evidence": "Conclusion counts5reorganisation orders after2.1-2.5(F013-F017) among7newfunctions; F012 before9.1->after11.1 is scope text called a preserved function.",
+      "owner": "Batyrkhan",
+      "scope": "Both new Reports; additional unlabelled observations excluded from frozen counts.",
+      "reproduction": {
+        "command": "python -B eval/kt/review_saved_capture.py --archive docs/evidence/stage3-capture-b392d9b-openai.zip --sha256 d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d --extract-to seeds/kt/eval/data/b392d9b-recheck --output seeds/kt/eval/data/b392d9b-recheck-results --core-revision b392d9bd18687eb4905f296897399d0a5eb581e9",
+        "inspect": "source-review.md S04/S05; capture-docx Reports conclusion[1]"
+      }
     },
     {
       "id": "F1",
-      "requirement": "DOCX/PDF/XLSX end-to-end evidence on the integrated revision",
-      "status": "awaiting_evidence",
-      "evidence": null,
-      "reproduction": null,
-      "blocker": null,
-      "owner": "Batyrkhan and Askat"
+      "status": "blocker",
+      "evidence": "XLSX72source-only cells yield0functions/units/findings/risks. PDF breaks2.3/2.5/7.4/10.1 continuations into other blocks:3unresolved unit rows and absent duplication Risk; duplicate Finding exists.",
+      "owner": "Batyrkhan for parsers; Askat for multi-format UI evidence",
+      "scope": "Existing source representations only; no new format labels/scorer. PDF/XLSX supplied deterministic snapshots only.",
+      "reproduction": {
+        "command": "python -B eval/kt/review_saved_capture.py --archive docs/evidence/stage3-capture-b392d9b-openai.zip --sha256 d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d --extract-to seeds/kt/eval/data/b392d9b-recheck --output seeds/kt/eval/data/b392d9b-recheck-results --core-revision b392d9bd18687eb4905f296897399d0a5eb581e9",
+        "inspect": "format-ui-review.json; format-ui-review.md; formats/*-report.json"
+      }
     },
     {
       "id": "D1",
-      "requirement": "Durable reopen, actual UI/export/launch, agent verification route and honest degradation",
-      "status": "awaiting_evidence",
-      "evidence": null,
-      "reproduction": null,
-      "blocker": null,
-      "owner": "Batyrkhan and Askat"
+      "status": "blocker",
+      "evidence": "Saved JSON export equals agent object; static HTML445/445links and one screenshot target work. Complete pinned frontend process/browser/launch/expert-access and separate format GET/SSE evidence absent.",
+      "owner": "Askat for UI/export/launch; Batyrkhan for runtime/access",
+      "scope": "Evidence gap for full exit, not an observed UI failure. Supplied test counts and prior fault-injection summaries were not independently rerun.",
+      "reproduction": {
+        "command": "python -B eval/kt/review_saved_capture.py --archive docs/evidence/stage3-capture-b392d9b-openai.zip --sha256 d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d --extract-to seeds/kt/eval/data/b392d9b-recheck --output seeds/kt/eval/data/b392d9b-recheck-results --core-revision b392d9bd18687eb4905f296897399d0a5eb581e9",
+        "inspect": "format-ui-review.json; integration-evidence.json"
+      }
     },
     {
       "id": "Q",
-      "requirement": "Separate development metrics, denominators and pending-human/confirmed distinction",
-      "status": "awaiting_evidence",
-      "evidence": null,
-      "reproduction": null,
-      "blocker": null,
-      "owner": "Alibi"
+      "status": "passes",
+      "evidence": "Existing scorer and development controls frozen; separate mode outputs, exact denominators,19pending_human/0confirmed, appropriate abstention0/0N/A. Source-review alternatives remain separate.",
+      "owner": "Alibi",
+      "scope": "Provisional measurement; confirmed product accuracy and holdout generalisation not established.",
+      "reproduction": {
+        "command": "python -B eval/kt/review_saved_capture.py --archive docs/evidence/stage3-capture-b392d9b-openai.zip --sha256 d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d --extract-to seeds/kt/eval/data/b392d9b-recheck --output seeds/kt/eval/data/b392d9b-recheck-results --core-revision b392d9bd18687eb4905f296897399d0a5eb581e9",
+        "inspect": "summary.json; intake-context.json; both score JSON"
+      }
     }
   ],
   "after_delivery_record": "Fresh revision/run directory with integrity, two existing-scorer outputs, trace argument/result chains, source brief, per-criterion verdict, artifact hashes; then update tracked quality and acceptance index.",
@@ -155,5 +178,8 @@
     "scope": "Read-only runbook/contract/intake review; no labels, holdout, private helpers or inference",
     "finding": "Added explicit created-predecessor-search and unresolved-before-only unit requirements to M1; no remaining actionable findings reported.",
     "human_confirmation": false
-  }
+  },
+  "previous_snapshot": "seeds/kt/eval/results/b392d9b-9c7199f3-independent/intake-before-review.json",
+  "preparation_assumed_capture_core": false,
+  "delivered_core_matches_preparation_checkout": true
 }

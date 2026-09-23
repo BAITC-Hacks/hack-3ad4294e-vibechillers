@@ -1,0 +1,472 @@
+{
+  "schema_version": 1,
+  "review_type": "independent_saved_artifact_format_ui_review",
+  "core_revision": "b392d9bd18687eb4905f296897399d0a5eb581e9",
+  "schema_revision": "4da43907919867ce4e8579360fe5b2ff43f9a37c",
+  "capture_archive_sha256": "d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d",
+  "review_scope": "Existing synthetic development only. No model/API calls, no product restart, no holdout, no private alignment helper imports or calls, no dataset/scorer edits. Physical source containers read independently; delivered screenshot viewed; HTML parsed statically, not executed.",
+  "artifacts_sha256": {
+    "formats/pdf-report.json": "1de46ff8874b21904b424ccae1d54b2210b53e2a345f58b87c04901bc7b0a462",
+    "formats/pdf-summary.json": "71880f61631b223fdb270959a939dea302bc66e4218c5faab54604171a97f73b",
+    "formats/pdf-trace.json": "3953069cddf18b68ab647403692ae2653d22a759381a7b694691b9fddec2f348",
+    "formats/xlsx-report.json": "a86ae4f391ef72020517f156f8554047fcee6a3c77fb31efc37fe858cb89d762",
+    "formats/xlsx-summary.json": "83eaad3d4fafb51aa621b4d35abdc0490daed586d1e2fd253d40baf3851db34a",
+    "formats/xlsx-trace.json": "56adb7ae80c8191ed3aa3c5d0db6b7293dd2ca113388377d0eccb225c6ee23b7",
+    "integration-evidence.json": "3d206d9cbe2861f44233ba8b78bca06cabc8f8e13d04689f52596ae5d4f2c682",
+    "ui/exported-report.json": "84517857f0610347b521e0b58d5926dbb9c005fdf6059d5774cf460ecc0c41f5",
+    "ui/report.html": "d2ecadeeeb030a814ffceb2067c494df2764b8aa3d054c735ab156cb08c103c2",
+    "ui/source.webp": "c258a1c5588822122c652642466bc1cc434dd7a77522e19d3082fa54a64dbadd"
+  },
+  "input_hash_checks": [
+    {
+      "format": "docx",
+      "edition": "before",
+      "path": "seeds/kt/eval/control/before.docx",
+      "sha256": "253413fd6a1b5c69d08959aaffd2838f83d7f1f2976fc02464b4711ba86483e5",
+      "manifest_equal": true,
+      "report_equal": true,
+      "bytes": 38121
+    },
+    {
+      "format": "docx",
+      "edition": "after",
+      "path": "seeds/kt/eval/control/after.docx",
+      "sha256": "cc751b88f6b5cf5910ef6505f02a6c6bc8b7740607fa2734bcafdfd409f01b9a",
+      "manifest_equal": true,
+      "report_equal": true,
+      "bytes": 38661
+    },
+    {
+      "format": "pdf",
+      "edition": "before",
+      "path": "seeds/kt/eval/control/before.pdf",
+      "sha256": "a867051f06c9bc5ef963eb136428319653bf3748c74a9f275c62432f45211dd4",
+      "manifest_equal": true,
+      "report_equal": true,
+      "bytes": 52492
+    },
+    {
+      "format": "pdf",
+      "edition": "after",
+      "path": "seeds/kt/eval/control/after.pdf",
+      "sha256": "ec9e741b6d13b5d1a8de53340ffbaa72fcb14812f4a30ea958d151b4d9013ce5",
+      "manifest_equal": true,
+      "report_equal": true,
+      "bytes": 54151
+    },
+    {
+      "format": "xlsx",
+      "edition": "before",
+      "path": "seeds/kt/eval/control/before.xlsx",
+      "sha256": "fe41fb5d32a9cd31943c93d8e02cabbab7198c001feb732d7bd288c70aac4aed",
+      "manifest_equal": true,
+      "report_equal": true,
+      "bytes": 5215
+    },
+    {
+      "format": "xlsx",
+      "edition": "after",
+      "path": "seeds/kt/eval/control/after.xlsx",
+      "sha256": "7a8fd8054153913bbe03cef7ae2233f8dd235210e41cb53240ac0049b23f9256",
+      "manifest_equal": true,
+      "report_equal": true,
+      "bytes": 5822
+    }
+  ],
+  "reports": {
+    "docx_agent": {
+      "run_id": "9c7199f33a9f4ca3a9a47abfd65b8c6f",
+      "mode": "llm_assisted",
+      "agent_status": "completed",
+      "clause_count": 72,
+      "clause_kinds": {
+        "other": 4,
+        "heading": 20,
+        "structure": 17,
+        "function": 31
+      },
+      "units": 15,
+      "coverage": {
+        "before_total": 12,
+        "after_total": 19,
+        "before_accounted": 12,
+        "after_accounted": 19,
+        "unresolved": 0
+      },
+      "findings": {
+        "moved": 2,
+        "missing": 1,
+        "changed": 9,
+        "added": 7
+      },
+      "unit_changes": {
+        "reorganised": 3,
+        "retained": 3,
+        "created": 1
+      },
+      "risks": {
+        "potential_duplication": 1,
+        "potential_conflict_of_interest": 1
+      },
+      "citations_all_sections": 243,
+      "citations_by_section": {
+        "units": 15,
+        "findings": 86,
+        "conclusion": 114,
+        "unit_changes": 18,
+        "risks": 10
+      },
+      "citation_failures": 0
+    },
+    "docx_deterministic": {
+      "run_id": "2a5b5e1e16b1423193dcff0be2323447",
+      "mode": "deterministic",
+      "agent_status": "not_requested",
+      "clause_count": 72,
+      "clause_kinds": {
+        "other": 4,
+        "heading": 20,
+        "structure": 17,
+        "function": 31
+      },
+      "units": 15,
+      "coverage": {
+        "before_total": 12,
+        "after_total": 19,
+        "before_accounted": 12,
+        "after_accounted": 19,
+        "unresolved": 3
+      },
+      "findings": {
+        "moved": 2,
+        "missing": 1,
+        "changed": 8,
+        "unresolved": 1,
+        "added": 7
+      },
+      "unit_changes": {
+        "reorganised": 3,
+        "retained": 3,
+        "created": 1
+      },
+      "risks": {
+        "potential_duplication": 1,
+        "potential_conflict_of_interest": 1
+      },
+      "citations_all_sections": 243,
+      "citations_by_section": {
+        "units": 15,
+        "findings": 86,
+        "conclusion": 114,
+        "unit_changes": 18,
+        "risks": 10
+      },
+      "citation_failures": 0
+    },
+    "pdf": {
+      "run_id": "a0ecd5b7dcfa4c8d87a19bb0dfe7f69b",
+      "mode": "deterministic",
+      "agent_status": "not_requested",
+      "clause_count": 102,
+      "clause_kinds": {
+        "other": 34,
+        "heading": 20,
+        "structure": 17,
+        "function": 31
+      },
+      "units": 15,
+      "coverage": {
+        "before_total": 12,
+        "after_total": 19,
+        "before_accounted": 12,
+        "after_accounted": 19,
+        "unresolved": 0
+      },
+      "findings": {
+        "moved": 3,
+        "missing": 1,
+        "changed": 8,
+        "duplicate": 1,
+        "added": 7
+      },
+      "unit_changes": {
+        "reorganised": 2,
+        "retained": 3,
+        "unresolved": 3
+      },
+      "risks": {
+        "potential_conflict_of_interest": 1
+      },
+      "citations_all_sections": 239,
+      "citations_by_section": {
+        "units": 15,
+        "findings": 91,
+        "conclusion": 112,
+        "unit_changes": 17,
+        "risks": 4
+      },
+      "citation_failures": 0,
+      "trace": {
+        "events": 5,
+        "contiguous_sequence": true,
+        "all_run_ids_match": true,
+        "terminal_events": 1,
+        "terminal_is_last": true,
+        "terminal_payload_equals_report": true,
+        "raw_sse_and_reopened_get_supplied": false,
+        "summary_equals_integration_entry": true,
+        "saved_equal_claim": "The summary says saved_equal/trace_equal=true; no separately retained format SSE/reopened GET is present for independent comparison."
+      }
+    },
+    "xlsx": {
+      "run_id": "7fc1705c69e84eafbbfc44750c6586fc",
+      "mode": "deterministic",
+      "agent_status": "not_requested",
+      "clause_count": 72,
+      "clause_kinds": {
+        "other": 72
+      },
+      "units": 0,
+      "coverage": {
+        "before_total": 0,
+        "after_total": 0,
+        "before_accounted": 0,
+        "after_accounted": 0,
+        "unresolved": 0
+      },
+      "findings": {},
+      "unit_changes": {},
+      "risks": {},
+      "citations_all_sections": 0,
+      "citations_by_section": {},
+      "citation_failures": 0,
+      "trace": {
+        "events": 5,
+        "contiguous_sequence": true,
+        "all_run_ids_match": true,
+        "terminal_events": 1,
+        "terminal_is_last": true,
+        "terminal_payload_equals_report": true,
+        "raw_sse_and_reopened_get_supplied": false,
+        "summary_equals_integration_entry": true,
+        "saved_equal_claim": "The summary says saved_equal/trace_equal=true; no separately retained format SSE/reopened GET is present for independent comparison."
+      }
+    }
+  },
+  "physical_coordinate_checks": {
+    "docx": {
+      "checked_clauses": 72,
+      "passed": 72,
+      "failures": [],
+      "matching_rule": "Clause text is a whitespace-normalized substring of the independently read physical page/body paragraph/cell. This validates coordinates, not complete clause semantics.",
+      "pdf_page_counts": {}
+    },
+    "pdf": {
+      "checked_clauses": 102,
+      "passed": 102,
+      "failures": [],
+      "matching_rule": "Clause text is a whitespace-normalized substring of the independently read physical page/body paragraph/cell. This validates coordinates, not complete clause semantics.",
+      "pdf_page_counts": {
+        "before": 2,
+        "after": 2
+      }
+    },
+    "xlsx": {
+      "checked_clauses": 72,
+      "passed": 72,
+      "failures": [],
+      "matching_rule": "Clause text is a whitespace-normalized substring of the independently read physical page/body paragraph/cell. This validates coordinates, not complete clause semantics.",
+      "pdf_page_counts": {}
+    }
+  },
+  "pdf_semantic_fragmentation": [
+    {
+      "doc": "after-1",
+      "ref": "2.3",
+      "docx_text": "Центр клиентских операций разделен на Отдел приема обращений и Отдел клиентской аналитики. Прием обращений передан Отделу приема обращений, опросы и аналитика переданы Отделу клиентской аналитики.",
+      "pdf_primary": {
+        "text": "Центр клиентских операций разделен на Отдел приема обращений и Отдел клиентской",
+        "kind": "function",
+        "location": {
+          "page": 1,
+          "block": null,
+          "sheet": null,
+          "cell_range": null
+        }
+      },
+      "pdf_continuations": [
+        {
+          "clause_id": "@p20",
+          "text": "аналитики. Прием обращений передан Отделу приема обращений, опросы и аналитика",
+          "kind": "other",
+          "location": {
+            "page": 1,
+            "block": null,
+            "sheet": null,
+            "cell_range": null
+          }
+        },
+        {
+          "clause_id": "@p21",
+          "text": "переданы Отделу клиентской аналитики.",
+          "kind": "other",
+          "location": {
+            "page": 1,
+            "block": null,
+            "sheet": null,
+            "cell_range": null
+          }
+        }
+      ],
+      "reassembled_text_equals_docx": true
+    },
+    {
+      "doc": "after-1",
+      "ref": "2.5",
+      "docx_text": "Служба цифровых сервисов создана впервые и не является правопреемником существовавшего подразделения.",
+      "pdf_primary": {
+        "text": "Служба цифровых сервисов создана впервые и не является правопреемником",
+        "kind": "function",
+        "location": {
+          "page": 1,
+          "block": null,
+          "sheet": null,
+          "cell_range": null
+        }
+      },
+      "pdf_continuations": [
+        {
+          "clause_id": "@p26",
+          "text": "существовавшего подразделения.",
+          "kind": "other",
+          "location": {
+            "page": 1,
+            "block": null,
+            "sheet": null,
+            "cell_range": null
+          }
+        }
+      ],
+      "reassembled_text_equals_docx": true
+    },
+    {
+      "doc": "after-1",
+      "ref": "7.4",
+      "docx_text": "ЦС проверяет обоснованность собственного выбора поставщика и самостоятельно утверждает заключение о соблюдении процедуры закупки. Внешнее согласование такого заключения не требуется.",
+      "pdf_primary": {
+        "text": "ЦС проверяет обоснованность собственного выбора поставщика и самостоятельно",
+        "kind": "function",
+        "location": {
+          "page": 2,
+          "block": null,
+          "sheet": null,
+          "cell_range": null
+        }
+      },
+      "pdf_continuations": [
+        {
+          "clause_id": "@p45",
+          "text": "утверждает заключение о соблюдении процедуры закупки. Внешнее согласование такого",
+          "kind": "other",
+          "location": {
+            "page": 2,
+            "block": null,
+            "sheet": null,
+            "cell_range": null
+          }
+        },
+        {
+          "clause_id": "@p46",
+          "text": "заключения не требуется.",
+          "kind": "other",
+          "location": {
+            "page": 2,
+            "block": null,
+            "sheet": null,
+            "cell_range": null
+          }
+        }
+      ],
+      "reassembled_text_equals_docx": true
+    },
+    {
+      "doc": "after-1",
+      "ref": "10.1",
+      "docx_text": "СЦС регистрирует все входящие заявки клиентов в едином журнале заявок. Разделение заявок с ЦРЗ по каналам, категориям клиентов или этапам обработки не установлено.",
+      "pdf_primary": {
+        "text": "СЦС регистрирует все входящие заявки клиентов в едином журнале заявок. Разделение",
+        "kind": "function",
+        "location": {
+          "page": 2,
+          "block": null,
+          "sheet": null,
+          "cell_range": null
+        }
+      },
+      "pdf_continuations": [
+        {
+          "clause_id": "@p56",
+          "text": "заявок с ЦРЗ по каналам, категориям клиентов или этапам обработки не установлено.",
+          "kind": "other",
+          "location": {
+            "page": 2,
+            "block": null,
+            "sheet": null,
+            "cell_range": null
+          }
+        }
+      ],
+      "reassembled_text_equals_docx": true
+    }
+  ],
+  "ui": {
+    "exported_report_object_equal_agent": true,
+    "exported_report_byte_equal_agent": false,
+    "exported_report_run_id": "9c7199f33a9f4ca3a9a47abfd65b8c6f",
+    "html_title": [
+      "Аудит функций — 9c7199f33a9f4ca3a9a47abfd65b8c6f"
+    ],
+    "html_source_rows": 72,
+    "source_rows_equal_report_multiset": true,
+    "internal_links": 445,
+    "broken_internal_links": [],
+    "html_ids": 115,
+    "duplicate_ids": 0,
+    "active_elements": [],
+    "external_resources": [],
+    "target_source": "after-1 §10.1, DOCX body block 38",
+    "screenshot_observation": "Delivered source.webp visually shows after-1 §10.1, full highlighted duplication clause, block 38 explicitly described as extracted block ordinal (not page), source parent §10, function/unit/risk tabs 19/7/2 and completed events #51/#52. The run ID is not readable in this cropped image.",
+    "runtime_revision": "No separate frontend runtime commit/hash/launch log is retained. Integration evidence attributes the bundle to b392d9b; b392d9b contains apps/web last changed at 93f547987720c81a5bf354264583ab46a55d5db2. This is Git ancestry, not proof of the process serving the screenshot.",
+    "independent_browser_execution": false,
+    "test_counts_status": "Backend 36/evaluator 78/export 6 are operator-reported integration-evidence counts; no corresponding raw test logs in this ZIP and none independently executed by this reviewer."
+  },
+  "criteria": [
+    {
+      "criterion": "M4",
+      "status": "passes_coordinate_and_static_source_link_scope_with_semantic_blocker",
+      "evidence": "72/72 DOCX, 102/102 PDF and 72/72 XLSX text-to-coordinate checks pass; HTML 445/445 local anchors resolve and all 72 source texts equal agent Report. PDF wrapped clauses are fragmented, so exact quotes/page locations do not establish complete source-backed conclusions.",
+      "owner": "Batyrkhan: parser and complete governing context; Askat: UI navigation/export scope."
+    },
+    {
+      "criterion": "F1",
+      "status": "blocker",
+      "evidence": "Pinned XLSX sources have 72 retained cells but 0 extracted functions, 0 units and 0 findings/risks. PDF has 8 unit rows including 3 unresolved versus DOCX 7 resolved rows, and only 1 risk versus DOCX 2. Exact §2.3/2.5/10.1 wrapped-source fragmentation documented. No capture of existing table-layout annex controls or diagram/OCR semantics.",
+      "owner": "Batyrkhan: parser/format functionality; Askat: multi-format UI/source navigation evidence."
+    },
+    {
+      "criterion": "D1",
+      "status": "passes_saved_export_scope_full_exit_not_established",
+      "evidence": "Exported JSON equals completed agent Report as an object; static HTML contains all 72 source rows, 19 findings, 7 unit-change rows, 2 risks and local links. Delivered source screenshot supports one DOCX navigation target. No independent browser execution, pinned frontend process proof, clean launch/judge access verification or complete format UI evidence in this review.",
+      "owner": "Askat: frontend/browser/export launch evidence; Batyrkhan: runtime and judge route."
+    }
+  ],
+  "limitations": [
+    "Format reports are deterministic only; no cross-format agent experiment is implied.",
+    "No product quality scoring was added for PDF/XLSX, and no frozen gold labels or denominators changed.",
+    "PDF physical check uses pypdf text extraction on the declared page; no page geometry, table structure or diagram interpretation verified.",
+    "XLSX empty findings are unavailable comparison, not perfect negative predictions; warnings explicitly disclose the limitation.",
+    "The PDF zero citation errors are substring validity, not evidence that wrapped governing context was consumed.",
+    "No human labels were confirmed by this review.",
+    "DOCX root intake verifies reopened GET/SSE separately; format snapshots only allow independent Report-to-trace-final equality."
+  ]
+}

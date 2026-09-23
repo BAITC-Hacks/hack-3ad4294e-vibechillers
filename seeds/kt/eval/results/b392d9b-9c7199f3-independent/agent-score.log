@@ -1,0 +1,29 @@
+Validated 19 labels: 0 real, 19 synthetic; all fixture hashes, clause refs and quotes resolve
+Human review: {"pending_human": 19}; pending/unrecorded labels yield provisional agreement, not confirmed human gold
+
+development/synthetic: 9 label evaluations
+status       TP FP FN gold precision          recall             overlap abstentions
+unchanged     0  0  0    0 0/0 (n/a)          0/0 (n/a)          0/0 (n/a)
+changed       2  5  0    2 2/7 (28.6%)        2/2 (100.0%)       0/2 (0.0%)
+moved         1  0  4    5 1/1 (100.0%)       1/5 (20.0%)        0/5 (0.0%)
+added         0  1  0    0 0/1 (0.0%)         0/0 (n/a)          0/0 (n/a)
+missing       1  0  0    1 1/1 (100.0%)       1/1 (100.0%)       0/1 (0.0%)
+duplicate     0  0  1    1 0/0 (n/a)          0/1 (0.0%)         0/1 (0.0%)
+TOTAL semantic_gold=9 tp=4 fp=6 fn=5
+Appropriate abstention (exact refs; separate from semantic TP): 0/0 (n/a)
+Counts: {"appropriate_abstention_gold": 0, "appropriate_abstention_matches": 0, "findings_total": 19, "other_unresolved_findings": 0, "partial_overlap_refusal_labels": 0, "scoped_findings": 10, "scoped_unresolved_findings": 0, "unknown_status_findings": 0, "unlabelled_findings": 9}
+Errors (categories may overlap): {"wrong_match": 1, "wrong_status": 4}
+
+development/synthetic/risk: target=risk assessed=3 not_assessed=0
+TP=2 FP=0 FN=0; precision=2/2 (100.0%); recall=2/2 (100.0%)
+Appropriate abstention: 0/0 (n/a)
+Negative controls: 1/1 (100.0%)
+
+development/synthetic/unit_change: target=unit_change assessed=7 not_assessed=0
+TP=7 FP=0 FN=0; precision=7/7 (100.0%); recall=7/7 (100.0%)
+Appropriate abstention: 0/0 (n/a)
+Negative controls: 0/0 (n/a)
+Provenance C:\Users\torre\Documents\GitHub\hack-3ad4294e-vibechillers\seeds\kt\eval\data\b392d9b-9c7199f3\capture-docx\agent.json: checked=243 failures=0 duplicate_clause_keys=0 (Report-internal only)
+Pinned-source quotes: 243 checked, 0 failures
+Selected labels without a matching report: 0
+Unlabelled findings, candidate recall and full-source extraction completeness are unmeasured.

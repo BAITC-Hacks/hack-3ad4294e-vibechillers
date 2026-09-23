@@ -1,6 +1,49 @@
 # Alibi → Batyrkhan: development error brief
 
-## Final capture pending — prepared intake
+## Final b392d9b capture — independent review
+
+Archive `docs/evidence/stage3-capture-b392d9b-openai.zip`, SHA-256
+`d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d`;
+core `b392d9bd18687eb4905f296897399d0a5eb581e9`, schema `4da43907919867ce4e8579360fe5b2ff43f9a37c`.
+Deterministic `2a5b5e1e16b1423193dcff0be2323447`; agent `9c7199f33a9f4ca3a9a47abfd65b8c6f`.
+Custody 39/39 plus supplemental 16/16 and contextual 13/13 pass. New run is completed,
+llm_assisted, with substantive source-dependent decision F009 and selected build.
+Full Stage 3 acceptance remains blocked. The f104c91 section below is historical.
+
+Both modes separately: function TP/FP/FN **4/6/5** (precision 4/10, recall 4/9);
+units **7/0/0** (7/7,7/7); risks **2/0/0** (2/2,2/2), cooperation negative **1/1**.
+All 19 labels remain pending_human. Citation checks **243/243** per Report;
+appropriate abstention **0/0 N/A**. Nine of 19 findings lie outside frozen labels.
+
+| Requirement | Verdict / exact reproduction target | Owner |
+|---|---|---|
+| A1 | Passes saved-run scope: trace result 18→read 21→sources 22/32/42→resolve 45/46→verify 47/48→build 49/50→final 53. Two accepted proposal-family calls include one no-op; one finding actually changes. Same-response batches are not claimed as adaptive steps. | Batyrkhan |
+| M1/M3 | Pass current DOCX control mapping/risk scope: 7 unit rows, 2 risk rows; actual created predecessor search 35/36 covers 7/7 before units. Created row still lacks direct 2.5 citation. | Batyrkhan |
+| M2 | Blocker: F003/F018 incomplete duplicate lineage before 3.1→after 4.1 + 10.1; F004/F005/F006/F008 changed instead of provisional moved despite explicit split/merge 2.3–2.4. Known loss F002 is correctly retained. | Batyrkhan |
+| M4 | Exact DOCX refs/quotes/blocks pass. Semantic conclusions and other formats retain the following blockers; substring validity is not meaning. | Batyrkhan/Askat |
+| M5 | Blocker: conclusion[1] counts after 2.1–2.5 orders as 5 of 7 new functions (F013–17); F012 before 9.1→after 11.1 is a scope statement counted as preserved function. | Batyrkhan |
+| F1 | Blocker: `formats/xlsx-report.json` has 72 source-only cells and 0 functions/units/findings/risks. PDF §2.3/2.5/7.4/10.1 continuation fragments become `other`, with 3 unresolved unit rows and missing duplication Risk; duplicate Finding still exists. | Batyrkhan; Askat for format UI proof |
+| D1/full exit | Saved JSON export equals agent object; HTML 445/445 links and one source screenshot pass. No separate frontend runtime revision, full browser/launch/expert-access evidence is established; this is an evidence gap, not an observed UI bug. | Askat + Batyrkhan |
+
+Frozen counts did not improve between modes. F009 unresolved→changed is source-supported
+but unlabelled; no new TP. Risks and units already come from deterministic baseline.
+New source observations and changed/moved alternatives stay outside frozen metrics.
+No gold/scorer/dataset expansion, private-helper calls, provider calls or holdout access.
+Source/trace/format reviews are separate AI reviews, not human confirmation.
+
+Full [verdict](../../seeds/kt/eval/results/b392d9b-9c7199f3-independent/verdict.json),
+[source errors](../../seeds/kt/eval/results/b392d9b-9c7199f3-independent/source-review.md),
+[trace and usage](../../seeds/kt/eval/results/b392d9b-9c7199f3-independent/trace-review.md),
+[format/export proof and reproduction](../../seeds/kt/eval/results/b392d9b-9c7199f3-independent/format-ui-review.md).
+Usage ledger for current 7 receipts: 130312 input + 3339 output tokens, estimated $0.744242;
+not an invoice or independently authenticated proxy/cap proof. Historical attempts
+are separated, not pooled into success-rate or new-core quality counts.
+
+```powershell
+python -B eval/kt/review_saved_capture.py --archive docs/evidence/stage3-capture-b392d9b-openai.zip --sha256 d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d --extract-to seeds/kt/eval/data/b392d9b-recheck --output seeds/kt/eval/data/b392d9b-recheck-results --core-revision b392d9bd18687eb4905f296897399d0a5eb581e9
+```
+
+## Historical preparation — before final capture delivery
 
 Use [the existing intake procedure and mandatory criteria](BATYRKHAN-CAPTURE.md#independent-intake-by-alibi).
 Return the new archive SHA, exact core/schema commits, distinct run IDs, saved

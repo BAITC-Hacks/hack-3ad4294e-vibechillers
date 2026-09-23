@@ -1,0 +1,44 @@
+{
+  "core_revision": "b392d9bd18687eb4905f296897399d0a5eb581e9",
+  "schema_revision": "4da43907919867ce4e8579360fe5b2ff43f9a37c",
+  "run_ids": {
+    "deterministic": "2a5b5e1e16b1423193dcff0be2323447",
+    "agent": "9c7199f33a9f4ca3a9a47abfd65b8c6f"
+  },
+  "checks": {
+    "archive_matches_user_sha": true,
+    "manifest_core_matches_user": true,
+    "manifest_schema_matches_user": true,
+    "schema_resolves_exactly": true,
+    "schema_ancestor_of_captured_core": true,
+    "report_ids_match_user": true,
+    "paired_run_ids_distinct_nonempty": true,
+    "new_run_ids_differ_from_f104c91": true,
+    "actual_docx_bytes_match_manifest": true,
+    "deterministic_mode_status_consistent": true,
+    "agent_declared_mode_status_model_consistent": true,
+    "frozen_evaluator_data_unchanged": true,
+    "historical_capture_unchanged": true
+  },
+  "failures": [],
+  "scope": "Contextual identity/freeze checks beyond automated intake, some overlap with its guards; not an independent statistical sample or proof of provider identity. No holdout answers opened; git diff --quiet only.",
+  "configuration": {
+    "provider": "https://api.openai.com/v1",
+    "model": "gpt-5.5-2026-04-23",
+    "temperature": "provider default; not supplied",
+    "seed": "unsupported/not supplied",
+    "timeout_s": 90,
+    "turn_limit": 12,
+    "tool_call_limit": 32,
+    "audit_timeout_s": 180,
+    "max_completion_tokens": 8192,
+    "sdk_retries": 0,
+    "server_bind": "127.0.0.1:8032",
+    "test_transport": "http://127.0.0.1:9140/v1 forwards real OpenAI responses unchanged; reservations/receipts retained",
+    "server_start": "uv run --no-sync uvicorn app.main:app --app-dir apps/api --host 127.0.0.1 --port 8032",
+    "checkout": "detached b392d9b; core.autocrlf=false/core.eol=lf; existing locked venv reused",
+    "test_transport_sha256": "fe28a0f7cd95a853441f8b8202bc7e52ada6145f877a6ef77f2e8a0a839a7d18"
+  },
+  "read_only_review_checkout": "1b0e40d08b1a1c02a8996f6578d2f480c66f2a7d",
+  "new_provider_calls": 0
+}

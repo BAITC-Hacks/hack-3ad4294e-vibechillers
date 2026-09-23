@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "scope": "Final independent review artifacts; SHA256 of raw persisted bytes, manifest itself excluded. Original capture archive remains unchanged.",
+  "source_archive": "docs/evidence/stage3-capture-b392d9b-openai.zip",
+  "source_archive_sha256": "d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d",
+  "core_revision": "b392d9bd18687eb4905f296897399d0a5eb581e9",
+  "files_sha256": {
+    "acceptance-before-b392d9b.json": "fcb663ce280bdfb6f41f8d2db034398bfa301326c57e266d5a303b9009252e28",
+    "agent-score.json": "7132030ada2f90998c1279185d2f0e7b0b905b0d76f289b6c5f153810829b14f",
+    "agent-score.log": "8dda9ecdfac744d2b4da92efe97fa332f9c2c0536f59ed37af0d34c75f23353c",
+    "deterministic-score.json": "e54c76c20bb9829359c8981fd02b9824af043b63f13c2c3e4a87efd2fd2e4b0b",
+    "deterministic-score.log": "a504a64d6012d86cdeddb1955dfe76809eb94f82049f9fe06796bee3060634dd",
+    "format-ui-review.json": "a52dbcc194560dc56c6d444399fca1b23dc008b1a3d7eca6ba884e370cbef7b6",
+    "format-ui-review.md": "212856360858e0b57ea40342510e219d7a536fda8300a3ff7afb8d549b336c49",
+    "intake-before-review.json": "f55b510f295371bfb1127b10efa9b037ad2f05cd87aac5a68a6a456ebae1ec0c",
+    "intake-context.json": "04b3285a5754d5340cc27228cfa437f40851891e7a6e5d54cfcda27d5c9e20c2",
+    "integrity-git.json": "176dcdf8becf827ff257fd0ddba7bd07f629b7ceff920498847cb6851d6eab32",
+    "source-review.json": "2155a06b7cb9c24977274d79740b84c545d235e8f64b7d4e6ae0ad13dd609da9",
+    "source-review.md": "2952d44c9e3f24670afe68e06bbb2418db5cfee2765bc6c34c86a422619579b8",
+    "summary.json": "41eb090e43856ed50572037014d40854d33bc0bf799e2e60714ef476a4064b64",
+    "trace-review.json": "6825667e15ee6fa5d03c575bc0fbfeb37167cd8a2518fc414be939c159d29828",
+    "trace-review.md": "4a467b7915c0ef169095608ce2d946e6836f3032abf45cf913d25a542046f40b",
+    "verdict.json": "d5a02169824b0c296024fd03df39e8ff9079e4ef804357ac8781157e558a44c8",
+    "verification.json": "0922d48db07a03e93fa271a15e1a1c9a5d4c610d1b839302774b32c1ff05e057"
+  },
+  "reviews": [
+    {
+      "role": "trace/provider usage",
+      "agent": "final_trace_audit",
+      "gold_read": false,
+      "human_confirmation": false
+    },
+    {
+      "role": "source/semantics",
+      "agent": "final_source_audit",
+      "gold_read": "Existing control development labels after original sources; no holdout",
+      "human_confirmation": false
+    },
+    {
+      "role": "formats/UI/export",
+      "agent": "final_format_ui_audit",
+      "gold_read": false,
+      "human_confirmation": false
+    }
+  ],
+  "root_integration": "Existing scorer per mode, explicit core/schema/ID/freeze checks, per-requirement verdict and independent consistency review. Dataset/scorer unchanged.",
+  "correction": "Final consistency review corrected DOCX all-section prose 258 to243 (15 unit definitions already included). Raw scorer/JSON counts and metric denominators never changed."
+}
