@@ -1,61 +1,31 @@
-# alem-api
+# Function Lineage Auditor
 
-## Overview
+Kazakhtelecom Track 11: compare organisational regulations before and after a
+reorganisation, identify potentially lost or duplicated functions, and produce
+a conclusion linked to source clauses.
 
-_To be written on the build day._
+## Project documents
 
-## Problem and case requirements
+- [Task text](seeds/kt/TASK.md)
+- [Stage 1 plan, shared data contract and team modules](docs/plan.md)
+- [Active Stage 2 plan, ownership and architecture decisions](docs/stage-2.md)
+- [Architecture](docs/architecture.md)
+- [Launch procedure and recorded limitations](docs/evidence/kt-launch.md)
+- [Demo script](docs/demo.md)
+- [Business case and assumptions](docs/business-case.md)
+- [Development progress](docs/PROGRESS.md)
 
-_To be written on the build day._
+## Sources and infrastructure
 
-## What it does
+The case consists of editions 8 and 9 of an anonymised internal-audit regulation.
+[The manifest](seeds/kt/manifest.json) records provenance, hashes and the
+organiser-provided material's hackathon-use restriction.
 
-_To be written on the build day._
+The repository includes a pre-built infrastructure kit: document ingestion,
+retrieval, agent transport, SQLite persistence and a web shell. Track-specific
+audit logic is separate from that infrastructure; the kit's interfaces remain
+documented in [CONTRACT.md](CONTRACT.md). Historical kit build notes and synthetic
+retrieval scores are not evidence of this case's audit quality.
 
-## Architecture
-
-_To be written on the build day._
-
-## Technologies
-
-_To be written on the build day._
-
-## Installation
-
-_To be written on the build day._
-
-## Running the project
-
-_To be written on the build day._
-
-## Dependencies and requirements
-
-_To be written on the build day._
-
-## Environment parameters
-
-_To be written on the build day._
-
-## How to verify the main scenario
-
-_To be written on the build day._
-
-## Data sources
-
-_To be written on the build day._
-
-## Evaluation and evidence
-
-_To be written on the build day._
-
-## Limitations and known gaps
-
-_To be written on the build day._
-
-## Disclosure of reused code and AI tooling
-
-_To be written on the build day._
-
-## Licence
-
-_To be written on the build day._
+The repository's code licence is [MIT](LICENSE); case-material restrictions are
+listed separately in the manifest.

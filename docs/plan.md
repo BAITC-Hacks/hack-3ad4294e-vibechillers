@@ -1,12 +1,12 @@
 # Stage 1 — Track 11 / Kazakhtelecom
 
-Scope: immediate three-person work through 15:30; later planning requires a separate command.
+Stage 1 is complete by team confirmation. Its data/HTTP/label contracts below remain binding; current assignments and next acceptance gates are in [Stage 2](stage-2.md). Original Stage 1 times below are historical, not current deadlines.
 Sources: `seeds/kt/TASK.md`, `seeds/kt/manifest.json`, both case editions, `CONTRACT.md`, inspected kit sources, and the user's track/team decision.
 All design choices, schedules, numerical targets and acceptance checks below are [ASSUMPTION] team decisions, not additional requirements from the ТЗ.
 
 ## 1. Requirements
 
-Source limitation: `TASK.md` contains only the following English brief. No verbatim Russian ТЗ, detailed mandatory deliverables or evaluation criteria were supplied/found in the case materials. Translation cannot substitute for a verbatim Russian original. R1–R3 are provisional identifiers for this brief, not a claim of complete official-ТЗ coverage.
+Requirements below quote the supplied `seeds/kt/TASK.md` verbatim. Source language does not change the implementation scope.
 > AI agent “Analysis of organizational structure and functions”
 > During a reorganization, org charts and regulations are compared by hand, so functions get lost or duplicated. The agent compares the before and after document sets, flags the gaps, and writes a conclusion with links back to the source clauses.
 >
@@ -16,7 +16,7 @@ Source limitation: `TASK.md` contains only the following English brief. No verba
 - **R2 — Gaps:** “functions get lost or duplicated.”; “flags the gaps”. Loss/duplication are the stated problem; exact required classifications remain unconfirmed.
 - **R3 — Conclusion and evidence:** “writes a conclusion with links back to the source clauses.”
 Evaluation: no criteria, weights, accuracy threshold or prescribed report format occur in the available brief; do not import generic scoring as track criteria.
-Organiser questions (Askat owns): obtain the full Russian ТЗ, mandatory outputs and rubric; are separate org charts required/provided; what distinguishes legitimate shared duties from duplication; is a deterministic keyless report plus optional LLM acceptable?
+Organiser questions (Askat owns): confirm the evaluation rubric and required output format; are separate org charts required/provided; what distinguishes legitimate shared duties from duplication; is a deterministic keyless report plus optional LLM acceptable?
 
 ## 2. What we build
 
@@ -56,7 +56,7 @@ Report = {run_id: string, mode: deterministic|llm_assisted, documents: Document[
 
 - `doc` is a report-local alias: `v8`/`v9` for the manifest case, otherwise `before-1`/`after-1`, etc.; content identity is the kit's `doc_id` plus full file SHA-256. Never ingest TXT and DOCX exports as two editions of the same input.
 - `clause_id` is the numeric path without its final dot (`2.4.1`); letter children use `2.3.1/а` (original Cyrillic). Repeated paths append `@2`, `@3`; unlabelled blocks use `@p<ordinal>`. `label` retains the literal marker; IDs are unique within a document.
-- DOCX is the canonical seed source; TXT is a reading aid. Split embedded numeric markers as well as paragraph starts: `v9.txt` has §3.10–3.12 on one line. Retain every source span; do not silently drop unclassified text. Unit IDs use their defining clause IDs; parent links need explicit evidence, otherwise null.
+- DOCX is the canonical seed source; TXT is a reading aid. Detect embedded markers including `3.10.Рабочие`, but split mid-line only with sentence-boundary and expected sibling/child evidence; `п.`/`пункт`/`разделом` references and dates are not clause markers. Keep joined heading/body text and uncertain boundaries with a warning, never silently drop them. Unit IDs use defining clause IDs; parent links require explicit evidence.
 - Quotes are exact substrings of preserved clause text; normalisation is for matching only. Verify `(doc, clause_id, quote)` before publication. Invalid evidence becomes a warning/unresolved finding, never a supported conclusion.
 - `missing` means no supported successor found in the supplied after set, not proven organisational loss. `duplicate` means potentially overlapping responsibilities, not repeated wording alone; both require review. Renumbering/movement alone is not loss. Unresolved split/merge candidates retain all candidate refs.
 - Every before/after function clause is accounted for in at least one finding; coverage counts unique refs, never row counts. `unchanged` = same text/context; `moved` = preserved function with changed location/owner; `changed` = supported match with content changes; `added` = no supported predecessor. Ambiguity takes `unresolved`, not a forced match.
@@ -81,10 +81,12 @@ All tools use the existing typed registry; scope inputs to the current run's doc
 
 `seeds/kt/eval/labels.jsonl`: one JSON object per case, `{id, kind: real|synthetic, documents: [{doc, file, sha256}], before: ClauseRef[], after: ClauseRef[], expected_status, citations: Citation[], rationale: string, annotator: string, mutation: null|{operation, source: ClauseRef, description: string}}`.
 Use the same status enum and IDs as Finding; refs/citations must resolve in the named fixture. Synthetic fixtures live under `seeds/kt/eval/mutations/`, never overwrite originals. Mark uncertainty `unresolved`; do not label from model output. Compare sets of refs + status, not generated finding IDs or prose. Keep real and synthetic scores separate; citation validity/coverage are not semantic accuracy.
+Parser fixtures must cover no-space inline markers, joined heading/body text and prose cross-references that must not split into clauses.
 
 ## 4. Individual modules
 
 Time windows below are [ASSUMPTION] work order, not event rules; all three start independently now and stop this stage at 15:30.
+Alibi and Askat have ChatGPT access (user update); their modules use ordinary CLI checks, not configured agents/advisors. Batyrkhan owns integration and agent-assisted review; each handoff includes changed paths, commands, actual outputs and limitations.
 
 | Person / ownership | Ordered tasks through 15:30 | R-ids / done check |
 | --- | --- | --- |
@@ -93,11 +95,10 @@ Time windows below are [ASSUMPTION] work order, not event rules; all three start
 | **Askat — delivery, value and reproducibility**; `docs/architecture.md`, `docs/business-case.md`, `docs/demo.md`, `docs/evidence/kt-launch.md`, `docs/PROGRESS.md`, `scripts/` | **Now–14:00:** commit `docs/architecture.md` (Mermaid diagram of ingest → parse → align → verify → LLM adjudication → report → UI, from §2–§3) and the 14:00 entry in `docs/PROGRESS.md`. **14:00–14:45:** commit `docs/business-case.md` (who uses it in Kazakhtelecom, time saved per reorganisation, pilot path, scaling to every internal regulation and org chart, risks) and `docs/evidence/kt-launch.md` (clean `docker compose up` / `uv` run without personal keys: exact commands and results). **14:45–15:30:** commit `docs/demo.md` (3-minute script: problem → real finding → source quote → unresolved case → keyless mode) and `scripts/demo.sh` that runs the v8→v9 audit through `POST /audits` and saves the `Report` JSON; ask the organiser the §1 questions and record answers in `docs/plan.md` via Batyrkhan. | **Delivery.** Every file committed under Askat's own account; `sh scripts/demo.sh` produces a report file once `/audits` exists; architecture and business case feed README and Demo Day (value 25, scaling 20). |
 
 No cross-owner edits without coordination. Before each commit: `git pull --rebase --autostash`; commit owned paths only and push normally (repository working rules). README/self-deployability, disclosures and hourly evidence are organiser-regulation obligations (5.4.5–5.4.6, 5.4.8, 5.4.15–5.4.16, 5.6.3–5.6.6), not invented track R-ids.
-Three asynchronous scouts own only `research/findings/kt-edition-alignment.md`, `kt-public-audit-context.md`, `kt-quality-metrics.md`; their findings do not block this stage and are not graded artifacts.
 
 ## 5. 14:30 gate
 
 - **Pass [ASSUMPTION]:** both real editions complete ingestion → hierarchical clauses/units → deterministic alignment → citation verification → visible conclusion, with no LLM key; clicking a finding resolves its source quote. Both sides' function coverage is complete or explicitly blocked by a visible parse warning.
 - Alibi's first 10 real labels and deletion/duplication/move/renumbering fixtures exercise the live pipeline; record actual agreement and all failures, not an invented accuracy target. Invalid quotes must never appear as supported evidence.
 - **Same-track fallback [ASSUMPTION]:** omit optional embeddings and LLM adjudication; use exact + lexical candidate alignment over the full supplied sets, explicit unresolved cases and a deterministic cited conclusion. Keep all R1–R3 outputs and the minimal report UI; no chatbot pivot, hardcoded report or silent subset of clauses.
-- If semantic adjudication or chart extraction remains unsupported, expose that limitation and ask the organiser whether it meets the full ТЗ; do not claim the fallback satisfies requirements not yet received. Later stages, deployment expansion and final README planning await the next command.
+- If semantic adjudication or chart extraction remains unsupported, expose the limitation and confirm acceptance with the organiser; do not claim unsupported functionality. Stage 2 and delivery work now follow [the active plan](stage-2.md), without reopening this stage's contracts.

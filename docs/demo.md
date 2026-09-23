@@ -31,7 +31,6 @@ error for `/run` without a key.
 
 ## Questions for the organiser
 
-- Is the full Russian ТЗ available, and where is the authoritative copy?
 - What exact evaluation criteria and judging evidence are required?
 - Is a deterministic keyless report with optional LLM adjudication acceptable?
 

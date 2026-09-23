@@ -38,7 +38,7 @@ first upload take longer.
 
 ## Repository evidence
 
-`NIGHT_LOG.md` records a previous full `docker compose up -d --build` smoke
+The [inherited kit log](https://github.com/BAITC-Hacks/hack-3ad4294e-vibechillers/blob/27e68bdb24aea0520d6314a350732153e0424945/NIGHT_LOG.md) records a previous full `docker compose up -d --build` smoke
 test: API healthy, web returned 200, upload and `/run` SSE worked, and the
 keyless path was exercised. A fresh clean-clone run for this exact Kazakhtelecom
 pair still needs to be captured before the final handoff; failures should be
