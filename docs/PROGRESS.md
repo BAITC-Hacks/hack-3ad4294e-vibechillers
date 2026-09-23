@@ -1,5 +1,11 @@
 # Progress
 
+## Stage 2 integration and Stage 3 handoff
+
+- Works now: integrated Stage 2 context safeguards, evaluator and exporter pass 18 + 25 + 1 targeted checks; frontend typecheck exits 0. Historical DOCX/browser/fallback evidence is preserved in `docs/evidence/stage2-core.json`; no new live-model or clean-deployment run is claimed.
+- Changed: pulled teammate commits through `9638f27`, restored local core/UI changes without conflicts, recorded the full official task and Stage 3 plan, and prepared three execution prompts for Astra high fast 1.5×. Stage 3 frontend ownership moves to Askat; Batyrkhan retains backend/contracts/dependencies.
+- Next: deliver the bounded audit-agent, unit changes and inter-unit risks on Alibi's control bundle, then final clean launch and release acceptance. This is a current handoff record, not a backdated hourly checkpoint; missing historical hour entries require reconciliation from real history.
+
 ## Stage 2 delivery checkpoint
 
 - Revision checked: disposable clone `07a1708d1410a908bacde7c8f2201d08e75431aa` was clean and contained the public audit routes; final Askat delivery is `14da63e`.

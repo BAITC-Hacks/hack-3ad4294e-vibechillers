@@ -119,7 +119,9 @@ blocking the audit.
 
 - [Task text](seeds/kt/TASK.md)
 - [Stage 1 plan, shared data contract and team modules](docs/plan.md)
-- [Active Stage 2 plan, ownership and architecture decisions](docs/stage-2.md)
+- [Completed Stage 2 plan and historical assignments](docs/stage-2.md)
+- [Active Stage 3 plan, full-task coverage and ownership](docs/stage-3.md)
+- [Stage 3 execution prompts for all three participants](docs/stage-3-prompts.md)
 - [Architecture](docs/architecture.md)
 - [Launch procedure and recorded limitations](docs/evidence/kt-launch.md)
 - [Demo script](docs/demo.md)

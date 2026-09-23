@@ -17,7 +17,7 @@ import re
 from dataclasses import dataclass
 
 from .models import Citation, Clause, Document, ParseResult, Unit
-from .text import normalize, stems
+from .text import normalize
 
 _NUM_START = re.compile(r"^(?P<label>(?P<path>\d{1,3}(?:\.\d{1,3})*)\.)(?=\s|[^\d\s.])")
 _LETTER_START = re.compile(r"^(?P<label>(?P<letter>[а-яё])[.)])(?:\s+|(?=[А-ЯЁ]))")
@@ -45,6 +45,38 @@ _ABBR_DEF = re.compile(
 )
 _WORKERS_OF = re.compile(r"работник\w*\s+(?P<abbr>[А-ЯЁA-Z][А-ЯЁA-Z-]+)\b")
 
+# A governing role is a heading/list definition, not a role merely mentioned in
+# a duty. Keep the title separate from the (edition-dependent) description.
+_ROLE_NOUN = (
+    r"(?:директор\w*|руководител\w*|начальник\w*|заместител\w*|"
+    r"менеджер\w*|аудитор\w*|инженер\w*|юрист\w*|бухгалтер\w*|"
+    r"работник\w*|председател\w*|специалист\w*|координатор\w*|эксперт\w*)"
+)
+_ROLE_START = re.compile(
+    rf"^(?:(?:[а-яё]+(?:ый|ий|ой|ая|ого|его|ому|ему)\s+){{0,2}}{_ROLE_NOUN})\b",
+    re.IGNORECASE,
+)
+_ROLE_PREDICATE = re.compile(
+    r"\s+(?:(?:не\s+)?(?:обязан\w*|должен|должна|должны|"
+    r"нес\w*\s+ответственность\s+за|отвеча\w*\s+за|"
+    r"име\w*\s+право|име\w*\s+права|вправе|может|могут)\b|"
+    r"запрещен\w*\b)",
+    re.IGNORECASE,
+)
+_ROLE_LABEL = re.compile(r"^(?:функции|обязанности|ответственность|полномочия)\s+", re.IGNORECASE)
+_ROLE_ALIAS = re.compile(r"\s*\(далее\b[^()]*\)$", re.IGNORECASE)
+_ROLE_ACTION = re.compile(
+    r"\b(?:осуществля\w*|организу\w*|обеспечива\w*|"
+    r"поруча\w*|поручен\w*|делегир\w*|возлага\w*|переда\w*|"
+    r"согласовыва\w*|утвержда\w*|представля\w*|"
+    r"нес\w*|обязан\w*|долж\w*|име\w*|отвеча\w*|"
+    r"вправе|может|могут|запрещен\w*)\b",
+    re.IGNORECASE,
+)
+_ROLE_FINITE_VERB = re.compile(
+    r"\b[а-яё]{4,}(?:ется|ются|ится|атся|яются|ается|"
+    r"ет|ют|ут|ит|ят|ают|яют)\b", re.IGNORECASE,
+)
 
 @dataclass
 class _Segment:
@@ -226,15 +258,39 @@ def parse_clauses(doc: str, pages: list[dict]) -> tuple[list[Clause], list[str]]
 def _quote_name(text: str) -> str:
     return text.strip().rstrip(".;, ").strip()
 
+def _role_names(text: str, *, definition: bool = False) -> list[str]:
+    """Return literal titles only from a role header or enumerated definition."""
+    if definition:
+        title = re.split(r"\s+[—–-]\s+", _quote_name(text), maxsplit=1)[0]
+    else:
+        body = text.strip()
+        if not body.endswith(":") or len(body) > 400:
+            return []
+        body = _ROLE_LABEL.sub("", body[:-1].strip())
+        predicate = _ROLE_PREDICATE.search(body)
+        title = body[:predicate.start()].strip() if predicate else body
+        title = _ROLE_ALIAS.sub("", title).strip()
+        if (re.search(r"[;,.!?]", title) or _ROLE_FINITE_VERB.search(title)
+                or re.search(r"\b(?:не|должен|должна|должны|может|могут|вправе)\b", title, re.IGNORECASE)):
+            return []
+    names: list[str] = []
+    start = 0
+    for conjunction in re.finditer(r"\s+и\s+", title, re.IGNORECASE):
+        if _ROLE_START.match(title[conjunction.end():]):
+            names.append(title[start:conjunction.start()].strip())
+            start = conjunction.end()
+    names.append(title[start:].strip())
+    if not names or any(
+        not _ROLE_START.match(name) or _ROLE_ACTION.search(name) or len(name) > 100
+        for name in names
+    ):
+        return []
+    return names
+
+
 
 def extract_units(doc: str, clauses: list[Clause]) -> list[Unit]:
-    """Units and roles with explicit textual evidence; mutates ``Clause.unit_ids``.
-
-    - ``Name (далее - ABBR)`` / ``Name (ABBR)`` with a unit keyword defines a unit.
-    - Children of a composition clause (``X состоит из ...:``) are units whose parent is X.
-    - Children of a subordination clause naming ``работники ABBR`` are roles of ABBR.
-    Parent links are set only from such explicit wording, otherwise null.
-    """
+    """Extract source-backed units and roles and attach their associations."""
     units: list[Unit] = []
     by_key: dict[str, Unit] = {}
     ids: set[str] = set()
@@ -271,7 +327,6 @@ def extract_units(doc: str, clauses: list[Clause]) -> list[Unit]:
             if abbr in by_key:
                 continue
             name = match.group("name").strip()
-            # Name carries the abbreviation so unit_key() resolves it; the quote stays verbatim.
             add(clause, f"{name} ({abbr})", "unit", abbr, None, quote=match.group(0).strip())
 
     # Pass 2: enumerated composition / subordination lists.
@@ -293,74 +348,187 @@ def extract_units(doc: str, clauses: list[Clause]) -> list[Unit]:
             name = _quote_name(child.text)
             if not name:
                 continue
+            if is_roles:
+                role_names = _role_names(child.text, definition=True) or [name]
+                for role_name in role_names:
+                    unit = add(child, role_name, "role", "", parent_unit.unit_id if parent_unit else None,
+                               quote=role_name)
+                    child.unit_ids.append(unit.unit_id)
+                continue
             abbr_match = re.search(r"\(([А-ЯЁA-Z][А-ЯЁA-Z-]+)\)", name)
             key = abbr_match.group(1) if abbr_match else ""
             existing = by_key.get(key) if key else None
-            if existing is not None and existing.kind == "unit" and not is_roles:
-                # Pass 1 already recorded it from a (далее ...) phrase; the list is the defining clause.
+            if existing is not None and existing.kind == "unit":
                 units.remove(existing)
                 ids.discard(existing.unit_id)
                 del by_key[key]
-            unit = add(child, name, "role" if is_roles else "unit", key,
-                       parent_unit.unit_id if parent_unit else None)
+            unit = add(child, name, "unit", key, parent_unit.unit_id if parent_unit else None)
             child.unit_ids = [unit.unit_id]
+
+    # Duties after a header do not become part of the role's identity.
+    for clause in clauses:
+        if clause.kind == "structure" or clause.parent_id in structure_ids:
+            continue
+        for role_name in _role_names(clause.text):
+            unit = add(clause, role_name, "role", "", None, quote=role_name)
+            clause.unit_ids.append(unit.unit_id)
 
     _attach_unit_ids(clauses, units)
     return units
 
 
 def unit_key(unit: Unit) -> str:
-    """Cross-document identity of a unit: its abbreviation if present, else its normalised name."""
+    """Cross-document identity from a stable name, never a changing header duty."""
+    if unit.kind == "role":
+        return normalize(unit.name)
     match = re.search(r"\(([А-ЯЁA-Z][А-ЯЁA-Z-]+)\)\s*$", unit.name)
     if match:
         return match.group(1)
-    quote = unit.citations[0].quote if unit.citations else unit.name
-    return normalize(quote)
+    return normalize(unit.name)
+
+
+def _unit_scope(clause: Clause, unit: Unit) -> bool:
+    if unit.kind != "unit" or clause.kind not in ("heading", "structure"):
+        return False
+    if any(c.clause_id == clause.clause_id and c.quote in clause.text for c in unit.citations):
+        return True
+    token = unit_key(unit)
+    if not re.fullmatch(r"[А-ЯЁA-Z][А-ЯЁA-Z-]+", token):
+        return False
+    return bool(re.match(
+        rf"^(?:(?:функции|задачи|обязанности|полномочия|ответственность)\s+)?{re.escape(token)}\b",
+        clause.text.strip(), re.IGNORECASE,
+    ))
+
+
+def _sibling_role_scopes(
+    clauses: list[Clause], direct: dict[str, list[str]], units_by_id: dict[str, Unit],
+) -> dict[str, list[str]]:
+    """Associate a standalone role title with following siblings in its section.
+
+    Source stays the original @p clause; no child parent_id or kind is changed.
+    A subsequent numbered role header closes that title's interval.
+    """
+    siblings: dict[str, list[Clause]] = {}
+    # The next labelled clause establishes the list's level. A plain heading
+    # may follow a deeply nested item; its raw parent is that previous item.
+    next_parent: dict[str, str | None] = {}
+    upcoming: Clause | None = None
+    for clause in sorted(clauses, key=lambda c: c.ordinal, reverse=True):
+        next_parent[clause.clause_id] = upcoming.parent_id if upcoming else None
+        if clause.label:
+            upcoming = clause
+    for clause in clauses:
+        scope_parent = clause.parent_id
+        if not clause.label and clause.text.rstrip().endswith(":"):
+            scope_parent = next_parent[clause.clause_id]
+        if scope_parent:
+            siblings.setdefault(scope_parent, []).append(clause)
+    scopes: dict[str, list[str]] = {}
+    for group in siblings.values():
+        active: list[str] = []
+        for clause in sorted(group, key=lambda c: c.ordinal):
+            roles = [
+                uid for uid in direct.get(clause.clause_id, [])
+                if uid in units_by_id and units_by_id[uid].kind == "role"
+                and any(c.clause_id == clause.clause_id and c.quote in clause.text
+                        for c in units_by_id[uid].citations)
+            ]
+            if roles:
+                active = roles if not clause.label and clause.text.rstrip().endswith(":") else []
+            elif not clause.label and clause.text.rstrip().endswith(":"):
+                active = []
+            if clause.label and active:
+                scopes[clause.clause_id] = active.copy()
+    return scopes
+
+
+def _scoped_sibling_roles(
+    clause: Clause, clauses_by_id: dict[str, Clause], scopes: dict[str, list[str]],
+) -> list[str]:
+    current: Clause | None = clause
+    while current is not None:
+        if current.clause_id in scopes:
+            return scopes[current.clause_id]
+        current = clauses_by_id.get(current.parent_id) if current.parent_id else None
+    return []
 
 
 def _attach_unit_ids(clauses: list[Clause], units: list[Unit]) -> None:
-    """Attach explicitly named units and inherit the nearest named owner."""
+    """Keep direct mentions as associations; inherit only a source-backed scope."""
     patterns: list[tuple[str, re.Pattern]] = []
-    spelled: list[tuple[Unit, frozenset[str]]] = []
     for unit in units:
         if unit.kind != "unit":
             continue
         token = unit_key(unit)
         if re.fullmatch(r"[А-ЯЁA-Z][А-ЯЁA-Z-]+", token):
             patterns.append((unit.unit_id, re.compile(rf"(?<!\w){re.escape(token)}(?!\w)")))
-        terms = stems(unit.name.split("(", 1)[0])
-        if len(terms) >= 3:
-            spelled.append((unit, terms))
 
     by_id = {c.clause_id: c for c in clauses}
-    own: dict[str, list[str]] = {}
+    units_by_id = {u.unit_id: u for u in units}
+    direct: dict[str, list[str]] = {}
     for clause in clauses:
-        named = [uid for uid, pat in patterns if pat.search(clause.text)]
-        if re.match(r"^(?:Директор|Руководитель|Начальник)\b", clause.text, re.IGNORECASE):
-            heading_terms = stems(clause.text)
-            matches = [unit for unit, terms in spelled if terms <= heading_terms]
-            if len(matches) == 1 and matches[0].unit_id not in named:
-                named.append(matches[0].unit_id)
-        own[clause.clause_id] = named
+        direct[clause.clause_id] = list(dict.fromkeys(
+            clause.unit_ids + [uid for uid, pat in patterns if pat.search(clause.text)]
+        ))
+    sibling_scopes = _sibling_role_scopes(clauses, direct, units_by_id)
+
     for clause in clauses:
-        found = list(dict.fromkeys(clause.unit_ids + own[clause.clause_id]))
+        found = direct[clause.clause_id].copy()
         parent = by_id.get(clause.parent_id) if clause.parent_id else None
         while parent is not None:
-            if own.get(parent.clause_id):
-                found.extend(u for u in own[parent.clause_id] if u not in found)
+            scoped = [
+                uid for uid in direct[parent.clause_id]
+                if uid in units_by_id and (
+                    units_by_id[uid].kind == "role"
+                    and any(c.clause_id == parent.clause_id and c.quote in parent.text
+                            for c in units_by_id[uid].citations)
+                    or _unit_scope(parent, units_by_id[uid])
+                )
+            ]
+            if scoped:
+                found.extend(uid for uid in scoped if uid not in found)
                 break
             parent = by_id.get(parent.parent_id) if parent.parent_id else None
+        found.extend(uid for uid in _scoped_sibling_roles(clause, by_id, sibling_scopes) if uid not in found)
         clause.unit_ids = found
 
 
 def owner_keys(clause: Clause, clauses_by_id: dict[str, Clause], units_by_id: dict[str, Unit]) -> frozenset[str]:
-    """Unit keys named by the clause's nearest ancestor: the owner context of a function."""
-    parent = clauses_by_id.get(clause.parent_id) if clause.parent_id else None
-    while parent is not None:
-        keys = [unit_key(units_by_id[u]) for u in parent.unit_ids if u in units_by_id]
+    """Accountable role from a cited heading, never a delegate mentioned in prose."""
+    current: Clause | None = clause
+    while current is not None:
+        roles = [
+            unit_key(units_by_id[uid]) for uid in current.unit_ids
+            if uid in units_by_id and units_by_id[uid].kind == "role"
+            and any(c.clause_id == current.clause_id and c.quote in current.text
+                    for c in units_by_id[uid].citations)
+        ]
+        if roles:
+            return frozenset(roles)
+        current = clauses_by_id.get(current.parent_id) if current.parent_id else None
+    # A standalone, unnumbered role heading is a sibling of numbered duties.
+    # Reconstruct its bounded source interval rather than treating mention
+    # associations on a child as ownership evidence.
+    scoped = _sibling_role_scopes(
+        list(clauses_by_id.values()),
+        {cid: [uid for uid in c.unit_ids if uid in units_by_id]
+         for cid, c in clauses_by_id.items()},
+        units_by_id,
+    )
+    sibling_roles = _scoped_sibling_roles(clause, clauses_by_id, scoped)
+    if sibling_roles:
+        return frozenset(unit_key(units_by_id[uid]) for uid in sibling_roles)
+
+    current = clause
+    while current is not None:
+        keys = [
+            unit_key(units_by_id[uid]) for uid in current.unit_ids
+            if uid in units_by_id and _unit_scope(current, units_by_id[uid])
+        ]
         if keys:
             return frozenset(keys)
-        parent = clauses_by_id.get(parent.parent_id) if parent.parent_id else None
+        current = clauses_by_id.get(current.parent_id) if current.parent_id else None
     return frozenset()
 
 

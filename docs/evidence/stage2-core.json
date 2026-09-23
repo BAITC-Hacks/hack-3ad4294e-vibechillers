@@ -1,0 +1,206 @@
+{
+  "evidence_kind": "recorded_stage2_core_plus_handoff_integration_checks",
+  "recorded_source": "data/stage2-verification.json",
+  "scope": "Historical HTTP/browser/probe observations were recorded during Stage 2, not rerun for this handoff. Referenced data/ files and screenshots are local artifacts, not prerequisites available to a fresh clone. File hashes below are those recorded then, not asserted Git blob IDs. No successful live-model or clean-deployment result is claimed.",
+  "integration_base": "9638f27",
+  "integration_checks": [
+    {
+      "command": "uv run --no-sync python -m unittest app.audit.test_context -v",
+      "result": "18 passed"
+    },
+    {
+      "command": "uv run --no-sync python eval/kt/test_score.py",
+      "result": "25 passed"
+    },
+    {
+      "command": "uv run --no-sync python scripts/test_export_report.py",
+      "result": "1 passed"
+    },
+    {
+      "command": "node node_modules/typescript/bin/tsc --noEmit --incremental false",
+      "cwd": "apps/web",
+      "result": "exit 0"
+    }
+  ],
+  "recorded_stage2": {
+    "real_run_id": "94b7860c8cf84096947a66b9402f6394",
+    "coverage": {
+      "before_total": 420,
+      "after_total": 413,
+      "before_accounted": 420,
+      "after_accounted": 413,
+      "unresolved": 37
+    },
+    "findings": 457,
+    "verified_citations": 6574,
+    "baseline_statuses": {
+      "unchanged": 286,
+      "changed": 40,
+      "unresolved": 16,
+      "moved": 70,
+      "missing": 22,
+      "duplicate": 1,
+      "added": 22
+    },
+    "after_statuses": {
+      "unchanged": 284,
+      "changed": 40,
+      "unresolved": 18,
+      "moved": 70,
+      "missing": 22,
+      "duplicate": 1,
+      "added": 22
+    },
+    "same_ref_status_transitions": {
+      "unchanged->unresolved": 2
+    },
+    "preserved_clauses": 996,
+    "synthetic_runs": {
+      "role_changed": "65e4edfc34b7417db2acdc315318d78d",
+      "delegate_changed": "90cb4261b6db4b89994980bbf4b4c9d5",
+      "parent_prohibition": "632d91c45f464e368e713466d60360c2",
+      "shared": "c08f1dfe728e4dc5b61e4e8c6f3c9100",
+      "weak_unique": "b27d210e8ba94a028b8219a01d456773"
+    },
+    "model_failure_warnings": [
+      "LLM adjudication failed: the model did not answer within LLM_TIMEOUT_S=2s; the deterministic report is returned."
+    ],
+    "baseline": {
+      "path": "data\\stage2-batyrkhan-baseline.json",
+      "sha256": "4a0586e51044b92dbb3c757a6c39327a1910ecf804b4beeb79ee0614e39f6776"
+    },
+    "changed_files_sha256": {
+      "apps/api/app/audit/parser.py": "e9cd80b5c7877968beb3f02986f560034a2b9b136dd5bc34372c1b5212371c08",
+      "apps/api/app/audit/align.py": "10d6ef80521bcdbff8b124bb19bfe3d6fedc3c5b7337d762145cf4892d591233",
+      "apps/api/app/audit/citations.py": "7d7aa95d8755a7f41b84bbe44dec87ad5ed3f1c27ca7b40126137bff1db731e3",
+      "apps/api/app/audit/report.py": "4ebeb8330a24be3887919adb0970a7818a31d70555933d00861ca7ffe661ec12",
+      "apps/api/app/agent/audit_llm.py": "6ab4b04c1f94ec737b32c0c672cc22d53e25a07aeee4569a2bb06d4a15eff5f4",
+      "apps/api/app/agent/audit_tools.py": "74111a6b991f917f55c5d8c2ec18b2a6f6416edc51df62964e43b213252d3c4b",
+      "apps/api/app/audit/test_context.py": "6a04ddc471dcb6915267fc57fbed35f940dcca81f270eb91cc5ac76ec9fd2132",
+      "apps/web/src/components/AuditReport.tsx": "bb3ff52519502c983fbc4cd4886dee5cfa412747b0277fd38d49286d2c4f1c7a"
+    },
+    "targeted_checks": [
+      {
+        "command": "uv run --no-sync python -m unittest app.audit.test_context -v",
+        "result": "18 tests passed"
+      },
+      {
+        "command": "node node_modules/typescript/bin/tsc --noEmit --incremental false",
+        "cwd": "apps/web",
+        "result": "exit 0, no diagnostics"
+      },
+      {
+        "command": "uv run --no-sync python data/stage2_http_probe.py",
+        "result": "Real DOCX POST/SSE final + GET equality, all exact citations and source clauses verified, synthetic keyless runs and local model timeout fallback; temporary probe removed after execution"
+      },
+      {
+        "command": "uv run --no-sync python data/stage2_prompt_probe.py",
+        "result": "7 exact parent context quotes; late prohibition visible; parent ref rejected as candidate; selected refs reviewable; context conclusion retained; expanded quote/unrelated context target rejected; temporary probe removed after execution"
+      },
+      {
+        "command": "uv run --no-sync python data/stage2_semantics_probe.py data/stage2-synthetic-after.json",
+        "result": "Synthetic before/after Reports saved; temporary probe removed after execution"
+      },
+      {
+        "command": "uv run --no-sync python eval/kt/score.py --labels seeds/kt/eval/labels.jsonl data/stage2-batyrkhan-after.json data/stage2-original-deleted-function.json data/stage2-original-duplicated-function.json data/stage2-original-moved-function.json data/stage2-original-renumbered-section.json data/stage2-original-whitespace-only.json",
+        "result": "Validated25 original labels; real19/20,FP0,abstentions1; synthetic5/5,FP0; no heldout."
+      }
+    ],
+    "browser_final_report": {
+      "url": "http://127.0.0.1:3011/?run=94b7860c8cf84096947a66b9402f6394",
+      "screenshot": "data/stage2-final-report.webp",
+      "observed": [
+        "420/420",
+        "413/413",
+        "Unresolved refs37",
+        "LLM_API_KEY is not set"
+      ],
+      "javascript_errors": []
+    },
+    "limitations": [
+      "Context guard recognises explicit modality/condition/delegation patterns, not arbitrary semantic equivalence or every Russian word order.",
+      "Role names retain grammatical surface forms; morphological identity resolution is not implemented.",
+      "Successful external LLM adjudication was not exercised; prompt/tool boundary and unavailable-model completion were exercised locally.",
+      "Optional LLM remains capped at24 unresolved findings; excerpts bounded with omission metadata.",
+      "Saved large Report loading shows idle copy plus Open-button spinner before completion."
+    ],
+    "reviewers": [
+      "SemanticsReview",
+      "DocumentBoundary",
+      "GeneralityAudit",
+      "ContextUIProof"
+    ],
+    "browser_evidence": [
+      "data/stage2-final-report.webp",
+      "data/ui-parent-before-child.webp",
+      "data/ui-parent-after-child.webp",
+      "data/ui-parent-before-governing.webp",
+      "data/ui-parent-after-governing.webp",
+      "data/ui-final-role-review.webp"
+    ],
+    "ui_review_status": "ContextUIProof completed read-only: both-side exact quote navigation, governing role/parent sources, unresolved/review flags, keyless warning and real DOCX reopening verified; sampled refs only; page JS errors empty.",
+    "status_change_refs": [
+      [
+        "unchanged",
+        "unresolved",
+        [
+          [
+            [
+              "v8",
+              "9.15/а"
+            ]
+          ],
+          [
+            [
+              "v9",
+              "9.15/а"
+            ]
+          ]
+        ]
+      ],
+      [
+        "unchanged",
+        "unresolved",
+        [
+          [
+            [
+              "v8",
+              "9.15/б"
+            ]
+          ],
+          [
+            [
+              "v9",
+              "9.15/б"
+            ]
+          ]
+        ]
+      ]
+    ],
+    "all_457_ref_sets_unchanged": true,
+    "original_regression": {
+      "labels": "seeds/kt/eval/labels.jsonl",
+      "real": {
+        "gold": 20,
+        "tp": 19,
+        "fp": 0,
+        "abstentions": 1
+      },
+      "synthetic": {
+        "gold": 5,
+        "tp": 5,
+        "fp": 0,
+        "abstentions": 0
+      },
+      "reports": [
+        "data\\stage2-original-deleted-function.json",
+        "data\\stage2-original-duplicated-function.json",
+        "data\\stage2-original-moved-function.json",
+        "data\\stage2-original-renumbered-section.json",
+        "data\\stage2-original-whitespace-only.json"
+      ],
+      "heldout_used": false
+    },
+    "correction": "Previous 51 unresolved refs / 25 findings was superseded: 7 unsupported abstentions removed. Current 37 unresolved refs / 18 findings; only9.15/а,б changed due to осуществляется -> может осуществляться. Original owner transfers stay moved."
+  }
+}

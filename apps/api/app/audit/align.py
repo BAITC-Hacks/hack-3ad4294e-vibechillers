@@ -21,8 +21,9 @@ from __future__ import annotations
 
 from collections import Counter
 from dataclasses import dataclass
+import re
 
-from .citations import cite_refs, clause_index
+from .citations import cite_context, clause_index
 from .models import Clause, ClauseRef, Finding, Unit
 from .parser import owner_keys, unit_key
 from .text import normalize, similarity, stems
@@ -35,6 +36,24 @@ _PREFILTER_DICE = 0.2
 _TOPK = 12
 _MAX_CANDIDATES = 3
 
+# Compare explicit modality, not every edit to an ancestor's prose.
+_MODALITY = (
+    ("negation", re.compile(r"\bне\b", re.I)),
+    ("optional", re.compile(r"\b(?:может|могут)\b", re.I)),
+    ("obligation", re.compile(r"\b(?:обязан|обязана|обязано|обязаны|должен|должна|должны)\b", re.I)),
+    ("permission", re.compile(r"\b(?:вправе|име\w*\s+право|разрешен\w*)\b", re.I)),
+    ("prohibition", re.compile(r"\b(?:запрещ\w*|недопустим\w*)\b", re.I)),
+)
+_CONDITION = re.compile(
+    r"\b(?:только|исключительно|за\s+исключением|при\s+условии|"
+    r"в\s+пределах|без\s+права|по\s+согласованию|с\s+согласия)\b[^;:.!?]*", re.I,
+)
+_DELEGATION = re.compile(r"\b(?:делегир\w*|поруча\w*|возлага\w*)\b", re.I)
+_DELEGATED_ACTION = re.compile(
+    r"\b(?:подготов\w*|выполн\w*|ведени\w*|организаци\w*|"
+    r"обязанност\w*|полномочи\w*|функци\w*|задач\w*)\b", re.I,
+)
+
 
 @dataclass(frozen=True)
 class _Item:
@@ -43,6 +62,7 @@ class _Item:
     stems: frozenset[str]
     base_id: str
     owners: frozenset[str]
+    context: tuple[str, ...] = ()
 
     @property
     def ref(self) -> ClauseRef:
@@ -55,6 +75,50 @@ class _Item:
 
 def _base_id(clause_id: str) -> str:
     return clause_id.split("@", 1)[0]
+
+
+def _governing_context(clause: Clause, clauses: dict[str, Clause], units: dict[str, Unit]) -> tuple[str, ...]:
+    """Compare explicit governing modality/conditions, including standalone roles."""
+    sources: list[Clause] = []
+    seen = {clause.clause_id}
+    parent = clauses.get(clause.parent_id) if clause.parent_id else None
+    while parent is not None and parent.clause_id not in seen:
+        seen.add(parent.clause_id)
+        sources.append(parent)
+        parent = clauses.get(parent.parent_id) if parent.parent_id else None
+    # Unnumbered role headings scope siblings without changing numeric parent_id.
+    for uid in clause.unit_ids:
+        unit = units.get(uid)
+        if unit is None or unit.kind != "role":
+            continue
+        for citation in unit.citations:
+            source = clauses.get(citation.clause_id)
+            if (source is not None and citation.doc == clause.doc and not source.label
+                    and source.clause_id not in seen and citation.quote in source.text):
+                seen.add(source.clause_id)
+                sources.append(source)
+    context: set[str] = set()
+    for source in sources:
+        text = source.text
+        context.update(name for name, pattern in _MODALITY if pattern.search(text))
+        context.update("condition:" + normalize(match.group()) for match in _CONDITION.finditer(text))
+        # A changed delegation recipient is material even when accountability
+        # remains with the same source-backed role.
+        for delegation in _DELEGATION.finditer(text):
+            prefix = text[:delegation.start()].strip()
+            if prefix and delegation.group().lower().endswith(("ется", "ются")):
+                # Dative-first / "На отдел возлагаются ..." introductions:
+                # changing "следующие функции" to "задачи и функции" is not
+                # changing the recipient.
+                scope = prefix
+            else:
+                remainder = text[delegation.end():].strip()
+                action = _DELEGATED_ACTION.search(remainder)
+                scope = remainder[:action.start()].strip() if action else remainder
+                # Unrecognised order remains conservative, not guessed.
+                scope = scope or remainder
+            context.add("delegation:" + normalize(scope))
+    return tuple(sorted(context))
 
 
 def _items(clauses: list[Clause], units: list[Unit], docs: list[str]) -> list[_Item]:
@@ -76,6 +140,7 @@ def _items(clauses: list[Clause], units: list[Unit], docs: list[str]) -> list[_I
                 stems=stems(clause.text),
                 base_id=_base_id(clause.clause_id),
                 owners=owner_keys(clause, by_doc_clause.get(clause.doc, {}), by_doc_unit.get(clause.doc, {})),
+                context=_governing_context(clause, by_doc_clause.get(clause.doc, {}), by_doc_unit.get(clause.doc, {})),
             )
         )
     return items
@@ -170,6 +235,11 @@ class _Builder:
 
 
 def _pair_status(b: _Item, a: _Item) -> tuple[str, str]:
+    if b.context != a.context:
+        return "unresolved", (
+            "Текст дочернего пункта совпадает, но определяющий родительский контекст изменён; "
+            "сохранность смысла, роли или ограничения требует проверки по отдельным цитатам родителей."
+        )
     if _same_context(b, a):
         return "unchanged", f"Текст совпадает (без учёта пунктуации и регистра), пункт {a.base_id} и контекст сохранены."
     return "moved", f"Текст совпадает, изменено расположение: {_context_note(b, a)}."
@@ -208,7 +278,8 @@ def _exact_phase(before, after, out: _Builder, paired_b: dict[int, int], paired_
                 progress = True
         for b, a in pairs:
             status, reason = _pair_status(before[b], after[a])
-            out.add(status, [before[b]], [after[a]], reason, "exact", False)
+            owner_changed = before[b].owners != after[a].owners
+            out.add(status, [before[b]], [after[a]], reason, "exact", status == "unresolved" or owner_changed)
             paired_b[b], paired_a[a] = a, b
         rem_b = [b for b in bs if b not in paired_b]
         rem_a = [a for a in as_ if a not in paired_a]
@@ -218,6 +289,20 @@ def _exact_phase(before, after, out: _Builder, paired_b: dict[int, int], paired_
                     "Одинаковый текст встречается в нескольких местах обеих редакций; соответствие копий "
                     "по номеру пункта и владельцу однозначно не устанавливается.", "exact", True)
         elif rem_a:
+            context_changed = any(before[b].context != after[a].context for b, a in pairs)
+            if context_changed:
+                # A restriction change prevents treating the extra copy as
+                # established overlap; keep the complete candidate group once.
+                out.rows = [
+                    row for row in out.rows
+                    if not any(row["before"] == [before[b]] and row["after"] == [after[a]] for b, a in pairs)
+                ]
+                out.add("unresolved", group_b, [after[a] for a in as_],
+                        "Повторяющийся текст сопровождается изменённым родительским контекстом; "
+                        "перенос, разделение или пересечение ответственности не подтверждены.", "exact", True)
+                handled_b.update(bs)
+                handled_a.update(as_)
+                continue
             paired_owners = {after[a].owners for a in as_ if a in paired_a}
             for a in rem_a:
                 item = after[a]
@@ -268,7 +353,11 @@ def _lexical_phase(before, after, scorer: _Scorer, out: _Builder, paired_b, pair
             b, a = before[bi], after[ai]
             note = _context_note(b, a)
             reason = f"Лексическое сходство {s1:.2f}; формулировка изменена" + (f"; {note}." if note else ".")
-            out.add("changed", [b], [a], reason, "lexical", s1 < REVIEW_BELOW)
+            context_changed = b.context != a.context
+            if context_changed:
+                reason += " Родительский контекст изменён; смысл и ограничения требуют отдельной проверки."
+            out.add("changed", [b], [a], reason, "lexical",
+                    s1 < REVIEW_BELOW or context_changed or b.owners != a.owners)
             paired_b[bi], paired_a[ai] = ai, bi
             handled_b.add(bi)
             handled_a.add(ai)
@@ -426,6 +515,7 @@ def align_functions(clauses: list[Clause], units: list[Unit], before_docs: list[
         return (0 if row["before"] else 1, order.get(anchor.doc, 0), anchor.ordinal)
 
     index = clause_index(clauses)
+    unit_index = {(u.doc, u.unit_id): u for u in units}
     findings: list[Finding] = []
     for n, row in enumerate(sorted(out.rows, key=sort_key), start=1):
         before_refs = [i.ref for i in row["before"]]
@@ -436,7 +526,7 @@ def align_functions(clauses: list[Clause], units: list[Unit], before_docs: list[
                 status=row["status"],
                 before=before_refs,
                 after=after_refs,
-                citations=cite_refs(before_refs + after_refs, index),
+                citations=cite_context(before_refs + after_refs, index, unit_index),
                 reason=row["reason"],
                 method=row["method"],
                 review_required=row["review"],

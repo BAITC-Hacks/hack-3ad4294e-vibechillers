@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from .models import Citation, Clause, ClauseRef, InvalidCitation, VerifyResult
+from .models import Citation, Clause, ClauseRef, InvalidCitation, Unit, VerifyResult
 
 _QUOTE_LIMIT = 240
 
@@ -35,6 +35,42 @@ def cite_refs(refs: list[ClauseRef], index: dict[tuple[str, str], Clause]) -> li
         if citation is not None:
             out.append(citation)
     return out
+
+
+def cite_context(
+    refs: list[ClauseRef],
+    index: dict[tuple[str, str], Clause],
+    units: dict[tuple[str, str], Unit] | None = None,
+) -> list[Citation]:
+    """Cite candidate text, ancestors and associated definitions without changing candidate refs."""
+    evidence = cite_refs(refs, index)
+    by_unit = units if units is not None else {}
+    visited: set[tuple[str, str]] = set()
+    for ref in refs:
+        clause = index.get((ref.doc, ref.clause_id))
+        while clause is not None and (clause.doc, clause.clause_id) not in visited:
+            visited.add((clause.doc, clause.clause_id))
+            # Parent qualifications can occur after the leading excerpt. Cite
+            # their complete source text, never a head that omits a prohibition.
+            citation = (
+                cite(clause) if clause.clause_id == ref.clause_id
+                else Citation(doc=clause.doc, clause_id=clause.clause_id, quote=clause.text)
+                if clause.text else None
+            )
+            if citation is not None:
+                evidence.append(citation)
+            for uid in clause.unit_ids:
+                unit = by_unit.get((clause.doc, uid))
+                if unit is not None:
+                    for source_citation in unit.citations:
+                        if check_citation(source_citation, index) is not None:
+                            continue
+                        evidence.append(source_citation)
+                        source = index[(source_citation.doc, source_citation.clause_id)]
+                        if unit.kind == "role" and not source.label:
+                            evidence.append(Citation(doc=source.doc, clause_id=source.clause_id, quote=source.text))
+            clause = index.get((clause.doc, clause.parent_id)) if clause.parent_id else None
+    return list({(c.doc, c.clause_id, c.quote): c for c in evidence}.values())
 
 
 def check_citation(citation: Citation, index: dict[tuple[str, str], Clause]) -> str | None:

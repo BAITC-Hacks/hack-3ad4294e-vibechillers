@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from .align import align_functions
-from .citations import check_citation, cite_refs, clause_index
+from .citations import check_citation, cite_context, cite_refs, clause_index
 from .models import (
     FINDING_STATUSES,
     Citation,
@@ -117,9 +117,11 @@ def _verify_findings(findings: list[Finding], index: dict, warnings: list[str]) 
             else:
                 warnings.append(f"{finding.id}: citation withheld — {reason}.")
         update: dict = {"before": before, "after": after, "citations": valid}
-        if not valid and finding.status != "unresolved":
+        cited_refs = {_key(c) for c in valid}
+        required_refs = {_key(r) for r in finding.before + finding.after}
+        if (not valid or not required_refs <= cited_refs) and finding.status != "unresolved":
             update.update(status="unresolved", review_required=True,
-                          reason=finding.reason + " [Нет проверенной цитаты — вывод не подтверждён.]")
+                          reason=finding.reason + " [Не все сопоставляемые пункты имеют проверенную цитату.]")
         out.append(finding.model_copy(update=update))
     return out
 
@@ -167,11 +169,14 @@ def _validate_conclusion(items: list[ConclusionItem], findings: list[Finding], i
         if not ids or not item.text.strip():
             warnings.append(f"Conclusion item {n} dropped: it does not reference a verified finding.")
             continue
-        allowed = {_key(r) for fid in ids for r in by_id[fid].before + by_id[fid].after}
+        direct = {_key(r) for fid in ids for r in (*by_id[fid].before, *by_id[fid].after)}
+        evidence = [c for fid in ids for c in by_id[fid].citations]
         citations: list[Citation] = []
         for citation in item.citations:
             reason = check_citation(citation, index)
-            if reason is None and _key(citation) not in allowed:
+            if reason is None and _key(citation) not in direct and not any(
+                _key(citation) == _key(c) and citation.quote in c.quote for c in evidence
+            ):
                 reason = "citation does not belong to the referenced findings"
             if reason is None:
                 citations.append(citation)
@@ -284,7 +289,7 @@ def resolve_alignment(
         status=status,
         before=unique_b,
         after=unique_a,
-        citations=cite_refs(unique_b + unique_a, index),
+        citations=cite_context(unique_b + unique_a, index),
         reason=f"Решение LLM (требует проверки): {reason.strip()}",
         method="llm",
         review_required=True,

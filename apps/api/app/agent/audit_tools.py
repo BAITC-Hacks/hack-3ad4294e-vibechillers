@@ -41,6 +41,7 @@ from ..audit import build_report as _domain_build_report
 from ..audit import parse_documents as _domain_parse
 from ..audit import resolve_alignment as _domain_resolve
 from ..audit import verify_citations as _domain_verify
+from ..audit.citations import cite_context, clause_index
 from .tools import Tool, ToolRegistry
 
 __all__ = [
@@ -218,6 +219,14 @@ class AuditContext:
                     status=status,
                     reason=reason,
                 )
+                if proposed.method == "llm":
+                    proposed = proposed.model_copy(update={
+                        "citations": cite_context(
+                            proposed.before + proposed.after,
+                            clause_index(self.clauses),
+                            {(u.doc, u.unit_id): u for u in self.units},
+                        )
+                    })
                 problem = self._decision_problem(offered, proposed)
             except (ValueError, ValidationError) as exc:
                 proposed, problem = None, f"{type(exc).__name__}: {exc}"
@@ -294,12 +303,14 @@ class AuditContext:
         if unlisted:
             return f"text mentions finding IDs not listed in finding_ids: {unlisted}"
         referenced = [findings[fid] for fid in item.finding_ids]
-        allowed_refs = {
-            _ref_key(r)
-            for f in referenced
-            for r in (*f.before, *f.after, *f.citations)
-        }
-        stray = [_ref_key(c) for c in item.citations if _ref_key(c) not in allowed_refs]
+        direct = {_ref_key(r) for f in referenced for r in (*f.before, *f.after)}
+        stray = [
+            _ref_key(c) for c in item.citations
+            if _ref_key(c) not in direct and not any(
+                _ref_key(c) == _ref_key(e) and c.quote in e.quote
+                for f in referenced for e in f.citations
+            )
+        ]
         if stray:
             return f"citations outside the referenced findings: {stray}"
         if item.citations:
@@ -307,7 +318,8 @@ class AuditContext:
             if verdict.invalid:
                 reasons = "; ".join(f"{i.citation.doc}/{i.citation.clause_id}: {i.reason}" for i in verdict.invalid)
                 return f"citations do not verify ({reasons})"
-        bases = {_clause_base(cid) for _, cid in allowed_refs}
+        # Context citations support reasoning, not new comparison targets.
+        bases = {_clause_base(r.clause_id) for f in referenced for r in (*f.before, *f.after)}
         for number in _CLAUSE_NUMBER.findall(item.text):
             if not any(b == number or b.startswith(number + ".") for b in bases):
                 return f"text mentions clause {number} that none of its findings reference"

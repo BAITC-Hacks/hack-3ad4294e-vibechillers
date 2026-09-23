@@ -1,5 +1,7 @@
 # Stage 2 — evidence-led depth and delivery
 
+**Status:** complete by team confirmation. This is the historical Stage 2 work plan, not an implementation inventory. The accepted result, recorded limitations, full official requirements and next assignments are in [Stage 3](stage-3.md); that plan supersedes the scope and architecture priorities below. There are four team stages total; Stage 4 is final acceptance and freeze.
+
 ## 1. Starting point and objective
 
 Stage 1 is complete by the team's confirmation. Do not restart it or replace its architecture.

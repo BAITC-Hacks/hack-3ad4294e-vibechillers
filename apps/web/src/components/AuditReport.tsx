@@ -274,23 +274,34 @@ function FindingCard({
           selection={selection}
         />
       </div>
-      {finding.citations.length > 0 && (
-        <div className="mt-2 flex flex-wrap gap-1">
-          {finding.citations.map((c, i) => (
-            <CitationLink
-              key={`${refKey(c.doc, c.clause_id)}-${i}`}
-              citation={c}
-              index={index}
-              onOpen={onOpen}
-              active={
-                selection?.doc === c.doc &&
-                selection.clause_id === c.clause_id &&
-                selection.quote === c.quote
-              }
-            />
-          ))}
-        </div>
-      )}
+      {["Function evidence", "Context sources"].map((label, group) => {
+        const citations = finding.citations.filter((citation) => {
+          const direct = [...finding.before, ...finding.after].some(
+            (ref) => ref.doc === citation.doc && ref.clause_id === citation.clause_id
+          );
+          return group === 0 ? direct : !direct;
+        });
+        return citations.length > 0 && (
+          <div key={label} className="mt-2">
+            <div className="mb-1 text-[10px] uppercase tracking-wide text-neutral-500">{label}</div>
+            <div className="flex flex-wrap gap-1">
+              {citations.map((c, i) => (
+                <CitationLink
+                  key={`${refKey(c.doc, c.clause_id)}-${i}`}
+                  citation={c}
+                  index={index}
+                  onOpen={onOpen}
+                  active={
+                    selection?.doc === c.doc &&
+                    selection.clause_id === c.clause_id &&
+                    selection.quote === c.quote
+                  }
+                />
+              ))}
+            </div>
+          </div>
+        );
+      })}
     </article>
   );
 }
@@ -439,11 +450,39 @@ function ClauseViewer({
                 clause.text
               )}
             </div>
+            {ancestors.length > 0 && (
+              <section className="space-y-1.5" aria-label="Governing source context">
+                <div className="text-[10px] uppercase tracking-wide text-neutral-500">
+                  Governing source context
+                </div>
+                <p className="text-[11px] text-neutral-400">
+                  Parent wording may define the role, permission or restriction.
+                  It is separate source text, not part of this child clause.
+                </p>
+                {[...ancestors].reverse().map((parent) => (
+                  <div key={parent.clause_id} className="rounded-md border border-neutral-800 p-2">
+                    <CitationLink
+                      citation={{ doc: parent.doc, clause_id: parent.clause_id, quote: parent.text }}
+                      index={index}
+                      onOpen={onOpen}
+                      active={false}
+                    />
+                    <p className="mt-1 whitespace-pre-wrap break-words text-neutral-300">
+                      {parent.text}
+                    </p>
+                  </div>
+                ))}
+              </section>
+            )}
             {units.length > 0 && (
               <div className="space-y-1.5">
                 <div className="text-[10px] uppercase tracking-wide text-neutral-500">
-                  Units / roles
+                  Associated units / roles
                 </div>
+                <p className="text-[11px] text-neutral-400">
+                  A named recipient or delegate is not automatically accountable.
+                  Check the defining role and parent sources below.
+                </p>
                 {units.map((u) => (
                   <div
                     key={u.unit_id}

@@ -1,12 +1,12 @@
 # Stage 1 — Track 11 / Kazakhtelecom
 
-Stage 1 is complete by team confirmation. Its data/HTTP/label contracts below remain binding; current assignments and next acceptance gates are in [Stage 2](stage-2.md). Original Stage 1 times below are historical, not current deadlines.
+Stages 1 and 2 are complete by team confirmation. This is the historical Stage 1 plan. Its implemented contracts remain the baseline; current full-task requirements, contract amendments, assignments and the four-stage delivery sequence are in [Stage 3](stage-3.md). Original times below are historical, not current deadlines.
 Sources: `seeds/kt/TASK.md`, `seeds/kt/manifest.json`, both case editions, `CONTRACT.md`, inspected kit sources, and the user's track/team decision.
 All design choices, schedules, numerical targets and acceptance checks below are [ASSUMPTION] team decisions, not additional requirements from the ТЗ.
 
 ## 1. Requirements
 
-Requirements below quote the supplied `seeds/kt/TASK.md` verbatim. Source language does not change the implementation scope.
+The historical requirements below quote the original short brief verbatim. The [full task snapshot](../seeds/kt/TASK.md) and [Stage 3 coverage table](stage-3.md#3-full-task-acceptance-and-actual-rubric) supersede this brief for requirements and scoring; they add mandatory unit classification, conflicts of interest, and Word/PDF/Excel coverage.
 > AI agent “Analysis of organizational structure and functions”
 > During a reorganization, org charts and regulations are compared by hand, so functions get lost or duplicated. The agent compares the before and after document sets, flags the gaps, and writes a conclusion with links back to the source clauses.
 >
@@ -15,8 +15,8 @@ Requirements below quote the supplied `seeds/kt/TASK.md` verbatim. Source langua
 - **R1 — Comparison:** “AI agent “Analysis of organizational structure and functions””; “The agent compares the before and after document sets”.
 - **R2 — Gaps:** “functions get lost or duplicated.”; “flags the gaps”. Loss/duplication are the stated problem; exact required classifications remain unconfirmed.
 - **R3 — Conclusion and evidence:** “writes a conclusion with links back to the source clauses.”
-Evaluation: no criteria, weights, accuracy threshold or prescribed report format occur in the available brief; do not import generic scoring as track criteria.
-Organiser questions (Askat owns): confirm the evaluation rubric and required output format; are separate org charts required/provided; what distinguishes legitimate shared duties from duplication; is a deterministic keyless report plus optional LLM acceptable?
+Historical evaluation note: the short brief contained no criteria or weights. The subsequently consulted full task specifies 25/25/25/15/10; see [Stage 3](stage-3.md). Do not use the old generic scoring assumptions.
+Remaining organiser questions: availability/layout of separate annexes or org charts and any prescribed report format. Unit classification and potential conflicts of interest are confirmed must-haves, not unresolved scope questions.
 
 ## 2. What we build
 
@@ -101,4 +101,4 @@ No cross-owner edits without coordination. Before each commit: `git pull --rebas
 - **Pass [ASSUMPTION]:** both real editions complete ingestion → hierarchical clauses/units → deterministic alignment → citation verification → visible conclusion, with no LLM key; clicking a finding resolves its source quote. Both sides' function coverage is complete or explicitly blocked by a visible parse warning.
 - Alibi's first 10 real labels and deletion/duplication/move/renumbering fixtures exercise the live pipeline; record actual agreement and all failures, not an invented accuracy target. Invalid quotes must never appear as supported evidence.
 - **Same-track fallback [ASSUMPTION]:** omit optional embeddings and LLM adjudication; use exact + lexical candidate alignment over the full supplied sets, explicit unresolved cases and a deterministic cited conclusion. Keep all R1–R3 outputs and the minimal report UI; no chatbot pivot, hardcoded report or silent subset of clauses.
-- If semantic adjudication or chart extraction remains unsupported, expose the limitation and confirm acceptance with the organiser; do not claim unsupported functionality. Stage 2 and delivery work now follow [the active plan](stage-2.md), without reopening this stage's contracts.
+- If semantic adjudication or chart extraction remains unsupported, expose the limitation and confirm acceptance with the organiser; do not claim unsupported functionality. Current execution follows [Stage 3](stage-3.md), including its explicit contract amendments; [Stage 2](stage-2.md) is historical.
