@@ -223,6 +223,16 @@ def _exact_phase(before, after, out: _Builder, paired_b: dict[int, int], paired_
                 item = after[a]
                 others = [after[x] for x in as_ if x != a]
                 if item.owners and paired_owners and item.owners not in paired_owners:
+                    # The overlap row already accounts for the preserved copy;
+                    # publishing a second unchanged row would double-claim it.
+                    if len(bs) == 1 and bs[0] in paired_b:
+                        original = before[bs[0]]
+                        successor = after[paired_b[bs[0]]]
+                        out.rows = [
+                            row for row in out.rows
+                            if not (row["before"] == [original] and row["after"] == [successor]
+                                    and row["status"] in ("unchanged", "moved"))
+                        ]
                     out.add("duplicate", group_b, [item] + others,
                             f"Тот же текст функции появился у дополнительного владельца ({_owners_text(item.owners)}); "
                             "возможное пересечение ответственности, требуется проверка.", "exact", True)
