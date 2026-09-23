@@ -179,7 +179,7 @@ def review(archive, archive_sha, extract_to, output, core_revision):
         "inspection_scope": coverage,
         "full_agent_acceptance": False, "F1_acceptance": False,
         "review_status": "19 pending_human; provisional agreement; no holdout scored",
-        "inference_provenance": "Batyrkhan supplied actual HTTP/SSE/persisted tool trace and nonsecret server attestation; no upstream provider transcript or token usage in ZIP. No model call was executed during this independent review.",
+        "inference_provenance": "This offline intake checks supplied HTTP/SSE/persisted tool trace and nonsecret server attestation. Independently inspect any supplemental provider evidence and disclose its actual availability and limits; host custody alone does not authenticate upstream identity or usage. No model call was executed during this independent review.",
         "interpretation": "Read trace-review and source-errors for action dependencies and semantic errors; tool counts alone establish neither decisions nor model quality."
     }
     write_json(output / "summary.json", summary)

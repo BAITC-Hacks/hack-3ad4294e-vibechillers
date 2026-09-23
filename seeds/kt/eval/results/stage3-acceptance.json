@@ -1,4 +1,6 @@
 {
+  "record_scope": "Historical evaluation of f104c91 only; not a result of the new backend core.",
+  "pending_final_intake": "seeds/kt/eval/results/stage3-final-intake.json",
   "schema_version": 2,
   "schema_commit_received": "4da43907919867ce4e8579360fe5b2ff43f9a37c",
   "inputs_ready": true,

@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "status": "awaiting_final_backend_capture",
+  "procedure": "eval/kt/BATYRKHAN-CAPTURE.md#independent-intake-by-alibi",
+  "prepared_against_checkout": "b392d9bd18687eb4905f296897399d0a5eb581e9",
+  "prepared_checkout_is_captured_core": false,
+  "archive": null,
+  "archive_sha256": null,
+  "core_revision": null,
+  "schema_revision": null,
+  "run_ids": null,
+  "new_run_metrics": null,
+  "new_run_action_review": null,
+  "final_verdict": null,
+  "scope": {
+    "partition": "development",
+    "inputs": "existing frozen synthetic control bundle only",
+    "dataset_expansion": false,
+    "scorer_expansion": false,
+    "holdout_opened": false,
+    "holdout_scored": false,
+    "provider_calls_on_alibi_side": 0
+  },
+  "freeze_preflight": {
+    "method": "git diff --quiet 7277efa -- listed paths; no source/label parsing or holdout-answer viewing",
+    "paths": [
+      "eval/kt/score.py",
+      "seeds/kt/eval/control",
+      "seeds/kt/eval/labels.jsonl",
+      "seeds/kt/eval/regression.jsonl",
+      "seeds/kt/eval/challenge.jsonl",
+      "seeds/kt/eval/split.json",
+      "seeds/kt/eval/reviews.json"
+    ],
+    "unchanged": true,
+    "scorer_sha256": "6a503bb7b6b5bced0a78398899d397f2ceacdcf5a5fb67b40e953103a3c59059",
+    "control_labels_sha256": "462d75c6d39bf30ab0c71c816232904b27019496355f3b0494685e26bdf02d7c",
+    "control_review_status": "19 pending_human; 0 human_confirmed; unchanged, not reassessed",
+    "scorer_and_control_label_raw_hashes_match": true
+  },
+  "historical_capture": {
+    "core_revision": "f104c91006c8d3d6a993881823863030e70aa4af",
+    "archive": "docs/evidence/stage3-capture-f104c91.zip",
+    "archive_sha256": "b4e484134c1122cd20b00632241b56a39ea0ee8bf30210aeacc80aba900e10a8",
+    "review_directory": "seeds/kt/eval/results/f104c91-independent",
+    "unchanged_since": "7277efa",
+    "read_only_history": true,
+    "applies_to_new_core": false,
+    "note": "The partial run and its measured counts remain historical. No final capture was received or rescored during this preparation."
+  },
+  "preflight_checks": {
+    "frozen_paths_unchanged": true,
+    "historical_zip_and_review_directory_unchanged": true,
+    "historical_zip_sha256_matches": true,
+    "intake_python_ast_valid": true,
+    "new_capture_intake_executed": false,
+    "intake_cli_help_exit_code": 0
+  },
+  "criteria": [
+    {
+      "id": "C0",
+      "requirement": "Custody and same-revision comparable runs",
+      "status": "awaiting_evidence",
+      "evidence": null,
+      "reproduction": null,
+      "blocker": null,
+      "owner": "Batyrkhan supplies; Alibi verifies"
+    },
+    {
+      "id": "A1",
+      "requirement": "Substantive result-dependent model-selected actions and validated finalization/abstention",
+      "status": "awaiting_evidence",
+      "evidence": null,
+      "reproduction": null,
+      "blocker": null,
+      "owner": "Batyrkhan"
+    },
+    {
+      "id": "M1",
+      "requirement": "Retained, created and reorganised structural units with sourced lineage",
+      "status": "awaiting_evidence",
+      "evidence": null,
+      "reproduction": null,
+      "blocker": null,
+      "owner": "Batyrkhan"
+    },
+    {
+      "id": "M2",
+      "requirement": "Function loss/transfer/merge and warranted abstentions on frozen controls",
+      "status": "awaiting_evidence",
+      "evidence": null,
+      "reproduction": null,
+      "blocker": null,
+      "owner": "Batyrkhan; Alibi for annotation disputes"
+    },
+    {
+      "id": "M3",
+      "requirement": "Duplication and potential conflict with legitimate cooperation negative",
+      "status": "awaiting_evidence",
+      "evidence": null,
+      "reproduction": null,
+      "blocker": null,
+      "owner": "Batyrkhan"
+    },
+    {
+      "id": "M4",
+      "requirement": "Exact editions/refs/quotes, source-backed meaning and physical coordinates",
+      "status": "awaiting_evidence",
+      "evidence": null,
+      "reproduction": null,
+      "blocker": null,
+      "owner": "Batyrkhan; Askat for source navigation/export"
+    },
+    {
+      "id": "M5",
+      "requirement": "Advisory analytical conclusion consistent with published domain outputs",
+      "status": "awaiting_evidence",
+      "evidence": null,
+      "reproduction": null,
+      "blocker": null,
+      "owner": "Batyrkhan; Askat for presentation"
+    },
+    {
+      "id": "F1",
+      "requirement": "DOCX/PDF/XLSX end-to-end evidence on the integrated revision",
+      "status": "awaiting_evidence",
+      "evidence": null,
+      "reproduction": null,
+      "blocker": null,
+      "owner": "Batyrkhan and Askat"
+    },
+    {
+      "id": "D1",
+      "requirement": "Durable reopen, actual UI/export/launch, agent verification route and honest degradation",
+      "status": "awaiting_evidence",
+      "evidence": null,
+      "reproduction": null,
+      "blocker": null,
+      "owner": "Batyrkhan and Askat"
+    },
+    {
+      "id": "Q",
+      "requirement": "Separate development metrics, denominators and pending-human/confirmed distinction",
+      "status": "awaiting_evidence",
+      "evidence": null,
+      "reproduction": null,
+      "blocker": null,
+      "owner": "Alibi"
+    }
+  ],
+  "after_delivery_record": "Fresh revision/run directory with integrity, two existing-scorer outputs, trace argument/result chains, source brief, per-criterion verdict, artifact hashes; then update tracked quality and acceptance index.",
+  "acceptance_interpretation": "Pass only within evidenced scope; absent mandatory evidence has a concrete blocker and owner. Completed/captured labels, tool counts, AI agreement or historical metrics alone do not pass. No invented accuracy threshold.",
+  "independent_preparation_review": {
+    "reviewer": "Codex subagent final_intake_review",
+    "scope": "Read-only runbook/contract/intake review; no labels, holdout, private helpers or inference",
+    "finding": "Added explicit created-predecessor-search and unresolved-before-only unit requirements to M1; no remaining actionable findings reported.",
+    "human_confirmation": false
+  }
+}

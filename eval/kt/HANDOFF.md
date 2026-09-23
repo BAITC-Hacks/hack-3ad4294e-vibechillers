@@ -1,5 +1,17 @@
 # Alibi → Batyrkhan: development error brief
 
+## Final capture pending — prepared intake
+
+Use [the existing intake procedure and mandatory criteria](BATYRKHAN-CAPTURE.md#independent-intake-by-alibi).
+Return the new archive SHA, exact core/schema commits, distinct run IDs, saved
+Reports/reopened/SSE/traces and effective nonsecret configuration. Alibi makes no
+provider calls and scores the existing frozen development controls separately per
+mode. Each requirement gets a passes/concrete-blocker verdict with source/trace
+evidence, reproduction and owner after delivery. Dataset/scorer/holdout stay frozen.
+
+The f104c91 results below are historical and do not evaluate the newer backend.
+Keep its ZIP and review directory unchanged; use a fresh revision/run directory.
+
 ## Independent review of f104c91 partial capture (2026-09-23)
 
 The immutable `d98e73b` ZIP has SHA-256
