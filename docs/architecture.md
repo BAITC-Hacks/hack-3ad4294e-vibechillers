@@ -29,6 +29,7 @@ flowchart LR
 | LLM adjudication | Optional bounded interpretation of ambiguous findings | `agent/audit_llm.py`; deterministic fallback remains |
 | Report | Preserve findings, citations, coverage, warnings and conclusion | `audit/models.py`, `api/audits.py` |
 | UI | Upload editions, inspect findings, open both clauses, reopen saved report | `AuditWorkspace.tsx`, `AuditReport.tsx` |
+| Offline export | Render public Report JSON with findings, conclusion, warnings, roles/units and their source citations | `scripts/export_report.py`; standard library, no SQLite access or external assets |
 
 The binding audit contract is in `docs/plan.md` §3: repeated multipart
 `before_files` and `after_files` to `POST /audits`, one terminal `final` event

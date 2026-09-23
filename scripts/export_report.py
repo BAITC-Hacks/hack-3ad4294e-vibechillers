@@ -41,6 +41,7 @@ def citation_link(citation: dict[str, Any]) -> str:
 def render_report(report: dict[str, Any]) -> str:
     documents = report.get("documents") or []
     clauses = report.get("clauses") or []
+    units = report.get("units") or []
     findings = report.get("findings") or []
     conclusion = report.get("conclusion") or []
     warnings = report.get("warnings") or []
@@ -101,6 +102,19 @@ def render_report(report: dict[str, Any]) -> str:
             + "</article>"
         )
 
+    unit_items = []
+    for unit in units:
+        citations = " ".join(citation_link(c) for c in unit.get("citations", []))
+        parent = unit.get("parent_unit_id")
+        unit_items.append(
+            f'<article class="unit"><h3>{esc(unit.get("name", ""))}</h3>'
+            f'<p class="meta">Document: {esc(unit.get("doc", ""))}; '
+            f'unit: {esc(unit.get("unit_id", ""))}; kind: {esc(unit.get("kind", ""))}; '
+            f'parent: {esc(parent) if parent is not None else "none"}</p>'
+            + (f'<p class="citations">{citations}</p>' if citations else "")
+            + "</article>"
+        )
+
     clause_items = []
     for clause in clauses:
         doc = str(clause.get("doc", ""))
@@ -124,7 +138,7 @@ def render_report(report: dict[str, Any]) -> str:
 <style>body {{ font: 16px/1.5 system-ui,sans-serif; max-width: 1100px; margin: 2rem auto; padding: 0 1rem; color: #202124 }}
 a {{ color: #075985 }} .meta,.label,.kind {{ color: #5f6368; font-size: .9rem }}
 .warnings {{ border: 2px solid #b45309; background: #fff7ed; padding: .75rem 1rem; margin: 1rem 0 }}
-.finding,.clause {{ border: 1px solid #d1d5db; padding: .8rem 1rem; margin: .75rem 0; scroll-margin-top: 1rem }}
+.finding,.clause,.unit {{ border: 1px solid #d1d5db; padding: .8rem 1rem; margin: .75rem 0; scroll-margin-top: 1rem }}
 .finding:target,.clause:target {{ outline: 3px solid #f59e0b }} .status {{ background: #e0f2fe; padding: .15rem .4rem }}
 dt {{ font-weight: 700 }} dd {{ margin: 0 0 .35rem }} .citations {{ overflow-wrap: anywhere }}</style></head><body>
 <h1>Function Lineage Auditor report</h1>
@@ -134,6 +148,7 @@ dt {{ font-weight: 700 }} dd {{ margin: 0 0 .35rem }} .citations {{ overflow-wra
 {warnings_section}
 <section><h2>Conclusion</h2><ol>{''.join(conclusion_items) or '<li>No conclusion supplied.</li>'}</ol></section>
 <section><h2>Findings</h2>{''.join(finding_items) or '<p>No findings supplied.</p>'}</section>
+<section><h2>Units and roles</h2>{''.join(unit_items) or '<p>No units supplied.</p>'}</section>
 <section><h2>Source clauses</h2>{''.join(clause_items) or '<p>No clauses supplied.</p>'}</section>
 </body></html>'''
 

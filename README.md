@@ -8,19 +8,38 @@ for hashes, provenance and usage restrictions.
 
 ## Installation
 
-Use the repository's Docker path. It requires Docker Desktop with Compose and
-does not require a GitHub account, LLM account or API key.
+The main deployment path is Docker Desktop with Compose. **End-to-end launch
+is not yet verified** in the Stage 2 delivery environment; see
+[the launch record](docs/evidence/kt-launch.md) for the remaining acceptance gates.
+No application API key is needed for the keyless audit.
+
+Host prerequisites (these must be on PATH, not just inside the containers):
+Git for Windows including Git Bash and curl, PowerShell, Docker Desktop with
+Compose, [uv](https://docs.astral.sh/uv/getting-started/installation/) and
+Python 3.12. Install these tools before running the commands below. Python
+project packages are installed inside the API image; the host demo/export
+uses only Python's standard library. Run `git --version`, `bash --version`,
+`curl --version`, `uv --version`, `python --version` and
+`docker compose version` to check tool availability.
 
 ```powershell
 git clone https://github.com/BAITC-Hacks/hack-3ad4294e-vibechillers.git
 Set-Location hack-3ad4294e-vibechillers
 Copy-Item .env.example .env
+$env:LLM_API_KEY = ""
 docker compose up --build
 ```
 
 The compose build installs the versions from `uv.lock` and the web
 `package-lock.json`. Do not run `uv add`, `uv sync`, `uv lock` or `npm install`
 for the judge path.
+
+For a disposable acceptance run, use the pinned-revision and unique Compose
+project procedure in the launch record instead of reusing a team's checkout
+or stack. Ports 8000 and 3000 must be free; do not stop somebody else's
+services to free them. Compose currently publishes these ports on all host
+interfaces: use an isolated machine/network with inbound access blocked.
+Do not expose the application publicly.
 
 ## Dependencies and requirements
 
@@ -41,15 +60,18 @@ internal Compose service name.
 Copy `.env.example` to `.env`. `LLM_API_KEY` may stay empty. Other API settings
 are `LLM_BASE_URL`, `LLM_MODEL`, `LLM_TIMEOUT_S`, `LLM_MAX_TOKENS`, `DB_PATH`,
 `DATA_DIR`, `SEEDS_DIR`, `EMBED_MODEL`, `EMBED_DIM`, `API_HOST`, `API_PORT` and
-`CORS_ORIGINS`; the web build reads `NEXT_PUBLIC_API_BASE`. Defaults are safe
-placeholders and no secret belongs in the repository.
+`CORS_ORIGINS`; the web build reads `NEXT_PUBLIC_API_BASE`. Host environment
+variables override `.env` during Compose interpolation: an empty key in the
+file alone does not prove a keyless environment. Use a dedicated shell with
+no personal credentials and explicitly clear `LLM_API_KEY` before startup.
+Never store secrets in the repository.
 
 ## How to verify the main scenario
 
 With the stack running, execute the checked-in demo:
 
 ```powershell
-sh scripts/demo.sh
+bash scripts/demo.sh
 uv run --no-sync python scripts/export_report.py --report data/demo-report.json --out data/demo-report.html
 ```
 
@@ -57,8 +79,25 @@ The demo uploads `v8.docx` as `before_files` and `v9.docx` as `after_files` to
 `POST /audits` with `use_llm=false`, extracts exactly one final Report from the
 SSE stream, and saves it. The exporter is standard library only and produces a
 standalone HTML file that can be opened without the application or network.
-`GET /audits/{run_id}` re-reads the persisted Report; the run ID is printed by
-the demo.
+The run ID is printed by the demo. Re-read the persisted Report through the
+public API and compare the complete JSON, not only its ID:
+
+```powershell
+@'
+import json
+from pathlib import Path
+from urllib.request import urlopen
+
+saved = json.loads(Path("data/demo-report.json").read_text(encoding="utf-8"))
+with urlopen("http://localhost:8000/audits/" + saved["run_id"], timeout=30) as response:
+    fetched = json.load(response)
+assert fetched == saved, "Persisted Report differs"
+print("Persisted Report matches:", saved["run_id"])
+'@ | uv run --no-sync python -
+```
+
+This HTTP comparison still requires a live audit run; it is not recorded as
+passed in the current launch evidence.
 
 For a quick keyless health check:
 
