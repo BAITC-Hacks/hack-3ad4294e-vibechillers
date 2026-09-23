@@ -1,11 +1,10 @@
-"""Document parsers: pure text extraction, no database access.
+"""Document parsers: text plus source coordinates, without database access.
 
-Every parser takes a ``pathlib.Path`` and returns ``list[dict]`` of
-``{"page": int, "text": str}`` with 1-based page numbers. ``parse_any``
-dispatches on the file suffix and additionally reports the detected media
-type. PyMuPDF (``fitz``) is banned by the project contract — PDF extraction
-here goes through pypdfium2, with pdfplumber and rapidocr-onnxruntime as
-per-page fallbacks.
+Every parser returns page dictionaries with ``page`` and ``text`` for existing
+chunking callers. PDF ``physical_page``, DOCX ``block``, and XLSX ``sheet`` and
+table ``rows`` additionally identify the original source; a Word block is not
+a physical page. The audit parser uses row cells rather than flattening a
+worksheet into supposed numbered duties.
 """
 
 from __future__ import annotations
@@ -39,10 +38,10 @@ def _pdf_page_text_pdfplumber(pdf_path: Path, page_index: int) -> str:
 
 
 def _pdf_page_text_ocr(page) -> str:
-    """Last-resort extraction: render the page, then run rapidocr-onnxruntime.
+    """Optional last-resort text extraction from a rendered page.
 
-    Raises ImportError when rapidocr is not installed so the caller can fall
-    through to the placeholder marker.
+    ``rapidocr-onnxruntime`` is an optional dependency. OCR text is not a
+    structural interpretation of a diagram or a guarantee of completeness.
     """
     import numpy as np
     from rapidocr_onnxruntime import RapidOCR
@@ -61,12 +60,10 @@ def _pdf_page_text_ocr(page) -> str:
 
 
 def parse_pdf(path: Path) -> list[dict]:
-    """Extract one entry per PDF page.
+    """Extract pages in physical order, recording how each was read.
 
-    Per page: pypdfium2 text; if under ``_MIN_PDF_CHARS`` characters, retry
-    that page with pdfplumber; if still empty, try rapidocr-onnxruntime on a
-    rendered bitmap; otherwise mark the page ``"[no extractable text]"``.
-    Every fallback is guarded — a failure on one page never kills the run.
+    Keep unreadable pages visible so a partially readable annex is not
+    mistaken for a complete one. Ingestion rejects a wholly unreadable PDF.
     """
     import pypdfium2 as pdfium
 
@@ -75,66 +72,85 @@ def parse_pdf(path: Path) -> list[dict]:
     try:
         for index in range(len(doc)):
             text = ""
+            extraction = "unreadable"
             try:
                 page = doc[index]
                 text = _pdf_page_text_pypdfium2(page).strip()
+                if text:
+                    extraction = "pdfium"
                 if len(text) < _MIN_PDF_CHARS:
                     try:
                         alt = _pdf_page_text_pdfplumber(Path(path), index)
-                        if alt:
-                            text = alt
+                        if len(alt) > len(text):
+                            text, extraction = alt, "pdfplumber"
                     except Exception:
                         pass
-                if not text:
+                if len(text) < _MIN_PDF_CHARS:
                     try:
-                        text = _pdf_page_text_ocr(page)
+                        alt = _pdf_page_text_ocr(page).strip()
+                        if len(alt) > len(text):
+                            text, extraction = alt, "ocr"
                     except ImportError:
-                        text = ""
+                        pass
                     except Exception:
-                        text = ""
+                        pass
+                if text and len(text) < _MIN_PDF_CHARS:
+                    extraction = "limited"
             except Exception:
-                # pypdfium2 itself failed on this page — keep the slot.
-                text = ""
-            if not text.strip():
-                text = "[no extractable text]"
-            pages.append({"page": index + 1, "text": text})
+                # Retain this physical page as an explicit limitation.
+                pass
+            pages.append({
+                "page": index + 1,
+                "physical_page": index + 1,
+                "text": text or "[no extractable text]",
+                "extraction": extraction,
+            })
     finally:
         doc.close()
     return pages
 
 
 def parse_xlsx(path: Path) -> list[dict]:
-    """One page per worksheet, stat.gov workbook shape.
+    """Extract each worksheet's original cells and physical coordinates.
 
-    Merged ranges are unmerged and the top-left value is propagated across
-    the whole range *before* reading cells (openpyxl stores None elsewhere in
-    a merge). Rows render as tab-separated lines; fully-empty rows are
-    skipped.
+    A merged cell is recorded only at its actual anchor. Other cells in the
+    range remain empty, and the merge bounds are retained for conservative
+    owner association by the audit parser.
     """
     import openpyxl
 
-    wb = openpyxl.load_workbook(str(path), data_only=True, read_only=False)
+    wb = openpyxl.load_workbook(str(path), data_only=False, read_only=False)
     pages: list[dict] = []
     try:
-        for sheet_index, ws in enumerate(wb.worksheets):
-            # Fill merged regions with their anchor value, then unmerge so
-            # iter_rows() sees the propagated values.
-            for merged in list(ws.merged_cells.ranges):
-                min_col, min_row, max_col, max_row = merged.bounds
-                top_left = ws.cell(row=min_row, column=min_col).value
-                ws.unmerge_cells(str(merged))
-                for row in range(min_row, max_row + 1):
-                    for col in range(min_col, max_col + 1):
-                        ws.cell(row=row, column=col).value = top_left
-            lines: list[str] = []
-            for row in ws.iter_rows(values_only=True):
-                cells = [
-                    "" if value is None else str(value).strip() for value in row
-                ]
-                if not any(cells):
-                    continue  # fully-empty row
-                lines.append("\t".join(cells).rstrip("\t"))
-            pages.append({"page": sheet_index + 1, "text": "\n".join(lines)})
+        for sheet_index, ws in enumerate(wb.worksheets, start=1):
+            rows: list[dict] = []
+            for cells in ws.iter_rows():
+                values = ["" if cell.value is None else str(cell.value) for cell in cells]
+                if not any(value.strip() for value in values):
+                    continue
+                last = max(index for index, value in enumerate(values) if value.strip()) + 1
+                values = values[:last]
+                row_index = cells[0].row
+                rows.append({
+                    "row": row_index,
+                    "cells": values,
+                    "text": "\t".join(values),
+                    "formulas": [
+                        column for column, cell in enumerate(cells[:last], start=1)
+                        if cell.data_type == "f"
+                    ],
+                })
+            pages.append({
+                "page": sheet_index,
+                "sheet": ws.title,
+                "text": "\n".join(row["text"] for row in rows),
+                "rows": rows,
+                "merges": [
+                    {"min_row": span.min_row, "max_row": span.max_row,
+                     "min_col": span.min_col, "max_col": span.max_col}
+                    for span in ws.merged_cells.ranges
+                ],
+            })
     finally:
         wb.close()
     return pages
@@ -156,13 +172,11 @@ def parse_csv(path: Path) -> list[dict]:
 
 
 def parse_docx(path: Path) -> list[dict]:
-    """Paragraphs and tables in document-body order.
+    """Keep body-order paragraphs/tables and actual 1-based body block IDs.
 
-    Page numbering choice: each top-level block (one paragraph, or one table)
-    becomes its own sequential page — page N is the Nth block of content.
-    This keeps ordering trivially correct and gives chunking page-level
-    granularity without attempting to model real Word pagination, which
-    python-docx cannot compute. Tables render as tab-separated rows.
+    The legacy ``page`` slot stays sequential for chunking; ``block`` counts
+    every body paragraph/table, including empty spacer paragraphs. Merged
+    cells are never duplicated as if they contained separate source text.
     """
     import docx
     from docx.oxml.table import CT_Tbl
@@ -172,24 +186,42 @@ def parse_docx(path: Path) -> list[dict]:
 
     document = docx.Document(str(path))
     pages: list[dict] = []
-    number = 0
+    block = 0
     for child in document.element.body:
+        if isinstance(child, (CT_P, CT_Tbl)):
+            block += 1
         if isinstance(child, CT_P):
-            text = Paragraph(child, document).text.strip()
-            if not text:
-                continue  # empty spacer paragraph
-            number += 1
-            pages.append({"page": number, "text": text})
+            text = Paragraph(child, document).text
+            if text.strip():
+                pages.append({"page": len(pages) + 1, "block": block, "text": text})
         elif isinstance(child, CT_Tbl):
             table = Table(child, document)
-            lines = []
-            for row in table.rows:
-                lines.append("\t".join(cell.text.strip() for cell in row.cells))
-            number += 1
-            pages.append({"page": number, "text": "\n".join(lines)})
-        # Anything else in the body (sectPr, etc.) carries no text.
+            rows: list[dict] = []
+            anchors: dict[object, tuple[int, int]] = {}
+            for row_index, row in enumerate(table.rows, start=1):
+                values: list[str] = []
+                merged: dict[int, tuple[int, int]] = {}
+                for column, cell in enumerate(row.cells, start=1):
+                    key = cell._tc
+                    anchor = anchors.get(key)
+                    if anchor is None:
+                        anchors[key] = (row_index, column)
+                        values.append(cell.text)
+                    else:
+                        values.append("")
+                        merged[column] = anchor
+                rows.append({
+                    "row": row_index, "cells": values,
+                    "text": "\t".join(values), "merged": merged,
+                })
+            pages.append({
+                "page": len(pages) + 1,
+                "block": block,
+                "text": "\n".join(row["text"] for row in rows),
+                "rows": rows,
+            })
     if not pages:
-        pages.append({"page": 1, "text": ""})
+        pages.append({"page": 1, "text": "", "block": 1})
     return pages
 
 
@@ -218,6 +250,12 @@ def parse_any(path: Path) -> tuple[list[dict], str]:
     unsupported suffixes, naming the supported ones."""
     suffix = Path(path).suffix.lower()
     entry = _PARSERS.get(suffix)
+    if suffix in {".doc", ".xls"}:
+        replacement = ".docx" if suffix == ".doc" else ".xlsx"
+        raise ValueError(
+            f"Legacy {suffix} is not supported; convert it to {replacement} "
+            "with a document editor and upload the converted file."
+        )
     if entry is None:
         raise ValueError(
             f"Unsupported file suffix {suffix!r}; supported: "

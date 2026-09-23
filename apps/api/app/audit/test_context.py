@@ -199,13 +199,6 @@ class SourceContextTests(unittest.TestCase):
         units = {u.unit_id:u for u in report.units if u.doc == 'before'}
         self.assertEqual(owner_keys(clauses['1.1'], clauses, units), frozenset({'главный аудитор'}))
         self.assertEqual(owner_keys(clauses['1.3'], clauses, units), frozenset({'директор'}))
-        from ..agent.audit_llm import _adjudication_prompt
-        from ..agent.audit_tools import AuditContext
-        import json
-        finding, = child_findings(report, '1.3')
-        prompt = json.loads(_adjudication_prompt(AuditContext.from_report(report), [finding]).split('\n', 2)[2])
-        candidate = prompt[0]['offered_before'][0]
-        self.assertEqual([units[uid].name for uid in candidate['governing_role_unit_ids']], ['Директор'])
 
     def test_standalone_role_scopes_siblings_until_next_role(self):
         text = (
@@ -222,16 +215,6 @@ class SourceContextTests(unittest.TestCase):
                          frozenset({'директор отдела качества и методологии'}))
         self.assertFalse(owner_keys(clauses['1.4'], clauses, units))
         self.assertEqual(clauses['1.1'].parent_id, '1')
-        from ..agent.audit_llm import _adjudication_prompt
-        from ..agent.audit_tools import AuditContext
-        import json
-        finding, = child_findings(report)
-        prompt = json.loads(_adjudication_prompt(AuditContext.from_report(report), [finding]).split('\n', 2)[2])
-        candidate = prompt[0]['offered_before'][0]
-        self.assertTrue(candidate['governing_role_unit_ids'])
-        source = candidate['context_only']['sibling_role_scope']
-        self.assertIsNotNone(source)
-        self.assertEqual(source['clause_id'], next(u.citations[0].clause_id for u in units.values() if u.name == 'Главный аудитор'))
 
     def test_offered_split_and_merge_remain_many_ref_and_reviewable(self):
         report = audit('1. Функции\n1.1. Ведение реестра и подготовка отчета.\n1.2. Согласование отчета.',

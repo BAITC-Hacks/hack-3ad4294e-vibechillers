@@ -157,6 +157,10 @@ Host parses and aligns once. Audit investigation registry excludes reset-capable
 The shared conversation engine must not persist audit events or apply `/run` search-hit citation rules.
 Default investigation bounds: 12 model turns, 32 tool calls, 180 seconds, plus LLM_TIMEOUT_S per request.
 Validated partial decisions survive failures; unavailable/failed deterministic fallback is never completed.
+Tool mutations are committed only after successful completion on isolated mutable state; a cancelled/deadline
+tool cannot modify the report later. Finalization requires nonempty inspection evidence from an earlier model
+turn, not a blind inspect/finalize batch. Model rationale stays in the trace; published alignment explanations
+are generated from validated statuses/refs. Audit final is emitted only after successful SQLite persistence.
 
 Unit refs resolve to correct-edition structural units; mentioned roles cannot establish unit lineage.
 Created needs predecessor search; renamed/split/merged units need cited change evidence. Before-only units
@@ -166,3 +170,7 @@ a conflict. All recommendations remain advisory, subject to responsible human re
 
 Source locations use physical PDF pages, 1-based DOCX body block ordinals, or workbook sheet/cell ranges.
 Unknown values remain null. Exact quote and ClauseRef validation remains mandatory.
+DOCX physical pages are never fabricated. Legacy `.doc`/`.xls` require conversion; empty/unreadable annexes
+fail rather than produce a successful empty report. Tables use explicit column/merged-owner metadata; formulas
+are preserved as source strings, not evaluated or inferred into duties. Image-only PDF support depends on the
+available local OCR runtime; geometric PDF tables/diagrams are not claimed as supported structure.

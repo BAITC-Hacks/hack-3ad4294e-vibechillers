@@ -4,8 +4,10 @@ from __future__ import annotations
 
 from .align import align_functions
 from .citations import check_citation, cite_context, cite_refs, clause_index
+from .lineage import analyze_domain, validate_risk, validate_unit_change
 from .models import (
     FINDING_STATUSES,
+    AgentExecution,
     Citation,
     Clause,
     ClauseRef,
@@ -14,7 +16,9 @@ from .models import (
     Document,
     Finding,
     Report,
+    Risk,
     Unit,
+    UnitChange,
 )
 from .parser import parse_documents
 
@@ -157,38 +161,74 @@ def _ensure_accounted(findings: list[Finding], clauses: list[Clause], index: dic
     return findings + extra
 
 
-def _validate_conclusion(items: list[ConclusionItem], findings: list[Finding], index: dict,
-                         warnings: list[str]) -> list[ConclusionItem]:
-    by_id = {f.id: f for f in findings}
+def _validate_conclusion(
+    items: list[ConclusionItem], findings: list[Finding], index: dict,
+    warnings: list[str], unit_changes: list[UnitChange], risks: list[Risk],
+) -> list[ConclusionItem]:
+    groups = (
+        ("finding_ids", {f.id: f for f in findings}),
+        ("unit_change_ids", {u.id: u for u in unit_changes}),
+        ("risk_ids", {r.id: r for r in risks}),
+    )
     out: list[ConclusionItem] = []
     for n, item in enumerate(items, start=1):
-        ids = [fid for fid in item.finding_ids if fid in by_id]
-        unknown = [fid for fid in item.finding_ids if fid not in by_id]
-        if unknown:
-            warnings.append(f"Conclusion item {n}: unknown finding ids dropped: {', '.join(unknown)}.")
-        if not ids or not item.text.strip():
-            warnings.append(f"Conclusion item {n} dropped: it does not reference a verified finding.")
+        entities = []
+        unknown = []
+        for field, by_id in groups:
+            ids = getattr(item, field)
+            entities.extend(by_id[id_] for id_ in ids if id_ in by_id)
+            unknown.extend(id_ for id_ in ids if id_ not in by_id)
+        if unknown or not entities or not item.text.strip():
+            warnings.append(f"Conclusion item {n} dropped: missing or unknown evidence IDs: {unknown}.")
             continue
-        direct = {_key(r) for fid in ids for r in (*by_id[fid].before, *by_id[fid].after)}
-        evidence = [c for fid in ids for c in by_id[fid].citations]
-        citations: list[Citation] = []
-        for citation in item.citations:
-            reason = check_citation(citation, index)
-            if reason is None and _key(citation) not in direct and not any(
-                _key(citation) == _key(c) and citation.quote in c.quote for c in evidence
-            ):
-                reason = "citation does not belong to the referenced findings"
-            if reason is None:
-                citations.append(citation)
-            else:
-                warnings.append(f"Conclusion item {n}: citation withheld — {reason}.")
-        if not citations:
-            citations = [c for fid in ids for c in by_id[fid].citations]
-        if not citations:
-            warnings.append(f"Conclusion item {n} dropped: its findings carry no verified citation.")
+        evidence = [c for entity in entities for c in entity.citations]
+        citations = item.citations or evidence
+        problem = next(
+            (
+                check_citation(c, index) or "citation does not belong to the referenced outputs"
+                for c in citations
+                if check_citation(c, index) is not None or not any(
+                    _key(c) == _key(source) and c.quote in source.quote for source in evidence
+                )
+            ),
+            None,
+        )
+        if problem or not citations:
+            warnings.append(f"Conclusion item {n} dropped: {problem or 'no verified citation'}.")
             continue
-        out.append(ConclusionItem(text=item.text, finding_ids=ids, citations=citations))
+        out.append(item.model_copy(update={"citations": citations}))
     return out
+
+
+def _domain_conclusion(unit_changes: list[UnitChange], risks: list[Risk]) -> list[ConclusionItem]:
+    items: list[ConclusionItem] = []
+    unit_labels = {
+        "retained": "Сохранившиеся подразделения",
+        "reorganised": "Преобразованные подразделения",
+        "created": "Созданные подразделения без подтверждённого предшественника",
+        "unresolved": "Подразделения с неподтверждённой преемственностью",
+    }
+    for status, label in unit_labels.items():
+        rows = [u for u in unit_changes if u.status == status]
+        if rows:
+            items.append(ConclusionItem(
+                text=f"{label}: {len(rows)}. Проверьте источники и границы переданных полномочий.",
+                unit_change_ids=[u.id for u in rows],
+                citations=list({(_key(c), c.quote): c for u in rows for c in u.citations}.values()),
+            ))
+    for kind, label in (
+        ("potential_duplication", "Возможное межподразделенческое дублирование"),
+        ("potential_conflict_of_interest", "Потенциальный конфликт исполнения и проверки собственной работы"),
+    ):
+        rows = [r for r in risks if r.kind == kind]
+        if rows:
+            items.append(ConclusionItem(
+                text=f"{label}: {len(rows)}. Вывод рекомендательный, не свидетельство нарушения; "
+                     "ответственному сотруднику следует проверить распределение обязанностей по указанным источникам.",
+                risk_ids=[r.id for r in rows],
+                citations=list({(_key(c), c.quote): c for r in rows for c in r.citations}.values()),
+            ))
+    return items
 
 
 def build_report(
@@ -201,6 +241,9 @@ def build_report(
     mode: str = "deterministic",
     conclusion: list[ConclusionItem] | None = None,
     warnings: list[str] | None = None,
+    unit_changes: list[UnitChange] | None = None,
+    risks: list[Risk] | None = None,
+    agent: AgentExecution | None = None,
 ) -> Report:
     """Assemble a ``Report``: re-verify every quote, guarantee function coverage, build or validate the conclusion.
 
@@ -212,15 +255,60 @@ def build_report(
     before_docs, after_docs = _editions(documents)
     checked = _verify_findings(findings, index, notes)
     checked = _ensure_accounted(checked, clauses, index, before_docs, after_docs, notes)
+    if unit_changes is None or risks is None:
+        generated_units, generated_risks, domain_notes = analyze_domain(documents, clauses, units, checked)
+        notes.extend(domain_notes)
+    else:
+        generated_units, generated_risks = [], []
+    checked_units: list[UnitChange] = []
+    checked_risks: list[Risk] = []
+    seen_units: set[str] = set()
+    seen_risks: set[str] = set()
+    for change in generated_units if unit_changes is None else unit_changes:
+        problem = validate_unit_change(change, documents, clauses, units, reviewed_predecessors=True)
+        if change.id in seen_units:
+            problem = "duplicate unit change ID"
+        if problem:
+            notes.append(f"{change.id}: unit change withheld — {problem}.")
+        else:
+            seen_units.add(change.id)
+            checked_units.append(change)
+    risk_evidence: set[tuple] = set()
+    for risk in generated_risks if risks is None else risks:
+        problem = validate_risk(risk, documents, clauses, units)
+        if risk.id in seen_risks:
+            problem = "duplicate risk ID"
+        signature = (risk.kind, tuple(sorted({_key(r) for r in risk.refs})))
+        if problem:
+            notes.append(f"{risk.id}: risk withheld — {problem}.")
+        elif signature not in risk_evidence:
+            seen_risks.add(risk.id)
+            risk_evidence.add(signature)
+            checked_risks.append(risk)
     coverage = compute_coverage(clauses, checked, before_docs, after_docs)
     items: list[ConclusionItem] | None = None
     if conclusion is not None:
-        items = _validate_conclusion(conclusion, checked, index, notes)
+        items = _validate_conclusion(conclusion, checked, index, notes, checked_units, checked_risks)
         if not items:
             notes.append("Proposed conclusion rejected: no item referenced verified findings; deterministic conclusion used.")
             items = None
     if items is None:
         items = deterministic_conclusion(checked, coverage, documents)
+    # Mandatory domain sections are never lost to an abbreviated model conclusion.
+    linked_units = {id_ for item in items for id_ in item.unit_change_ids}
+    linked_risks = {id_ for item in items for id_ in item.risk_ids}
+    items.extend(_domain_conclusion(
+        [u for u in checked_units if u.id not in linked_units],
+        [r for r in checked_risks if r.id not in linked_risks],
+    ))
+    execution = agent or AgentExecution(status="not_requested", stop_reason="Model investigation not requested.")
+    if execution.status != "not_requested":
+        notes.append(
+            f"Агент: {execution.status}; исследовано выводов {len(execution.investigated_finding_ids)} "
+            f"из {len(checked)}; {execution.stop_reason}"
+        )
+    notes.append("Выводы рекомендательные и требуют проверки ответственным сотрудником. "
+                 "Отсутствие отмеченного риска не доказывает отсутствие пересечения или конфликта.")
     return Report(
         run_id=run_id,
         mode=mode,
@@ -230,7 +318,10 @@ def build_report(
         findings=checked,
         conclusion=items,
         coverage=coverage,
-        warnings=notes,
+        warnings=list(dict.fromkeys(notes)),
+        unit_changes=checked_units,
+        risks=checked_risks,
+        agent=execution,
     )
 
 
@@ -268,6 +359,8 @@ def resolve_alignment(
         problem = f"unknown status '{status}'"
     elif not reason.strip():
         problem = "no reason given"
+    elif len({_key(r) for r in before}) != len(before) or len({_key(r) for r in after}) != len(after):
+        problem = "repeated clause references cannot satisfy alignment cardinality"
     elif any(_key(r) not in offered_b for r in before) or any(_key(r) not in offered_a for r in after):
         problem = "refs outside the offered candidates"
     elif any(_key(r) not in index for r in before + after):
@@ -290,7 +383,8 @@ def resolve_alignment(
         before=unique_b,
         after=unique_a,
         citations=cite_context(unique_b + unique_a, index),
-        reason=f"Решение LLM (требует проверки): {reason.strip()}",
+        reason=f"Предложение модели: статус «{status}» для указанных пунктов до и после. "
+               "Сопоставление основано на приведённых источниках и требует проверки ответственным сотрудником.",
         method="llm",
         review_required=True,
     )

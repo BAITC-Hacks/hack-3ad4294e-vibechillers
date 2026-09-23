@@ -21,8 +21,9 @@ from typing import Any, Literal
 from starlette.concurrency import run_in_threadpool
 
 from .. import db
-from ..agent.trace import TraceWriter
 from ..audit import Document, Report, load_manifest, make_documents, report_summary, run_deterministic_audit
+from ..audit.models import AgentExecution
+from ..config import get_settings
 from ..events import Event, SequenceCounter
 from ..ingest import pipeline
 
@@ -141,8 +142,12 @@ def run_input(before: list[AuditUpload], after: list[AuditUpload], use_llm: bool
     }
 
 
-def _with_warning(report: Report, message: str) -> Report:
-    return report.model_copy(update={"warnings": [*report.warnings, message]})
+def _with_warning(report: Report, message: str, *, status: str = "failed") -> Report:
+    return report.model_copy(update={
+        "mode": "deterministic",
+        "warnings": [*report.warnings, message],
+        "agent": AgentExecution(status=status, model=get_settings().llm_model, stop_reason=message),
+    })
 
 
 def _coverage_line(report: Report) -> str:
@@ -163,12 +168,15 @@ async def stream_audit(
     even when the client disconnects mid-stream.
     """
     counter = SequenceCounter()
-    writer = TraceWriter(run_id)
     outcome: dict[str, str | None] = {"status": "error", "output": None, "error": "audit aborted"}
 
     def make(type_: str, data: dict[str, Any]) -> Event:
         event = Event(type=type_, run_id=run_id, data=data, seq=counter.next())  # type: ignore[arg-type]
-        writer.write(event)
+        with db.session() as conn:
+            conn.execute(
+                "INSERT INTO agent_trace (run_id, seq, ts, type, name, payload) VALUES (?, ?, ?, ?, ?, ?)",
+                (run_id, event.seq, event.ts, type_, data.get("name"), json.dumps(data, ensure_ascii=False)),
+            )
         return event
 
     try:
@@ -198,7 +206,7 @@ async def stream_audit(
             yield make("status", {"message": f"Deterministic report ready: {_coverage_line(report)}"})
 
             if use_llm:
-                yield make("status", {"message": "LLM adjudication of ambiguous findings requested"})
+                yield make("status", {"message": "Bounded model-driven audit investigation requested"})
                 queue: asyncio.Queue[Event] = asyncio.Queue()
 
                 def emit(type_: str, data: dict[str, Any]) -> None:
@@ -216,7 +224,7 @@ async def stream_audit(
                     report = _with_warning(
                         deterministic,
                         f"LLM assistance unavailable ({type(exc).__name__}: {exc}); "
-                        "deterministic report returned.",
+                        "deterministic report returned.", status="unavailable",
                     )
 
                 if adjudicate_report is not None:
@@ -246,10 +254,10 @@ async def stream_audit(
                             )
                         report = candidate
                     except Exception as exc:  # key/model/validation failure never gates the report
-                        logger.exception("audit %s: LLM adjudication failed", run_id)
+                        logger.exception("audit %s: model investigation failed", run_id)
                         report = _with_warning(
                             deterministic,
-                            f"LLM assistance failed ({type(exc).__name__}: {exc}); "
+                            f"Model investigation failed ({type(exc).__name__}: {exc}); "
                             "deterministic report returned.",
                         )
                 yield make(
@@ -269,7 +277,14 @@ async def stream_audit(
             logger.exception("audit %s failed", run_id)
             message = f"Audit failed: {type(exc).__name__}: {exc}"
             outcome.update(status="error", output=None, error=message)
-            yield make("error", {"message": message, "recoverable": False})
+            try:
+                failure = make("error", {"message": message, "recoverable": False})
+            except Exception:
+                # Storage may itself be the failure: never show an unsaved final as success.
+                failure = Event(type="error", run_id=run_id, seq=counter.next(), data={
+                    "message": message + " Report/trace could not be persisted.", "recoverable": False,
+                })
+            yield failure
     finally:
         try:
             db.finish_run(run_id, str(outcome["status"]), output=outcome["output"], error=outcome["error"])

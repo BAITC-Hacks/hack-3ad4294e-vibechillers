@@ -1,14 +1,10 @@
-"""Hierarchical regulation parser over ingested ``ParsedDoc.pages``.
+"""Hierarchical regulation parser over the ingestion pipeline's page records.
 
-Input is the kit's page list (``[{"page": int, "text": str}]``); for DOCX a page
-is one body block, for TXT the whole file. Every line becomes at least one
-clause, so no source span is dropped: numbered clauses (``2.4.1.``), lettered
-sub-clauses (``а.``) and unlabelled blocks (``@p<ordinal>``). Numeric markers
-embedded after a sentence end are split out when they continue the current
-numbering (``... направления. 3.10.Рабочие места ...``).
-
-Clause text is the source span after its marker with surrounding whitespace
-trimmed; ``label`` keeps the literal marker. Quotes are cut from this text.
+Ordinary DOCX/PDF/TXT clauses retain their numbered/lettered hierarchy.
+Explicit DOCX/XLSX table headers instead define sourced unit/role rows and
+duty cells; an unlabelled workbook is not silently promoted to functions.
+Locations refer to physical PDF pages, DOCX body blocks or Excel cells, never
+to an invented Word page number.
 """
 
 from __future__ import annotations
@@ -16,7 +12,7 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 
-from .models import Citation, Clause, Document, ParseResult, Unit
+from .models import Citation, Clause, Document, ParseResult, SourceLocation, Unit
 from .text import normalize
 
 _NUM_START = re.compile(r"^(?P<label>(?P<path>\d{1,3}(?:\.\d{1,3})*)\.)(?=\s|[^\d\s.])")
@@ -78,14 +74,32 @@ _ROLE_FINITE_VERB = re.compile(
     r"ет|ют|ут|ит|ят|ают|яют)\b", re.IGNORECASE,
 )
 
+_TABLE_NUMBER = re.compile(r"(?:№|номер|п п|number|no)(?:\s+(?:пункта|строки))?$")
+
+
 @dataclass
 class _Segment:
     label: str
-    kind: str  # "num" | "letter" | "plain" | "toc"
+    kind: str  # "num" | "letter" | "plain" | "toc" | "table_*"
     path: tuple[int, ...] | None
     letter: str | None
     text: str
+    location: SourceLocation | None = None
+    row_key: tuple[int, int] | None = None
+    anchor_key: tuple[int, int] | None = None
+    parent_name: str = ""
+    parent_key: tuple[int, int] | None = None
+    anchor_kind: str | None = None
+    unit_reference: bool = False
 
+
+@dataclass
+class _TableDefinition:
+    clause: Clause
+    kind: str
+    parent_name: str
+    row_key: tuple[int, int]
+    reference: bool = False
 
 def _parse_path(raw: str) -> tuple[int, ...]:
     return tuple(int(part) for part in raw.split("."))
@@ -121,26 +135,228 @@ def _split_embedded(label: str, kind: str, path, letter, body: str, current):
     return segments, running
 
 
-def _segments(pages: list[dict]) -> tuple[list[_Segment], int]:
-    """Turn page texts into labelled segments; returns (segments, embedded_split_count)."""
+def _source_location(page: dict, row: dict | None = None, column: int | None = None) -> SourceLocation | None:
+    if "sheet" in page:
+        from openpyxl.utils import get_column_letter
+
+        if row is None:
+            return SourceLocation(sheet=page["sheet"])
+        number = row["row"]
+        if column is not None:
+            cell_range = f"{get_column_letter(column)}{number}"
+            for span in page.get("merges", ()):
+                if span["min_row"] == number and span["min_col"] == column:
+                    if span["max_row"] != number or span["max_col"] != column:
+                        cell_range += f":{get_column_letter(span['max_col'])}{span['max_row']}"
+                    break
+        else:
+            used = [index for index, value in enumerate(row["cells"], start=1) if value.strip()]
+            cell_range = (
+                f"{get_column_letter(used[0])}{number}:{get_column_letter(used[-1])}{number}"
+                if len(used) > 1 else f"{get_column_letter(used[0])}{number}"
+            )
+        return SourceLocation(sheet=page["sheet"], cell_range=cell_range)
+    if "block" in page:
+        return SourceLocation(block=page["block"])
+    if "physical_page" in page:
+        return SourceLocation(page=page["physical_page"])
+    return None
+
+
+def _header_kind(cell: str) -> str | None:
+    """Recognise explicit column labels, not arbitrary duty or unit names."""
+    if cell.strip() == "№":
+        return "number"
+    text = normalize(cell)
+    if not text or len(text) > 70:
+        return None
+    if _TABLE_NUMBER.fullmatch(text):
+        return "number"
+    if re.fullmatch(
+        r"(?:родительск\w*|вышестоящ\w*|головн\w*|"
+        r"кому подчиняется|в составе|parent|reports to)"
+        r"(?:\s+(?:структурн\w*\s+)?подразделени\w*|\s+unit)?", text,
+    ):
+        return "parent"
+    stem = re.sub(r"^(?:наименование|название|описание|перечень|основные|виды)\s+", "", text)
+    if re.fullmatch(
+        r"(?:структурн\w*\s+)?(?:подразделени\w*|департамент\w*|"
+        r"управлени\w*|отдел\w*|служб\w*|центр\w*|unit|department|division)", stem,
+    ):
+        return "unit"
+    if re.fullmatch(
+        r"(?:должност\w*|рол\w*|ответственн\w*\s+исполнител\w*|"
+        r"исполнител\w*|role|position)", stem,
+    ):
+        return "role"
+    if re.fullmatch(
+        r"(?:функциональн\w*\s+)?(?:функци\w*|обязанност\w*|задач\w*|полномочи\w*|"
+        r"ответственност\w*|действи\w*|работ\w*|"
+        r"function\w*|dut\w*|responsibilit\w*|task\w*)"
+        r"(?:\s+и\s+(?:функци\w*|обязанност\w*|задач\w*))?"
+        r"(?:\s+(?:структурн\w*\s+)?подразделени\w*)?", stem,
+    ):
+        return "function"
+    return None
+
+
+def _table_header(cells: list[str]) -> dict[str, int]:
+    columns: dict[str, int] = {}
+    for column, cell in enumerate(cells, start=1):
+        kind = _header_kind(cell)
+        if kind is not None:
+            if kind in columns:
+                return {}  # Ambiguous duplicate columns must not imply ownership.
+            columns[kind] = column
+    return columns if any(kind in columns for kind in ("unit", "role", "function")) else {}
+
+
+def _merged_anchor(page: dict, row: dict, column: int) -> tuple[int, int] | None:
+    if column in row.get("merged", {}):
+        return tuple(row["merged"][column])
+    for span in page.get("merges", ()):
+        if (span["min_row"] <= row["row"] <= span["max_row"]
+                and span["min_col"] <= column <= span["max_col"]
+                and (row["row"], column) != (span["min_row"], span["min_col"])):
+            return span["min_row"], span["min_col"]
+    return None
+
+
+def _table_segments(page: dict) -> tuple[list[_Segment], bool]:
+    """Convert explicitly headed table rows into individual source cells."""
+    segments: list[_Segment] = []
+    columns: dict[str, int] = {}
+    recognised = False
+    prior_row: int | None = None
+    header_row = 0
+    rows_by_number = {row["row"]: row for row in page["rows"]}
+    for row in page["rows"]:
+        if prior_row is not None and row["row"] > prior_row + 1:
+            columns = {}  # A blank intervening row ends a table.
+        prior_row = row["row"]
+        header = _table_header(row["cells"])
+        if header and (not columns or header == columns or len(header) >= 2):
+            columns = header
+            recognised = True
+            header_row = row["row"]
+            segments.append(_Segment("", "table_header", None, None, row["text"],
+                                     _source_location(page, row), (page["page"], row["row"])))
+            continue
+        if not columns:
+            segments.append(_Segment("", "table_other", None, None, row["text"],
+                                     _source_location(page, row), (page["page"], row["row"])))
+            continue
+        row_key = (page["page"], row["row"])
+        typed_columns = {columns[k] for k in ("unit", "role", "function", "parent") if k in columns}
+        for column, value in enumerate(row["cells"], start=1):
+            if value.strip() and (column not in typed_columns or column in row.get("formulas", ())):
+                segments.append(_Segment(
+                    "", "table_other", None, None, value,
+                    _source_location(page, row, column), row_key,
+                ))
+        parent_col = columns.get("parent")
+        parent_name = (
+            row["cells"][parent_col - 1].strip()
+            if parent_col is not None and parent_col <= len(row["cells"])
+            and parent_col not in row.get("formulas", ()) else ""
+        )
+        parent_anchor = _merged_anchor(page, row, parent_col) if parent_col else None
+        parent_key = None
+        if parent_anchor and parent_anchor[0] > header_row and not parent_name:
+            anchor_row = rows_by_number.get(parent_anchor[0])
+            if (anchor_row and len(anchor_row["cells"]) >= parent_anchor[1]
+                    and parent_anchor[1] not in anchor_row.get("formulas", ())):
+                parent_name = anchor_row["cells"][parent_anchor[1] - 1].strip()
+                if parent_name:
+                    parent_key = (page["page"], parent_anchor[0])
+        label_col = columns.get("number")
+        label = (
+            row["cells"][label_col - 1]
+            if label_col is not None and label_col <= len(row["cells"])
+            and label_col not in row.get("formulas", ()) else ""
+        )
+        if parent_name and parent_key is None:
+            segments.append(_Segment(
+                "", "table_parent", None, None, row["cells"][parent_col - 1],
+                _source_location(page, row, parent_col), row_key,
+            ))
+        for kind in ("unit", "role", "function"):
+            column = columns.get(kind)
+            if column is None:
+                continue
+            value = row["cells"][column - 1] if column <= len(row["cells"]) else ""
+            if not value.strip():
+                continue
+            if column in row.get("formulas", ()):
+                continue
+            owner_anchor = None
+            owner_kind_anchor = None
+            if kind == "function":
+                for owner_kind in ("role", "unit"):
+                    owner_col = columns.get(owner_kind)
+                    if owner_col is not None:
+                        merged = _merged_anchor(page, row, owner_col)
+                        if merged and merged[0] > header_row:
+                            owner_anchor = (page["page"], merged[0])
+                            owner_kind_anchor = owner_kind
+                            break
+            elif kind == "role":
+                unit_col = columns.get("unit")
+                if unit_col is not None:
+                    merged = _merged_anchor(page, row, unit_col)
+                    if merged and merged[0] > header_row:
+                        owner_anchor = (page["page"], merged[0])
+                        owner_kind_anchor = "unit"
+            segments.append(_Segment(
+                label if kind == "function" else "", f"table_{kind}", None, None, value,
+                _source_location(page, row, column), row_key,
+                owner_anchor, parent_name, parent_key, owner_kind_anchor,
+                kind == "unit" and ("function" in columns or "role" in columns),
+            ))
+        if not any(seg.row_key == row_key and seg.kind.startswith("table_") for seg in segments[-4:]):
+            segments.append(_Segment("", "table_other", None, None, row["text"],
+                                     _source_location(page, row), row_key))
+    return segments, recognised
+
+
+def _segments(pages: list[dict]) -> tuple[list[_Segment], int, list[str]]:
+    """Turn source pages and table rows into labelled, located segments."""
     out: list[_Segment] = []
     current: tuple[int, ...] | None = None
     in_toc = False
     embedded = 0
+    warnings: list[str] = []
     for page in pages:
+        if "rows" in page:
+            table_segments, recognised = _table_segments(page)
+            formula_count = sum(len(row.get("formulas", ())) for row in page["rows"])
+            if formula_count:
+                warnings.append(
+                    f"Sheet {page['sheet']!r}: {formula_count} formula cell(s) retained as "
+                    "source text but not evaluated as units, parents or duties."
+                )
+            if recognised or "sheet" in page:
+                out.extend(table_segments)
+                if "sheet" in page and page["rows"] and not recognised:
+                    warnings.append(
+                        f"Sheet {page['sheet']!r}: no explicit unit/function column headers; "
+                        "rows retained as source only, not invented duties."
+                    )
+                continue
+        location = _source_location(page)
         for raw_line in str(page.get("text") or "").splitlines():
             line = raw_line.strip().lstrip("\ufeff").strip()
-            if not line:
+            if not line or page.get("extraction") == "unreadable":
                 continue
             if _TOC_TITLE.match(line):
                 in_toc = True
-                out.append(_Segment("", "plain", None, None, line))
+                out.append(_Segment("", "plain", None, None, line, location))
                 continue
             num = _NUM_START.match(line)
             if in_toc:
                 if num and _TOC_ENTRY_TAIL.search(line):
                     out.append(_Segment(num.group("label"), "toc", _parse_path(num.group("path")), None,
-                                        line[num.end():].strip()))
+                                        line[num.end():].strip(), location))
                     continue
                 in_toc = False
             if num:
@@ -154,8 +370,10 @@ def _segments(pages: list[dict]) -> tuple[list[_Segment], int]:
                 else:
                     segs, current = _split_embedded("", "plain", None, None, line, current)
             embedded += len(segs) - 1
+            for seg in segs:
+                seg.location = location
             out.extend(segs)
-    return out, embedded
+    return out, embedded, warnings
 
 
 def _classify_numeric(path: tuple[int, ...], text: str) -> str:
@@ -168,10 +386,13 @@ def _classify_numeric(path: tuple[int, ...], text: str) -> str:
     return "function"
 
 
-def parse_clauses(doc: str, pages: list[dict]) -> tuple[list[Clause], list[str]]:
-    """Parse one document's pages into clauses with unique IDs; returns (clauses, warnings)."""
-    segments, embedded = _segments(pages)
+def _parse_clauses(
+    doc: str, pages: list[dict],
+) -> tuple[list[Clause], list[str], list[_TableDefinition]]:
+    segments, embedded, warnings = _segments(pages)
     clauses: list[Clause] = []
+    table_definitions: list[_TableDefinition] = []
+    table_rows: dict[tuple[int, int], dict[str, str]] = {}
     used: dict[str, int] = {}
     latest_by_path: dict[tuple[int, ...], str] = {}
     kind_by_id: dict[str, str] = {}
@@ -196,7 +417,6 @@ def parse_clauses(doc: str, pages: list[dict]) -> tuple[list[Clause], list[str]]
             clause_id = unique(base)
             parent_id = latest_by_path.get(seg.path[:-1]) if len(seg.path) > 1 else None
             kind = _classify_numeric(seg.path, seg.text)
-            # A new numeric clause closes every deeper open level.
             for key in [k for k in latest_by_path if len(k) > len(seg.path)]:
                 del latest_by_path[key]
             latest_by_path[seg.path] = clause_id
@@ -212,6 +432,40 @@ def parse_clauses(doc: str, pages: list[dict]) -> tuple[list[Clause], list[str]]
             clause_id = unique(base)
             parent_id = toc_parent
             kind = "other"
+        elif seg.kind.startswith("table_"):
+            assert seg.row_key is not None
+            page_number, row_number = seg.row_key
+            tag = {"table_unit": "u", "table_role": "o", "table_function": "f",
+                   "table_parent": "p", "table_header": "h", "table_other": "x"}[seg.kind]
+            clause_id = unique(f"@t{page_number}r{row_number}{tag}")
+            related = table_rows.get(seg.row_key, {})
+            anchored = table_rows.get(seg.anchor_key, {}) if seg.anchor_key else {}
+            if seg.kind == "table_function":
+                parent_id = (
+                    related.get("role")
+                    or (anchored.get("role") if seg.anchor_kind == "role" else None)
+                    or related.get("unit")
+                    or (anchored.get("unit") if seg.anchor_kind == "unit" else None)
+                )
+                kind = "function"
+            elif seg.kind in ("table_unit", "table_role"):
+                if seg.kind == "table_role":
+                    parent_id = (
+                        related.get("unit") or (anchored.get("unit") if seg.anchor_kind == "unit" else None) or related.get("parent")
+                        or table_rows.get(seg.parent_key, {}).get("parent")
+                    )
+                else:
+                    parent_id = (
+                        related.get("parent")
+                        or table_rows.get(seg.parent_key, {}).get("parent")
+                    )
+                kind = "structure"
+                table_rows.setdefault(seg.row_key, {})[seg.kind.removeprefix("table_")] = clause_id
+            else:
+                parent_id = labelled_ctx
+                kind = "other"
+                if seg.kind == "table_parent":
+                    table_rows.setdefault(seg.row_key, {})["parent"] = clause_id
         else:
             if seg.kind == "letter":
                 orphan_letters += 1
@@ -225,14 +479,37 @@ def parse_clauses(doc: str, pages: list[dict]) -> tuple[list[Clause], list[str]]
                 toc_parent = clause_id
                 kind = "heading"
         kind_by_id[clause_id] = kind
-        clauses.append(
-            Clause(doc=doc, clause_id=clause_id, label=seg.label, parent_id=parent_id, text=seg.text,
-                   ordinal=ordinal, kind=kind, unit_ids=[])
+        clause = Clause(
+            doc=doc, clause_id=clause_id, label=seg.label, parent_id=parent_id,
+            text=seg.text, ordinal=ordinal, kind=kind, unit_ids=[], location=seg.location,
         )
+        clauses.append(clause)
+        if seg.kind in ("table_unit", "table_role"):
+            table_definitions.append(_TableDefinition(
+                clause, seg.kind.removeprefix("table_"), seg.parent_name, seg.row_key, seg.unit_reference,
+            ))
 
-    warnings: list[str] = []
     if not any(c.kind == "function" for c in clauses):
-        warnings.append(f"{doc}: no numbered function clauses were recognised; the document cannot be compared.")
+        warnings.append(
+            f"{doc}: no numbered or explicitly headed function clauses were recognised; "
+            "function comparison is unavailable for this document."
+        )
+    for page in pages:
+        if page.get("extraction") == "unreadable":
+            warnings.append(
+                f"{doc}: physical PDF page {page['physical_page']} has no extractable text; "
+                "image/diagram content was not interpreted."
+            )
+        elif page.get("extraction") == "ocr":
+            warnings.append(
+                f"{doc}: physical PDF page {page['physical_page']} used OCR text; "
+                "verify recognition manually; diagram relations are not interpreted."
+            )
+        elif page.get("extraction") == "limited":
+            warnings.append(
+                f"{doc}: physical PDF page {page['physical_page']} has very little extractable "
+                "text; image/diagram content may be missing and was not interpreted."
+            )
     if embedded:
         warnings.append(f"{doc}: {embedded} numbered clause(s) were split out of a shared text block.")
     if unlabelled:
@@ -252,6 +529,12 @@ def parse_clauses(doc: str, pages: list[dict]) -> tuple[list[Clause], list[str]]
     if duplicates:
         shown = ", ".join(duplicates[:10]) + (" …" if len(duplicates) > 10 else "")
         warnings.append(f"{doc}: repeated clause numbers disambiguated as {shown}.")
+    return clauses, warnings, table_definitions
+
+
+def parse_clauses(doc: str, pages: list[dict]) -> tuple[list[Clause], list[str]]:
+    """Parse one document into unique, located clauses; preserve the public API."""
+    clauses, warnings, _ = _parse_clauses(doc, pages)
     return clauses, warnings
 
 
@@ -289,9 +572,14 @@ def _role_names(text: str, *, definition: bool = False) -> list[str]:
 
 
 
-def extract_units(doc: str, clauses: list[Clause]) -> list[Unit]:
+def extract_units(
+    doc: str, clauses: list[Clause], *, table_definitions: list[_TableDefinition] | None = None,
+) -> list[Unit]:
     """Extract source-backed units and roles and attach their associations."""
     units: list[Unit] = []
+    table_definitions = table_definitions or []
+    table_clause_ids = {definition.clause.clause_id for definition in table_definitions}
+    table_clause_ids.update(c.clause_id for c in clauses if c.clause_id.startswith("@t"))
     by_key: dict[str, Unit] = {}
     ids: set[str] = set()
     children: dict[str, list[Clause]] = {}
@@ -320,7 +608,8 @@ def extract_units(doc: str, clauses: list[Clause]) -> list[Unit]:
     structure_ids = {c.clause_id for c in clauses if c.kind == "structure"}
     # Pass 1: abbreviation definitions outside structure lists.
     for clause in clauses:
-        if clause.kind == "structure" or clause.parent_id in structure_ids:
+        if (clause.kind == "structure" or clause.parent_id in structure_ids
+                or clause.clause_id in table_clause_ids):
             continue
         for match in _ABBR_DEF.finditer(clause.text):
             abbr = match.group("abbr").strip()
@@ -331,7 +620,7 @@ def extract_units(doc: str, clauses: list[Clause]) -> list[Unit]:
 
     # Pass 2: enumerated composition / subordination lists.
     for clause in clauses:
-        if clause.kind != "structure":
+        if clause.kind != "structure" or clause.clause_id in table_clause_ids:
             continue
         is_roles = bool(_SUBORDINATION.search(clause.text)) and not _COMPOSITION.search(clause.text)
         parent_unit: Unit | None = None
@@ -343,7 +632,7 @@ def extract_units(doc: str, clauses: list[Clause]) -> list[Unit]:
             head = _COMPOSITION.split(clause.text, maxsplit=1)[0]
             parent_unit = next((u for k, u in by_key.items() if re.search(rf"(?<!\w){re.escape(k)}(?!\w)", head)), None)
         for child in children.get(clause.clause_id, []):
-            if child.kind != "structure":
+            if child.kind != "structure" or child.clause_id in table_clause_ids:
                 continue
             name = _quote_name(child.text)
             if not name:
@@ -367,12 +656,83 @@ def extract_units(doc: str, clauses: list[Clause]) -> list[Unit]:
 
     # Duties after a header do not become part of the role's identity.
     for clause in clauses:
-        if clause.kind == "structure" or clause.parent_id in structure_ids:
+        if (clause.kind == "structure" or clause.parent_id in structure_ids
+                or clause.clause_id in table_clause_ids):
             continue
         for role_name in _role_names(clause.text):
             unit = add(clause, role_name, "role", "", None, quote=role_name)
             clause.unit_ids.append(unit.unit_id)
 
+    # Load structural tables first. A duty-table unit cell may refer to one
+    # uniquely named structural unit elsewhere in this same document.
+    table_units: dict[tuple[int, str, str, str], Unit] = {}
+    row_units: dict[tuple[int, int], dict[str, Unit]] = {}
+    table_units_by_clause: dict[str, Unit] = {}
+    declarations = [d for d in table_definitions if d.kind == "unit" and not d.reference]
+    references = [d for d in table_definitions if d.kind != "unit" or d.reference]
+    declared_units: dict[tuple[str, str], list[Unit]] = {}
+    for definition in declarations + references:
+        clause = definition.clause
+        name = clause.text.strip()
+        if not name:
+            continue
+        parent = table_units_by_clause.get(clause.parent_id) if definition.kind == "role" else None
+        if definition.kind == "role":
+            owner = (
+                f"unit:{parent.unit_id}" if parent and parent.kind == "unit"
+                else f"name:{normalize(definition.parent_name)}" if definition.parent_name
+                else f"unscoped:{clause.clause_id}"
+            )
+        else:
+            owner = normalize(definition.parent_name)
+        key = (definition.row_key[0], definition.kind, normalize(name), owner)
+        unit = table_units.get(key)
+        if unit is None and definition.kind == "unit" and definition.reference:
+            matches = declared_units.get((normalize(name), owner), [])
+            if len(matches) == 1:
+                unit = matches[0]
+        if unit is None:
+            unit = add(clause, name, definition.kind, "",
+                       parent.unit_id if parent and parent.kind == "unit" else None)
+            if definition.kind == "unit" and not definition.reference:
+                declared_units.setdefault((normalize(name), owner), []).append(unit)
+        else:
+            unit.citations.append(Citation(doc=doc, clause_id=clause.clause_id, quote=name))
+        table_units[key] = unit
+        clause.unit_ids.append(unit.unit_id)
+        row_units.setdefault(definition.row_key, {})[definition.kind] = unit
+        table_units_by_clause[clause.clause_id] = unit
+
+    for definition in table_definitions:
+        if definition.kind != "role":
+            continue
+        role = row_units[definition.row_key]["role"]
+        parent = table_units_by_clause.get(definition.clause.parent_id)
+        if parent and parent.kind == "unit":
+            role.parent_unit_id = parent.unit_id
+    # Resolve only unambiguous source-cell parent names to actual units.
+    by_clause = {clause.clause_id: clause for clause in clauses}
+    for definition in table_definitions:
+        if definition.kind not in ("unit", "role") or not definition.parent_name:
+            continue
+        child = row_units[definition.row_key][definition.kind]
+        if child.parent_unit_id is not None:
+            continue
+        scope = definition.row_key[0]
+        candidates = [
+            parent for (page, kind, name, _), parent in table_units.items()
+            if page == scope and kind == "unit" and parent.unit_id != child.unit_id
+            and (name == normalize(definition.parent_name)
+                 or normalize(unit_key(parent)) == normalize(definition.parent_name))
+        ]
+        if len(candidates) != 1:
+            continue
+        child.parent_unit_id = candidates[0].unit_id
+        parent_clause = by_clause.get(definition.clause.parent_id)
+        if parent_clause is not None and parent_clause.text.strip() == definition.parent_name:
+            citation = Citation(doc=doc, clause_id=parent_clause.clause_id, quote=definition.parent_name)
+            if citation not in child.citations:
+                child.citations.append(citation)
     _attach_unit_ids(clauses, units)
     return units
 
@@ -391,6 +751,8 @@ def _unit_scope(clause: Clause, unit: Unit) -> bool:
     if unit.kind != "unit" or clause.kind not in ("heading", "structure"):
         return False
     if any(c.clause_id == clause.clause_id and c.quote in clause.text for c in unit.citations):
+        return True
+    if normalize(_quote_name(clause.text).rstrip(":")) == normalize(unit.name):
         return True
     token = unit_key(unit)
     if not re.fullmatch(r"[А-ЯЁA-Z][А-ЯЁA-Z-]+", token):
@@ -467,7 +829,18 @@ def _attach_unit_ids(clauses: list[Clause], units: list[Unit]) -> None:
     by_id = {c.clause_id: c for c in clauses}
     units_by_id = {u.unit_id: u for u in units}
     direct: dict[str, list[str]] = {}
+    parent_ids = {c.parent_id for c in clauses if c.parent_id}
+    titles: dict[str, list[Unit]] = {}
+    for unit in units:
+        if unit.kind == "unit":
+            titles.setdefault(normalize(unit.name), []).append(unit)
     for clause in clauses:
+        # A title equal to a sourced structural unit is a heading, not a duty
+        # or an incidental mention. Only title clauses governing children qualify.
+        title_matches = titles.get(normalize(_quote_name(clause.text).rstrip(":")), [])
+        if clause.kind == "function" and clause.clause_id in parent_ids and len(title_matches) == 1:
+            clause.kind = "heading"
+            clause.unit_ids = list(dict.fromkeys([*clause.unit_ids, title_matches[0].unit_id]))
         direct[clause.clause_id] = list(dict.fromkeys(
             clause.unit_ids + [uid for uid, pat in patterns if pat.search(clause.text)]
         ))
@@ -534,8 +907,22 @@ def owner_keys(clause: Clause, clauses_by_id: dict[str, Clause], units_by_id: di
 
 def parse_document(document: Document, pages: list[dict]) -> ParseResult:
     """Clauses, units and parse warnings for one ingested document."""
-    clauses, warnings = parse_clauses(document.doc, pages)
-    units = extract_units(document.doc, clauses)
+    clauses, warnings, table_definitions = _parse_clauses(document.doc, pages)
+    units = extract_units(document.doc, clauses, table_definitions=table_definitions)
+    units_by_id = {unit.unit_id: unit for unit in units}
+    unresolved_parents = [
+        definition.clause.clause_id for definition in table_definitions
+        if definition.parent_name and not any(
+            units_by_id[uid].parent_unit_id
+            for uid in definition.clause.unit_ids if uid in units_by_id
+        )
+    ]
+    if unresolved_parents:
+        shown = ", ".join(unresolved_parents[:5])
+        warnings.append(
+            f"{document.doc}: {len(unresolved_parents)} table parent reference(s) did "
+            f"not uniquely resolve to a sourced unit; relationship not asserted ({shown})."
+        )
     return ParseResult(clauses=clauses, units=units, warnings=warnings)
 
 

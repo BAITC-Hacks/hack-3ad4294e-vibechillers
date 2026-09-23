@@ -1,0 +1,3 @@
+# Organizer TXT manifest hashes describe CRLF source bytes on every checkout.
+seeds/kt/v8.txt text eol=crlf
+seeds/kt/v9.txt text eol=crlf

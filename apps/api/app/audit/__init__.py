@@ -34,7 +34,7 @@ Report:
     compute_coverage(clauses, findings, before_docs, after_docs) -> Coverage
     deterministic_conclusion(findings, coverage, documents) -> list[ConclusionItem]
     build_report(run_id, documents, clauses, units, findings, *, mode="deterministic",
-                 conclusion=None, warnings=None) -> Report
+                 conclusion=None, warnings=None, unit_changes=None, risks=None, agent=None) -> Report
         Re-verifies every quote, guarantees coverage, builds/validates the conclusion.
     run_deterministic_audit(run_id, documents, pages_by_doc, warnings=None) -> Report
     report_summary(report) -> str   (text for ``final.data.text``)
@@ -45,6 +45,7 @@ from .citations import verify_citations
 from .documents import DEFAULT_MANIFEST_PATH, load_manifest, make_documents
 from .models import (
     FINDING_STATUSES,
+    AgentExecution,
     Citation,
     Clause,
     ClauseKind,
@@ -60,8 +61,12 @@ from .models import (
     ParseResult,
     Report,
     ReportMode,
+    Risk,
+    SourceLocation,
     Unit,
     UnitKind,
+    UnitChange,
+    UnitRef,
     VerifyResult,
 )
 from .parser import parse_document, parse_documents
@@ -77,6 +82,7 @@ from .report import (
 __all__ = [
     "FINDING_STATUSES",
     "DEFAULT_MANIFEST_PATH",
+    "AgentExecution",
     "Citation",
     "Clause",
     "ClauseKind",
@@ -92,8 +98,12 @@ __all__ = [
     "ParseResult",
     "Report",
     "ReportMode",
+    "Risk",
+    "SourceLocation",
     "Unit",
     "UnitKind",
+    "UnitChange",
+    "UnitRef",
     "VerifyResult",
     "align_functions",
     "build_report",
