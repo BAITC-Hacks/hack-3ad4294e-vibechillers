@@ -1,0 +1,720 @@
+{
+  "review_type": "Independent AI review of saved runtime evidence; no gold/holdout, no product inference run by reviewer",
+  "core_commit": "f104c91006c8d3d6a993881823863030e70aa4af",
+  "run_id": "76f223b2a6b44a9b8b68ac0386152e6f",
+  "baseline_run_id": "6b5120b9b2c244c589d36d3cb90c655c",
+  "inputs": {
+    "agent-trace.json": "45d34e7f73613b7519b4cf0168ec62a315edc1646b76d64faa0fb886ba3e9aca",
+    "agent.sse": "5e5246a100ab2c199c52c03184bcbc41df4e6a6fedddb0921e12dff0c6cbd945",
+    "agent.json": "c7018f779c82a9b88c7526dd2ecc35df28c48f472991333244317ca5b52605a3",
+    "deterministic.json": "d7ceb0114bfa13a28d3222a427b19b42a2792980f25c9eeaa9266fe3f79ac1be"
+  },
+  "evidence_checks": {
+    "sequential_events": 60,
+    "tool_calls": 25,
+    "tool_results": 25,
+    "unique_call_ids": 25,
+    "paired_successes": 25,
+    "paired_failures": 0,
+    "trace_sse_semantics_equal": true,
+    "sse_timestamps_equal_within_rounding_seconds": 0.000501
+  },
+  "raw_action_counts": {
+    "tool_name_counts": {
+      "list_findings": 3,
+      "inspect_domain": 3,
+      "inspect_findings": 3,
+      "read_clauses": 9,
+      "search_clauses": 7
+    },
+    "read_search_list_inspect_calls": 25,
+    "mutating_proposal_calls": 0,
+    "accepted_proposals": 0,
+    "rejected_proposals": 0,
+    "resolve_alignment_calls": 0,
+    "offer_candidates_calls": 0,
+    "verify_citations_calls": 0,
+    "build_report_calls": 0,
+    "build_report_successes": 0,
+    "completion_status": "partial",
+    "mode": "deterministic",
+    "listed_unique_findings": 31,
+    "listed_rows_including_repeats": 37,
+    "findings_total": 31,
+    "explicitly_inspected_unique_findings": 22,
+    "investigated_via_read_or_inspect": 23,
+    "unit_changes_listed": 7,
+    "unit_changes_total": 7,
+    "risk_items_listed": 0,
+    "risk_items_total": 0
+  },
+  "budget": {
+    "reported_model_turns": 12,
+    "model_turn_limit": 12,
+    "tools_used": 25,
+    "tool_limit": 32,
+    "stop_reason_event_seq": 57,
+    "stop_reason": "turn_limit",
+    "elapsed_investigation_start_to_stop_s": 50.515491,
+    "elapsed_investigation_start_to_final_s": 50.610526,
+    "time_limit_seconds": 180,
+    "turn_boundaries_observed": false,
+    "provider_request_count_independently_authenticated": false,
+    "actual_tokens": null,
+    "actual_cost": null
+  },
+  "report_comparison": {
+    "changed_top_level_keys": [
+      "run_id",
+      "warnings",
+      "agent"
+    ],
+    "added_warnings": [
+      "Агент: partial; исследовано выводов 23 из 31; Investigation incomplete (turn_limit); verified decisions retained; uninspected findings require human review."
+    ],
+    "identical_top_level_keys": [
+      "mode",
+      "documents",
+      "clauses",
+      "units",
+      "findings",
+      "conclusion",
+      "coverage",
+      "unit_changes",
+      "risks"
+    ],
+    "finding_changes": 0,
+    "unit_change_changes": 0,
+    "risk_changes": 0,
+    "conclusion_changes": 0,
+    "interpretation": "Agent was attempted and read evidence, but made zero persisted product decisions; final report has identical analytic content to deterministic."
+  },
+  "inspection_semantics": {
+    "verified_against_core_code": true,
+    "investigated_ids_reconstructed": [
+      "F001",
+      "F002",
+      "F003",
+      "F004",
+      "F005",
+      "F006",
+      "F007",
+      "F008",
+      "F009",
+      "F010",
+      "F011",
+      "F012",
+      "F013",
+      "F014",
+      "F015",
+      "F016",
+      "F017",
+      "F018",
+      "F019",
+      "F020",
+      "F021",
+      "F022",
+      "F029"
+    ],
+    "uninvestigated_finding_ids": [
+      "F023",
+      "F024",
+      "F025",
+      "F026",
+      "F027",
+      "F028",
+      "F030",
+      "F031"
+    ],
+    "only_extra_id_beyond_explicit_inspection": [
+      "F029"
+    ],
+    "meaning": "Read/inspection flag, not a correctness, resolution or full-source-review metric. inspect_findings marks each requested ID; read_clauses marks findings sharing a requested ref. list/search/inspect_domain do not mark finding IDs."
+  },
+  "result_dependency_examples": [
+    {
+      "prior_result_seq": 10,
+      "followup_call_seq": 13,
+      "field": "next_offset=6 -> offset=6",
+      "strength": "Observable matching pagination; causal model reasoning not recorded"
+    },
+    {
+      "prior_result_seq": 8,
+      "followup_call_seq": 15,
+      "field": "all six returned missing/unresolved IDs -> inspect_findings finding_ids",
+      "strength": "Result IDs consumed in later call arguments"
+    },
+    {
+      "prior_result_seq": 20,
+      "followup_call_seq": 23,
+      "field": "before-1:2.2 archive-retention phrase -> after search query",
+      "strength": "Source text reflected in later query"
+    },
+    {
+      "prior_result_seq": 44,
+      "followup_call_seq": 47,
+      "field": "after-1:8 heading returned -> read_clauses after-1:8",
+      "strength": "Returned source ref reused"
+    },
+    {
+      "prior_result_seq": 52,
+      "followup_call_seq": 53,
+      "field": "before-1:7.2 -> read_clauses before-1:7.2",
+      "strength": "Returned source ref reused"
+    }
+  ],
+  "inefficiencies_and_limits": [
+    {
+      "seqs": [
+        25,
+        26,
+        27,
+        28
+      ],
+      "finding": "Next list_findings call retains offset=16 but drops statuses filter, returning F017-F022 again (six duplicate IDs). Across all three listing calls all 31 IDs still appear."
+    },
+    {
+      "seqs": [
+        35,
+        36,
+        45,
+        46
+      ],
+      "finding": "before heading 7 is already read; the later before heading search returns it again. Search may explore alternatives, so do not label entire call wasted."
+    },
+    {
+      "seqs": [
+        47,
+        48,
+        49,
+        50
+      ],
+      "finding": "after 8.1 already fully read; following search returns it as top hit and low-similarity unrelated candidates. No proposal follows."
+    },
+    {
+      "seqs": [
+        10,
+        14
+      ],
+      "finding": "All seven unit rows listed, but first page omits five citations across the three reorganisation rows; listing all rows is not complete review of their source evidence."
+    },
+    {
+      "seqs": [
+        7,
+        56,
+        57
+      ],
+      "finding": "No proposal or finalization despite 25 valid tool calls. Stop is turn limit with 7 unused tool slots and about 129 seconds left on the nominal wall budget."
+    }
+  ],
+  "source_evidence_reached_without_decision": [
+    {
+      "topic": "potential self-review conflict",
+      "result_seqs": [
+        16,
+        20,
+        22,
+        30,
+        40
+      ],
+      "refs": [
+        "before-1:7.1",
+        "after-1:2.6",
+        "after-1:7.2",
+        "after-1:7.4"
+      ],
+      "observation": "Agent receives full transfer and self-review clauses plus supplier-selection duty, but makes no propose_risk or resolve_alignment call; risks stays empty and F016 unresolved."
+    },
+    {
+      "topic": "possible same-duty duplication",
+      "finding_id": "F030",
+      "refs": [
+        "after-1:4.1",
+        "after-1:10.1"
+      ],
+      "observation": "after-1:4.1 arrives via F010 inspection; after-1:10.1 never appears in any intermediate tool result. F030 appears only as an added-finding list row. No duplicate-risk proposal."
+    },
+    {
+      "topic": "bounded absence/archival-retention duty",
+      "result_seqs": [
+        16,
+        20,
+        24,
+        30,
+        32
+      ],
+      "refs": [
+        "before-1:2.2",
+        "after-1:3.1"
+      ],
+      "observation": "Reads old duty, searches new edition, and receives different archival duty. No exhaustive after-function enumeration or decision proposal; existing F009 remains missing with cautious host wording."
+    }
+  ],
+  "limitations": [
+    "Saved host trace and matching SSE support observed tool activity, not independent cryptographic proof of the named remote provider/model or billing.",
+    "No model turn markers, request IDs, full assistant conversation, token usage, or raw provider responses are supplied in this trace. Do not assign exact calls to model turns from timestamp clusters.",
+    "No gold labels were used here; action counts and trace source reach are not accuracy scores.",
+    "Source excerpts here refer to the saved parsed documents/trace; source-first raw DOCX verification is a separate review.",
+    "Partial fallback is neither completed agent acceptance nor a successful model finalization; no F1 or quality uplift is inferred."
+  ],
+  "calls": [
+    {
+      "call_seq": 7,
+      "result_seq": 8,
+      "call_id": "call_dad6eba7fb934545a5ca1776",
+      "name": "list_findings",
+      "args": {
+        "statuses": [
+          "missing",
+          "duplicate",
+          "unresolved"
+        ],
+        "limit": 16
+      },
+      "ok": true,
+      "elapsed_from_investigation_start_s": 3.677758,
+      "newly_marked_investigated_finding_ids": []
+    },
+    {
+      "call_seq": 9,
+      "result_seq": 10,
+      "call_id": "call_e5a2cafd1a3f4d7a952ed779",
+      "name": "inspect_domain",
+      "args": {
+        "kind": "unit_changes"
+      },
+      "ok": true,
+      "elapsed_from_investigation_start_s": 3.694104,
+      "newly_marked_investigated_finding_ids": []
+    },
+    {
+      "call_seq": 11,
+      "result_seq": 12,
+      "call_id": "call_50ef33d5cdf248ae989e3948",
+      "name": "inspect_domain",
+      "args": {
+        "kind": "risks"
+      },
+      "ok": true,
+      "elapsed_from_investigation_start_s": 3.710874,
+      "newly_marked_investigated_finding_ids": []
+    },
+    {
+      "call_seq": 13,
+      "result_seq": 14,
+      "call_id": "call_5045988f64634285b2866080",
+      "name": "inspect_domain",
+      "args": {
+        "kind": "unit_changes",
+        "offset": 6
+      },
+      "ok": true,
+      "elapsed_from_investigation_start_s": 5.688766,
+      "newly_marked_investigated_finding_ids": []
+    },
+    {
+      "call_seq": 15,
+      "result_seq": 16,
+      "call_id": "call_57ac3cfc6a2748a199a4843e",
+      "name": "inspect_findings",
+      "args": {
+        "finding_ids": [
+          "F002",
+          "F003",
+          "F004",
+          "F005",
+          "F009",
+          "F016"
+        ]
+      },
+      "ok": true,
+      "elapsed_from_investigation_start_s": 5.711357,
+      "newly_marked_investigated_finding_ids": [
+        "F002",
+        "F003",
+        "F004",
+        "F005",
+        "F009",
+        "F016"
+      ]
+    },
+    {
+      "call_seq": 17,
+      "result_seq": 18,
+      "call_id": "call_40e28228746d4a208002db6e",
+      "name": "read_clauses",
+      "args": {
+        "refs": [
+          {
+            "doc": "before-1",
+            "clause_id": "1.1"
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "1.1"
+          }
+        ]
+      },
+      "ok": true,
+      "elapsed_from_investigation_start_s": 8.526851,
+      "newly_marked_investigated_finding_ids": []
+    },
+    {
+      "call_seq": 19,
+      "result_seq": 20,
+      "call_id": "call_e18dad745f7c4a3e8cf40fb5",
+      "name": "read_clauses",
+      "args": {
+        "refs": [
+          {
+            "doc": "before-1",
+            "clause_id": "2.2"
+          },
+          {
+            "doc": "before-1",
+            "clause_id": "7.1"
+          }
+        ]
+      },
+      "ok": true,
+      "elapsed_from_investigation_start_s": 8.546718,
+      "newly_marked_investigated_finding_ids": []
+    },
+    {
+      "call_seq": 21,
+      "result_seq": 22,
+      "call_id": "call_d4a18ced48c643f1ade9fde7",
+      "name": "read_clauses",
+      "args": {
+        "refs": [
+          {
+            "doc": "after-1",
+            "clause_id": "7.4"
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "2.6"
+          }
+        ]
+      },
+      "ok": true,
+      "elapsed_from_investigation_start_s": 8.567144,
+      "newly_marked_investigated_finding_ids": []
+    },
+    {
+      "call_seq": 23,
+      "result_seq": 24,
+      "call_id": "call_df3b6fa2560e46e4b89892ee",
+      "name": "search_clauses",
+      "args": {
+        "query": "сроки хранения архивных дел акт",
+        "edition": "after"
+      },
+      "ok": true,
+      "elapsed_from_investigation_start_s": 14.016048,
+      "newly_marked_investigated_finding_ids": []
+    },
+    {
+      "call_seq": 25,
+      "result_seq": 26,
+      "call_id": "call_88ce71e4a14b4b3685f48cf4",
+      "name": "list_findings",
+      "args": {
+        "statuses": [
+          "unchanged",
+          "changed",
+          "moved",
+          "added"
+        ],
+        "limit": 16
+      },
+      "ok": true,
+      "elapsed_from_investigation_start_s": 14.042731,
+      "newly_marked_investigated_finding_ids": []
+    },
+    {
+      "call_seq": 27,
+      "result_seq": 28,
+      "call_id": "call_458c3117cb3c4d40968a3537",
+      "name": "list_findings",
+      "args": {
+        "offset": 16,
+        "limit": 16
+      },
+      "ok": true,
+      "elapsed_from_investigation_start_s": 16.657531,
+      "newly_marked_investigated_finding_ids": []
+    },
+    {
+      "call_seq": 29,
+      "result_seq": 30,
+      "call_id": "call_6f3d3a270af34d5a9bee97fd",
+      "name": "inspect_findings",
+      "args": {
+        "finding_ids": [
+          "F008",
+          "F010",
+          "F011",
+          "F012",
+          "F013",
+          "F014",
+          "F015",
+          "F019"
+        ]
+      },
+      "ok": true,
+      "elapsed_from_investigation_start_s": 16.676669,
+      "newly_marked_investigated_finding_ids": [
+        "F008",
+        "F010",
+        "F011",
+        "F012",
+        "F013",
+        "F014",
+        "F015",
+        "F019"
+      ]
+    },
+    {
+      "call_seq": 31,
+      "result_seq": 32,
+      "call_id": "call_98767846793548a78eea5a3c",
+      "name": "search_clauses",
+      "args": {
+        "query": "ОАУ",
+        "edition": "after",
+        "kind": "function"
+      },
+      "ok": true,
+      "elapsed_from_investigation_start_s": 22.047028,
+      "newly_marked_investigated_finding_ids": []
+    },
+    {
+      "call_seq": 33,
+      "result_seq": 34,
+      "call_id": "call_5ffd32759f9247e2ab01972c",
+      "name": "read_clauses",
+      "args": {
+        "refs": [
+          {
+            "doc": "before-1",
+            "clause_id": "2"
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "3"
+          }
+        ]
+      },
+      "ok": true,
+      "elapsed_from_investigation_start_s": 22.067883,
+      "newly_marked_investigated_finding_ids": []
+    },
+    {
+      "call_seq": 35,
+      "result_seq": 36,
+      "call_id": "call_3d87cca6d1704e848aab3077",
+      "name": "read_clauses",
+      "args": {
+        "refs": [
+          {
+            "doc": "before-1",
+            "clause_id": "7"
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "7"
+          }
+        ]
+      },
+      "ok": true,
+      "elapsed_from_investigation_start_s": 27.626804,
+      "newly_marked_investigated_finding_ids": []
+    },
+    {
+      "call_seq": 37,
+      "result_seq": 38,
+      "call_id": "call_c3f095ddbbab40bf958a81d3",
+      "name": "read_clauses",
+      "args": {
+        "refs": [
+          {
+            "doc": "after-1",
+            "clause_id": "2.5"
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "2"
+          }
+        ]
+      },
+      "ok": true,
+      "elapsed_from_investigation_start_s": 27.653081,
+      "newly_marked_investigated_finding_ids": [
+        "F029"
+      ]
+    },
+    {
+      "call_seq": 39,
+      "result_seq": 40,
+      "call_id": "call_f9b5b26125cd488e9241c208",
+      "name": "read_clauses",
+      "args": {
+        "refs": [
+          {
+            "doc": "after-1",
+            "clause_id": "7.3"
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "7.2"
+          }
+        ],
+        "offset": 0,
+        "limit": 200
+      },
+      "ok": true,
+      "elapsed_from_investigation_start_s": 32.320514,
+      "newly_marked_investigated_finding_ids": []
+    },
+    {
+      "call_seq": 41,
+      "result_seq": 42,
+      "call_id": "call_9e601f1466614724b1a317c5",
+      "name": "search_clauses",
+      "args": {
+        "edition": "after",
+        "kind": "structure",
+        "query": "ОФК"
+      },
+      "ok": true,
+      "elapsed_from_investigation_start_s": 32.346786,
+      "newly_marked_investigated_finding_ids": []
+    },
+    {
+      "call_seq": 43,
+      "result_seq": 44,
+      "call_id": "call_93e2c4a1fea14664aef56c99",
+      "name": "search_clauses",
+      "args": {
+        "edition": "after",
+        "kind": "heading",
+        "query": "ОФК"
+      },
+      "ok": true,
+      "elapsed_from_investigation_start_s": 37.179624,
+      "newly_marked_investigated_finding_ids": []
+    },
+    {
+      "call_seq": 45,
+      "result_seq": 46,
+      "call_id": "call_743e263ec2b54297aa43b372",
+      "name": "search_clauses",
+      "args": {
+        "edition": "before",
+        "kind": "heading",
+        "query": "ОФК"
+      },
+      "ok": true,
+      "elapsed_from_investigation_start_s": 37.22733,
+      "newly_marked_investigated_finding_ids": []
+    },
+    {
+      "call_seq": 47,
+      "result_seq": 48,
+      "call_id": "call_ef3b9e7b1878465a9ce7f614",
+      "name": "read_clauses",
+      "args": {
+        "refs": [
+          {
+            "doc": "after-1",
+            "clause_id": "8"
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "8.1"
+          }
+        ]
+      },
+      "ok": true,
+      "elapsed_from_investigation_start_s": 40.954774,
+      "newly_marked_investigated_finding_ids": [
+        "F017"
+      ]
+    },
+    {
+      "call_seq": 49,
+      "result_seq": 50,
+      "call_id": "call_f835ce0158e04e09a6968e0a",
+      "name": "search_clauses",
+      "args": {
+        "edition": "after",
+        "kind": "function",
+        "query": "ОФК"
+      },
+      "ok": true,
+      "elapsed_from_investigation_start_s": 40.979535,
+      "newly_marked_investigated_finding_ids": []
+    },
+    {
+      "call_seq": 51,
+      "result_seq": 52,
+      "call_id": "call_19194ab180a94d0bbc046db6",
+      "name": "search_clauses",
+      "args": {
+        "edition": "before",
+        "kind": "function",
+        "query": "ОФК"
+      },
+      "ok": true,
+      "elapsed_from_investigation_start_s": 45.884033,
+      "newly_marked_investigated_finding_ids": []
+    },
+    {
+      "call_seq": 53,
+      "result_seq": 54,
+      "call_id": "call_5ccad41e15e9482a99cf422e",
+      "name": "read_clauses",
+      "args": {
+        "refs": [
+          {
+            "doc": "before-1",
+            "clause_id": "7.2"
+          }
+        ]
+      },
+      "ok": true,
+      "elapsed_from_investigation_start_s": 50.437572,
+      "newly_marked_investigated_finding_ids": []
+    },
+    {
+      "call_seq": 55,
+      "result_seq": 56,
+      "call_id": "call_f64f6aa6c07c40cbba7525ff",
+      "name": "inspect_findings",
+      "args": {
+        "finding_ids": [
+          "F001",
+          "F006",
+          "F007",
+          "F017",
+          "F018",
+          "F020",
+          "F021",
+          "F022"
+        ]
+      },
+      "ok": true,
+      "elapsed_from_investigation_start_s": 50.468877,
+      "newly_marked_investigated_finding_ids": [
+        "F001",
+        "F006",
+        "F007",
+        "F018",
+        "F020",
+        "F021",
+        "F022"
+      ]
+    }
+  ]
+}

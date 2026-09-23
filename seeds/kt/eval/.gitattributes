@@ -4,3 +4,5 @@
 mutations/** -text
 independent-review/** -text
 control/** -text whitespace=cr-at-eol
+# Saved independent review records retain their original hashed bytes.
+results/f104c91-independent/** -text whitespace=cr-at-eol

@@ -1,0 +1,33 @@
+{
+  "checks": [
+    {
+      "command": "python -B eval/kt/test_score.py",
+      "passed": 53,
+      "failed": 0
+    },
+    {
+      "command": "python -B eval/kt/test_capture_control.py",
+      "passed": 15,
+      "failed": 0
+    },
+    {
+      "command": "python -B eval/kt/test_review_saved_capture.py",
+      "passed": 10,
+      "failed": 0
+    }
+  ],
+  "offline_review_exit_code": 0,
+  "custody_checks": 39,
+  "custody_failures": 0,
+  "supplemental_checks": 16,
+  "supplemental_failures": 0,
+  "original_default_integrity_sha256": "2daf6b70a1dbbd4e1caa18484f8092234d37b67d8447a0e1054e591f0396cec2",
+  "immutable_archive_sha256": "b4e484134c1122cd20b00632241b56a39ea0ee8bf30210aeacc80aba900e10a8",
+  "scope": "Root integration checks after owned-file changes. Offline unit fixtures test evaluator/intake guards, not product inference.",
+  "tools_sha256": {
+    "eval/kt/capture_control.py": "db49d3651fbdbc34182d35e9b1fdc550a59549341e87bee110672c3143abfa39",
+    "eval/kt/review_saved_capture.py": "e73a702497ebaabc910c06477b6c998c4fb41f44a2000e90d19d4520ee069a03",
+    "eval/kt/score.py": "6a503bb7b6b5bced0a78398899d397f2ceacdcf5a5fb67b40e953103a3c59059"
+  },
+  "review_tool_hash_scope": "Raw local bytes, with eval/kt LF source policy applied before commit."
+}

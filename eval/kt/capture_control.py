@@ -30,6 +30,25 @@ def snapshot():
     return {p.relative_to(ROOT).as_posix(): digest(p) for p in paths}
 
 
+def revision_snapshot(revision):
+    """Hash raw tracked Git blobs, never checkout bytes or normalized line endings."""
+    resolved = subprocess.check_output(
+        ["git", "rev-parse", "--verify", "--end-of-options", revision + "^{commit}"],
+        cwd=ROOT, text=True, stderr=subprocess.PIPE).strip()
+    names = subprocess.check_output(
+        ["git", "ls-tree", "-rz", "--name-only", resolved, "--", "apps/api/app/"],
+        cwd=ROOT, stderr=subprocess.PIPE).split(b"\0")
+    hashes = {}
+    for raw_name in names:
+        if not raw_name or not raw_name.endswith(b".py"):
+            continue
+        name = raw_name.decode("utf-8")
+        blob = subprocess.check_output(["git", "cat-file", "blob", resolved + ":" + name],
+                                       cwd=ROOT, stderr=subprocess.PIPE)
+        hashes[name] = hashlib.sha256(blob).hexdigest()
+    return resolved, hashes
+
+
 def write_json(path, value):
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
@@ -203,7 +222,7 @@ def prepare_attestation(path, extension):
         "spend_limit_enforced_by": "", "instruction": "Batyrkhan fills from actual agreed runtime/access; no keys, tokens or sensitive URLs"})
 
 
-def verify_package(directory: Path):
+def verify_package(directory: Path, core_revision: str | None = None):
     """Independent custody checks, not proof that a remote provider performed inference."""
     manifest = json.loads((directory / "capture-manifest.json").read_text(encoding="utf-8"))
     errors, checked = [], 0
@@ -261,10 +280,36 @@ def verify_package(directory: Path):
         summaries.append({"requested": mode, **trace_summary(report, events)})
     local_revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     local_core = snapshot()
-    check(manifest.get("core_hashes") == local_core, "Captured core hashes differ from integrated checkout; obtain/check out actual captured revision before scoring")
+    core_verification = {"source": "working_checkout", "revision": local_revision,
+                         "files_checked": len(local_core),
+                         "exact_manifest_matches": manifest.get("core_hashes") == local_core}
+    if core_revision is None:
+        check(manifest.get("core_hashes") == local_core, "Captured core hashes differ from integrated checkout; obtain/check out actual captured revision before scoring")
+    else:
+        core_verification = {"source": "raw_git_blobs", "requested_revision": core_revision,
+                             "revision": None, "files_checked": 0, "exact_manifest_matches": False}
+        try:
+            resolved, revision_core = revision_snapshot(core_revision)
+        except (subprocess.CalledProcessError, UnicodeDecodeError, ValueError) as exc:
+            check(False, "Cannot read requested core revision as raw Git blobs: " + type(exc).__name__)
+        else:
+            captured_core = manifest.get("core_hashes") or {}
+            missing = sorted(set(revision_core) - set(captured_core))
+            unexpected = sorted(set(captured_core) - set(revision_core))
+            mismatched = sorted(name for name in set(revision_core) & set(captured_core)
+                                if revision_core[name] != captured_core[name])
+            check(resolved == manifest.get("revision"), "Requested core revision differs from captured manifest revision")
+            check(bool(revision_core), "Requested core revision contains no tracked apps/api/app Python files")
+            check(not missing and not unexpected, "Captured core file membership differs from requested Git revision")
+            check(not mismatched, "Captured core hashes differ from raw Git blobs at requested revision")
+            core_verification.update({"revision": resolved, "files_checked": len(revision_core),
+                "manifest_revision_matches": resolved == manifest.get("revision"),
+                "missing_manifest_files": missing, "unexpected_manifest_files": unexpected,
+                "hash_mismatches": mismatched, "exact_manifest_matches": captured_core == revision_core})
     return {"integrity_checks": checked, "integrity_failures": len(errors), "errors": errors,
             "revision": manifest.get("revision"), "runs": summaries,
             "local_revision": local_revision, "local_core_hashes_equal": manifest.get("core_hashes") == local_core,
+            "core_verification": core_verification,
             "inference_proof": "not established by this validator; independently review provider evidence and result-dependent tool arguments/results",
             "semantic_accuracy": "run score.py separately against frozen labels; pending_human stays provisional"}
 
@@ -275,12 +320,13 @@ if __name__ == "__main__":
     parser.add_argument("--prepare-attestation", type=Path)
     parser.add_argument("--format", choices=["txt", "docx", "pdf", "xlsx"], default="docx")
     parser.add_argument("--verify-package", type=Path)
+    parser.add_argument("--core-revision", help="Verify all captured core files against raw Git blobs at this exact manifest revision; default checks working checkout")
     parser.add_argument("--json-out", type=Path)
     args = parser.parse_args()
     if args.prepare_attestation:
         prepare_attestation(args.prepare_attestation, args.format)
     elif args.verify_package:
-        result = verify_package(args.verify_package)
+        result = verify_package(args.verify_package, core_revision=args.core_revision)
         if args.json_out:
             write_json(args.json_out, result)
         print(json.dumps(result, ensure_ascii=False, indent=2))

@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "schema_commit_received": "4da43907919867ce4e8579360fe5b2ff43f9a37c",
+  "inputs_ready": true,
+  "evaluator_ready_for_schema": true,
+  "capture_command": "eval/kt/BATYRKHAN-CAPTURE.md",
+  "inference_executor": "Batyrkhan in his authorised environment",
+  "evaluation_owner": "Alibi",
+  "external_paired_packages_received": 0,
+  "actual_agent_quality_metrics": null,
+  "result_dependent_action_review": "pending actual trace and provider evidence",
+  "holdout_scored": false,
+  "control_human_confirmed": 0,
+  "control_pending_human": 19,
+  "local_diagnostic_scope": "Four actual public deterministic domain-API runs on pre-Stage3 core; no HTTP/provider inference",
+  "evaluator_tests_passed": 53,
+  "capture_guard_tests_passed": 8,
+  "required_for_paired_measurement": [
+    "One integrated core revision serving both actual HTTP requests",
+    "Identical pinned synthetic input bytes and agreed nonsecret configuration",
+    "Deterministic and real agent Report JSON, SSE, reopened Report, actual persisted trace and run_id",
+    "Capture manifest and schema/core commits with artifact/core hashes",
+    "Provider/server evidence and independent review of result-dependent actions"
+  ],
+  "required_for_confirmed_accuracy": [
+    "Human source confirmation with versioned review events; current AI agreement remains provisional"
+  ],
+  "stage3_exit": "not_complete; external integrated run and acceptance evidence pending"
+}

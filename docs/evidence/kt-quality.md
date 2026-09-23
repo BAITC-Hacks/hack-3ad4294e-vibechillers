@@ -1,6 +1,165 @@
 # Проверка качества Function Lineage Auditor
 
-## Stage 3 — inputs, evaluator и независимый review, 2026-09-23
+## Stage 3 — независимая проверка сохранённого partial f104c91, 2026-09-23
+
+Получен и независимо пересчитан **один реальный парный DOCX capture Батырхана**:
+deterministic и попытка agent на одинаковых исходных байтах и core
+`f104c91006c8d3d6a993881823863030e70aa4af`, schema
+`4da43907919867ce4e8579360fe5b2ff43f9a37c`. Agent завершился **partial** по лимиту
+ходов, итоговый `mode=deterministic`. Содержательные части обоих Report полностью
+совпадают: 31 finding, 7 unit changes, пустые risks, conclusion и coverage.
+**Улучшение качества не наблюдается; F1 (Word/PDF/Excel) и Stage 3 не приняты.**
+Это проверка сохранённых фактических запусков, не новый inference на машине Алиби.
+
+Исходный [ZIP](stage3-capture-f104c91.zip), опубликованный в `d98e73b`, не изменён.
+SHA-256: `b4e484134c1122cd20b00632241b56a39ea0ee8bf30210aeacc80aba900e10a8`.
+Run IDs: deterministic `6b5120b9b2c244c589d36d3cb90c655c`,
+agent `76f223b2a6b44a9b8b68ac0386152e6f`. Точные хеши 13 членов архива,
+настроек, evaluator и gold сохранены в
+[summary.json](../../seeds/kt/eval/results/f104c91-independent/summary.json).
+Передавались только синтетические control DOCX:
+
+- before: `253413fd6a1b5c69d08959aaffd2838f83d7f1f2976fc02464b4711ba86483e5`;
+- after: `cc751b88f6b5cf5910ef6505f02a6c6bc8b7740607fa2734bcafdfd409f01b9a`.
+
+В attestation заявлены `https://xllm.sek.su/v1`,
+`local-aigw/alemai/deepseek-ai/DeepSeek-V4-Pro`, 8192 output tokens,
+90 s/request, 12 turns / 32 calls / 180 s; temperature и seed не задавались.
+Report, reopened Report, SSE, persisted trace и server attestation согласованы.
+Attestation — заявление оператора о запущенном процессе; raw upstream responses,
+provider request IDs, token usage и стоимость отсутствуют. Эти сведения нельзя
+независимо восстановить из host trace. Здесь API/model не вызывались.
+
+### Целостность и воспроизведение
+
+Проверки custody: **39/39**, дополнительные сверки: **16/16**. Проверены точные
+байты всех **36/36** tracked Python core файлов через raw Git blobs указанного
+commit, полный состав файлов, Report/reopened/SSE/trace и pinned inputs.
+Первый запуск прежнего validator по рабочему checkout дал **1 ошибку / 36**:
+31 core файл локально имеет CRLF, в capture — LF. Этот исходный отказ сохранён в
+`f104c91-independent/integrity.json`. Новый явный `--core-revision` сравнивает
+сырые Git blobs; нормализация переводов строк **не используется для принятия**.
+Результат и диагностическое объяснение: [core-custody-review.json](../../seeds/kt/eval/results/f104c91-independent/core-custody-review.json).
+
+`review_saved_capture.py` проверяет ZIP и вызывает существующий `score.py`
+раздельно для двух Report. Это intake/reproduction, не второй evaluator.
+Сохранённые scorer groups совпали с независимым пересчётом. Gold, split,
+reviews и `score.py` побайтно совпадают с captured revision; regression и
+challenge не изменялись. Holdout не открывался и не оценивался.
+
+```powershell
+python -B eval/kt/review_saved_capture.py --archive docs/evidence/stage3-capture-f104c91.zip --sha256 b4e484134c1122cd20b00632241b56a39ea0ee8bf30210aeacc80aba900e10a8 --extract-to seeds/kt/eval/data/stage3-capture-f104c91 --output seeds/kt/eval/data/f104c91-recheck --core-revision f104c91006c8d3d6a993881823863030e70aa4af
+python -B eval/kt/test_score.py
+python -B eval/kt/test_capture_control.py
+python -B eval/kt/test_review_saved_capture.py
+```
+
+Интеграционный прогон Алиби: **53/53 scorer**, **15/15 capture guards**,
+**10/10 archive/event-pair guards**. Эти offline tests проверяют evaluator и
+приём evidence, не успешность model inference. Результаты в
+[verification.json](../../seeds/kt/eval/results/f104c91-independent/verification.json).
+
+### Raw counts: предварительное agreement, отдельно для каждого Report
+
+Все **19/19** control labels остаются `pending_human`, human-confirmed **0/19**.
+Это agreement с source-first AI-разметкой, а не подтверждённая точность продукта.
+Два Report повторяют одни случаи; складывать их как независимую выборку нельзя.
+
+| Выход / оба режима по отдельности | Gold | TP | FP | FN | Precision | Recall |
+|---|---:|---:|---:|---:|---:|---:|
+| Functions | 9 | 4 | 6 | 5 | 4/10 | 4/9 |
+| Unit changes | 7 | 7 | 0 | 0 | 7/7 | 7/7 |
+| Положительные risks | 2 | 0 | 0 | 2 | 0/0 — N/A | 0/2 |
+
+Function status counts (TP/FP/FN): changed **2/5/0**, moved **1/0/4**,
+added **0/1/0**, missing **1/0/0**, duplicate **0/0/1**; unchanged **0/0/0**.
+Оценены 10/31 findings, вне frozen function labels — **21/31**.
+Unit changes: retained **3/3**, reorganised **3/3**, created **1/1**.
+Отрицательный risk-control корректно отсутствует **1/1**, но одновременно
+отсутствуют оба положительных риска: это не доказательство различения агентом.
+
+Appropriate abstention: **0/0 — N/A**, scoped unresolved **0/10**. В полном Report
+есть **1 unresolved finding / 3 unresolved refs**; это разные единицы.
+Risk не имеет explicit abstention object; пустой assessed список не считается
+обоснованным воздержанием. Проверено **343 цитаты / 0 ошибок** на каждый Report
+как по самому Report, так и по закреплённым источникам. Ожидания физических
+координат DOCX совпали **3/3** (2 unit + 1 risk source probe); shape checks 72
+locations не равны 72 независимо проверенным координатам. Валидность подстрок
+не доказывает смысл вывода. Полные counts и ошибки — отдельные
+[deterministic-score.json](../../seeds/kt/eval/results/f104c91-independent/deterministic-score.json)
+и [agent-score.json](../../seeds/kt/eval/results/f104c91-independent/agent-score.json).
+
+### Что агент фактически сделал
+
+Отдельный reviewer без gold/holdout разобрал все arguments/results:
+[trace-review.md](../../seeds/kt/eval/results/f104c91-independent/trace-review.md),
+[25 точных пар вызовов](../../seeds/kt/eval/results/f104c91-independent/trace-review.json).
+SSE и persisted trace совпадают по seq/type/data **60/60**, call/result pairs
+успешны **25/25**. Это 9 read, 7 search, 3 list findings, 3 inspect domain и
+3 inspect findings. Proposal calls **0/25**, accepted/rejected proposals **0/0**,
+`build_report` **0**, завершённых agent attempts **0/1**.
+
+Есть наблюдаемые зависимости: IDs из result seq 8 использованы в inspect seq 15;
+`next_offset=6` из seq 10 — в seq 13; найденный before 7.2 из seq 52 — в read
+seq 53. Это последовательность действий по полученным данным, не доступ к
+скрытым рассуждениям. Pagination seq 27 потеряла фильтр seq 25 и повторила 6 IDs.
+23/31 investigated IDs реконструированы: 22 явно inspected плюс F029 через read
+after 2.5. Они означают доступ к evidence, а не 23 решения или полные проверки.
+Не отмечены F023–F028, F030, F031. Из цитат трёх reorganisation rows в bounded
+tool results опущены пять; семь listed rows не означают полного прочтения.
+
+12 turns заявлены в metadata, но границ model turns в trace нет. Израсходовано
+25/32 tool slots. Stop seq 57 — `turn_limit`; final — seq 60. Между start seq 6
+и stop прошло **50.515491 s**, поэтому 180-second cap не исчерпан. Итоговую сборку
+сделал host; model-issued `build_report` не было. Текст самопроверки закупок
+after 7.2/7.4/2.6 достигнут инструментами, но риск не предложен. Второй пункт
+дублирования after 10.1 не появился в intermediate result content; F030 был
+только кратко перечислен. Report целиком сохранил deterministic baseline.
+
+### Source-backed ошибки, разногласия и границы review
+
+[Source error brief](../../seeds/kt/eval/results/f104c91-independent/source-errors.md)
+содержит 56 разрешённых точных цитат, ошибки reviewer-citation **0/56**:
+
+- Before 3.1 → after 4.1 + 10.1: одна регистрация всех клиентских заявок без
+  разграничения. F010 changed + F030 added не отражают полный duplicate set;
+  cross-unit duplication risk тоже отсутствует.
+- Четыре сохранённые обязанности при явных split/merge after 2.3–2.4 названы
+  changed вместо provisional moved: before 4.1/4.2/5.1/6.1 → after 5.1/6.1/7.1/7.3.
+- After 7.2 + 7.4: ЦС выбирает поставщика и утверждает проверку собственного
+  выбора; after 2.6 передаёт ему контроль. Potential-conflict risk пропущен.
+- **M5 вне frozen counts:** conclusion называет F002–F005 не имеющими
+  подтверждённых преемников, хотя unit_changes и after 2.2–2.4 их подтверждают.
+  Из 12 «новых функций» десять — структурные/распорядительные строки F020–F029.
+  Ещё F014 preserved transfer и F016 unresolved требуют review. Эти наблюдения
+  не добавлены задним числом в TP/FP/FN.
+
+Семь unit outputs поддержаны источниками. Created СЦС цитирует определение
+after 1.1/з, но пропускает более сильное явное основание after 2.5; это
+неполнота объяснения. Альтернативное представление duplicate как moved + added
+с отдельным risk требует human adjudication; сейчас отсутствует и risk.
+Новая interpretive sensitivity F017/F018: считать добавленные отрицательные
+границы содержательным changed или уточнением при moved. Исторических споров
+по этим двум labels не было; новые замечания сохранены отдельно без изменения
+frozen gold. Два прежних real-development разногласия ниже остаются открытыми.
+
+Процедурное отклонение раскрыто: source-reviewer после source-derived оценки
+вызвал private helpers для диагностики правил, несмотря на запрет private imports
+в поручении Алиби. Эти вызовы не использованы в evaluator, gold или пересчёте;
+диагностика отделена в source-errors от выводов по источникам. Повторные вызовы
+остановлены. Review выполнен отдельными AI-агентами, не человеком; post-capture
+error review не объявляется слепой валидацией gold.
+
+Для следующего capture: сохранить этот baseline, выдать отдельные run IDs,
+core/configuration, реальные proposals/results и завершение либо честный partial.
+Не хватает успешного агентного завершения, human confirmation, интегрированных
+PDF/XLSX проверок и общей UI/export/release приёмки. Старые domain diagnostics
+ниже — история, а не дополнительные измерения этого core.
+
+## История подготовки Stage 3 — до получения capture, 2026-09-23
+
+Следующий раздел фиксирует состояние до доставки пакета f104c91. Его ожидания
+пакета и прежние числа тестов сохранены как история; текущие результаты выше.
 
 Подготовка выполнена; **финальное сравнение deterministic/actual agent ещё не измерено**.
 По уточнению Алиби реальные HTTP/model-прогоны выполняет Батырхан в своей среде.

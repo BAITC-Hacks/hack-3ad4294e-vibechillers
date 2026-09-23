@@ -1,0 +1,1634 @@
+{
+  "schema_version": 1,
+  "review_type": "independent_ai_source_based_post_capture_review",
+  "reviewer": "Codex subagent partial_source_errors; separate source review from root scorer/custody",
+  "review_status": "pending_human",
+  "source_first_sequence": [
+    "Read full control before.txt and after.txt; inspect actual reports and public schema.",
+    "Derive actor/action/object/scope review from those sources.",
+    "Read development control labels and existing development reviews to map frozen cases and disagreements.",
+    "Inspect core source and execute pure saved-report diagnostic of guard behavior; no model/provider call."
+  ],
+  "not_blind": "Reviewer had the capture request and aggregate counts, then read actual output. This is a post-capture review, not a blind human label validation.",
+  "core_commit": "f104c91006c8d3d6a993881823863030e70aa4af",
+  "schema_commit": "4da43907919867ce4e8579360fe5b2ff43f9a37c",
+  "run_ids": {
+    "deterministic": "6b5120b9b2c244c589d36d3cb90c655c",
+    "agent": "76f223b2a6b44a9b8b68ac0386152e6f"
+  },
+  "reports_semantic_outputs_equal": {
+    "findings": true,
+    "unit_changes": true,
+    "risks": true,
+    "clauses": true,
+    "units": true
+  },
+  "sources": [
+    {
+      "file": "seeds/kt/eval/control/before.txt",
+      "sha256": "ec55a432799226339f681d6d7034e9b2f3f03c1065af45506df97595956ddb76"
+    },
+    {
+      "file": "seeds/kt/eval/control/after.txt",
+      "sha256": "4f085873ff55576b5d9d5cbe1850132d47e86e3a539e6dabc7643db79c4b8207"
+    },
+    {
+      "file": "seeds/kt/eval/data/stage3-capture-f104c91/capture-docx/deterministic.json",
+      "sha256": "d7ceb0114bfa13a28d3222a427b19b42a2792980f25c9eeaa9266fe3f79ac1be"
+    },
+    {
+      "file": "seeds/kt/eval/data/stage3-capture-f104c91/capture-docx/agent.json",
+      "sha256": "c7018f779c82a9b88c7526dd2ecc35df28c48f472991333244317ca5b52605a3"
+    }
+  ],
+  "unit_review": [
+    {
+      "output_id": "U0263620b5635",
+      "status": "reorganised",
+      "before": [
+        {
+          "doc": "before-1",
+          "unit_id": "1.1/б"
+        }
+      ],
+      "after": [
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/б"
+        }
+      ],
+      "report_citations": [
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/б",
+          "quote": "Отдел обработки заявок (ООЗ)"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/б",
+          "quote": "Центр регистрации заявок (ЦРЗ)"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.2",
+          "quote": "Отдел обработки заявок переименован в Центр регистрации заявок."
+        }
+      ],
+      "supporting_source_order_not_cited_by_output": null,
+      "review": "Supported by source; exact-set/status agreement is provisional, not human-confirmed accuracy.",
+      "note": "Report includes actual source-backed transition witness."
+    },
+    {
+      "output_id": "U1b7df4635313",
+      "status": "reorganised",
+      "before": [
+        {
+          "doc": "before-1",
+          "unit_id": "1.1/в"
+        }
+      ],
+      "after": [
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/в"
+        },
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/г"
+        }
+      ],
+      "report_citations": [
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/в",
+          "quote": "Центр клиентских операций (ЦКО)"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/в",
+          "quote": "Отдел приема обращений (ОПО)"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/г",
+          "quote": "Отдел клиентской аналитики (ОКА)"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.3",
+          "quote": "Центр клиентских операций разделен на Отдел приема обращений и Отдел клиентской аналитики."
+        }
+      ],
+      "supporting_source_order_not_cited_by_output": null,
+      "review": "Supported by source; exact-set/status agreement is provisional, not human-confirmed accuracy.",
+      "note": "Report includes actual source-backed transition witness."
+    },
+    {
+      "output_id": "U404bb470e002",
+      "status": "reorganised",
+      "before": [
+        {
+          "doc": "before-1",
+          "unit_id": "1.1/г"
+        },
+        {
+          "doc": "before-1",
+          "unit_id": "1.1/д"
+        }
+      ],
+      "after": [
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/д"
+        }
+      ],
+      "report_citations": [
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/г",
+          "quote": "Отдел закупок (ОЗ)"
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/д",
+          "quote": "Отдел складского учета (ОСУ)"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/д",
+          "quote": "Центр снабжения (ЦС)"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.4",
+          "quote": "Отдел закупок и Отдел складского учета объединены в Центр снабжения."
+        }
+      ],
+      "supporting_source_order_not_cited_by_output": null,
+      "review": "Supported by source; exact-set/status agreement is provisional, not human-confirmed accuracy.",
+      "note": "Report includes actual source-backed transition witness."
+    },
+    {
+      "output_id": "U538fd261f400",
+      "status": "retained",
+      "before": [
+        {
+          "doc": "before-1",
+          "unit_id": "1.1/а"
+        }
+      ],
+      "after": [
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/а"
+        }
+      ],
+      "report_citations": [
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/а",
+          "quote": "Отдел архивного учета (ОАУ)"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/а",
+          "quote": "Отдел архивного учета (ОАУ)"
+        }
+      ],
+      "supporting_source_order_not_cited_by_output": {
+        "doc": "after-1",
+        "clause_id": "2.1",
+        "quote": "Отдел архивного учета, Отдел финансового контроля и Отдел технической поддержки сохранены без изменения наименования и подчиненности.",
+        "location": {
+          "page": null,
+          "block": 14,
+          "sheet": null,
+          "cell_range": null
+        }
+      },
+      "review": "Supported by source; exact-set/status agreement is provisional, not human-confirmed accuracy.",
+      "note": "Same full named unit in both structural lists; source order also explicitly preserves name and subordination."
+    },
+    {
+      "output_id": "Uab4589f3a040",
+      "status": "retained",
+      "before": [
+        {
+          "doc": "before-1",
+          "unit_id": "1.1/е"
+        }
+      ],
+      "after": [
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/е"
+        }
+      ],
+      "report_citations": [
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/е",
+          "quote": "Отдел финансового контроля (ОФК)"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/е",
+          "quote": "Отдел финансового контроля (ОФК)"
+        }
+      ],
+      "supporting_source_order_not_cited_by_output": {
+        "doc": "after-1",
+        "clause_id": "2.1",
+        "quote": "Отдел архивного учета, Отдел финансового контроля и Отдел технической поддержки сохранены без изменения наименования и подчиненности.",
+        "location": {
+          "page": null,
+          "block": 14,
+          "sheet": null,
+          "cell_range": null
+        }
+      },
+      "review": "Supported by source; exact-set/status agreement is provisional, not human-confirmed accuracy.",
+      "note": "Same full named unit in both structural lists; source order also explicitly preserves name and subordination."
+    },
+    {
+      "output_id": "U5f8777edfa21",
+      "status": "retained",
+      "before": [
+        {
+          "doc": "before-1",
+          "unit_id": "1.1/ж"
+        }
+      ],
+      "after": [
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/ж"
+        }
+      ],
+      "report_citations": [
+        {
+          "doc": "before-1",
+          "clause_id": "1.1/ж",
+          "quote": "Отдел технической поддержки (ОТП)"
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/ж",
+          "quote": "Отдел технической поддержки (ОТП)"
+        }
+      ],
+      "supporting_source_order_not_cited_by_output": {
+        "doc": "after-1",
+        "clause_id": "2.1",
+        "quote": "Отдел архивного учета, Отдел финансового контроля и Отдел технической поддержки сохранены без изменения наименования и подчиненности.",
+        "location": {
+          "page": null,
+          "block": 14,
+          "sheet": null,
+          "cell_range": null
+        }
+      },
+      "review": "Supported by source; exact-set/status agreement is provisional, not human-confirmed accuracy.",
+      "note": "Same full named unit in both structural lists; source order also explicitly preserves name and subordination."
+    },
+    {
+      "output_id": "U0def3b8dea71",
+      "status": "created",
+      "before": [],
+      "after": [
+        {
+          "doc": "after-1",
+          "unit_id": "1.1/з"
+        }
+      ],
+      "report_citations": [
+        {
+          "doc": "after-1",
+          "clause_id": "1.1/з",
+          "quote": "Служба цифровых сервисов (СЦС)"
+        }
+      ],
+      "supporting_source_order_not_cited_by_output": {
+        "doc": "after-1",
+        "clause_id": "2.5",
+        "quote": "Служба цифровых сервисов создана впервые и не является правопреемником существовавшего подразделения.",
+        "location": {
+          "page": null,
+          "block": 18,
+          "sheet": null,
+          "cell_range": null
+        }
+      },
+      "review": "Supported by source; exact-set/status agreement is provisional, not human-confirmed accuracy.",
+      "note": "Creation conclusion is substantively supported by explicit 2.5, but output itself cites only after structural definition and reports predecessor search; adding the explicit order would strengthen source navigation."
+    }
+  ],
+  "source_backed_errors": [
+    {
+      "id": "ctrl-function-duplicate",
+      "category": "wrong_match",
+      "scored_label": true,
+      "finding_ids": [
+        "F010",
+        "F030"
+      ],
+      "actual_findings": [
+        {
+          "id": "F010",
+          "status": "changed",
+          "before": [
+            {
+              "doc": "before-1",
+              "clause_id": "3.1"
+            }
+          ],
+          "after": [
+            {
+              "doc": "after-1",
+              "clause_id": "4.1"
+            }
+          ],
+          "reason": "Лексическое сходство 0.92; формулировка изменена; пункт 3.1 → 4.1; владелец ООЗ → ЦРЗ."
+        },
+        {
+          "id": "F030",
+          "status": "added",
+          "before": [],
+          "after": [
+            {
+              "doc": "after-1",
+              "clause_id": "10.1"
+            }
+          ],
+          "reason": "В исходной редакции не найден подтверждённый предшественник функции."
+        }
+      ],
+      "expected_review": {
+        "status": "duplicate",
+        "before": [
+          "before-1:3.1"
+        ],
+        "after": [
+          "after-1:4.1",
+          "after-1:10.1"
+        ],
+        "alternative_representation": "A moved inherited duty plus added overlapping assignment linked to an advisory risk could convey the same semantics, but is not the frozen exact-set label. This report lacks that risk and labels the preserved inherited duty changed."
+      },
+      "source_review": "Before 3.1 assigned all incoming requests to OOZ. After 4.1 and 10.1 each assign the same entire request set and journal to CRZ and SCS. The last sentence of 10.1 explicitly denies an established channel/customer/stage split. F010 and F030 separate the inherited duplicate duty into changed and added; no overlap risk compensates for this representation.",
+      "evidence": [
+        {
+          "doc": "before-1",
+          "clause_id": "3.1",
+          "quote": "ООЗ регистрирует все входящие заявки клиентов в едином журнале заявок.",
+          "location": {
+            "page": null,
+            "block": 16,
+            "sheet": null,
+            "cell_range": null
+          }
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "4.1",
+          "quote": "ЦРЗ регистрирует все входящие заявки клиентов в едином журнале заявок.",
+          "location": {
+            "page": null,
+            "block": 23,
+            "sheet": null,
+            "cell_range": null
+          }
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "10.1",
+          "quote": "СЦС регистрирует все входящие заявки клиентов в едином журнале заявок. Разделение заявок с ЦРЗ по каналам, категориям клиентов или этапам обработки не установлено.",
+          "location": {
+            "page": null,
+            "block": 38,
+            "sheet": null,
+            "cell_range": null
+          }
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.2",
+          "quote": "Отдел обработки заявок переименован в Центр регистрации заявок. Центр регистрации заявок является правопреемником Отдела обработки заявок.",
+          "location": {
+            "page": null,
+            "block": 15,
+            "sheet": null,
+            "cell_range": null
+          }
+        }
+      ],
+      "human_confirmation": "pending_human"
+    },
+    {
+      "id": "ctrl-function-split-intake",
+      "category": "wrong_status",
+      "scored_label": true,
+      "finding_ids": [
+        "F011"
+      ],
+      "actual_findings": [
+        {
+          "id": "F011",
+          "status": "changed",
+          "before": [
+            {
+              "doc": "before-1",
+              "clause_id": "4.1"
+            }
+          ],
+          "after": [
+            {
+              "doc": "after-1",
+              "clause_id": "5.1"
+            }
+          ],
+          "reason": "Лексическое сходство 0.94; формулировка изменена; пункт 4.1 → 5.1; владелец ЦКО → ОПО."
+        }
+      ],
+      "expected_review": {
+        "status": "moved",
+        "matching_endpoints_correct": true
+      },
+      "source_review": "The action and object are verbatim preserved after the initial owner abbreviation. The source order expressly transfers the function through split/merge. Under docs/plan.md preserved function with changed owner/location is moved; changed requires substantive content change.",
+      "evidence": [
+        {
+          "doc": "before-1",
+          "clause_id": "4.1",
+          "quote": "ЦКО принимает телефонные обращения клиентов и передает зарегистрированное обращение ответственному исполнителю.",
+          "location": {
+            "page": null,
+            "block": 18,
+            "sheet": null,
+            "cell_range": null
+          }
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "5.1",
+          "quote": "ОПО принимает телефонные обращения клиентов и передает зарегистрированное обращение ответственному исполнителю.",
+          "location": {
+            "page": null,
+            "block": 25,
+            "sheet": null,
+            "cell_range": null
+          }
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.3",
+          "quote": "Центр клиентских операций разделен на Отдел приема обращений и Отдел клиентской аналитики. Прием обращений передан Отделу приема обращений, опросы и аналитика переданы Отделу клиентской аналитики.",
+          "location": {
+            "page": null,
+            "block": 16,
+            "sheet": null,
+            "cell_range": null
+          }
+        }
+      ],
+      "human_confirmation": "pending_human"
+    },
+    {
+      "id": "ctrl-function-split-survey",
+      "category": "wrong_status",
+      "scored_label": true,
+      "finding_ids": [
+        "F012"
+      ],
+      "actual_findings": [
+        {
+          "id": "F012",
+          "status": "changed",
+          "before": [
+            {
+              "doc": "before-1",
+              "clause_id": "4.2"
+            }
+          ],
+          "after": [
+            {
+              "doc": "after-1",
+              "clause_id": "6.1"
+            }
+          ],
+          "reason": "Лексическое сходство 0.94; формулировка изменена; пункт 4.2 → 6.1; владелец ЦКО → ОКА."
+        }
+      ],
+      "expected_review": {
+        "status": "moved",
+        "matching_endpoints_correct": true
+      },
+      "source_review": "The action and object are verbatim preserved after the initial owner abbreviation. The source order expressly transfers the function through split/merge. Under docs/plan.md preserved function with changed owner/location is moved; changed requires substantive content change.",
+      "evidence": [
+        {
+          "doc": "before-1",
+          "clause_id": "4.2",
+          "quote": "ЦКО проводит опрос клиентов после закрытия обращения и составляет отчет об удовлетворенности.",
+          "location": {
+            "page": null,
+            "block": 19,
+            "sheet": null,
+            "cell_range": null
+          }
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "6.1",
+          "quote": "ОКА проводит опрос клиентов после закрытия обращения и составляет отчет об удовлетворенности.",
+          "location": {
+            "page": null,
+            "block": 27,
+            "sheet": null,
+            "cell_range": null
+          }
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.3",
+          "quote": "Центр клиентских операций разделен на Отдел приема обращений и Отдел клиентской аналитики. Прием обращений передан Отделу приема обращений, опросы и аналитика переданы Отделу клиентской аналитики.",
+          "location": {
+            "page": null,
+            "block": 16,
+            "sheet": null,
+            "cell_range": null
+          }
+        }
+      ],
+      "human_confirmation": "pending_human"
+    },
+    {
+      "id": "ctrl-function-merge-contracts",
+      "category": "wrong_status",
+      "scored_label": true,
+      "finding_ids": [
+        "F013"
+      ],
+      "actual_findings": [
+        {
+          "id": "F013",
+          "status": "changed",
+          "before": [
+            {
+              "doc": "before-1",
+              "clause_id": "5.1"
+            }
+          ],
+          "after": [
+            {
+              "doc": "after-1",
+              "clause_id": "7.1"
+            }
+          ],
+          "reason": "Лексическое сходство 0.99; формулировка изменена; пункт 5.1 → 7.1; владелец ОЗ → ЦС."
+        }
+      ],
+      "expected_review": {
+        "status": "moved",
+        "matching_endpoints_correct": true
+      },
+      "source_review": "The action and object are verbatim preserved after the initial owner abbreviation. The source order expressly transfers the function through split/merge. Under docs/plan.md preserved function with changed owner/location is moved; changed requires substantive content change.",
+      "evidence": [
+        {
+          "doc": "before-1",
+          "clause_id": "5.1",
+          "quote": "ОЗ оформляет договоры закупки оборудования после утверждения заявки.",
+          "location": {
+            "page": null,
+            "block": 21,
+            "sheet": null,
+            "cell_range": null
+          }
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "7.1",
+          "quote": "ЦС оформляет договоры закупки оборудования после утверждения заявки.",
+          "location": {
+            "page": null,
+            "block": 29,
+            "sheet": null,
+            "cell_range": null
+          }
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.4",
+          "quote": "Отдел закупок и Отдел складского учета объединены в Центр снабжения. Центр снабжения является правопреемником обоих отделов по закрепленным функциям закупки и складского учета.",
+          "location": {
+            "page": null,
+            "block": 17,
+            "sheet": null,
+            "cell_range": null
+          }
+        }
+      ],
+      "human_confirmation": "pending_human"
+    },
+    {
+      "id": "ctrl-function-merge-stock",
+      "category": "wrong_status",
+      "scored_label": true,
+      "finding_ids": [
+        "F015"
+      ],
+      "actual_findings": [
+        {
+          "id": "F015",
+          "status": "changed",
+          "before": [
+            {
+              "doc": "before-1",
+              "clause_id": "6.1"
+            }
+          ],
+          "after": [
+            {
+              "doc": "after-1",
+              "clause_id": "7.3"
+            }
+          ],
+          "reason": "Лексическое сходство 0.96; формулировка изменена; пункт 6.1 → 7.3; владелец ОСУ → ЦС."
+        }
+      ],
+      "expected_review": {
+        "status": "moved",
+        "matching_endpoints_correct": true
+      },
+      "source_review": "The action and object are verbatim preserved after the initial owner abbreviation. The source order expressly transfers the function through split/merge. Under docs/plan.md preserved function with changed owner/location is moved; changed requires substantive content change.",
+      "evidence": [
+        {
+          "doc": "before-1",
+          "clause_id": "6.1",
+          "quote": "ОСУ ведет количественный учет оборудования на складе по актам приемки.",
+          "location": {
+            "page": null,
+            "block": 24,
+            "sheet": null,
+            "cell_range": null
+          }
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "7.3",
+          "quote": "ЦС ведет количественный учет оборудования на складе по актам приемки.",
+          "location": {
+            "page": null,
+            "block": 31,
+            "sheet": null,
+            "cell_range": null
+          }
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.4",
+          "quote": "Отдел закупок и Отдел складского учета объединены в Центр снабжения. Центр снабжения является правопреемником обоих отделов по закрепленным функциям закупки и складского учета.",
+          "location": {
+            "page": null,
+            "block": 17,
+            "sheet": null,
+            "cell_range": null
+          }
+        }
+      ],
+      "human_confirmation": "pending_human"
+    },
+    {
+      "id": "ctrl-risk-duplication",
+      "category": "no_prediction",
+      "scored_label": true,
+      "finding_ids": [
+        "F010",
+        "F030"
+      ],
+      "actual_findings": [
+        {
+          "id": "F010",
+          "status": "changed",
+          "before": [
+            {
+              "doc": "before-1",
+              "clause_id": "3.1"
+            }
+          ],
+          "after": [
+            {
+              "doc": "after-1",
+              "clause_id": "4.1"
+            }
+          ],
+          "reason": "Лексическое сходство 0.92; формулировка изменена; пункт 3.1 → 4.1; владелец ООЗ → ЦРЗ."
+        },
+        {
+          "id": "F030",
+          "status": "added",
+          "before": [],
+          "after": [
+            {
+              "doc": "after-1",
+              "clause_id": "10.1"
+            }
+          ],
+          "reason": "В исходной редакции не найден подтверждённый предшественник функции."
+        }
+      ],
+      "expected_review": {
+        "kind": "potential_duplication",
+        "risk_ids": []
+      },
+      "source_review": "Two accountable units both register all incoming requests in the same journal without a stated scope division. This supports an advisory potential_duplication. Risks is empty; the omission is a false negative against the provisional positive label, not appropriate abstention.",
+      "evidence": [
+        {
+          "doc": "after-1",
+          "clause_id": "4.1",
+          "quote": "ЦРЗ регистрирует все входящие заявки клиентов в едином журнале заявок.",
+          "location": {
+            "page": null,
+            "block": 23,
+            "sheet": null,
+            "cell_range": null
+          }
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "10.1",
+          "quote": "СЦС регистрирует все входящие заявки клиентов в едином журнале заявок. Разделение заявок с ЦРЗ по каналам, категориям клиентов или этапам обработки не установлено.",
+          "location": {
+            "page": null,
+            "block": 38,
+            "sheet": null,
+            "cell_range": null
+          }
+        }
+      ],
+      "human_confirmation": "pending_human"
+    },
+    {
+      "id": "ctrl-risk-self-control",
+      "category": "no_prediction",
+      "scored_label": true,
+      "finding_ids": [
+        "F014",
+        "F016"
+      ],
+      "actual_findings": [
+        {
+          "id": "F014",
+          "status": "changed",
+          "before": [
+            {
+              "doc": "before-1",
+              "clause_id": "5.2"
+            }
+          ],
+          "after": [
+            {
+              "doc": "after-1",
+              "clause_id": "7.2"
+            }
+          ],
+          "reason": "Лексическое сходство 0.99; формулировка изменена; пункт 5.2 → 7.2; владелец ОЗ → ЦС."
+        },
+        {
+          "id": "F016",
+          "status": "unresolved",
+          "before": [
+            {
+              "doc": "before-1",
+              "clause_id": "7.1"
+            }
+          ],
+          "after": [
+            {
+              "doc": "after-1",
+              "clause_id": "7.4"
+            },
+            {
+              "doc": "after-1",
+              "clause_id": "2.6"
+            }
+          ],
+          "reason": "Найдены только неоднозначные или слабые кандидаты (сходство до 0.69); преемник не подтверждён."
+        }
+      ],
+      "expected_review": {
+        "kind": "potential_conflict_of_interest",
+        "risk_ids": []
+      },
+      "source_review": "CS chooses the supplier and checks the justification of its own choice, approves the procedure conclusion itself, and needs no external approval. This is evidence of potential self-review conflict; no assertion of misconduct or legal breach follows. The missing risk is a provisional false negative.",
+      "evidence": [
+        {
+          "doc": "after-1",
+          "clause_id": "7.2",
+          "quote": "ЦС выбирает поставщика по утвержденным критериям и принимает решение о заключении договора.",
+          "location": {
+            "page": null,
+            "block": 30,
+            "sheet": null,
+            "cell_range": null
+          }
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "7.4",
+          "quote": "ЦС проверяет обоснованность собственного выбора поставщика и самостоятельно утверждает заключение о соблюдении процедуры закупки. Внешнее согласование такого заключения не требуется.",
+          "location": {
+            "page": null,
+            "block": 32,
+            "sheet": null,
+            "cell_range": null
+          }
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.6",
+          "quote": "Проверка обоснованности выбора поставщика и утверждение заключения о соблюдении процедуры закупки переданы из Отдела финансового контроля в Центр снабжения.",
+          "location": {
+            "page": null,
+            "block": 19,
+            "sheet": null,
+            "cell_range": null
+          }
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "7.1",
+          "quote": "ОФК независимо проверяет обоснованность выбора поставщика и утверждает заключение о соблюдении процедуры закупки.",
+          "location": {
+            "page": null,
+            "block": 26,
+            "sheet": null,
+            "cell_range": null
+          }
+        }
+      ],
+      "human_confirmation": "pending_human"
+    },
+    {
+      "id": "unlabelled-supplier-choice",
+      "category": "wrong_status",
+      "scored_label": false,
+      "finding_ids": [
+        "F014"
+      ],
+      "actual_findings": [
+        {
+          "id": "F014",
+          "status": "changed",
+          "before": [
+            {
+              "doc": "before-1",
+              "clause_id": "5.2"
+            }
+          ],
+          "after": [
+            {
+              "doc": "after-1",
+              "clause_id": "7.2"
+            }
+          ],
+          "reason": "Лексическое сходство 0.99; формулировка изменена; пункт 5.2 → 7.2; владелец ОЗ → ЦС."
+        }
+      ],
+      "expected_review": {
+        "status": "moved"
+      },
+      "source_review": "Only the named owner changes; the supplier selection criteria and decision remain verbatim preserved. Like F013 and F015, the explicit merge supports moved. This case has no frozen function label and is not added to raw counts.",
+      "evidence": [
+        {
+          "doc": "before-1",
+          "clause_id": "5.2",
+          "quote": "ОЗ выбирает поставщика по утвержденным критериям и принимает решение о заключении договора.",
+          "location": {
+            "page": null,
+            "block": 22,
+            "sheet": null,
+            "cell_range": null
+          }
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "7.2",
+          "quote": "ЦС выбирает поставщика по утвержденным критериям и принимает решение о заключении договора.",
+          "location": {
+            "page": null,
+            "block": 30,
+            "sheet": null,
+            "cell_range": null
+          }
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.4",
+          "quote": "Отдел закупок и Отдел складского учета объединены в Центр снабжения. Центр снабжения является правопреемником обоих отделов по закрепленным функциям закупки и складского учета.",
+          "location": {
+            "page": null,
+            "block": 17,
+            "sheet": null,
+            "cell_range": null
+          }
+        }
+      ],
+      "human_confirmation": "pending_human"
+    },
+    {
+      "id": "unlabelled-transferred-review",
+      "category": "resolvable_left_unresolved",
+      "scored_label": false,
+      "finding_ids": [
+        "F016"
+      ],
+      "actual_findings": [
+        {
+          "id": "F016",
+          "status": "unresolved",
+          "before": [
+            {
+              "doc": "before-1",
+              "clause_id": "7.1"
+            }
+          ],
+          "after": [
+            {
+              "doc": "after-1",
+              "clause_id": "7.4"
+            },
+            {
+              "doc": "after-1",
+              "clause_id": "2.6"
+            }
+          ],
+          "reason": "Найдены только неоднозначные или слабые кандидаты (сходство до 0.69); преемник не подтверждён."
+        }
+      ],
+      "expected_review": {
+        "status": "changed",
+        "counterpart": "after-1:7.4",
+        "supporting_transfer_evidence": "after-1:2.6"
+      },
+      "source_review": "The order in after 2.6 explicitly identifies transfer of the before 7.1 control function from OFK to CS; after 7.4 specifies the successor duty with substantive loss of independence. A source-backed changed relation to 7.4 is reviewable; after 2.6 is transfer evidence rather than a second competing operational successor. This is an unscored diagnostic, not a new abstention denominator.",
+      "evidence": [
+        {
+          "doc": "before-1",
+          "clause_id": "7.1",
+          "quote": "ОФК независимо проверяет обоснованность выбора поставщика и утверждает заключение о соблюдении процедуры закупки.",
+          "location": {
+            "page": null,
+            "block": 26,
+            "sheet": null,
+            "cell_range": null
+          }
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.6",
+          "quote": "Проверка обоснованности выбора поставщика и утверждение заключения о соблюдении процедуры закупки переданы из Отдела финансового контроля в Центр снабжения.",
+          "location": {
+            "page": null,
+            "block": 19,
+            "sheet": null,
+            "cell_range": null
+          }
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "7.4",
+          "quote": "ЦС проверяет обоснованность собственного выбора поставщика и самостоятельно утверждает заключение о соблюдении процедуры закупки. Внешнее согласование такого заключения не требуется.",
+          "location": {
+            "page": null,
+            "block": 32,
+            "sheet": null,
+            "cell_range": null
+          }
+        }
+      ],
+      "human_confirmation": "pending_human"
+    },
+    {
+      "id": "unlabelled-conclusion-contradiction",
+      "category": "unsupported_summary",
+      "scored_label": false,
+      "finding_ids": [
+        "F001",
+        "F002",
+        "F003",
+        "F004",
+        "F005",
+        "F006",
+        "F007",
+        "F009",
+        "F019",
+        "F020",
+        "F021",
+        "F022",
+        "F023",
+        "F024",
+        "F025",
+        "F026",
+        "F027",
+        "F028",
+        "F029"
+      ],
+      "actual_findings": [
+        {
+          "id": "F001",
+          "status": "unchanged",
+          "before": [
+            {
+              "doc": "before-1",
+              "clause_id": "1.1/а"
+            }
+          ],
+          "after": [
+            {
+              "doc": "after-1",
+              "clause_id": "1.1/а"
+            }
+          ],
+          "reason": "Структурная единица и её положение сохранены."
+        },
+        {
+          "id": "F002",
+          "status": "missing",
+          "before": [
+            {
+              "doc": "before-1",
+              "clause_id": "1.1/б"
+            }
+          ],
+          "after": [],
+          "reason": "Роль или подразделение из исходной структуры не найдены в новой редакции."
+        },
+        {
+          "id": "F003",
+          "status": "missing",
+          "before": [
+            {
+              "doc": "before-1",
+              "clause_id": "1.1/в"
+            }
+          ],
+          "after": [],
+          "reason": "Роль или подразделение из исходной структуры не найдены в новой редакции."
+        },
+        {
+          "id": "F004",
+          "status": "missing",
+          "before": [
+            {
+              "doc": "before-1",
+              "clause_id": "1.1/г"
+            }
+          ],
+          "after": [],
+          "reason": "Роль или подразделение из исходной структуры не найдены в новой редакции."
+        },
+        {
+          "id": "F005",
+          "status": "missing",
+          "before": [
+            {
+              "doc": "before-1",
+              "clause_id": "1.1/д"
+            }
+          ],
+          "after": [],
+          "reason": "Роль или подразделение из исходной структуры не найдены в новой редакции."
+        },
+        {
+          "id": "F006",
+          "status": "unchanged",
+          "before": [
+            {
+              "doc": "before-1",
+              "clause_id": "1.1/е"
+            }
+          ],
+          "after": [
+            {
+              "doc": "after-1",
+              "clause_id": "1.1/е"
+            }
+          ],
+          "reason": "Структурная единица и её положение сохранены."
+        },
+        {
+          "id": "F007",
+          "status": "unchanged",
+          "before": [
+            {
+              "doc": "before-1",
+              "clause_id": "1.1/ж"
+            }
+          ],
+          "after": [
+            {
+              "doc": "after-1",
+              "clause_id": "1.1/ж"
+            }
+          ],
+          "reason": "Структурная единица и её положение сохранены."
+        },
+        {
+          "id": "F009",
+          "status": "missing",
+          "before": [
+            {
+              "doc": "before-1",
+              "clause_id": "2.2"
+            }
+          ],
+          "after": [],
+          "reason": "В представленной новой редакции не найден подтверждённый преемник функции."
+        },
+        {
+          "id": "F019",
+          "status": "moved",
+          "before": [
+            {
+              "doc": "before-1",
+              "clause_id": "9.1"
+            }
+          ],
+          "after": [
+            {
+              "doc": "after-1",
+              "clause_id": "11.1"
+            }
+          ],
+          "reason": "Текст совпадает, изменено расположение: пункт 9.1 → 11.1."
+        },
+        {
+          "id": "F020",
+          "status": "added",
+          "before": [],
+          "after": [
+            {
+              "doc": "after-1",
+              "clause_id": "1.1/б"
+            }
+          ],
+          "reason": "Роль или подразделение добавлены в новую структуру."
+        },
+        {
+          "id": "F021",
+          "status": "added",
+          "before": [],
+          "after": [
+            {
+              "doc": "after-1",
+              "clause_id": "1.1/в"
+            }
+          ],
+          "reason": "Роль или подразделение добавлены в новую структуру."
+        },
+        {
+          "id": "F022",
+          "status": "added",
+          "before": [],
+          "after": [
+            {
+              "doc": "after-1",
+              "clause_id": "1.1/г"
+            }
+          ],
+          "reason": "Роль или подразделение добавлены в новую структуру."
+        },
+        {
+          "id": "F023",
+          "status": "added",
+          "before": [],
+          "after": [
+            {
+              "doc": "after-1",
+              "clause_id": "1.1/д"
+            }
+          ],
+          "reason": "Роль или подразделение добавлены в новую структуру."
+        },
+        {
+          "id": "F024",
+          "status": "added",
+          "before": [],
+          "after": [
+            {
+              "doc": "after-1",
+              "clause_id": "1.1/з"
+            }
+          ],
+          "reason": "Роль или подразделение добавлены в новую структуру."
+        },
+        {
+          "id": "F025",
+          "status": "added",
+          "before": [],
+          "after": [
+            {
+              "doc": "after-1",
+              "clause_id": "2.1"
+            }
+          ],
+          "reason": "В исходной редакции не найден подтверждённый предшественник функции."
+        },
+        {
+          "id": "F026",
+          "status": "added",
+          "before": [],
+          "after": [
+            {
+              "doc": "after-1",
+              "clause_id": "2.2"
+            }
+          ],
+          "reason": "В исходной редакции не найден подтверждённый предшественник функции."
+        },
+        {
+          "id": "F027",
+          "status": "added",
+          "before": [],
+          "after": [
+            {
+              "doc": "after-1",
+              "clause_id": "2.3"
+            }
+          ],
+          "reason": "В исходной редакции не найден подтверждённый предшественник функции."
+        },
+        {
+          "id": "F028",
+          "status": "added",
+          "before": [],
+          "after": [
+            {
+              "doc": "after-1",
+              "clause_id": "2.4"
+            }
+          ],
+          "reason": "В исходной редакции не найден подтверждённый предшественник функции."
+        },
+        {
+          "id": "F029",
+          "status": "added",
+          "before": [],
+          "after": [
+            {
+              "doc": "after-1",
+              "clause_id": "2.5"
+            }
+          ],
+          "reason": "В исходной редакции не найден подтверждённый предшественник функции."
+        }
+      ],
+      "expected_review": {
+        "unit_change_ids": [
+          "U0263620b5635",
+          "U1b7df4635313",
+          "U404bb470e002"
+        ],
+        "separate_unit_reorganisation_from_actual_function_loss": true
+      },
+      "source_review": "The first conclusion says four structural entries have no confirmed successor although three UnitChange rows and explicit orders establish rename, split and merger. The second conclusion calls 12 rows new functions, including structural definitions and reorganisation orders. The valid unit output does not correct the earlier summary. This is an unscored summary/typing problem; the 12 rows are not 12 actual newly introduced operational duties. The unchanged-functions count of 3 cites structural F001/F006/F007; the moved-function count includes scope statement F019. Exact valid quotes establish source occurrence, not semantic entailment of function counts.",
+      "evidence": [
+        {
+          "doc": "after-1",
+          "clause_id": "2.2",
+          "quote": "Отдел обработки заявок переименован в Центр регистрации заявок. Центр регистрации заявок является правопреемником Отдела обработки заявок.",
+          "location": {
+            "page": null,
+            "block": 15,
+            "sheet": null,
+            "cell_range": null
+          }
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.3",
+          "quote": "Центр клиентских операций разделен на Отдел приема обращений и Отдел клиентской аналитики. Прием обращений передан Отделу приема обращений, опросы и аналитика переданы Отделу клиентской аналитики.",
+          "location": {
+            "page": null,
+            "block": 16,
+            "sheet": null,
+            "cell_range": null
+          }
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.4",
+          "quote": "Отдел закупок и Отдел складского учета объединены в Центр снабжения. Центр снабжения является правопреемником обоих отделов по закрепленным функциям закупки и складского учета.",
+          "location": {
+            "page": null,
+            "block": 17,
+            "sheet": null,
+            "cell_range": null
+          }
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.5",
+          "quote": "Служба цифровых сервисов создана впервые и не является правопреемником существовавшего подразделения.",
+          "location": {
+            "page": null,
+            "block": 18,
+            "sheet": null,
+            "cell_range": null
+          }
+        }
+      ],
+      "human_confirmation": "pending_human",
+      "priority": "high_M5",
+      "actual_conclusion_items": [
+        {
+          "zero_based_index": 0,
+          "text": "Без подтверждённого преемника в новой редакции — 5: F002 (before-1:1.1/б); F003 (before-1:1.1/в); F004 (before-1:1.1/г); F005 (before-1:1.1/д); F009 (before-1:2.2). Это не доказательство утраты функции, а сигнал для проверки экспертом.",
+          "finding_ids": [
+            "F002",
+            "F003",
+            "F004",
+            "F005",
+            "F009"
+          ]
+        },
+        {
+          "zero_based_index": 1,
+          "text": "Новые функции без подтверждённого предшественника — 12: F020 (after-1:1.1/б); F021 (after-1:1.1/в); F022 (after-1:1.1/г); F023 (after-1:1.1/д); F024 (after-1:1.1/з); F025 (after-1:2.1); F026 (after-1:2.2); F027 (after-1:2.3); F028 (after-1:2.4); F029 (after-1:2.5); F030 (after-1:10.1); F031 (after-1:10.2).",
+          "finding_ids": [
+            "F020",
+            "F021",
+            "F022",
+            "F023",
+            "F024",
+            "F025",
+            "F026",
+            "F027",
+            "F028",
+            "F029",
+            "F030",
+            "F031"
+          ]
+        },
+        {
+          "zero_based_index": 4,
+          "text": "Функции сохранены, но изменён номер пункта или владелец — 2: F008 (before-1:2.1 → after-1:3.1); F019 (before-1:9.1 → after-1:11.1). Перенумерация не означает утрату.",
+          "finding_ids": [
+            "F008",
+            "F019"
+          ]
+        },
+        {
+          "zero_based_index": 5,
+          "text": "Без изменений — 3 функций.",
+          "finding_ids": [
+            "F001",
+            "F006",
+            "F007"
+          ]
+        }
+      ]
+    }
+  ],
+  "negative_control": {
+    "label_id": "ctrl-risk-cooperation-negative",
+    "actual_risks": [],
+    "decision": "no_supported_risk",
+    "source_reason": "OFK approves only the financial part within budget; OTP develops only the technical part within equipment requirements. Each after clause expressly excludes the other unit's scope. Shared repair-plan subject does not establish same duty/scope or self-review.",
+    "evidence": [
+      {
+        "doc": "after-1",
+        "clause_id": "8.1",
+        "quote": "ОФК согласует финансовую часть плана ремонта исключительно в пределах утвержденного бюджета. ОФК не разрабатывает и не утверждает техническую часть плана.",
+        "location": {
+          "page": null,
+          "block": 34,
+          "sheet": null,
+          "cell_range": null
+        }
+      },
+      {
+        "doc": "after-1",
+        "clause_id": "9.1",
+        "quote": "ОТП разрабатывает техническую часть плана ремонта исключительно в пределах требований к оборудованию. ОТП не согласует финансовую часть плана и не распоряжается бюджетом ремонта.",
+        "location": {
+          "page": null,
+          "block": 36,
+          "sheet": null,
+          "cell_range": null
+        }
+      }
+    ],
+    "interpretation": "One correct negative out of one labelled negative in the saved baseline (1/1). Empty risk output also misses both positive cases, so this alone does not establish discrimination. It is not appropriate abstention. The agent proposed no risks; the matching saved fallback does not establish that the agent independently classified this negative example.",
+    "function_status_disagreement": "New interpretive sensitivity raised by this post-capture review, not a historical recorded disagreement: frozen changed labels for F017/F018 treat added explicit negative boundaries as material; a moved reading treats them as clarification of existing exclusive scopes. The two control case entries in reviews.json have empty disagreements lists. Preserve frozen changed and pending_human; do not relabel after observing this report.",
+    "prior_review_disagreement_check": {
+      "source": "seeds/kt/eval/reviews.json",
+      "control_cases": {
+        "ctrl-function-cooperation-finance": {
+          "recorded_disagreements": 0
+        },
+        "ctrl-function-cooperation-technical": {
+          "recorded_disagreements": 0
+        }
+      },
+      "historical_intake_source": "seeds/kt/eval/control/review/intake.json",
+      "historical_intake_disagreements": [
+        "dev-real-shared-information",
+        "dev-real-audit-goals"
+      ],
+      "review_history_modified": false
+    }
+  },
+  "internal_guard_diagnostic": {
+    "purpose": "Explain omissions only; private decision helpers do not determine expectations, labels, scores or correctness. Expected errors above derive from source text and published contract.",
+    "private_helpers_called": [
+      "app.audit.lineage._Domain",
+      "app.audit.lineage._duty",
+      "app.audit.lineage._same_object",
+      "app.audit.lineage._shared_product",
+      "app.audit.lineage._cooperative_context",
+      "app.audit.align._governing_context"
+    ],
+    "execution": "Local pure in-memory evaluation of saved Report and unchanged core; not inference, no API/provider call, no report mutation.",
+    "code_checks": [
+      {
+        "path": "apps/api/app/audit/lineage.py",
+        "core_git_blob_sha256": "ce89744a09a50c7824485ec3b16b2028cb97b26d0deb01eb7f10d74882c40c19",
+        "local_lf_normalized_equal_core": true
+      },
+      {
+        "path": "apps/api/app/audit/models.py",
+        "core_git_blob_sha256": "e7d1309c7290c2307abadf0112d7966f0d5d921c095d5a6868ec355560092c4a",
+        "local_lf_normalized_equal_core": true
+      },
+      {
+        "path": "apps/api/app/audit/parser.py",
+        "core_git_blob_sha256": "ca56750075cdf7a2ccda8097eda191d2c1718d057a3efa73afaa58a0604db9a5",
+        "local_lf_normalized_equal_core": true
+      },
+      {
+        "path": "apps/api/app/audit/align.py",
+        "core_git_blob_sha256": "3d13301d3bde7c68858097d1d595dc394370f0ecfd40d13b46e30b3a97065c5a",
+        "local_lf_normalized_equal_core": true
+      },
+      {
+        "path": "apps/api/app/audit/text.py",
+        "core_git_blob_sha256": "c969e67a073cf2c1b0607ad378724270b06348182e440c676f61d0baa9e32e18",
+        "local_lf_normalized_equal_core": true
+      }
+    ],
+    "observations": {
+      "4.1": {
+        "owner_keys": [
+          "ЦРЗ"
+        ],
+        "duty": {
+          "owner": "1.1/б",
+          "actions": [
+            "регистрация"
+          ],
+          "review": false,
+          "object_words": [
+            "входящ",
+            "едином",
+            "журнал",
+            "заявки",
+            "клиент"
+          ],
+          "scopes": []
+        }
+      },
+      "7.2": {
+        "owner_keys": [
+          "ЦС"
+        ],
+        "duty": null
+      },
+      "7.4": {
+        "owner_keys": [
+          "ЦС"
+        ],
+        "duty": {
+          "owner": "1.1/д",
+          "actions": [],
+          "review": true,
+          "object_words": [
+            "внешне",
+            "выбора",
+            "заключ",
+            "закупк",
+            "обосно",
+            "постав",
+            "процед",
+            "самост",
+            "соблюд",
+            "собств",
+            "соглас",
+            "такого",
+            "требуе",
+            "утверж"
+          ],
+          "scopes": []
+        }
+      },
+      "8.1": {
+        "owner_keys": [
+          "ОФК"
+        ],
+        "duty": null
+      },
+      "9.1": {
+        "owner_keys": [
+          "ОТП"
+        ],
+        "duty": {
+          "owner": "1.1/ж",
+          "actions": [
+            "разработка"
+          ],
+          "review": false,
+          "object_words": [
+            "бюджет",
+            "исключ",
+            "оборуд",
+            "плана",
+            "предел",
+            "распор",
+            "ремонт",
+            "соглас",
+            "требов",
+            "финанс",
+            "часть"
+          ],
+          "scopes": [
+            "требований к оборудованию"
+          ]
+        }
+      },
+      "10.1": {
+        "owner_keys": [
+          "СЦС"
+        ],
+        "duty": {
+          "owner": "1.1/з",
+          "actions": [
+            "оформление",
+            "регистрация"
+          ],
+          "review": false,
+          "object_words": [
+            "входящ",
+            "едином",
+            "журнал",
+            "заявки",
+            "заявок",
+            "канала",
+            "катего",
+            "клиент",
+            "раздел",
+            "устано",
+            "црз",
+            "этапам"
+          ],
+          "scopes": []
+        }
+      },
+      "duplication_pair": {
+        "object_words_shared": 5,
+        "object_words_max": 12,
+        "required_ratio": 0.65,
+        "same_object_guard": false,
+        "shared_work_product_guard": true
+      },
+      "self_control_pair": {
+        "execution_duty_extracted": false,
+        "review_duty_extracted": true,
+        "shared_work_product_guard": false
+      }
+    },
+    "diagnosis": [
+      "Duplication: full-clause object stem overlap is 5/12; the explicit no-scope-split sentence adds terms and drops overlap below 0.65. Both accountable actors and registration actions were extracted.",
+      "Self-review: 7.2 action verbs supplier selection/decision are absent from _EXECUTE, so _duty returns None before candidate pairing. The separate shared-product check also does not recognize supplier choice across 7.2/7.4.",
+      "Negative sharing: 8.1 approval is not an execution/review duty for this lexicon, while 9.1 is technical development. The source explanation is stronger than simply observing that the rules emit nothing."
+    ],
+    "code_locations": [
+      "apps/api/app/audit/lineage.py:36 (_EXECUTE)",
+      "apps/api/app/audit/lineage.py:49 (_WORK_PRODUCT)",
+      "apps/api/app/audit/lineage.py:437 (_duty)",
+      "apps/api/app/audit/lineage.py:469 (_same_object)",
+      "apps/api/app/audit/lineage.py:700 (risk pairing)"
+    ]
+  },
+  "limits": [
+    "All 19 control labels remain pending_human; agreement is not product accuracy.",
+    "No holdout was opened or used. No labels/reviews/split/history were edited.",
+    "No new inference run was executed by this reviewer. Agent partial output is compared as saved fallback, not a successful model completion.",
+    "The 9 frozen function labels cover 10 of 31 findings; unlabelled diagnoses above are not silently added to denominators.",
+    "Function duplicate and cross-unit duplication label overlap describe one source incident; do not combine domain totals into unique incidents.",
+    "No legal violation or actual real-world harm is inferred from synthetic documents.",
+    "No F1 or Stage 3 acceptance claim."
+  ],
+  "review_artifact_verification": {
+    "exact_quote_occurrences_checked": 56,
+    "invalid_quote_occurrences": 0,
+    "scope": "Only this review artifact source quotes; not product semantic accuracy."
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "review_file": "source-errors.json",
+  "sha256": "08c823bada4ade5ccdc85aad02ebfe36e2d1e0de9ac1a0e2e32ec4c7d86d0688",
+  "root_recheck": "Each reference and quote resolves in saved Report; exact quote present in the correct raw DOCX edition. Where reviewer claims a block, exact quote must be in that block. Stdlib XML/ZIP, no product parser/private helpers; controls have paragraph-only bodies.",
+  "quote_occurrences_checked": 56,
+  "claimed_blocks_checked": 38,
+  "locations_not_claimed": 18,
+  "errors": [],
+  "scope": "This validates review citation custody, not human confirmation or product semantic accuracy. Unclaimed locations are not failures or invented checks."
+}

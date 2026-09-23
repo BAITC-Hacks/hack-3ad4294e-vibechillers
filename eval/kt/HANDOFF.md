@@ -1,5 +1,59 @@
 # Alibi → Batyrkhan: development error brief
 
+## Independent review of f104c91 partial capture (2026-09-23)
+
+The immutable `d98e73b` ZIP has SHA-256
+`b4e484134c1122cd20b00632241b56a39ea0ee8bf30210aeacc80aba900e10a8`.
+Independent raw-Git custody passes 39/39 checks, supplemental checks 16/16.
+The earlier working-checkout rejection is preserved: 31 files have local CRLF,
+whereas captured bytes equal all 36 raw Git blobs at `f104c91`. No hash
+normalisation was accepted. Both saved Reports rescore identically on frozen
+pending-human controls: functions TP/FP/FN **4/6/5**, units **7/0/0**, risks **0/0/2**.
+This is provisional agreement, not confirmed accuracy or full Stage 3 acceptance.
+
+The agent attempt is genuine supplied runtime evidence but **partial**, final
+mode deterministic, with zero analytic payload changes from the paired baseline.
+The 25 calls all read/search/list/inspect: **zero proposals and zero build_report**.
+23/31 investigated IDs mean exposed evidence, not completed adjudications.
+The 12-turn cap stops at ~50.5 seconds with 7/32 tool slots unused. Metadata does
+not expose turn boundaries. Keep this baseline; a completion run needs new IDs.
+
+Development-only priorities, grounded in synthetic source clauses:
+
+| Concern | Evidence and observed output | Action to investigate |
+|---|---|---|
+| Potential conflict missed | After 7.2 selects suppliers; 7.4 reviews/approves the same unit's own selection; 2.6 explicitly transfers control. Trace actually reaches this evidence, but risks remain empty. | Recognise the execution/control relationship and make a guarded proposal or evidence-based abstention. Static code excludes supplier selection from execution/product vocabulary; technical diagnostic is disclosed separately. |
+| Duplication missed | Before 3.1 → after 4.1 + 10.1 assigns all request registration to two units without scope separation. F010 changed + F030 added and no risk. After 10.1 never enters intermediate tool-result content. | Examine both duties; preserve exact source sets. Existing object-overlap rule is diluted by wording that explicitly denies scope separation. Do not indiscriminately weaken negative-scope guards. |
+| Transfers called content changes | Before 4.1/4.2/5.1/6.1 → after 5.1/6.1/7.1/7.3, with explicit split/merge after 2.3–2.4. | Use cited lineage/context to distinguish preserved duties from substantive changes; provisional gold is not an answer to hardcode. |
+| M5 contradicts unit lineage | Conclusion says F002–F005 lack confirmed successors while unit_changes proves rename/split/merge. Ten of its twelve added "functions" are structure/order entries F020–F029. | Keep clause coverage separate from operational-function counts and reconcile conclusion with published unit changes. This is additional source review, outside frozen FP/FN. |
+| Investigation fails to finish | Pagination seq 27 drops seq 25's status filter and repeats six IDs; all 25 calls are observational. Stop is turn_limit, not wall-time exhaustion. | Investigate bounded planning/finalization and redundant search without treating every exploratory call as waste. Expose successful proposal/build results and nonsecret turn/request/usage metadata in the next package. |
+
+Allowed finance/technical cooperation after 8.1/9.1 produces no risk (1/1 negative
+control), but there are no positive detections either; no agent discrimination
+claim follows. All seven unit rows are source-supported. The created unit row
+would be better explained by also citing explicit creation after 2.5.
+F014 and F016 need separate review; newly noted changed/moved sensitivity for
+F017/F018 does not change frozen labels. Historical real-development disputes
+remain open. No holdout material is included or needed for these fixes.
+
+Detailed exact arguments/results and source quotes:
+[trace-review](../../seeds/kt/eval/results/f104c91-independent/trace-review.md),
+[source-errors](../../seeds/kt/eval/results/f104c91-independent/source-errors.md),
+[independent metrics and custody](../../seeds/kt/eval/results/f104c91-independent/summary.json).
+These reviews are separate AI reviews, not human label confirmation. One diagnostic
+private-helper invocation departed from Alibi's import restriction; it is disclosed
+in source-errors, never used by scorer or to derive gold, and was not repeated.
+Source-backed diagnoses and frozen scoring do not depend on those helpers.
+
+Reproduce offline (no provider call, no overwrite of baseline):
+
+```powershell
+python -B eval/kt/review_saved_capture.py --archive docs/evidence/stage3-capture-f104c91.zip --sha256 b4e484134c1122cd20b00632241b56a39ea0ee8bf30210aeacc80aba900e10a8 --extract-to seeds/kt/eval/data/stage3-capture-f104c91 --output seeds/kt/eval/data/f104c91-recheck --core-revision f104c91006c8d3d6a993881823863030e70aa4af
+```
+
+The sections below preserve earlier handoffs; their pending-package language
+describes the historical intake state. Current status is the reviewed partial above.
+
 ## Stage 3 early synthetic inputs (2026-09-23)
 
 Ready for development: `seeds/kt/eval/control/before.txt` and `after.txt`.

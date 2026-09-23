@@ -1,29 +1,126 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "schema_commit_received": "4da43907919867ce4e8579360fe5b2ff43f9a37c",
   "inputs_ready": true,
   "evaluator_ready_for_schema": true,
   "capture_command": "eval/kt/BATYRKHAN-CAPTURE.md",
   "inference_executor": "Batyrkhan in his authorised environment",
   "evaluation_owner": "Alibi",
-  "external_paired_packages_received": 0,
-  "actual_agent_quality_metrics": null,
-  "result_dependent_action_review": "pending actual trace and provider evidence",
+  "external_paired_packages_received": 1,
+  "actual_agent_quality_metrics": {
+    "interpretation": "Provisional agreement of saved actual attempted-agent output; not completed-agent or confirmed accuracy. Both analytic payloads equal.",
+    "runs": [
+      {
+        "run_id": "6b5120b9b2c244c589d36d3cb90c655c",
+        "requested": "deterministic",
+        "actual_mode": "deterministic",
+        "agent_status": "not_requested",
+        "counts": [
+          {
+            "group": "development/synthetic",
+            "gold": 9,
+            "tp": 4,
+            "fp": 6,
+            "fn": 5,
+            "precision_denominator": 10,
+            "recall_denominator": 9
+          },
+          {
+            "group": "development/synthetic/risk",
+            "gold": 2,
+            "tp": 0,
+            "fp": 0,
+            "fn": 2,
+            "precision_denominator": 0,
+            "recall_denominator": 2
+          },
+          {
+            "group": "development/synthetic/unit_change",
+            "gold": 7,
+            "tp": 7,
+            "fp": 0,
+            "fn": 0,
+            "precision_denominator": 7,
+            "recall_denominator": 7
+          }
+        ],
+        "citation_checks": 343,
+        "citation_failures": 0
+      },
+      {
+        "run_id": "76f223b2a6b44a9b8b68ac0386152e6f",
+        "requested": "agent",
+        "actual_mode": "deterministic",
+        "agent_status": "partial",
+        "counts": [
+          {
+            "group": "development/synthetic",
+            "gold": 9,
+            "tp": 4,
+            "fp": 6,
+            "fn": 5,
+            "precision_denominator": 10,
+            "recall_denominator": 9
+          },
+          {
+            "group": "development/synthetic/risk",
+            "gold": 2,
+            "tp": 0,
+            "fp": 0,
+            "fn": 2,
+            "precision_denominator": 0,
+            "recall_denominator": 2
+          },
+          {
+            "group": "development/synthetic/unit_change",
+            "gold": 7,
+            "tp": 7,
+            "fp": 0,
+            "fn": 0,
+            "precision_denominator": 7,
+            "recall_denominator": 7
+          }
+        ],
+        "citation_checks": 343,
+        "citation_failures": 0
+      }
+    ]
+  },
+  "result_dependent_action_review": "Completed separate offline AI review of all 25 arguments/results; result-derived IDs, paging offset and discovered refs reused. 23/31 investigated IDs represent exposure, not validated decisions. No proposals or model finalizer.",
   "holdout_scored": false,
   "control_human_confirmed": 0,
   "control_pending_human": 19,
   "local_diagnostic_scope": "Four actual public deterministic domain-API runs on pre-Stage3 core; no HTTP/provider inference",
   "evaluator_tests_passed": 53,
-  "capture_guard_tests_passed": 8,
-  "required_for_paired_measurement": [
-    "One integrated core revision serving both actual HTTP requests",
-    "Identical pinned synthetic input bytes and agreed nonsecret configuration",
-    "Deterministic and real agent Report JSON, SSE, reopened Report, actual persisted trace and run_id",
-    "Capture manifest and schema/core commits with artifact/core hashes",
-    "Provider/server evidence and independent review of result-dependent actions"
-  ],
+  "capture_guard_tests_passed": 15,
+  "required_for_paired_measurement": [],
   "required_for_confirmed_accuracy": [
     "Human source confirmation with versioned review events; current AI agreement remains provisional"
   ],
-  "stage3_exit": "not_complete; external integrated run and acceptance evidence pending"
+  "stage3_exit": "not_complete; actual paired partial reviewed; successful agent completion and remaining format/UI/release evidence pending",
+  "previous_snapshot": "seeds/kt/eval/results/f104c91-independent/acceptance-before-f104c91.json",
+  "captured_core_revision": "f104c91006c8d3d6a993881823863030e70aa4af",
+  "immutable_archive": "docs/evidence/stage3-capture-f104c91.zip",
+  "archive_sha256": "b4e484134c1122cd20b00632241b56a39ea0ee8bf30210aeacc80aba900e10a8",
+  "independent_review": "seeds/kt/eval/results/f104c91-independent/summary.json",
+  "actual_agent_attempts": 1,
+  "actual_agent_partial": 1,
+  "actual_agent_completed": 0,
+  "actual_agent_validated_proposal_calls": 0,
+  "actual_agent_build_report_calls": 0,
+  "trace_review": "seeds/kt/eval/results/f104c91-independent/trace-review.json",
+  "source_error_review": "seeds/kt/eval/results/f104c91-independent/source-errors.json",
+  "archive_guard_tests_passed": 10,
+  "custody_checks": 39,
+  "custody_failures": 0,
+  "supplemental_checks": 16,
+  "supplemental_failures": 0,
+  "initial_checkout_verification": "36 checks / 1 failure preserved; 31 Windows CRLF files differ. Explicit raw Git verification matches 36/36 captured blobs, without line-ending normalization.",
+  "remaining_evidence_limits": [
+    "Provider identity, token use and cost cannot be independently authenticated from saved host traces and operator attestation; upstream response/request evidence absent.",
+    "Captured DOCX attempt is partial; integrated PDF/XLSX and complete UI/export/release acceptance are not established by this package.",
+    "New source-review findings outside frozen labels were not added retrospectively to FP/FN."
+  ],
+  "procedure_deviation": "Source reviewer made private-helper diagnostic calls contrary to Alibi instructions. Disclosed in source-errors; no helper-derived gold, scorer imports, model calls or metric changes. No further helper calls.",
+  "F1_acceptance": false
 }

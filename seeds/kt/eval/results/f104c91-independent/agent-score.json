@@ -1,0 +1,335 @@
+{
+  "schema_version": 2,
+  "labels_file": "C:\\Users\\torre\\Documents\\GitHub\\hack-3ad4294e-vibechillers\\seeds\\kt\\eval\\control\\labels.jsonl",
+  "scope": "Exact refs/status; precision only on intersecting labelled refs; appropriate abstention separate",
+  "group_counts_scope": "Each partition/kind has its own intersecting-ref scope; do not sum unlabelled counts across groups",
+  "groups": [
+    {
+      "group": "development/synthetic",
+      "label_evaluations": 9,
+      "statuses": {
+        "unchanged": {
+          "gold": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 0,
+          "recall_denominator": 0,
+          "overlap_abstentions": 0
+        },
+        "changed": {
+          "gold": 2,
+          "tp": 2,
+          "fp": 5,
+          "fn": 0,
+          "precision_denominator": 7,
+          "recall_denominator": 2,
+          "overlap_abstentions": 0
+        },
+        "moved": {
+          "gold": 5,
+          "tp": 1,
+          "fp": 0,
+          "fn": 4,
+          "precision_denominator": 1,
+          "recall_denominator": 5,
+          "overlap_abstentions": 0
+        },
+        "added": {
+          "gold": 0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 0,
+          "precision_denominator": 1,
+          "recall_denominator": 0,
+          "overlap_abstentions": 0
+        },
+        "missing": {
+          "gold": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 1,
+          "recall_denominator": 1,
+          "overlap_abstentions": 0
+        },
+        "duplicate": {
+          "gold": 1,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1,
+          "precision_denominator": 0,
+          "recall_denominator": 1,
+          "overlap_abstentions": 0
+        }
+      },
+      "semantic_gold": 9,
+      "tp": 4,
+      "fp": 6,
+      "fn": 5,
+      "counts": {
+        "findings_total": 31,
+        "scoped_findings": 10,
+        "unlabelled_findings": 21,
+        "unknown_status_findings": 0,
+        "scoped_unresolved_findings": 0,
+        "appropriate_abstention_gold": 0,
+        "appropriate_abstention_matches": 0,
+        "other_unresolved_findings": 0,
+        "partial_overlap_refusal_labels": 0
+      },
+      "error_counts": {
+        "wrong_match": 1,
+        "wrong_status": 4
+      },
+      "errors": [
+        {
+          "label_id": "ctrl-function-duplicate",
+          "run_id": "76f223b2a6b44a9b8b68ac0386152e6f",
+          "categories": [
+            "wrong_match"
+          ],
+          "missing_report_refs": [],
+          "exact_ref_abstention": false,
+          "finding_ids": [
+            "F010",
+            "F030"
+          ]
+        },
+        {
+          "label_id": "ctrl-function-split-intake",
+          "run_id": "76f223b2a6b44a9b8b68ac0386152e6f",
+          "categories": [
+            "wrong_status"
+          ],
+          "missing_report_refs": [],
+          "exact_ref_abstention": false,
+          "finding_ids": [
+            "F011"
+          ]
+        },
+        {
+          "label_id": "ctrl-function-split-survey",
+          "run_id": "76f223b2a6b44a9b8b68ac0386152e6f",
+          "categories": [
+            "wrong_status"
+          ],
+          "missing_report_refs": [],
+          "exact_ref_abstention": false,
+          "finding_ids": [
+            "F012"
+          ]
+        },
+        {
+          "label_id": "ctrl-function-merge-contracts",
+          "run_id": "76f223b2a6b44a9b8b68ac0386152e6f",
+          "categories": [
+            "wrong_status"
+          ],
+          "missing_report_refs": [],
+          "exact_ref_abstention": false,
+          "finding_ids": [
+            "F013"
+          ]
+        },
+        {
+          "label_id": "ctrl-function-merge-stock",
+          "run_id": "76f223b2a6b44a9b8b68ac0386152e6f",
+          "categories": [
+            "wrong_status"
+          ],
+          "missing_report_refs": [],
+          "exact_ref_abstention": false,
+          "finding_ids": [
+            "F015"
+          ]
+        }
+      ],
+      "candidate_recall": "unmeasured: Report does not expose complete candidate sets",
+      "extraction_completeness": "unmeasured: missing gold refs checks only labelled source points",
+      "source_locations": {
+        "expected": 0,
+        "matched": 0,
+        "errors": [],
+        "scope": "Label-location evaluations; absent expected coordinates are not assessed"
+      },
+      "review_status_counts": {
+        "pending_human": 9
+      }
+    },
+    {
+      "group": "development/synthetic/risk",
+      "target": "risk",
+      "label_evaluations": 3,
+      "statuses": {
+        "potential_duplication": {
+          "gold": 1,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1,
+          "precision_denominator": 0,
+          "recall_denominator": 1
+        },
+        "potential_conflict_of_interest": {
+          "gold": 1,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1,
+          "precision_denominator": 0,
+          "recall_denominator": 1
+        }
+      },
+      "semantic_gold": 2,
+      "tp": 0,
+      "fp": 0,
+      "fn": 2,
+      "precision_denominator": 0,
+      "recall_denominator": 2,
+      "counts": {
+        "assessed_labels": 3,
+        "not_assessed_labels": 0,
+        "outputs_total": 0,
+        "scoped_outputs": 0,
+        "unlabelled_outputs": 0,
+        "unknown_value_outputs": 0,
+        "invalid_prediction_fp": 0,
+        "scoped_unresolved_outputs": 0,
+        "appropriate_abstention_gold": 0,
+        "appropriate_abstention_matches": 0,
+        "other_unresolved_outputs": 0,
+        "abstention_on_resolvable": 0,
+        "negative_gold": 1,
+        "negative_correct": 1,
+        "negative_violations": 0,
+        "source_locations_expected": 1,
+        "source_locations_matched": 1
+      },
+      "error_counts": {
+        "no_prediction": 2
+      },
+      "errors": [
+        {
+          "label_id": "ctrl-risk-duplication",
+          "run_id": "76f223b2a6b44a9b8b68ac0386152e6f",
+          "categories": [
+            "no_prediction"
+          ],
+          "output_ids": []
+        },
+        {
+          "label_id": "ctrl-risk-self-control",
+          "run_id": "76f223b2a6b44a9b8b68ac0386152e6f",
+          "categories": [
+            "no_prediction"
+          ],
+          "output_ids": []
+        }
+      ],
+      "source_locations": {
+        "expected": 1,
+        "matched": 1,
+        "errors": [],
+        "scope": "Label-location evaluations; absent expected coordinates are not assessed"
+      },
+      "source_location_errors": [],
+      "risk_abstention": "unmeasured: Risk has no explicit abstention output; [] is assessed no-risk output",
+      "scope": "Exact sets and status/kind; precision on intersecting labelled refs; provenance separate; missing/null agent or sections excluded",
+      "review_status_counts": {
+        "pending_human": 3
+      }
+    },
+    {
+      "group": "development/synthetic/unit_change",
+      "target": "unit_change",
+      "label_evaluations": 7,
+      "statuses": {
+        "retained": {
+          "gold": 3,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 3,
+          "recall_denominator": 3
+        },
+        "reorganised": {
+          "gold": 3,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 3,
+          "recall_denominator": 3
+        },
+        "created": {
+          "gold": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 1,
+          "recall_denominator": 1
+        }
+      },
+      "semantic_gold": 7,
+      "tp": 7,
+      "fp": 0,
+      "fn": 0,
+      "precision_denominator": 7,
+      "recall_denominator": 7,
+      "counts": {
+        "assessed_labels": 7,
+        "not_assessed_labels": 0,
+        "outputs_total": 7,
+        "scoped_outputs": 7,
+        "unlabelled_outputs": 0,
+        "unknown_value_outputs": 0,
+        "invalid_prediction_fp": 0,
+        "scoped_unresolved_outputs": 0,
+        "appropriate_abstention_gold": 0,
+        "appropriate_abstention_matches": 0,
+        "other_unresolved_outputs": 0,
+        "abstention_on_resolvable": 0,
+        "negative_gold": 0,
+        "negative_correct": 0,
+        "negative_violations": 0,
+        "source_locations_expected": 2,
+        "source_locations_matched": 2
+      },
+      "error_counts": {},
+      "errors": [],
+      "source_locations": {
+        "expected": 2,
+        "matched": 2,
+        "errors": [],
+        "scope": "Label-location evaluations; absent expected coordinates are not assessed"
+      },
+      "source_location_errors": [],
+      "risk_abstention": "unmeasured: Risk has no explicit abstention output; [] is assessed no-risk output",
+      "scope": "Exact sets and status/kind; precision on intersecting labelled refs; provenance separate; missing/null agent or sections excluded",
+      "review_status_counts": {
+        "pending_human": 7
+      }
+    }
+  ],
+  "provenance": [
+    {
+      "report": "C:\\Users\\torre\\Documents\\GitHub\\hack-3ad4294e-vibechillers\\seeds\\kt\\eval\\data\\stage3-capture-f104c91\\capture-docx\\agent.json",
+      "run_id": "76f223b2a6b44a9b8b68ac0386152e6f",
+      "scope": "Report-internal only; not proof of source extraction completeness or semantic truth",
+      "citations_checked": 343,
+      "failures": 0,
+      "locations_shape_checked": 72,
+      "stage3_sections": {
+        "unit_changes": "present",
+        "risks": "present"
+      },
+      "duplicate_clause_keys": 0,
+      "errors": [],
+      "source_backed": {
+        "citations_checked": 343,
+        "failures": 0,
+        "errors": [],
+        "scope": "Pinned numbered text source; representation equivalence requires independent review"
+      }
+    }
+  ],
+  "unevaluated_label_ids": []
+}

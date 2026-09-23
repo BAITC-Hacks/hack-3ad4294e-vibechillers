@@ -1,0 +1,299 @@
+{
+  "review_scope": "Independent offline core-file custody; no provider calls and no inference or semantic accuracy claim",
+  "capture_revision": "f104c91006c8d3d6a993881823863030e70aa4af",
+  "review_checkout_revision": "d98e73bfe0576d0e7397ed0f9ca23b4dd9b371b8",
+  "archive_path": "docs/evidence/stage3-capture-f104c91.zip",
+  "archive_sha256": "b4e484134c1122cd20b00632241b56a39ea0ee8bf30210aeacc80aba900e10a8",
+  "capture_manifest_sha256": "0d10780083ded7f8bdac4e1cb4d1d5e10151bf746c86d13a715cac451184a78f",
+  "verification_command": "python eval/kt/capture_control.py --verify-package seeds/kt/eval/data/stage3-capture-f104c91/capture-docx --core-revision f104c91006c8d3d6a993881823863030e70aa4af --json-out seeds/kt/eval/results/f104c91-independent/integrity-git.json",
+  "algorithm": "git ls-tree -rz enumerates every tracked apps/api/app/**/*.py at the requested revision; SHA-256 of raw git cat-file blob bytes must equal complete manifest mapping; resolved revision must equal captured revision. No line-ending normalization is used for acceptance.",
+  "raw_git_verification": {
+    "source": "raw_git_blobs",
+    "requested_revision": "f104c91006c8d3d6a993881823863030e70aa4af",
+    "revision": "f104c91006c8d3d6a993881823863030e70aa4af",
+    "files_checked": 36,
+    "exact_manifest_matches": true,
+    "manifest_revision_matches": true,
+    "missing_manifest_files": [],
+    "unexpected_manifest_files": [],
+    "hash_mismatches": []
+  },
+  "integrity_checks": 39,
+  "integrity_failures": 0,
+  "errors": [],
+  "working_checkout": {
+    "python_files": 36,
+    "matching_raw_git_files": 5,
+    "differing_files": 31,
+    "differences_only_explained_by_crlf": 31,
+    "raw_hash_equality": false
+  },
+  "line_ending_diagnostic_note": "CRLF-to-LF comparison below explains working-tree differences only; it is not a custody acceptance rule and default verification still rejects those bytes.",
+  "working_checkout_differences": [
+    {
+      "path": "apps/api/app/agent/audit_llm.py",
+      "raw_git_sha256": "9b4df2d25181836478a65fdfa357c4eca7050ebcbed4fa751f846a4e75e57c4c",
+      "working_checkout_sha256": "588e1f30914a499c9ff78c0185b15be188150f7170e63b2ec766ff123d15a74a",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 162
+    },
+    {
+      "path": "apps/api/app/agent/audit_tools.py",
+      "raw_git_sha256": "09a6357a1c8959afcda4d6bcbb19605577fd0513f3ea61346a35bc7ee26ca2dd",
+      "working_checkout_sha256": "fbc85ac6750611ab991605bbdf6fc313d836d43fa0b2bb9badb81f183192e648",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 975
+    },
+    {
+      "path": "apps/api/app/agent/llm.py",
+      "raw_git_sha256": "1844037cca362279867645c5504e6a61e2bad2f7a4848206995ca0cc0657673b",
+      "working_checkout_sha256": "1deeab38dfb53abc4eeb534c4bc8d1b97d3b277da53572c48ddad243a6898891",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 312
+    },
+    {
+      "path": "apps/api/app/agent/loop.py",
+      "raw_git_sha256": "a2ec538e98e0fb7c4879a2f53d40c18bde58b501ae07f61dcd4380b23fe5eba6",
+      "working_checkout_sha256": "48e649eddf4e82f948f32a368506163b329f0e7eb491b3c04e387b9f998af4eb",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 538
+    },
+    {
+      "path": "apps/api/app/agent/tools.py",
+      "raw_git_sha256": "b101797ec9b911c6b779abfef3839297759c0de00970cee6360d2cf80be4155a",
+      "working_checkout_sha256": "586614f3b2917f37b805694fe23848eb4c464cb10f6ab73ee4b060ee89ba2c5e",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 113
+    },
+    {
+      "path": "apps/api/app/agent/trace.py",
+      "raw_git_sha256": "e9194ef9b2a91fd4b48fb1f2b562dc7d1ea130948e23822d6cb23c68b3a1d899",
+      "working_checkout_sha256": "e07edec20b727365b256f1d155425769ab048d5117ab83af46f727646a09aeaa",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 290
+    },
+    {
+      "path": "apps/api/app/api/audits.py",
+      "raw_git_sha256": "ab48b2901aeeec905ca5f94e9a86b54f46a7fe5540b1c24ed077c420646563a7",
+      "working_checkout_sha256": "30eb28be275c8dcf01acb69bcb573345fb5f51bbb40e643e107454d98ec189f8",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 318
+    },
+    {
+      "path": "apps/api/app/api/routes.py",
+      "raw_git_sha256": "c98b4f59bfdcdfbc7853164c686bcb146ca7b7c398d3595a90feef5365a5968c",
+      "working_checkout_sha256": "4785697250c1b83ceb8dcac556e655ea6403e8707c26175b4a4dc3cdace77316",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 241
+    },
+    {
+      "path": "apps/api/app/api/schemas.py",
+      "raw_git_sha256": "a5304e8a6764323897c58bbe19a61b323ac562c2637aaad18dd9263919a9063c",
+      "working_checkout_sha256": "887397b22f4360db95ee6577b55e94a8be1ad124515e59419a39272ad7795710",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 34
+    },
+    {
+      "path": "apps/api/app/audit/__init__.py",
+      "raw_git_sha256": "5e5a52486c527633d975b7abbd38e932cd19f9c8450bddc40797ca42703e6205",
+      "working_checkout_sha256": "ee70b69ecff71d65d662708e0e73f0bbdfc9a4944fffe0c06ecd232db76a6dbd",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 120
+    },
+    {
+      "path": "apps/api/app/audit/align.py",
+      "raw_git_sha256": "3d13301d3bde7c68858097d1d595dc394370f0ecfd40d13b46e30b3a97065c5a",
+      "working_checkout_sha256": "10d6ef80521bcdbff8b124bb19bfe3d6fedc3c5b7337d762145cf4892d591233",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 535
+    },
+    {
+      "path": "apps/api/app/audit/citations.py",
+      "raw_git_sha256": "7d7aa95d8755a7f41b84bbe44dec87ad5ed3f1c27ca7b40126137bff1db731e3",
+      "working_checkout_sha256": "18631b68d67b1e48b65a33e93144f8dbe0a40ab2d598811da64576d6726f3e3b",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 98
+    },
+    {
+      "path": "apps/api/app/audit/documents.py",
+      "raw_git_sha256": "161040a45a6e156f758c4aee99665d69118114e0c776a8c12f027a4cc74f41ae",
+      "working_checkout_sha256": "7b17939a08fe20c70cd061199cc4259f52170483a8e251af0756c46dd1c93d64",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 66
+    },
+    {
+      "path": "apps/api/app/audit/lineage.py",
+      "raw_git_sha256": "ce89744a09a50c7824485ec3b16b2028cb97b26d0deb01eb7f10d74882c40c19",
+      "working_checkout_sha256": "bb286e5df8bceff81523a7b58f3478841d60d636586ff5cd6f56ab64f9cbe4ff",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 761
+    },
+    {
+      "path": "apps/api/app/audit/models.py",
+      "raw_git_sha256": "e7d1309c7290c2307abadf0112d7966f0d5d921c095d5a6868ec355560092c4a",
+      "working_checkout_sha256": "498323d0e2af6403f21a9bd5848df74d66014b93a148a6a79bd93875efaf2cb0",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 165
+    },
+    {
+      "path": "apps/api/app/audit/parser.py",
+      "raw_git_sha256": "ca56750075cdf7a2ccda8097eda191d2c1718d057a3efa73afaa58a0604db9a5",
+      "working_checkout_sha256": "443c84a2c2b359d30afb5ce75c0c08b136c11d63efc03c4d287d78f101ed6b28",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 941
+    },
+    {
+      "path": "apps/api/app/audit/report.py",
+      "raw_git_sha256": "2e5956c965acbd1f2d32352caedff72e388c8f2272f5e56fd3321d4f87a3eb48",
+      "working_checkout_sha256": "602e75a7c392bb010bc7da70061d21d5c24004e425a3af71b2313a01b036a7d0",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 419
+    },
+    {
+      "path": "apps/api/app/audit/test_context.py",
+      "raw_git_sha256": "86cf0e4ac72805be269c2d839c7930970cc1d294c0449ce39d7fdc73f454415d",
+      "working_checkout_sha256": "817b7fa399fb8744d8ba57d03384cd257ce97a0d1ff1658367f5b13613286c58",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 238
+    },
+    {
+      "path": "apps/api/app/audit/test_lineage.py",
+      "raw_git_sha256": "0504fa36e2edc0834ea2811e5342350227c29fb4e0de4bb851504bc931b3baef",
+      "working_checkout_sha256": "28cf719c1ea44a3a96eb8154f9818274c870595dd2a9f435bc3cc1cd17995cdd",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 143
+    },
+    {
+      "path": "apps/api/app/audit/test_stage3_guards.py",
+      "raw_git_sha256": "10457d009059cab73f912057693777e618e6f4d3538148559297cd39c9bb53b0",
+      "working_checkout_sha256": "911c3c27cb02e51d78df537e6ed8dc7fc7c7bbaf303b34bf33a2b2bf58dd21ee",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 149
+    },
+    {
+      "path": "apps/api/app/audit/text.py",
+      "raw_git_sha256": "c969e67a073cf2c1b0607ad378724270b06348182e440c676f61d0baa9e32e18",
+      "working_checkout_sha256": "87e6f98204eef95f2510b6e286aa2e2c988b7ae926eb13f040f1b565ead7a951",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 67
+    },
+    {
+      "path": "apps/api/app/config.py",
+      "raw_git_sha256": "48b8810c79254bdec9f9993b054edbc74a86cdf8022872b73f54c100401e4a7a",
+      "working_checkout_sha256": "ff867074a025f3eaec5a9a6a73d6330f7699e16bc77bf664e9d9add472ac0886",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 66
+    },
+    {
+      "path": "apps/api/app/db.py",
+      "raw_git_sha256": "d0e81b474a9cb99a55e06628fe5d66616bcb591d0a195dbb66140ced69c734be",
+      "working_checkout_sha256": "98e69c6754386cb776d3433bc6b1ea01ad03c8cf27dc1751b6dd5a39069e7070",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 112
+    },
+    {
+      "path": "apps/api/app/events.py",
+      "raw_git_sha256": "64c7f609c11e12a8854d119613a49d28efc1463798c7511928c150ca42303516",
+      "working_checkout_sha256": "e8cdb579cba331b678aad79d78a4e5296cbfe1d452caeca5851b52e4c83fd3f7",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 58
+    },
+    {
+      "path": "apps/api/app/ingest/parsers.py",
+      "raw_git_sha256": "a3e78910226334162d503deb6a7021aaa4dd5238f92a328ee430c9e004e2b04f",
+      "working_checkout_sha256": "e21a46d0134f0ca3e92915c457336322be05189419bb9128a971a8d740756ef9",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 270
+    },
+    {
+      "path": "apps/api/app/ingest/pipeline.py",
+      "raw_git_sha256": "60f2e5fd621dfb641d1992144b78a08356424ff2fa555376c4f81f2b22fdeb62",
+      "working_checkout_sha256": "fc6568272f47bfd560941abee1df5223ef74a5634a2611991497adb95db6bd94",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 131
+    },
+    {
+      "path": "apps/api/app/main.py",
+      "raw_git_sha256": "c41d8cf9a0b03afba056cca20800ba17bc827fa5bc9983540ef683981ca9d30c",
+      "working_checkout_sha256": "689424aa62ebf42dd37228a4a837ec675a9fafa8085fc0978856a5598485ad4a",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 55
+    },
+    {
+      "path": "apps/api/app/rag/chunk.py",
+      "raw_git_sha256": "238bc1c792acefdd1c6d895bfec747acfa246459121e4c6f31c1020f8dbbb114",
+      "working_checkout_sha256": "94e35195d97bb367f892786cb7af4244dc609d93ca5e1467d2b35c8fa6476b81",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 147
+    },
+    {
+      "path": "apps/api/app/rag/embed.py",
+      "raw_git_sha256": "a69c0a10bfa45bfcdbe3885b616d4b4d3a72e601a07241a75503f2327eeaee6e",
+      "working_checkout_sha256": "63301a089caa30655a467bc8bf33d6079c689066b1b2a41e3d266da848afe86a",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 111
+    },
+    {
+      "path": "apps/api/app/rag/search.py",
+      "raw_git_sha256": "93dbcfa6015b91fb10c52d152188b05b9465038f290a7589ac352fdd58aa0d2e",
+      "working_checkout_sha256": "27b3fc3d02e95d52078fd281c034425397727adf938c4e08f92afd2962e4fe51",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 208
+    },
+    {
+      "path": "apps/api/app/rag/store.py",
+      "raw_git_sha256": "e1f737a1f6fe739578956ef79a13cc2730c4dacb02f962b8c76db62e07ef9c6a",
+      "working_checkout_sha256": "2c2cf344a15a432a5e3f03c3d16d4f02a9c3a7fc799782a2aafd25e32aeee258",
+      "diagnostic_only_crlf_to_lf_equal": true,
+      "raw_git_crlf_count": 0,
+      "working_checkout_crlf_count": 328
+    }
+  ],
+  "original_default_verification_preserved": {
+    "path": "seeds/kt/eval/results/f104c91-independent/integrity.json",
+    "sha256": "2daf6b70a1dbbd4e1caa18484f8092234d37b67d8447a0e1054e591f0396cec2",
+    "integrity_checks": 36,
+    "integrity_failures": 1
+  },
+  "test_command": "python -m unittest discover -s eval/kt -p test_capture_control.py",
+  "tests": {
+    "passed": 15,
+    "total": 15,
+    "scope": "8 existing plus 7 offline custody guards; temporary Git repositories and test-only saved report fixtures; not model/API runs"
+  },
+  "limitations": [
+    "Raw Git agreement verifies declared source bytes, not that the remote process loaded this revision.",
+    "Server attestation requires separate validation and remains an operator statement.",
+    "A coherent saved trace alone does not prove provider inference or genuine agent completion."
+  ]
+}
