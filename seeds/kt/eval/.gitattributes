@@ -1,0 +1,4 @@
+# Fixture identities use byte SHA-256: checkout must not rewrite line endings.
+*.jsonl -text
+*.json -text
+mutations/** -text

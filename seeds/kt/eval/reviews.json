@@ -1,0 +1,277 @@
+{
+  "schema_version": 1,
+  "designated_human_reviewer": "Alibi (user confirmed availability in this task)",
+  "instructions": "Human confirms raw sources, refs, status and role context; AI proposal is not human gold.",
+  "cases": {
+    "dev-owner": {
+      "status": "pending_human",
+      "label_sha256": "9ef3a54fee111ae76f45b54e44e8b098352fd3798d4d1bcdedde3f784a974acf",
+      "proposed_by": "Codex; source-read AI proposal",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": []
+    },
+    "dev-delegate": {
+      "status": "pending_human",
+      "label_sha256": "57b8b2890d936dd1c458001656faf00f54639c0c903dc777baea24e656f5612d",
+      "proposed_by": "Codex; source-read AI proposal",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": []
+    },
+    "dev-prohibition": {
+      "status": "pending_human",
+      "label_sha256": "f3f31dca4c953e8eab735d08c7664b535401dd063378b434bf179d22f31bdeaf",
+      "proposed_by": "Codex; source-read AI proposal",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": []
+    },
+    "dev-split": {
+      "status": "pending_human",
+      "label_sha256": "b7421f91a5d34c78d550d3546b5ef7d2b0a7d6c92294ea1ff8482f80eb5cf680",
+      "proposed_by": "Codex; source-read AI proposal",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": []
+    },
+    "dev-merge": {
+      "status": "pending_human",
+      "label_sha256": "a59fc73133808cbfac7af902e398924df88a3dc83f3360e7645867666920f472",
+      "proposed_by": "Codex; source-read AI proposal",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": []
+    },
+    "dev-shared-dnm": {
+      "status": "pending_human",
+      "label_sha256": "79978000fd44ccdfe74dd92d98591108d789ab682a15e4c573d9a437c09143c9",
+      "proposed_by": "Codex; source-read AI proposal",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": []
+    },
+    "dev-shared-dkkm": {
+      "status": "pending_human",
+      "label_sha256": "5a4aa9e129e65ff9a1ac6092b4a09980a8ecc76cc0b290665ee39acadbbaf34b",
+      "proposed_by": "Codex; source-read AI proposal",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": []
+    },
+    "dev-identical-inline": {
+      "status": "pending_human",
+      "label_sha256": "1c99e9a03170a8a0e25b01378ae2ff1e6576caa961d86d978284377e45e587ba",
+      "proposed_by": "Codex; source-read AI proposal",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": []
+    },
+    "dev-identical-repeated": {
+      "status": "pending_human",
+      "label_sha256": "d786d5dba901bbcca771dd5f869aa3c82326d72f993ae7c4ff1b7973fd9e15bb",
+      "proposed_by": "Codex; source-read AI proposal",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": []
+    },
+    "dev-multidoc": {
+      "status": "pending_human",
+      "label_sha256": "7c3ab5579154ed21d8dcd26201f95a333c2e41ad6d83ba09dd73b9c248de9ef0",
+      "proposed_by": "Codex; source-read AI proposal",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": []
+    },
+    "hold-owner": {
+      "status": "pending_human",
+      "label_sha256": "bd35a22cdd3b0427051db28fc79dcd0359dbfed8cfd0fe630d92037f95a26f92",
+      "proposed_by": "Codex; source-read AI proposal",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": []
+    },
+    "hold-delegate": {
+      "status": "pending_human",
+      "label_sha256": "8de96aed6518541244c2f8763454db335f8e6223dcaa9b657660c9be2bff1c6b",
+      "proposed_by": "Codex; source-read AI proposal",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": []
+    },
+    "hold-parent": {
+      "status": "pending_human",
+      "label_sha256": "16d6ad49bcf81e0252aa01bd529464753250beb357e6c4286e0c3971c5046d1d",
+      "proposed_by": "Codex; source-read AI proposal",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": []
+    },
+    "hold-split": {
+      "status": "pending_human",
+      "label_sha256": "481f15d7063ffc5e36b0ad54fbf5c4527bb398cb86adf989fc7d79c161e7466f",
+      "proposed_by": "Codex; source-read AI proposal",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": []
+    },
+    "hold-shared": {
+      "status": "pending_human",
+      "label_sha256": "341f9cc453b2c9bd42c6a046639337371d012236d5a0836e9c1cc4b641719e24",
+      "proposed_by": "Codex; source-read AI proposal",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": []
+    },
+    "hold-uncertainty": {
+      "status": "pending_human",
+      "label_sha256": "9fa01b95c7076b00aa6652f89c2b0b92c50292bbeb68095f26ceb919cb8f5bb8",
+      "proposed_by": "Codex; source-read AI proposal",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": []
+    },
+    "hold-real-01": {
+      "status": "pending_human",
+      "label_sha256": "4eb1e9f242483d9a5bf5258526ff5b39b58242cc21cb31027c75754d30fbe5a5",
+      "proposed_by": "Codex; source-read AI proposal",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": []
+    },
+    "hold-real-02": {
+      "status": "pending_human",
+      "label_sha256": "562a70321c1a72867116b0426f83701be63c859ebce55653b8a30bafbb45ccb2",
+      "proposed_by": "Codex; source-read AI proposal",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": []
+    },
+    "dev-real-admin": {
+      "status": "pending_human",
+      "label_sha256": "dfe6eeda40404ff88d5f80cdc0b58896ac2920a863f6c8a8a69464bfd65bc7d6",
+      "proposed_by": "Codex; source-read AI proposal",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": []
+    },
+    "dev-real-roles": {
+      "status": "pending_human",
+      "label_sha256": "5c31c61bf36ee8020ab974f6853f44bd9d5360f763e07ec8e75f7b3038e70683",
+      "proposed_by": "Codex; source-read AI proposal",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": []
+    },
+    "dev-real-merge": {
+      "status": "pending_human",
+      "label_sha256": "64775bdf199424af92e92f345c1ac3b1e59278ca479e73c7edbbe3a840bffafe",
+      "proposed_by": "Codex; source-read AI proposal",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": []
+    },
+    "dev-real-functional-reporting": {
+      "status": "pending_human",
+      "label_sha256": "67595916e9645e86695fc85d79931896043db386a33898ca5bb291ba497a8088",
+      "proposed_by": "Codex; source-read AI proposal",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": []
+    },
+    "dev-real-significance": {
+      "status": "pending_human",
+      "label_sha256": "7500f5a7216c1ad98b57c235acf941b17ae0ae4f097da929285fcd9929609185",
+      "proposed_by": "Codex; source-read AI proposal",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": []
+    },
+    "dev-real-access": {
+      "status": "pending_human",
+      "label_sha256": "e3ee4d86853ce58b441f0c548fd7e6f912b8e9bf062661b24195f107f0c63f19",
+      "proposed_by": "Codex; source-read AI proposal",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": []
+    },
+    "dev-real-instructions": {
+      "status": "pending_human",
+      "label_sha256": "a6d82d96806c7da9c9030c752e61b8bd424a31d1f7e558d2fd5bf602b0ffd9c5",
+      "proposed_by": "Codex; source-read AI proposal",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": []
+    },
+    "dev-real-audit-goals": {
+      "status": "pending_human",
+      "label_sha256": "763cb9bfa8ecf64b03733dc8dc5fae9f06b96be2ca424f9e4129d641d44e37e3",
+      "proposed_by": "Codex; source-read AI proposal",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": []
+    },
+    "dev-real-confidentiality": {
+      "status": "pending_human",
+      "label_sha256": "92e59fbeb1f0ebdb590b3b33083cfb1c0e48187c2e26adc991576558daa6dd95",
+      "proposed_by": "Codex; source-read AI proposal",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": []
+    },
+    "dev-real-correspondence": {
+      "status": "pending_human",
+      "label_sha256": "9cffefbdb298ed0b082c006ce741a1c2110a2e87e1db70fe74b7335280ff8a95",
+      "proposed_by": "Codex; source-read AI proposal",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": []
+    },
+    "dev-real-staffing": {
+      "status": "pending_human",
+      "label_sha256": "b65e2258a3c5f4811956003253b777dc6aef76e795f5fd8e2baa83ce7264a529",
+      "proposed_by": "Codex; source-read AI proposal",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": []
+    },
+    "dev-real-shared-information": {
+      "status": "pending_human",
+      "label_sha256": "290c90b21e86511231977b9316dae9f9f21bc54b4a04b33d1dd1949b4b7620d3",
+      "proposed_by": "Codex; source-read AI proposal",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": []
+    }
+  }
+}

@@ -8,7 +8,7 @@
   "datasets": {
     "seeds/kt/eval/labels.jsonl": "87965da85193a0420dd2383fae056211c7cba5b1976bdc0e3f2783534526b7ed",
     "seeds/kt/eval/regression.jsonl": "87965da85193a0420dd2383fae056211c7cba5b1976bdc0e3f2783534526b7ed",
-    "seeds/kt/eval/challenge.jsonl": "7215fb71bbb40285bedf1c07a83c77e9a5624d8193124712153b0774c08c5319"
+    "seeds/kt/eval/challenge.jsonl": "d11ddfb3baaa5cf08c0478badfead00095c2f868d7964353bf3ef7312547effe"
   },
   "fixtures": {
     "seeds/kt/v8.txt": "f5ce4518f22ecad2701f1fed8929d93ff09bb45af6e35e8fd60726362b6bfbc8",
@@ -456,6 +456,127 @@
       ],
       "review_status": "legacy_accepted",
       "label_sha256": "836d82d6bc0af7e91e40f7767bc8514e41ac38fa8446016cc6d44239432e1ffe"
+    },
+    "dev-real-admin": {
+      "partition": "development",
+      "kind": "real",
+      "categories": [
+        "source_supported_change"
+      ],
+      "review_status": "pending_human",
+      "selection": "report-derived: triage-001",
+      "label_sha256": "dfe6eeda40404ff88d5f80cdc0b58896ac2920a863f6c8a8a69464bfd65bc7d6"
+    },
+    "dev-real-roles": {
+      "partition": "development",
+      "kind": "real",
+      "categories": [
+        "owner_context"
+      ],
+      "review_status": "pending_human",
+      "selection": "report-derived: triage-002",
+      "label_sha256": "5c31c61bf36ee8020ab974f6853f44bd9d5360f763e07ec8e75f7b3038e70683"
+    },
+    "dev-real-merge": {
+      "partition": "development",
+      "kind": "real",
+      "categories": [
+        "merge"
+      ],
+      "review_status": "pending_human",
+      "selection": "report-derived: triage-003,triage-013",
+      "label_sha256": "64775bdf199424af92e92f345c1ac3b1e59278ca479e73c7edbbe3a840bffafe"
+    },
+    "dev-real-functional-reporting": {
+      "partition": "development",
+      "kind": "real",
+      "categories": [
+        "source_supported_change"
+      ],
+      "review_status": "pending_human",
+      "selection": "report-derived: triage-017",
+      "label_sha256": "67595916e9645e86695fc85d79931896043db386a33898ca5bb291ba497a8088"
+    },
+    "dev-real-significance": {
+      "partition": "development",
+      "kind": "real",
+      "categories": [
+        "source_supported_change"
+      ],
+      "review_status": "pending_human",
+      "selection": "report-derived: triage-018",
+      "label_sha256": "7500f5a7216c1ad98b57c235acf941b17ae0ae4f097da929285fcd9929609185"
+    },
+    "dev-real-access": {
+      "partition": "development",
+      "kind": "real",
+      "categories": [
+        "source_supported_change"
+      ],
+      "review_status": "pending_human",
+      "selection": "report-derived: triage-019",
+      "label_sha256": "e3ee4d86853ce58b441f0c548fd7e6f912b8e9bf062661b24195f107f0c63f19"
+    },
+    "dev-real-instructions": {
+      "partition": "development",
+      "kind": "real",
+      "categories": [
+        "source_supported_move"
+      ],
+      "review_status": "pending_human",
+      "selection": "report-derived: triage-020",
+      "label_sha256": "a6d82d96806c7da9c9030c752e61b8bd424a31d1f7e558d2fd5bf602b0ffd9c5"
+    },
+    "dev-real-audit-goals": {
+      "partition": "development",
+      "kind": "real",
+      "categories": [
+        "source_supported_move"
+      ],
+      "review_status": "pending_human",
+      "selection": "report-derived: triage-021",
+      "label_sha256": "763cb9bfa8ecf64b03733dc8dc5fae9f06b96be2ca424f9e4129d641d44e37e3"
+    },
+    "dev-real-confidentiality": {
+      "partition": "development",
+      "kind": "real",
+      "categories": [
+        "source_supported_move"
+      ],
+      "review_status": "pending_human",
+      "selection": "report-derived: triage-022",
+      "label_sha256": "92e59fbeb1f0ebdb590b3b33083cfb1c0e48187c2e26adc991576558daa6dd95"
+    },
+    "dev-real-correspondence": {
+      "partition": "development",
+      "kind": "real",
+      "categories": [
+        "false_missing_merge"
+      ],
+      "review_status": "pending_human",
+      "selection": "report-derived: triage-023",
+      "label_sha256": "9cffefbdb298ed0b082c006ce741a1c2110a2e87e1db70fe74b7335280ff8a95"
+    },
+    "dev-real-staffing": {
+      "partition": "development",
+      "kind": "real",
+      "categories": [
+        "false_missing_merge"
+      ],
+      "review_status": "pending_human",
+      "selection": "report-derived: triage-025",
+      "label_sha256": "b65e2258a3c5f4811956003253b777dc6aef76e795f5fd8e2baa83ce7264a529"
+    },
+    "dev-real-shared-information": {
+      "partition": "development",
+      "kind": "real",
+      "categories": [
+        "unsupported_duplicate"
+      ],
+      "review_status": "pending_human",
+      "selection": "report-derived: triage-026",
+      "label_sha256": "290c90b21e86511231977b9316dae9f9f21bc54b4a04b33d1dd1949b4b7620d3"
     }
-  }
+  },
+  "development_added_at_utc": "2026-09-23T10:02:15.571339+00:00"
 }

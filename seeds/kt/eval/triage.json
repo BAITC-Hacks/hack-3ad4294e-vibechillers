@@ -1,0 +1,954 @@
+{
+  "baseline_report_sha256": "a16dbbed27a2381d51939d3c307cdb30e38d8d2423b9f25e39b31e9f3ea5b5ca",
+  "baseline_report": "seeds/kt/eval/data/stage2-regression/alibi-4b2147f4fcf1.json",
+  "seed": "alibi-stage2-2026-09-23",
+  "source_revision": "94f216c3c1ca17fe4acc391f8ee7e28aee941098",
+  "pools": {
+    "changed": {
+      "eligible": 39,
+      "selected": 3
+    },
+    "moved": {
+      "eligible": 66,
+      "selected": 3
+    },
+    "missing": {
+      "eligible": 21,
+      "selected": 3
+    },
+    "duplicate": {
+      "eligible": 1,
+      "selected": 1
+    }
+  },
+  "unresolved_selected": 16,
+  "items": [
+    {
+      "triage_id": "triage-001",
+      "selection": "all-unresolved",
+      "rank_sha256": "f454f67963a808459a26a4cc9d8b1ba74f1c3da9f02a213c4b804064663fbb35",
+      "finding_id": "F006",
+      "system_status": "unresolved",
+      "before": [
+        {
+          "doc": "v8",
+          "clause_id": "1.6"
+        }
+      ],
+      "after": [
+        {
+          "doc": "v9",
+          "clause_id": "1.6"
+        }
+      ],
+      "overlaps_regression": false,
+      "sources": [
+        {
+          "doc": "v8",
+          "clause_id": "1.6",
+          "quote": "В целях оптимизации процесса управления административное руководство Главным аудитором осуществляется Президентом Общества. Главный аудитор имеет прямой доступ к Президенту Общества. Под административным руководством в целях настоящего Положения понимается управление в рамках трудового законодательства."
+        },
+        {
+          "doc": "v9",
+          "clause_id": "1.6",
+          "quote": "В целях оптимизации процесса управления административное руководство Главным аудитором осуществляется Президентом Общества. Главный аудитор имеет прямой доступ к Президенту Общества. Административный (организационно-распорядительный) метод управления базируется на правилах внутреннего трудового распорядка, распределении обязанностей. Административная подотчетность осуществляется в соответствии с требованиями регуляторов, Трудовым кодексом Российской Федерации."
+        }
+      ],
+      "assessment": "§1.6 сохраняет руководство Президентом, но меняет определение административного управления и подотчётности. Предложен changed.",
+      "primary_category": "resolvable_change",
+      "review_status": "AI source review; human pending"
+    },
+    {
+      "triage_id": "triage-002",
+      "selection": "all-unresolved",
+      "rank_sha256": "6f222bcc1426d771baafe54dfb8fb420976fb5a29a08bf2e1524935a4545f594",
+      "finding_id": "F119",
+      "system_status": "unresolved",
+      "before": [
+        {
+          "doc": "v8",
+          "clause_id": "5.3"
+        }
+      ],
+      "after": [
+        {
+          "doc": "v9",
+          "clause_id": "5.3"
+        }
+      ],
+      "overlaps_regression": false,
+      "sources": [
+        {
+          "doc": "v8",
+          "clause_id": "5.3",
+          "quote": "Директор направления внутреннего аудита:"
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.3",
+          "quote": "Директоры департаментов и Директоры направлений ДИТААД и ДОА:"
+        }
+      ],
+      "assessment": "§5.3 одной должности заменён группой директоров двух департаментов; требуется контекст ответственного, предложен changed.",
+      "primary_category": "owner_context",
+      "review_status": "AI source review; human pending"
+    },
+    {
+      "triage_id": "triage-003",
+      "selection": "all-unresolved",
+      "rank_sha256": "1e4d2cbff50520ec69a5a863bf34b0a9350a04add0a52b3894f8f3a76aaaf8ad",
+      "finding_id": "F121",
+      "system_status": "unresolved",
+      "before": [
+        {
+          "doc": "v8",
+          "clause_id": "5.3.2"
+        }
+      ],
+      "after": [
+        {
+          "doc": "v9",
+          "clause_id": "5.4.2"
+        }
+      ],
+      "overlaps_regression": false,
+      "sources": [
+        {
+          "doc": "v8",
+          "clause_id": "5.3.2",
+          "quote": "готовит предложения для включения в план работ БВА;"
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.4.2",
+          "quote": "готовит предложения для включения в план работ БВА;"
+        }
+      ],
+      "assessment": "§5.3.2 v8 о предложениях в план вошёл в §5.3.3 v9. Предложенный системой §5.4.2 принадлежит прежнему ДНМ; одинаковая фраза не подтверждает этот перенос.",
+      "primary_category": "merge_context",
+      "review_status": "AI source review; human pending"
+    },
+    {
+      "triage_id": "triage-004",
+      "selection": "all-unresolved",
+      "rank_sha256": "ef5a122591abf605aaf39761b0c9f1cf67f6918b6e91d2ad6d925fb01e43706e",
+      "finding_id": "F123",
+      "system_status": "unresolved",
+      "before": [
+        {
+          "doc": "v8",
+          "clause_id": "5.3.3/а"
+        }
+      ],
+      "after": [
+        {
+          "doc": "v9",
+          "clause_id": "5.3.4/а"
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.3.4"
+        }
+      ],
+      "overlaps_regression": false,
+      "sources": [
+        {
+          "doc": "v8",
+          "clause_id": "5.3.3/а",
+          "quote": "тактическое планирование достижения целей внутреннего аудита в соответствии с утвержденным планом работы БВА и внутренними нормативными документами Общества с использованием знаний лучших практик;"
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.3.4/а",
+          "quote": "тактическое планирование достижения целей внутреннего аудита с использованием знаний лучших практик;"
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.3.4",
+          "quote": "организуют работу проектных команд в зоне ответственности в соответствии с планом работ БВА и внутренними нормативными документами Общества, обеспечивая:"
+        }
+      ],
+      "assessment": "Уточнение о плане и ВНД из §5.3.3/а v8 теперь находится в родителе §5.3.4 v9, а действие — в /а. Разделение контекста объясняет трудность; точный состав gold refs оставлен на отдельное согласование.",
+      "primary_category": "split_context",
+      "review_status": "AI source review; human pending"
+    },
+    {
+      "triage_id": "triage-005",
+      "selection": "all-unresolved",
+      "rank_sha256": "5b058dc014a6ee5af5b9d187dfd4361be43ab9656159be0ed7284c21effc9a4c",
+      "finding_id": "F129",
+      "system_status": "unresolved",
+      "before": [
+        {
+          "doc": "v8",
+          "clause_id": "5.3.4/а"
+        }
+      ],
+      "after": [
+        {
+          "doc": "v9",
+          "clause_id": "5.3.5/б"
+        }
+      ],
+      "overlaps_regression": false,
+      "sources": [
+        {
+          "doc": "v8",
+          "clause_id": "5.3.4/а",
+          "quote": "организация работы проектной команды по проверке и организация контроля качества работы проектной команды;"
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.3.5/б",
+          "quote": "контроль качества работы проектной команды;"
+        }
+      ],
+      "assessment": "Организация команды из §5.3.4/а v8 отражена в §5.3.4 v9, контроль качества — в §5.3.5/б. Один предложенный дочерний пункт не содержит всю исходную обязанность.",
+      "primary_category": "split_context",
+      "review_status": "AI source review; human pending"
+    },
+    {
+      "triage_id": "triage-006",
+      "selection": "all-unresolved",
+      "rank_sha256": "42c6da77defd47aa8f3b7b1b9e683748f4e7221bb874ba8b76c60cdf12a8f3d4",
+      "finding_id": "F133",
+      "system_status": "unresolved",
+      "before": [
+        {
+          "doc": "v8",
+          "clause_id": "5.3.6"
+        }
+      ],
+      "after": [
+        {
+          "doc": "v9",
+          "clause_id": "5.3.7"
+        }
+      ],
+      "overlaps_regression": true,
+      "sources": [
+        {
+          "doc": "v8",
+          "clause_id": "5.3.6",
+          "quote": "организует контроль устранения недостатков и нарушений, выявленных в ходе проведения проверок БВА;"
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.3.7",
+          "quote": "организуют контроль устранения недостатков и нарушений, выявленных в ходе проведения проверок БВА, обеспечивают и совершенствуют работу системы мониторинга действий (корректирующих мер) Руководителей Общества, предпринимаемых по результатам внутренних аудитов и проектов."
+        }
+      ],
+      "assessment": "Это исходный real-019. Связь §5.3.6→§5.3.7 подтверждена текстом, добавлен мониторинг корректирующих мер. Повторно в challenge не включён.",
+      "primary_category": "regression_abstention",
+      "review_status": "AI source review; human pending"
+    },
+    {
+      "triage_id": "triage-007",
+      "selection": "all-unresolved",
+      "rank_sha256": "47a6f02d6d1d87a2b17e1d22e1962e0139f2f6473a6ebe908a5fee1e7e9844cf",
+      "finding_id": "F135",
+      "system_status": "unresolved",
+      "before": [
+        {
+          "doc": "v8",
+          "clause_id": "5.3.8"
+        }
+      ],
+      "after": [
+        {
+          "doc": "v9",
+          "clause_id": "5.3.9"
+        },
+        {
+          "doc": "v9",
+          "clause_id": "8.8.8"
+        }
+      ],
+      "overlaps_regression": false,
+      "sources": [
+        {
+          "doc": "v8",
+          "clause_id": "5.3.8",
+          "quote": "выносит предложения по повышению профессионального уровня работников БВА Главному аудитору;"
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.3.9",
+          "quote": "выносят предложения по повышению профессионального уровня работников БВА Главному аудитору;"
+        },
+        {
+          "doc": "v9",
+          "clause_id": "8.8.8",
+          "quote": "повышение профессиональной квалификации работников БВА."
+        }
+      ],
+      "assessment": "Конкретное предложение о повышении квалификации §5.3.8 соответствует §5.3.9 v9; общий бюджет времени на повышение квалификации §8.8.8 не является той же обязанностью ответственного.",
+      "primary_category": "candidate_role_ambiguity",
+      "review_status": "AI source review; human pending"
+    },
+    {
+      "triage_id": "triage-008",
+      "selection": "all-unresolved",
+      "rank_sha256": "39deefc1320f118add1a541e66b6720a48407c73f82453ebfd446c5480561a54",
+      "finding_id": "F136",
+      "system_status": "unresolved",
+      "before": [
+        {
+          "doc": "v8",
+          "clause_id": "5.3.9"
+        }
+      ],
+      "after": [
+        {
+          "doc": "v9",
+          "clause_id": "5.4.7"
+        }
+      ],
+      "overlaps_regression": false,
+      "sources": [
+        {
+          "doc": "v8",
+          "clause_id": "5.3.9",
+          "quote": "взаимодействует c Руководителями Общества по всему кругу вопросов, касающихся выполнения функций БВА;"
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.4.7",
+          "quote": "взаимодействует c Руководителями Общества по всему кругу вопросов, касающихся выполнения функций БВА;"
+        }
+      ],
+      "assessment": "§5.4.7 v9 относится к ДНМ и имеет собственного предшественника §5.4.8 v8. Одно совпадение фразы не доказывает преемство §5.3.9.",
+      "primary_category": "candidate_role_ambiguity",
+      "review_status": "AI source review; human pending"
+    },
+    {
+      "triage_id": "triage-009",
+      "selection": "all-unresolved",
+      "rank_sha256": "d31f61352dc82169c23420537e90ad5cd7425d58f0d3a11efbfbaa9b253b8caf",
+      "finding_id": "F137",
+      "system_status": "unresolved",
+      "before": [
+        {
+          "doc": "v8",
+          "clause_id": "5.3.9"
+        }
+      ],
+      "after": [
+        {
+          "doc": "v9",
+          "clause_id": "5.3.10"
+        }
+      ],
+      "overlaps_regression": false,
+      "sources": [
+        {
+          "doc": "v8",
+          "clause_id": "5.3.9",
+          "quote": "взаимодействует c Руководителями Общества по всему кругу вопросов, касающихся выполнения функций БВА;"
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.3.10",
+          "quote": "взаимодействуют c Руководителями Общества по всему кругу вопросов, касающихся выполнения функций БВА;"
+        }
+      ],
+      "assessment": "§5.3.9→§5.3.10 сохраняет взаимодействие с руководителями, но ответственными становятся новые руководители §5.3. Требуется учесть родителя.",
+      "primary_category": "resolvable_owner_change",
+      "review_status": "AI source review; human pending"
+    },
+    {
+      "triage_id": "triage-010",
+      "selection": "all-unresolved",
+      "rank_sha256": "718bf1a4cdaf53f2e05a928841ec55babc3807add5592281e93479bf8fc48507",
+      "finding_id": "F139",
+      "system_status": "unresolved",
+      "before": [
+        {
+          "doc": "v8",
+          "clause_id": "5.3.11"
+        }
+      ],
+      "after": [
+        {
+          "doc": "v9",
+          "clause_id": "5.4.9"
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.3.12"
+        }
+      ],
+      "overlaps_regression": false,
+      "sources": [
+        {
+          "doc": "v8",
+          "clause_id": "5.3.11",
+          "quote": "участвует в разработке проектов документации, регламентирующей работу БВА;"
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.4.9",
+          "quote": "участвует в разработке ВНД БВА;"
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.3.12",
+          "quote": "участвуют в разработке ВНД БВА;"
+        }
+      ],
+      "assessment": "§5.3.12 v9 относится к новым руководителям; §5.4.9 — к ДНМ с собственным предшественником §5.4.10 v8. ВНД — общий предмет, не доказательство одного владельца.",
+      "primary_category": "candidate_role_ambiguity",
+      "review_status": "AI source review; human pending"
+    },
+    {
+      "triage_id": "triage-011",
+      "selection": "all-unresolved",
+      "rank_sha256": "e395f5f949caee9852fab73c7997fef727feee7cc391a1d1f052ce3353f17925",
+      "finding_id": "F140",
+      "system_status": "unresolved",
+      "before": [
+        {
+          "doc": "v8",
+          "clause_id": "5.3.12"
+        }
+      ],
+      "after": [
+        {
+          "doc": "v9",
+          "clause_id": "5.4.10"
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.5.10"
+        }
+      ],
+      "overlaps_regression": false,
+      "sources": [
+        {
+          "doc": "v8",
+          "clause_id": "5.3.12",
+          "quote": "осуществляет выполнение прочих поручений Главного аудитора."
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.4.10",
+          "quote": "осуществляет выполнение прочих поручений Главного аудитора."
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.5.10",
+          "quote": "осуществляет выполнение прочих поручений Главного аудитора."
+        }
+      ],
+      "assessment": "Прочие поручения ДНМ и ДККМ существовали отдельно в §5.4.11 и §5.5.14 v8. Они не подтверждают перенос обязанности прежнего §5.3.12.",
+      "primary_category": "candidate_role_ambiguity",
+      "review_status": "AI source review; human pending"
+    },
+    {
+      "triage_id": "triage-012",
+      "selection": "all-unresolved",
+      "rank_sha256": "5e8868a08295604cc1b00b0634623a85b92ac2c8946db3de59ecb54ad2dc579e",
+      "finding_id": "F141",
+      "system_status": "unresolved",
+      "before": [
+        {
+          "doc": "v8",
+          "clause_id": "5.3.12"
+        }
+      ],
+      "after": [
+        {
+          "doc": "v9",
+          "clause_id": "5.3.13"
+        }
+      ],
+      "overlaps_regression": false,
+      "sources": [
+        {
+          "doc": "v8",
+          "clause_id": "5.3.12",
+          "quote": "осуществляет выполнение прочих поручений Главного аудитора."
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.3.13",
+          "quote": "осуществляют выполнение прочих поручений Главного аудитора."
+        }
+      ],
+      "assessment": "§5.3.12→§5.3.13 сохраняет прочие поручения у преемников раздела §5.3; форма множественного числа отражает изменение роли.",
+      "primary_category": "resolvable_owner_change",
+      "review_status": "AI source review; human pending"
+    },
+    {
+      "triage_id": "triage-013",
+      "selection": "all-unresolved",
+      "rank_sha256": "6f4b37481c5343a75b4127a0b37ff5bf02e47bc31502423a4417362eef78f432",
+      "finding_id": "F146",
+      "system_status": "unresolved",
+      "before": [
+        {
+          "doc": "v8",
+          "clause_id": "5.4.4"
+        }
+      ],
+      "after": [
+        {
+          "doc": "v9",
+          "clause_id": "5.3.3"
+        }
+      ],
+      "overlaps_regression": false,
+      "sources": [
+        {
+          "doc": "v8",
+          "clause_id": "5.4.4",
+          "quote": "взаимодействует с субъектами СВК Общества в части:"
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.3.3",
+          "quote": "готовят предложения для включения в план работ БВА, взаимодействуют с субъектами СВК Общества в части:"
+        }
+      ],
+      "assessment": "Взаимодействие с субъектами СВК из §5.4.4 объединено с подготовкой плана из §5.3.2 в §5.3.3 v9. Дочерние /а и /б подтверждают содержание. Предложен составной changed.",
+      "primary_category": "merge_context",
+      "review_status": "AI source review; human pending"
+    },
+    {
+      "triage_id": "triage-014",
+      "selection": "all-unresolved",
+      "rank_sha256": "4156001621aa4559f65b87471b7f94d2f0888b47783a614f1ec0dc820c368958",
+      "finding_id": "F159",
+      "system_status": "unresolved",
+      "before": [
+        {
+          "doc": "v8",
+          "clause_id": "5.5.4"
+        }
+      ],
+      "after": [
+        {
+          "doc": "v9",
+          "clause_id": "5.4.5"
+        }
+      ],
+      "overlaps_regression": false,
+      "sources": [
+        {
+          "doc": "v8",
+          "clause_id": "5.5.4",
+          "quote": "анализирует результаты непрерывного аудита и готовит материалы и предложения в зоне ответственности для представления Главному аудитору;"
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.4.5",
+          "quote": "анализирует результаты непрерывного аудита и готовит материалы и предложения в зоне ответственности для представления Главному аудитору;"
+        }
+      ],
+      "assessment": "§5.5.4 v8 принадлежит ДККМ, но идентичный текст ДНМ уже существовал в §5.4.6 v8 и стал §5.4.5 v9. По одному совпадению нельзя доказать передачу, потерю или новое дублирование. В semantic gold не включён.",
+      "primary_category": "legitimate_uncertainty",
+      "review_status": "AI source review; human pending"
+    },
+    {
+      "triage_id": "triage-015",
+      "selection": "all-unresolved",
+      "rank_sha256": "aaa14740d08a52f6dda57cd110fa92d325a9be69d3d30a4cb12f5e5c7aaa731a",
+      "finding_id": "F165",
+      "system_status": "unresolved",
+      "before": [
+        {
+          "doc": "v8",
+          "clause_id": "5.5.10"
+        }
+      ],
+      "after": [
+        {
+          "doc": "v9",
+          "clause_id": "5.4.2"
+        }
+      ],
+      "overlaps_regression": false,
+      "sources": [
+        {
+          "doc": "v8",
+          "clause_id": "5.5.10",
+          "quote": "готовит предложения для включения в план работ БВА;"
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.4.2",
+          "quote": "готовит предложения для включения в план работ БВА;"
+        }
+      ],
+      "assessment": "Подготовка предложений ДККМ §5.5.10 v8 отдельно не найдена; консолидация плана §5.5.7 v9 соответствует прежнему §5.5.11. Возможно включение в более широкую задачу, но явного подтверждения нет. В semantic gold не включён.",
+      "primary_category": "legitimate_uncertainty",
+      "review_status": "AI source review; human pending"
+    },
+    {
+      "triage_id": "triage-016",
+      "selection": "all-unresolved",
+      "rank_sha256": "c2499e5e617de438b14fabba89964eb4331de1ff4af4e4c4d1749d4a33967da4",
+      "finding_id": "F170",
+      "system_status": "unresolved",
+      "before": [
+        {
+          "doc": "v8",
+          "clause_id": "5.6"
+        }
+      ],
+      "after": [
+        {
+          "doc": "v9",
+          "clause_id": "5.6"
+        }
+      ],
+      "overlaps_regression": false,
+      "sources": [
+        {
+          "doc": "v8",
+          "clause_id": "5.6",
+          "quote": "Директор ДККМ обязан обеспечить выполнение всех возложенных на ДККМ задач и функций в соответствии с данным Положением в зоне деятельности, а также имеет право:"
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.6",
+          "quote": "Директоры департаментов обязаны обеспечить выполнение всех возложенных задач и функций в соответствии с данным Положением в зоне деятельности, а также имеют право:"
+        }
+      ],
+      "assessment": "§5.6 v9 обобщает права ДККМ до всех директоров департаментов; нельзя сохранять контекст только ДККМ.",
+      "primary_category": "owner_context",
+      "review_status": "AI source review; human pending"
+    },
+    {
+      "triage_id": "triage-017",
+      "selection": "ranked-changed",
+      "rank_sha256": "00a3824e918f296d1275cf6899028e0203615bfdb893ede25ad6682716a6acde",
+      "finding_id": "F005",
+      "system_status": "changed",
+      "before": [
+        {
+          "doc": "v8",
+          "clause_id": "1.5"
+        }
+      ],
+      "after": [
+        {
+          "doc": "v9",
+          "clause_id": "1.5"
+        }
+      ],
+      "overlaps_regression": false,
+      "sources": [
+        {
+          "doc": "v8",
+          "clause_id": "1.5",
+          "quote": "Главный аудитор находится в функциональном подчинении Совета директоров Общества, взаимодействуя по вопросам организации и осуществления внутреннего аудита, существенных ограничений полномочий внутреннего аудита или иных ограничений, способных негативно повлиять на осуществление функции с Комитетом по аудиту Совета директоров Общества (далее – Комитет по аудиту), Председателем Комитета по аудиту, Председателем Совета директоров. Под функциональной подчиненностью в целях настоящего Положения понимается подчиненность в рамках, возложенных на БВА функций, определенных настоящим Положением."
+        },
+        {
+          "doc": "v9",
+          "clause_id": "1.5",
+          "quote": "Главный аудитор находится в функциональном подчинении Совета директоров Общества, взаимодействуя по вопросам организации и осуществления внутреннего аудита, существенных ограничений полномочий внутреннего аудита или иных ограничений, способных негативно повлиять на осуществление функции с Комитетом по аудиту Совета директоров Общества (далее – Комитет по аудиту) и Председателем Совета директоров, в т.ч. непосредственное взаимодействие с Председателем Комитета по аудиту по вопросам деятельности внутреннего аудита и информирование о ходе выполнения плана деятельности внутреннего аудита в течение отчетного периода, но не реже одного раза в год. Под функциональной подчиненностью в целях настоящего Положения понимается подчиненность в рамках, возложенных на БВА функций, определенных настоящим Положением."
+        }
+      ],
+      "assessment": "§1.5 изменён: дополнено взаимодействие с председателем Комитета и периодичность информирования. changed подтверждается источником.",
+      "primary_category": "source_supported_agreement",
+      "review_status": "AI source review; human pending"
+    },
+    {
+      "triage_id": "triage-018",
+      "selection": "ranked-changed",
+      "rank_sha256": "027871b97cee41aed18d98b0c684783ba3ae2a1b4dc2e7a33ef2381ea340522d",
+      "finding_id": "F395",
+      "system_status": "changed",
+      "before": [
+        {
+          "doc": "v8",
+          "clause_id": "9.60/а"
+        }
+      ],
+      "after": [
+        {
+          "doc": "v9",
+          "clause_id": "9.60/а"
+        }
+      ],
+      "overlaps_regression": false,
+      "sources": [
+        {
+          "doc": "v8",
+          "clause_id": "9.60/а",
+          "quote": "степень значимости недостатков и нарушений, выявленных во время проверки;"
+        },
+        {
+          "doc": "v9",
+          "clause_id": "9.60/а",
+          "quote": "степень значимости недостатков, выявленных во время проверки;"
+        }
+      ],
+      "assessment": "В §9.60/а исключены «нарушения»; changed соответствует буквальному изменению текста фактора мониторинга.",
+      "primary_category": "source_supported_agreement",
+      "review_status": "AI source review; human pending"
+    },
+    {
+      "triage_id": "triage-019",
+      "selection": "ranked-changed",
+      "rank_sha256": "03541ddc42d88367441e262c6af69e087b8ee0be1020eb87719045e25573f0b4",
+      "finding_id": "F373",
+      "system_status": "changed",
+      "before": [
+        {
+          "doc": "v8",
+          "clause_id": "9.42"
+        }
+      ],
+      "after": [
+        {
+          "doc": "v9",
+          "clause_id": "9.42"
+        }
+      ],
+      "overlaps_regression": false,
+      "sources": [
+        {
+          "doc": "v8",
+          "clause_id": "9.42",
+          "quote": "Главный аудитор осуществляет контроль за доступом к документам, относящимся к проверке. Передача любых документов внешней стороне осуществляется в соответствии с установленными в Обществе процедурами и правилами."
+        },
+        {
+          "doc": "v9",
+          "clause_id": "9.42",
+          "quote": "Главный аудитор осуществляет контроль за доступом к документам, относящимся к проверке. Передача любых документов внешней стороне осуществляется в соответствии с установленными в Обществе ВНД."
+        }
+      ],
+      "assessment": "§9.42 заменяет процедуры и правила ссылкой на ВНД при передаче документов; changed подтверждён.",
+      "primary_category": "source_supported_agreement",
+      "review_status": "AI source review; human pending"
+    },
+    {
+      "triage_id": "triage-020",
+      "selection": "ranked-moved",
+      "rank_sha256": "0055c5b1fd9934075ad80c1ddd5ee6280271dde544475c222f8a96d2c5b83851",
+      "finding_id": "F169",
+      "system_status": "moved",
+      "before": [
+        {
+          "doc": "v8",
+          "clause_id": "5.5.14"
+        }
+      ],
+      "after": [
+        {
+          "doc": "v9",
+          "clause_id": "5.5.10"
+        }
+      ],
+      "overlaps_regression": false,
+      "sources": [
+        {
+          "doc": "v8",
+          "clause_id": "5.5.14",
+          "quote": "осуществляет выполнение прочих поручений Главного аудитора."
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.5.10",
+          "quote": "осуществляет выполнение прочих поручений Главного аудитора."
+        }
+      ],
+      "assessment": "§5.5.14→§5.5.10: прежняя обязанность директора ДККМ перенумерована. moved подтверждён.",
+      "primary_category": "source_supported_agreement",
+      "review_status": "AI source review; human pending"
+    },
+    {
+      "triage_id": "triage-021",
+      "selection": "ranked-moved",
+      "rank_sha256": "008409a1c46b8c2c4409544ef9bc36d751fd9aa2906e73515a623ec3988de36b",
+      "finding_id": "F365",
+      "system_status": "moved",
+      "before": [
+        {
+          "doc": "v8",
+          "clause_id": "9.36/з"
+        }
+      ],
+      "after": [
+        {
+          "doc": "v9",
+          "clause_id": "9.36/е"
+        }
+      ],
+      "overlaps_regression": false,
+      "sources": [
+        {
+          "doc": "v8",
+          "clause_id": "9.36/з",
+          "quote": "обеспечение достижения целей проверки."
+        },
+        {
+          "doc": "v9",
+          "clause_id": "9.36/е",
+          "quote": "обеспечение достижения целей проверки."
+        }
+      ],
+      "assessment": "§9.36/з→§9.36/е: прежняя процедура контроля с другой буквой. moved подтверждён.",
+      "primary_category": "source_supported_agreement",
+      "review_status": "AI source review; human pending"
+    },
+    {
+      "triage_id": "triage-022",
+      "selection": "ranked-moved",
+      "rank_sha256": "02cc7b7ed1e771cf58d30d9630aad2092e0b7c0808fde0425f841164ef6c9e62",
+      "finding_id": "F216",
+      "system_status": "moved",
+      "before": [
+        {
+          "doc": "v8",
+          "clause_id": "5.10.5"
+        }
+      ],
+      "after": [
+        {
+          "doc": "v9",
+          "clause_id": "5.9.5"
+        }
+      ],
+      "overlaps_regression": false,
+      "sources": [
+        {
+          "doc": "v8",
+          "clause_id": "5.10.5",
+          "quote": "соблюдать конфиденциальность информации, полученной при осуществлении своих функций, и использовать полученную информацию только в интересах Общества и в соответствии с внутренними документами Общества;"
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.9.5",
+          "quote": "соблюдать конфиденциальность информации, полученной при осуществлении своих функций, и использовать полученную информацию только в интересах Общества и в соответствии с внутренними документами Общества;"
+        }
+      ],
+      "assessment": "§5.10.5→§5.9.5: та же обязанность конфиденциальности, родитель указывает тех же работников. moved подтверждён.",
+      "primary_category": "source_supported_agreement",
+      "review_status": "AI source review; human pending"
+    },
+    {
+      "triage_id": "triage-023",
+      "selection": "ranked-missing",
+      "rank_sha256": "023e9fbc4f5139e5120f314bc929e49eee218b2f8ff0a109b3335c672b7afed4",
+      "finding_id": "F181",
+      "system_status": "missing",
+      "before": [
+        {
+          "doc": "v8",
+          "clause_id": "5.7.3"
+        }
+      ],
+      "after": [],
+      "overlaps_regression": false,
+      "sources": [
+        {
+          "doc": "v8",
+          "clause_id": "5.7.3",
+          "quote": "вести переписку с Руководителями Общества, подразделениями Общества и ДЗО по вопросам, входящим в зону ответственности;"
+        }
+      ],
+      "assessment": "Переписка ДНМ (§5.7.3) и ДККМ (§5.6.5) теперь в общем §5.6.3 директоров департаментов; предложен составной changed, а не missing.",
+      "primary_category": "false_missing_merge",
+      "review_status": "AI source review; human pending"
+    },
+    {
+      "triage_id": "triage-024",
+      "selection": "ranked-missing",
+      "rank_sha256": "0bc90e5e34ce9cc6d1af7bc0829f7073a028ece84b4f773b727f2421a248852a",
+      "finding_id": "F083",
+      "system_status": "missing",
+      "before": [
+        {
+          "doc": "v8",
+          "clause_id": "3.6/а"
+        }
+      ],
+      "after": [],
+      "overlaps_regression": false,
+      "sources": [
+        {
+          "doc": "v8",
+          "clause_id": "3.6/а",
+          "quote": "Директор проектов ДККМ."
+        }
+      ],
+      "assessment": "§3.6/а v8 описывает функциональное подчинение директора проектов ДККМ; v9 §3.9/а содержит директора проектов в ДККМ, а §3.6/б и §3.7/б — одноимённые роли иных департаментов. Изменённую связь нельзя восстановить только по названию. Missing требует проверки; gold не утверждён.",
+      "primary_category": "legitimate_uncertainty",
+      "review_status": "AI source review; human pending"
+    },
+    {
+      "triage_id": "triage-025",
+      "selection": "ranked-missing",
+      "rank_sha256": "1000a893b2d4d3f4fe8cdfbc3512fbbc695900b50d0d53f0c0fe9201f377c214",
+      "finding_id": "F177",
+      "system_status": "missing",
+      "before": [
+        {
+          "doc": "v8",
+          "clause_id": "5.6.7"
+        }
+      ],
+      "after": [],
+      "overlaps_regression": false,
+      "sources": [
+        {
+          "doc": "v8",
+          "clause_id": "5.6.7",
+          "quote": "выносить предложения по поощрению и наложению взысканий на работников БВА, а также о назначении, перемещении, переводу и увольнению работников БВА."
+        }
+      ],
+      "assessment": "Кадровые предложения ДККМ (§5.6.7) и ДНМ (§5.7.5) обобщены в §5.6.5 v9 для директоров департаментов. Предложен составной changed.",
+      "primary_category": "false_missing_merge",
+      "review_status": "AI source review; human pending"
+    },
+    {
+      "triage_id": "triage-026",
+      "selection": "ranked-duplicate",
+      "rank_sha256": "6c05d56f9c68e1c1f890bbe5b8f9bb6fed7be60aec2914aaa41061181a639725",
+      "finding_id": "F132",
+      "system_status": "duplicate",
+      "before": [
+        {
+          "doc": "v8",
+          "clause_id": "5.3.5"
+        }
+      ],
+      "after": [
+        {
+          "doc": "v9",
+          "clause_id": "5.4.3"
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.3.6"
+        }
+      ],
+      "overlaps_regression": false,
+      "sources": [
+        {
+          "doc": "v8",
+          "clause_id": "5.3.5",
+          "quote": "запрашивает у Руководителей Общества информацию, которая необходима для осуществления функций БВА контролирует своевременность и полноту ее предоставления;"
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.4.3",
+          "quote": "запрашивает у Руководителей Общества информацию, необходимую для осуществления функций БВА, контролирует своевременность и полноту предоставления;"
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.3.6",
+          "quote": "запрашивают у Руководителей Общества информацию, необходимую для осуществления функций БВА, контролируют своевременность и полноту ее предоставления;"
+        }
+      ],
+      "assessment": "Запрос информации у руководителей существовал и в §5.3.5, и в §5.4.3 v8. Сходные права новых руководителей и ДНМ не доказывают новое вредное пересечение. Предложена связь §5.3.5→§5.3.6 с контекстом обеих линий.",
+      "primary_category": "unsupported_duplicate",
+      "review_status": "AI source review; human pending"
+    }
+  ],
+  "unresolved_unique_refs": 33,
+  "coverage_unresolved_interpretation": "33 unique clause refs; 16 findings, not 33 findings"
+}

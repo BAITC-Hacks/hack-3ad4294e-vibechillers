@@ -202,8 +202,16 @@ def capture_reports(labels_path: Path, output: Path, partition: str | None, cano
     split = json.loads(split_path.read_text(encoding="utf-8")) if split_path.exists() else {"cases": {}}
     if partition:
         rows = [r for r in rows if split["cases"][r["id"]]["partition"] == partition]
+    for row in rows:
+        member = split["cases"].get(row["id"], {})
+        if member.get("partition") == "holdout" and member.get("review_status") not in ("confirmed", "legacy_accepted"):
+            raise ValueError("Holdout capture requires Alibi's human confirmation; use --partition development")
+    if (output / "capture-manifest.json").exists():
+        raise ValueError("Capture directory already contains a run; choose a new directory")
     output.mkdir(parents=True, exist_ok=True)
     seen, records = set(), []
+    started_at = datetime.datetime.now(datetime.timezone.utc)
+    batch_id = started_at.strftime("%Y%m%dT%H%M%S%f")
     revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     core_files = list((ROOT / "apps/api/app/audit").glob("*.py")) + [ROOT / "apps/api/app/ingest/parsers.py"]
     core_hashes = {p.relative_to(ROOT).as_posix(): sha(p) for p in core_files}
@@ -217,7 +225,7 @@ def capture_reports(labels_path: Path, output: Path, partition: str | None, cano
             if side is None:
                 raise ValueError(f"Capture needs a side for {alias}; score an externally supplied Report instead")
             path = ROOT / d["file"]
-            if canonical and d["file"] in ("seeds/kt/v8.txt", "seeds/kt/v9.txt"):
+            if canonical and row["kind"] == "real" and d["file"] in ("seeds/kt/v8.txt", "seeds/kt/v9.txt"):
                 path = path.with_suffix(".docx")
             inputs.append((side, path, sha(path)))
         key = tuple((side, digest) for side, _, digest in inputs)
@@ -228,7 +236,7 @@ def capture_reports(labels_path: Path, output: Path, partition: str | None, cano
         documents, warnings = make_documents(sides["before"], sides["after"], load_manifest())
         ordered = [item for side in ("before", "after") for item in inputs if item[0] == side]
         pages = {d.doc: (parse_docx(p) if p.suffix == ".docx" else parse_txt(p)) for d, (_, p, _) in zip(documents, ordered)}
-        run_id = "alibi-" + hashlib.sha256(repr(key).encode()).hexdigest()[:12]
+        run_id = "alibi-" + batch_id + "-" + hashlib.sha256(repr(key).encode()).hexdigest()[:12]
         report = run_deterministic_audit(run_id, documents, pages, warnings)
         destination = output / f"{run_id}.json"
         destination.write_text(report.model_dump_json(), encoding="utf-8", newline="\n")
@@ -238,11 +246,110 @@ def capture_reports(labels_path: Path, output: Path, partition: str | None, cano
         print(destination.relative_to(ROOT).as_posix(), len(report.findings))
     if core_hashes != {p.relative_to(ROOT).as_posix(): sha(p) for p in core_files}:
         raise RuntimeError("Core changed during capture; discard this run batch")
-    manifest = {"captured_at_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(), "revision": revision,
+    manifest = {"started_at_utc": started_at.isoformat(), "captured_at_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(), "revision": revision,
                 "core_hashes": core_hashes, "labels_file": labels_path.relative_to(ROOT).as_posix(),
                 "labels_sha256": sha(labels_path), "partition": partition, "transport": "public domain API; no HTTP claim",
                 "reports": records}
     (output / "capture-manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def select_triage(report_path: Path) -> None:
+    """Apply precommitted sampling rule; output contains no expected statuses."""
+    from score import clause_text
+    base = ROOT / "seeds/kt/eval"
+    if (base / "triage.json").exists():
+        previous = json.loads((base / "triage.json").read_text(encoding="utf-8"))
+        if any(x.get("assessment") != "pending source review" for x in previous["items"]):
+            raise ValueError("Triage has review notes; do not overwrite them")
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    regression = [json.loads(x) for x in (base / "regression.jsonl").read_text(encoding="utf-8").splitlines() if x]
+    proposals = [json.loads(x) for x in (base / "challenge.jsonl").read_text(encoding="utf-8").splitlines() if x]
+    split = json.loads((base / "split.json").read_text(encoding="utf-8"))
+    def refs(row):
+        return {(r["doc"], r["clause_id"]) for r in row["before"] + row["after"]}
+    regression_refs = set().union(*(refs(r) for r in regression if r["kind"] == "real"))
+    held_refs = set().union(*(refs(r) for r in proposals if r["kind"] == "real" and split["cases"][r["id"]]["partition"] == "holdout"))
+    forbidden = regression_refs | held_refs
+    seed = split["selection_seed"]
+    def rank(f):
+        blob = json.dumps([f["status"], f["before"], f["after"]], sort_keys=True, ensure_ascii=False, separators=(",", ":"))
+        return hashlib.sha256((seed + blob).encode("utf-8")).hexdigest()
+    selected = [("all-unresolved", f) for f in report["findings"] if f["status"] == "unresolved"]
+    pools = {}
+    for status in ("changed", "moved", "missing", "duplicate"):
+        pool = sorted((f for f in report["findings"] if f["status"] == status and not refs(f) & forbidden), key=rank)
+        pools[status] = {"eligible": len(pool), "selected": min(3, len(pool))}
+        selected.extend(("ranked-" + status, f) for f in pool[:3])
+    texts = {alias: raw_text(ROOT / f"seeds/kt/{alias}.txt") for alias in ("v8", "v9")}
+    rows, packet = [], ["# Baseline development triage", "", "Source spans below are read from TXT fixtures, not copied from Report.clauses. No held-out expected answers appear here.", ""]
+    for n, (rule, finding) in enumerate(selected, 1):
+        item = {"triage_id": f"triage-{n:03}", "selection": rule, "rank_sha256": rank(finding),
+                "finding_id": finding["id"], "system_status": finding["status"], "before": finding["before"], "after": finding["after"],
+                "overlaps_regression": bool(refs(finding) & regression_refs), "sources": [],
+                "assessment": "pending source review"}
+        if refs(finding) & held_refs:
+            raise ValueError("Unresolved selection intersects holdout: reserve handling before reading predictions")
+        packet += [f"## {item['triage_id']} {rule}", "", json.dumps({"before": item["before"], "after": item["after"]}, ensure_ascii=False), ""]
+        for reference in finding["before"] + finding["after"]:
+            alias, cid = reference["doc"], reference["clause_id"]
+            try:
+                quote = clause_text(texts[alias], cid)
+                item["sources"].append({**reference, "quote": quote})
+                packet += [f"{alias} §{cid}", "", quote, ""]
+            except ValueError as error:
+                item["sources"].append({**reference, "source_error": str(error)})
+                packet += [f"{alias} §{cid}: SOURCE RESOLUTION ERROR {error}", ""]
+        rows.append(item)
+    selection = {"baseline_report_sha256": sha(report_path), "baseline_report": report_path.relative_to(ROOT).as_posix(),
+                 "seed": seed, "source_revision": split["source_revision"], "pools": pools,
+                 "unresolved_selected": sum(r["system_status"] == "unresolved" for r in rows), "items": rows}
+    (base / "triage.json").write_text(json.dumps(selection, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
+    (base / "TRIAGE.md").write_text("\n".join(packet) + "\n", encoding="utf-8", newline="\n")
+    print(json.dumps({"unresolved": selection["unresolved_selected"], "pools": pools}, ensure_ascii=False))
+
+
+def add_development() -> None:
+    """Source-reviewed AI proposals selected after baseline inspection: always dev."""
+    from score import clause_text
+    base = ROOT / "seeds/kt/eval"
+    path = base / "challenge.jsonl"
+    rows = [json.loads(x) for x in path.read_text(encoding="utf-8").splitlines() if x]
+    if any(r["id"].startswith("dev-real-") for r in rows):
+        raise ValueError("Development proposals already exist; preserve human edits")
+    split = json.loads((base / "split.json").read_text(encoding="utf-8"))
+    sources = {alias: raw_text(ROOT / f"seeds/kt/{alias}.txt") for alias in ("v8", "v9")}
+    documents = [doc(alias, ROOT / f"seeds/kt/{alias}.txt") for alias in sources]
+    def add(suffix, before, after, status, rationale, category, triage, context=()):
+        required = [("v8", cid) for cid in before] + [("v9", cid) for cid in after]
+        citations = [citation(alias, cid, clause_text(sources[alias], cid), sources[alias])
+                     for alias, cid in dict.fromkeys(required + list(context))]
+        row = {"id": "dev-real-" + suffix, "kind": "real", "documents": documents,
+               "before": [ref("v8", cid) for cid in before], "after": [ref("v9", cid) for cid in after],
+               "expected_status": status, "citations": citations, "rationale": rationale,
+               "annotator": "AI proposal; Alibi human confirmation pending", "mutation": None}
+        rows.append(row)
+        split["cases"][row["id"]] = {"partition": "development", "kind": "real", "categories": [category],
+                                     "review_status": "pending_human", "selection": "report-derived: " + triage,
+                                     "label_sha256": canonical_sha(row)}
+    add("admin", ["1.6"], ["1.6"], "changed", "Сохранено руководство Президентом, изменено определение административного управления и подотчётности.", "source_supported_change", "triage-001")
+    add("roles", ["5.3"], ["5.3"], "changed", "Раздел одной должности заменён разделом директоров департаментов и направлений ДИТААД и ДОА.", "owner_context", "triage-002")
+    add("merge", ["5.3.2", "5.4.4"], ["5.3.3"], "changed", "Предложения в план и взаимодействие с субъектами СВК объединены в родительском пункте новых руководителей. Это изменение состава функции и ответственных.", "merge", "triage-003,triage-013",
+        [("v8", "5.3"), ("v8", "5.4"), ("v9", "5.3"), ("v8", "5.4.4/а"), ("v8", "5.4.4/б"), ("v9", "5.3.3/а"), ("v9", "5.3.3/б")])
+    add("functional-reporting", ["1.5"], ["1.5"], "changed", "Дополнены взаимодействие с председателем Комитета и периодичность информирования о плане.", "source_supported_change", "triage-017")
+    add("significance", ["9.60/а"], ["9.60/а"], "changed", "Из фактора значимости исключено слово «нарушений»; родительский контекст мониторинга сохраняется.", "source_supported_change", "triage-018", [("v8", "9.60"), ("v9", "9.60")])
+    add("access", ["9.42"], ["9.42"], "changed", "Правило передачи внешней стороне теперь отсылает к ВНД вместо процедур и правил.", "source_supported_change", "triage-019")
+    add("instructions", ["5.5.14"], ["5.5.10"], "moved", "Прочие поручения Главного аудитора для директора ДККМ сохранились и перенумерованы.", "source_supported_move", "triage-020", [("v8", "5.5"), ("v9", "5.5")])
+    add("audit-goals", ["9.36/з"], ["9.36/е"], "moved", "Процедура обеспечения достижения целей проверки сохранена с новой буквой.", "source_supported_move", "triage-021", [("v8", "9.36"), ("v9", "9.36")])
+    add("confidentiality", ["5.10.5"], ["5.9.5"], "moved", "Обязанность конфиденциальности Главного аудитора и работников перенумерована, ответственные и текст прежние.", "source_supported_move", "triage-022", [("v8", "5.10"), ("v9", "5.9")])
+    add("correspondence", ["5.6.5", "5.7.3"], ["5.6.3"], "changed", "Права переписки ДККМ и ДНМ сведены к общему пункту директоров департаментов; формулировка круга адресатов сокращена.", "false_missing_merge", "triage-023", [("v8", "5.6"), ("v8", "5.7"), ("v9", "5.6")])
+    add("staffing", ["5.6.7", "5.7.5"], ["5.6.5"], "changed", "Предложения по кадровым решениям двух директоров обобщены в праве директоров департаментов по работникам своей зоны.", "false_missing_merge", "triage-025", [("v8", "5.6"), ("v8", "5.7"), ("v9", "5.6")])
+    add("shared-information", ["5.3.5"], ["5.3.6"], "changed", "Запрос информации перешёл к новым руководителям §5.3. Сходная обязанность ДНМ существовала уже в v8 §5.4.3 и сохраняется; одной похожей фразы недостаточно для нового duplicate.", "unsupported_duplicate", "triage-026",
+        [("v8", "5.3"), ("v9", "5.3"), ("v8", "5.4"), ("v9", "5.4"), ("v8", "5.4.3"), ("v9", "5.4.3")])
+    path.write_text("".join(json.dumps(r, ensure_ascii=False, separators=(",", ":")) + "\n" for r in rows), encoding="utf-8", newline="\n")
+    split["datasets"][path.relative_to(ROOT).as_posix()] = sha(path)
+    split["development_added_at_utc"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+    (base / "split.json").write_text(json.dumps(split, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
+    print("Added 12 source-reviewed development proposals; human confirmation pending")
 
 
 def raw_text(path: Path) -> str:
@@ -414,6 +521,8 @@ def main() -> None:
     parser.add_argument("--labels", type=Path, default=LABELS)
     parser.add_argument("--partition", choices=["regression", "development", "holdout"])
     parser.add_argument("--canonical-docx", action="store_true")
+    parser.add_argument("--select-triage", type=Path)
+    parser.add_argument("--add-development", action="store_true")
     args = parser.parse_args()
     if args.stage2_freeze:
         freeze_stage2()
@@ -423,6 +532,12 @@ def main() -> None:
         return
     if args.capture_reports:
         capture_reports(args.labels.resolve(), args.capture_reports.resolve(), args.partition, args.canonical_docx)
+        return
+    if args.select_triage:
+        select_triage(args.select_triage.resolve())
+        return
+    if args.add_development:
+        add_development()
         return
     existing = [json.loads(line) for line in LABELS.read_text(encoding="utf-8").splitlines() if line.strip()]
     real = [row for row in existing if row["kind"] == "real"]
