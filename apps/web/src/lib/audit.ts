@@ -134,12 +134,12 @@ export const STATUS_MEANING: Record<FindingStatus, string> = {
 
 export const STATUS_STYLE: Record<FindingStatus, string> = {
   unchanged: "border-neutral-700 bg-neutral-800/60 text-neutral-300",
-  changed: "border-sky-800 bg-sky-950/50 text-sky-300",
-  moved: "border-violet-800 bg-violet-950/50 text-violet-300",
-  added: "border-emerald-800 bg-emerald-950/50 text-emerald-300",
-  missing: "border-red-800 bg-red-950/50 text-red-300",
-  duplicate: "border-orange-800 bg-orange-950/50 text-orange-300",
-  unresolved: "border-amber-700 bg-amber-950/50 text-amber-300",
+  changed: "border-neutral-700 bg-sky-950/50 text-sky-200",
+  moved: "border-neutral-700 bg-violet-950/50 text-violet-200",
+  added: "border-neutral-700 bg-emerald-950/40 text-emerald-200",
+  missing: "border-neutral-700 bg-red-950/40 text-red-200",
+  duplicate: "border-neutral-700 bg-orange-950/40 text-orange-200",
+  unresolved: "border-neutral-700 bg-amber-950/40 text-amber-200",
 };
 
 export const STATUS_LABEL: Record<FindingStatus, string> = {

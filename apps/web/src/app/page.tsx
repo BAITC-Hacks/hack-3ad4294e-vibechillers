@@ -12,15 +12,15 @@ export default function Home() {
   const [tab, setTab] = useState<Tab>("audit");
 
   const tabClass = (t: Tab): string =>
-    `flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs transition-colors ${
+    `flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 ${
       tab === t
-        ? "bg-neutral-800 text-neutral-100"
-        : "text-neutral-400 hover:bg-neutral-900 hover:text-neutral-200"
+        ? "bg-neutral-800 text-white"
+        : "text-neutral-300 hover:bg-neutral-900 hover:text-white"
     }`;
 
   return (
     <main className="flex min-h-screen flex-col bg-neutral-950 text-neutral-100">
-      <header className="flex flex-wrap items-center gap-3 border-b border-neutral-800/80 px-4 py-2">
+      <header className="flex flex-wrap items-center gap-4 border-b border-neutral-800/70 bg-neutral-900/40 px-5 py-4">
         <div className="flex items-center gap-2 font-semibold tracking-tight">
           <Bot size={17} className="text-sky-400" />
           Function Lineage Auditor
@@ -45,8 +45,8 @@ export default function Home() {
             Поиск по документам (отдельный режим)
           </button>
         </nav>
-        <span className="ml-auto hidden items-center gap-1 font-mono text-[11px] text-neutral-500 sm:flex">
-          <Server size={10} className="text-neutral-600" />
+        <span className="ml-auto hidden items-center gap-2 font-mono text-xs text-neutral-400 sm:flex">
+          <Server size={12} className="text-neutral-400" />
           {API_BASE}
         </span>
       </header>

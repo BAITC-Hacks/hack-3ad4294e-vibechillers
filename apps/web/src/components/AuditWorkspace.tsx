@@ -260,41 +260,52 @@ export function AuditWorkspace() {
   };
 
   return (
-    <div className="mx-auto grid w-full max-w-[96rem] grid-cols-1 gap-4 p-4 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
-      <aside className="space-y-4 lg:sticky lg:top-4 lg:max-h-[calc(100vh-5.5rem)] lg:self-start lg:overflow-y-auto">
-        <div className="space-y-3 rounded-xl border border-neutral-800 bg-neutral-900/40 p-3">
-          <h2 className="flex items-center gap-2 text-sm font-medium text-neutral-200"><GitCompareArrows size={15} className="text-sky-400" /> Сравнить редакции</h2>
+    <div className="mx-auto grid w-full max-w-[96rem] grid-cols-1 gap-5 p-4 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
+      <aside className="space-y-5 lg:sticky lg:top-4 lg:max-h-[calc(100vh-5.5rem)] lg:self-start lg:overflow-y-auto">
+        <div className="space-y-4 rounded-xl border border-neutral-800 bg-neutral-900 p-5 shadow-md shadow-black/20 lg:sticky lg:top-0 lg:z-10">
+          <h2 className="flex items-center gap-2 text-sm font-medium text-neutral-100"><GitCompareArrows size={16} className="text-sky-400" /> Сравнить редакции</h2>
+          <div className="space-y-3">
+            <label className="flex cursor-pointer items-start gap-3 text-sm">
+              <input type="checkbox" checked={useLlm} onChange={(e) => setUseLlm(e.target.checked)} disabled={busy} className="mt-1 shrink-0 accent-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-500" />
+              <span><span className="font-medium text-neutral-100">Запросить проверку ИИ-агентом</span><span className="mt-1 block text-xs leading-relaxed text-neutral-300">Включайте только для разрешённых к отправке данных.</span></span>
+            </label>
+            <button type="button" onClick={() => void submit()} disabled={busy || !before.length || !after.length} className="flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-sky-700 px-4 text-sm font-semibold text-white shadow-sm shadow-black/20 hover:bg-sky-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 disabled:cursor-not-allowed disabled:bg-neutral-700 disabled:text-neutral-300 disabled:shadow-none"><Play size={16} /> Начать аудит</button>
+            {busy && <button type="button" onClick={() => operationRef.current?.controller.abort()} className="flex min-h-10 w-full items-center justify-center gap-2 rounded-lg border border-neutral-600 bg-neutral-800 px-3 py-2 text-sm text-red-200 hover:bg-neutral-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400"><CircleStop size={16} /> Остановить ожидание{running ? ` · ${(elapsedMs / 1000).toFixed(1)} с` : ""}</button>}
+            <details className="text-xs leading-relaxed text-neutral-300">
+              <summary className="w-fit cursor-pointer rounded hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-500">Как работает проверка ИИ</summary>
+              <p className="mt-2">Необязательно. Без модели работает алгоритмическое сравнение. Галочка не подтверждает выполнение агента — смотрите статус в отчёте.</p>
+            </details>
+          </div>
+        </div>
+        <div className="space-y-4 rounded-xl border border-neutral-800 bg-neutral-900/50 p-5">
           <AuditFilePicker label="До" hint="предыдущая редакция и приложения" files={before} onChange={setBefore} disabled={busy} />
           <AuditFilePicker label="После" hint="новая редакция и приложения" files={after} onChange={setAfter} disabled={busy} />
-          <label className="flex cursor-pointer items-start gap-2 rounded-lg border border-neutral-800 bg-neutral-900/60 px-2.5 py-2 text-xs">
-            <input type="checkbox" checked={useLlm} onChange={(e) => setUseLlm(e.target.checked)} disabled={busy} className="mt-0.5 accent-violet-500" />
-            <span><span className="text-neutral-200">Запросить проверку ИИ-агентом</span><span className="mt-1 block text-[11px] text-neutral-400">Необязательно. Без модели работает алгоритмическое сравнение. Галочка не подтверждает выполнение агента — смотрите статус в отчёте. Включайте только для разрешённых к отправке данных.</span></span>
-          </label>
-          <button type="button" onClick={() => void submit()} disabled={busy || !before.length || !after.length} className="flex h-9 w-full items-center justify-center gap-1.5 rounded-lg bg-sky-600 text-sm font-medium text-white hover:bg-sky-500 disabled:cursor-not-allowed disabled:bg-neutral-800 disabled:text-neutral-500"><Play size={14} /> Начать аудит</button>
-          {busy && <button type="button" onClick={() => operationRef.current?.controller.abort()} className="flex h-9 w-full items-center justify-center gap-1.5 rounded-lg border border-red-800 bg-red-950/40 text-sm text-red-300"><CircleStop size={15} /> Остановить ожидание{running ? ` · ${(elapsedMs / 1000).toFixed(1)} с` : ""}</button>}
-          <p className="text-[11px] text-neutral-500">Ожидание аудита ограничено 5 минутами, открытие — 30 секундами. Это предел интерфейса, не доказательство полной проверки.</p>
-          <div className="break-all text-center font-mono text-[10px] text-neutral-500">POST {API_BASE}/audits</div>
+          <details className="text-xs leading-relaxed text-neutral-400">
+            <summary className="w-fit cursor-pointer rounded text-neutral-300 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-500">О времени ожидания и API</summary>
+            <p className="mt-2">Ожидание аудита ограничено 5 минутами, открытие — 30 секундами. Это предел интерфейса, не доказательство полной проверки.</p>
+            <div className="mt-2 break-all font-mono">POST {API_BASE}/audits</div>
+          </details>
         </div>
-        <form onSubmit={(e) => { e.preventDefault(); if (!busy) void openReport(lookupId); }} className="space-y-2 rounded-xl border border-neutral-800 bg-neutral-900/40 p-3">
-          <h2 className="flex items-center gap-2 text-sm text-neutral-200"><FolderOpen size={14} /> Открыть сохранённый аудит</h2>
-          <label htmlFor="audit-run-id" className="block text-xs text-neutral-400">ID запуска на сервере</label>
+        <form onSubmit={(e) => { e.preventDefault(); if (!busy) void openReport(lookupId); }} className="space-y-3 rounded-xl border border-neutral-800 bg-neutral-900/50 p-5">
+          <h2 className="flex items-center gap-2 text-sm font-medium text-neutral-100"><FolderOpen size={16} /> Открыть сохранённый аудит</h2>
+          <label htmlFor="audit-run-id" className="block text-xs text-neutral-300">ID запуска на сервере</label>
           <div className="flex gap-2">
-            <input id="audit-run-id" value={lookupId} onChange={(e) => setLookupId(e.target.value)} placeholder="run_id" disabled={busy} className="min-w-0 flex-1 rounded-md border border-neutral-700 bg-neutral-900 px-2 py-1.5 font-mono text-xs text-neutral-100 outline-none focus:border-sky-600" />
-            <button type="submit" disabled={busy || !lookupId.trim()} className="rounded-md border border-neutral-700 px-2.5 text-xs text-neutral-300 disabled:opacity-50">Открыть</button>
+            <input id="audit-run-id" value={lookupId} onChange={(e) => setLookupId(e.target.value)} placeholder="run_id" disabled={busy} className="h-10 min-w-0 flex-1 rounded-lg border border-neutral-700 bg-neutral-900 px-3 font-mono text-sm text-neutral-100 outline-none focus:border-sky-500 disabled:opacity-60" />
+            <button type="submit" disabled={busy || !lookupId.trim()} className="rounded-lg border border-neutral-700 bg-neutral-800/60 px-3 text-sm text-neutral-200 hover:bg-neutral-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-500 disabled:cursor-not-allowed disabled:opacity-50">Открыть</button>
           </div>
-          <p className="text-[11px] text-neutral-500">Загружаются Report и фактический журнал событий сервера.</p>
-          <button type="button" disabled={busy} onClick={() => localInputRef.current?.click()} className="w-full rounded-md border border-neutral-700 px-2 py-2 text-xs text-neutral-300 disabled:opacity-50">Загрузить локальный Report JSON</button>
+          <p className="text-xs leading-relaxed text-neutral-400">Загружаются Report и фактический журнал событий сервера.</p>
+          <button type="button" disabled={busy} onClick={() => localInputRef.current?.click()} className="min-h-10 w-full rounded-lg border border-neutral-700 bg-neutral-800/60 px-3 py-2 text-sm text-neutral-200 hover:bg-neutral-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-500 disabled:cursor-not-allowed disabled:opacity-50">Загрузить локальный Report JSON</button>
           <input ref={localInputRef} type="file" accept=".json,application/json" disabled={busy} aria-label="Локальный Report JSON" className="hidden" onChange={(e) => { const file = e.target.files?.[0]; e.target.value = ""; if (file && !busy) void loadLocal(file); }} />
-          <p className="text-[11px] text-neutral-500">До 50 МБ. Локальный файл не отправляется на сервер.</p>
+          <p className="text-xs leading-relaxed text-neutral-400">До 50 МБ. Локальный файл не отправляется на сервер.</p>
         </form>
-        <div className="flex max-h-[32rem] flex-col rounded-xl border border-neutral-800 bg-neutral-900/40">
-          <h2 className="flex items-center gap-2 border-b border-neutral-800/80 px-3 py-2 text-xs font-medium text-neutral-300"><ListTree size={13} /> Фактические действия <span className="ml-auto text-neutral-500">записей: {run.rows.length}</span></h2>
-          <p className="px-3 pt-2 text-[11px] text-neutral-500">Имена инструментов, аргументы, результаты и публичные основания. Скрытые рассуждения модели не выводятся. Системные шаги не доказывают участие агента.</p>
-          <div className="min-h-0 flex-1 space-y-2 overflow-y-auto p-2.5">
-            {traceNote && <p role="status" className="rounded-md border border-amber-900/70 p-2 text-xs text-amber-200">{traceNote}</p>}
-            {run.rows.length === 0 && !busy && <p className="py-4 text-center text-xs text-neutral-500">Событий для отображения нет.</p>}
+        <div className="flex max-h-[32rem] flex-col rounded-xl border border-neutral-800 bg-neutral-900/50">
+          <h2 className="flex items-center gap-2 border-b border-neutral-800 px-4 py-3 text-sm font-medium text-neutral-200"><ListTree size={16} /> Фактические действия <span className="ml-auto text-xs text-neutral-400">записей: {run.rows.length}</span></h2>
+          <p className="px-4 pt-3 text-xs leading-relaxed text-neutral-400">Имена инструментов, аргументы, результаты и публичные основания. Скрытые рассуждения модели не выводятся. Системные шаги не доказывают участие агента.</p>
+          <div className="min-h-0 flex-1 space-y-2 overflow-y-auto p-3">
+            {traceNote && <p role="status" className="rounded-lg border border-neutral-700 bg-neutral-800/50 p-3 text-xs text-amber-200">{traceNote}</p>}
+            {run.rows.length === 0 && !busy && <p className="py-4 text-center text-xs text-neutral-400">Событий для отображения нет.</p>}
             {run.rows.map((row) => row.kind === "tool" ? <ToolRowView key={row.id} row={row} active={running} /> : row.kind === "status" ? <StatusLine key={row.id} row={row} /> : row.kind === "error" ? <ErrorRowView key={row.id} row={row} /> : null)}
-            {running && run.rows.length === 0 && <p className="flex items-center gap-2 py-2 text-xs text-neutral-400"><Loader2 size={12} className="animate-spin text-sky-400" /> Отправляем файлы и ждём первое событие…</p>}
+            {running && run.rows.length === 0 && <p className="flex items-center gap-2 py-2 text-xs text-neutral-300"><Loader2 size={12} className="animate-spin text-sky-400" /> Отправляем файлы и ждём первое событие…</p>}
             <div ref={timelineEndRef} />
           </div>
         </div>
@@ -311,7 +322,7 @@ export function AuditWorkspace() {
         </div>
         {error && <div role="alert" className="rounded-lg border border-red-800 bg-red-950/40 px-3 py-2 text-sm text-red-300">{error}</div>}
         {report ? <>
-          <p className="text-xs text-neutral-500">JSON сохраняет полный отчёт и источники, но не журнал. Автономный HTML создаётся штатным Python-экспортёром из этого JSON; браузер не подменяет его генерацию.</p>
+          <p className="text-xs leading-relaxed text-neutral-400">JSON сохраняет полный отчёт и источники, но не журнал. Автономный HTML создаётся штатным Python-экспортёром из этого JSON; браузер не подменяет его генерацию.</p>
           <AuditReportView key={report.run_id} report={report} llmRequested={llmRequested} />
         </> : !busy && <div className="rounded-xl border border-dashed border-neutral-800 px-6 py-14 text-center text-sm text-neutral-400">Добавьте положения и приложения в комплекты «До» и «После», затем начните аудит.<p className="mt-3 text-xs">Проверьте изменения подразделений, функции и межподразделенческие риски. Из заключения перейдите к подтверждающим пунктам. Выводы рекомендательные: решение принимает ответственный эксперт.</p></div>}
       </section>

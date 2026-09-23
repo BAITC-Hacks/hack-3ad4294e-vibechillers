@@ -182,16 +182,16 @@ export function AuditFilePicker({
 
   return (
     <div>
-      <div className="mb-1.5 flex items-baseline gap-2">
-        <span className="text-xs font-medium uppercase tracking-wide text-neutral-300">
+      <div className="mb-3 flex flex-wrap items-center gap-x-2 gap-y-1">
+        <span className="text-sm font-medium text-neutral-200">
           {label}
         </span>
-        <span className="text-[10px] text-neutral-500">{hint}</span>
+        <span className="text-xs text-neutral-400">{hint}</span>
         {files.length > 0 && !disabled && (
           <button
             type="button"
             onClick={() => onChange([])}
-            className="ml-auto text-[10px] text-neutral-500 hover:text-neutral-300"
+            className="ml-auto shrink-0 rounded px-1 py-0.5 text-xs text-neutral-300 hover:bg-neutral-800 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-500"
           >
             очистить
           </button>
@@ -221,17 +221,17 @@ export function AuditFilePicker({
             inputRef.current?.click();
           }
         }}
-        className={`flex cursor-pointer items-center gap-2 rounded-lg border border-dashed px-3 py-2.5 text-xs transition-colors ${
+        className={`flex cursor-pointer flex-wrap items-center gap-x-2 gap-y-1 rounded-lg border border-dashed px-4 py-3 text-sm transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-500 ${
           dragOver
-            ? "border-sky-500 bg-sky-950/30"
-            : "border-neutral-700 bg-neutral-900/40 hover:border-neutral-500"
+            ? "border-sky-600 bg-sky-950/30"
+            : "border-neutral-700 bg-neutral-900/50 hover:border-neutral-500"
         } ${disabled ? "pointer-events-none opacity-60" : ""}`}
       >
-        <FileUp size={15} className="shrink-0 text-neutral-400" />
-        <span className="text-neutral-300">
+        <FileUp size={16} className="shrink-0 text-neutral-300" />
+        <span className="min-w-0 flex-1 text-neutral-200">
           Перетащите или выберите файлы
         </span>
-        <span className="ml-auto font-mono text-[10px] text-neutral-500">
+        <span className="w-full break-words pl-6 text-xs text-neutral-300">
           {accept}
         </span>
         <input
@@ -248,24 +248,29 @@ export function AuditFilePicker({
           }}
         />
       </div>
-      <p className="mt-1 text-[10px] leading-relaxed text-neutral-500">
+      <p className="mt-2 text-xs leading-relaxed text-neutral-300">
         DOCX / XLSX (Office 2007+) и PDF с текстом; TXT — вспомогательный формат.
-        DOC / XLS требуют конвертации, не смены расширения.
-        Сканированные PDF и произвольные схемы могут требовать ручной проверки.
       </p>
-      {selectionError && <p role="alert" className="mt-1 text-xs text-red-300">{selectionError}</p>}
+      <details className="mt-2 text-xs leading-relaxed text-neutral-400">
+        <summary className="w-fit cursor-pointer rounded text-neutral-300 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-500">О форматах и проверке</summary>
+        <p className="mt-2">
+          DOC / XLS требуют конвертации, не смены расширения.
+          Сканированные PDF и произвольные схемы могут требовать ручной проверки.
+        </p>
+      </details>
+      {selectionError && <p role="alert" className="mt-2 break-all text-xs leading-relaxed text-red-300">{selectionError}</p>}
       {files.length > 0 && (
-        <ul className="mt-1.5 space-y-1">
+        <ul className="mt-3 space-y-2">
           {files.map((f, i) => (
             <li
               key={`${f.name}-${f.size}-${f.lastModified}`}
-              className="flex items-center gap-2 rounded-md border border-neutral-800 bg-neutral-900/70 px-2 py-1 text-xs"
+              className="flex min-w-0 items-start gap-2 rounded-lg border border-neutral-800 bg-neutral-900/70 px-3 py-2 text-sm"
             >
-              <FileText size={12} className="shrink-0 text-neutral-500" />
-              <span className="min-w-0 truncate font-mono text-neutral-200" title={f.name}>
+              <FileText size={15} className="mt-0.5 shrink-0 text-neutral-400" />
+              <span className="min-w-0 flex-1 break-all font-mono text-neutral-200" title={f.name}>
                 {f.name}
               </span>
-              <span className="ml-auto shrink-0 tabular-nums text-neutral-500">
+              <span className="shrink-0 pt-0.5 tabular-nums text-xs text-neutral-400">
                 {fmtSize(f.size)}
               </span>
               {!disabled && (
@@ -273,9 +278,9 @@ export function AuditFilePicker({
                   type="button"
                   aria-label={`Удалить ${f.name}`}
                   onClick={() => onChange(files.filter((_, j) => j !== i))}
-                  className="shrink-0 rounded p-0.5 text-neutral-500 hover:bg-neutral-800 hover:text-neutral-200"
+                  className="shrink-0 rounded p-1 text-neutral-300 hover:bg-neutral-800 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-500"
                 >
-                  <X size={12} />
+                  <X size={14} />
                 </button>
               )}
             </li>
@@ -283,7 +288,7 @@ export function AuditFilePicker({
         </ul>
       )}
       {twins.length > 0 && (
-        <div className="mt-1.5 rounded-md border border-amber-800/70 bg-amber-950/30 px-2 py-1.5 text-[11px] leading-snug text-amber-200">
+        <div className="mt-3 break-all rounded-lg border border-neutral-700 bg-neutral-800/60 px-3 py-2 text-xs leading-relaxed text-amber-200">
           {twins.map((n) => n.join(" + ")).join("; ")} похожи на несколько экспортов
           одной редакции. Оставьте один источник на редакцию; для Word предпочтителен DOCX.
         </div>
