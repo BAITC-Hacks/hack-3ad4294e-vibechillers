@@ -2,13 +2,15 @@
 
 ## Scope
 
-The checked-in service is the keyless document-ingestion and grounded-agent
-vertical slice. It does not currently expose `POST /audits`; therefore this
-record does not claim that a two-edition comparison report was produced.
+The submitted revision exposes the keyless two-edition audit contract:
+`POST /audits` streams events with a final Report payload and
+`GET /audits/{run_id}` retrieves the persisted Report.
 
 ## Commands
 
-Run from the repository root after a clean clone:
+Run from the repository root after a clean clone. The Stage 2 disposable clone
+was made from public `main` at revision
+`07a1708d1410a908bacde7c8f2201d08e75431aa`.
 
 ```powershell
 git clone https://github.com/BAITC-Hacks/hack-3ad4294e-vibechillers.git
@@ -27,22 +29,26 @@ In a second terminal while the stack is running:
 
 ```powershell
 Invoke-RestMethod http://localhost:8000/healthz
-curl.exe -s -F "file=@seeds/kt/v8.docx" http://localhost:8000/upload
-curl.exe -s -F "file=@seeds/kt/v9.docx" http://localhost:8000/upload
+sh scripts/demo.sh
+uv run --no-sync python scripts/export_report.py --report data/demo-report.json --out data/demo-report.html
+Invoke-RestMethod "http://localhost:8000/audits/<run_id>"
 ```
 
-Expected keyless health response includes `"status":"ok"`,
-`"db":"ok"`, and `"llm_configured":false`. Each upload should return JSON
-with `doc_id`, `chunks`, and `pages`; embedding model loading can make the
-first upload take longer.
+Expected keyless health response includes `"status":"ok"`, `"db":"ok"`,
+and `"llm_configured":false`. The demo must print one Report run ID, create
+`data/demo-report.json`, and the exporter must create standalone
+`data/demo-report.html`. The retrieval response must match the saved Report's
+`run_id`, findings, warnings and conclusion.
 
 ## Repository evidence
 
-The [inherited kit log](https://github.com/BAITC-Hacks/hack-3ad4294e-vibechillers/blob/27e68bdb24aea0520d6314a350732153e0424945/NIGHT_LOG.md) records a previous full `docker compose up -d --build` smoke
-test: API healthy, web returned 200, upload and `/run` SSE worked, and the
-keyless path was exercised. A fresh clean-clone run for this exact Kazakhtelecom
-pair still needs to be captured before the final handoff; failures should be
-reported to Batyrkhan rather than hidden in this file.
+The disposable clean clone in this session confirmed the public revision and
+clean worktree. The actual Docker/audit launch could not be executed here:
+Docker Desktop is not installed (`docker` is not available), and the local
+`.venv` has no locked runtime packages after the no-install exporter check.
+Therefore no live Report, browser run or Docker output is claimed by this
+record. Batyrkhan owns the shared runtime blocker; reproduce with the commands
+above on a machine with Docker Desktop.
 
 The source provenance for the two organizer-provided files is recorded in
 [`seeds/kt/manifest.json`](../../seeds/kt/manifest.json). No API key or other

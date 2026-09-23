@@ -1,42 +1,37 @@
 # Function Lineage Auditor: architecture
 
-The repository currently implements the document-ingestion and grounded-agent
-vertical slice. The two-edition auditor is the product direction: comparison,
-clause-level verification, and a structured report must be added on top of the
-existing interfaces before they can be presented as implemented features.
+The current repository implements the two-edition audit path as a public,
+keyless HTTP workflow. It parses both uploads, aligns function clauses,
+verifies citations, emits a Report through SSE, persists it, and serves it
+again through `GET /audits/{run_id}`. Optional LLM adjudication is bounded and
+does not gate the deterministic Report.
 
 ```mermaid
 flowchart LR
-    A[DOCX/PDF/XLSX/CSV/TXT] --> B[Ingest API: POST /upload]
+    A[Before/after DOCX/PDF/XLSX/CSV/TXT] --> B[POST /audits]
     B --> C[Parse pages]
     C --> D[Chunk and persist]
-    D --> E[Embeddings + SQLite vec0/FTS5]
-    E --> F[Search tool]
-    F --> G[Agent loop: POST /run]
-    G --> H[Optional LLM adjudication]
-    G --> I[Citations and trace events]
-    I --> J[Current Next.js UI]
-
-    V8[Edition v8] -. future audit input .-> L[Align clauses/functions]
-    V9[Edition v9] -. future audit input .-> L
-    L -. matched, moved, lost, duplicated, unit changes .-> M[Verify exact citations]
-    M -. verified evidence .-> H
-    M -.-> N[Structured comparison report]
-    N -. future report view .-> J
+    D --> E[SQLite audit run and trace]
+    E --> F[Align functions]
+    F --> G[Verify citations]
+    G --> H[Optional bounded LLM adjudication]
+    H --> I[Report: findings, conclusion, warnings]
+    I --> J[Next.js report UI]
+    I --> K[GET /audits/{run_id}]
 ```
 
 | Component | Responsibility | Current repository boundary |
 | --- | --- | --- |
-| Ingest | Accept files and store upload bytes | `POST /upload`, `ingest/pipeline.py` |
+| Ingest | Accept before/after files and store parsed inputs | `POST /audits`, `api/audits.py` |
 | Parse | Extract page/block text and media type | `ingest/parsers.py` |
-| Align | Compare two editions by clause/function | Planned audit layer; not exposed by the current API |
-| Verify citations | Keep each finding tied to source text and page/clause | Current search results carry source/page; exact two-edition verification is planned |
-| LLM adjudication | Optional interpretation after deterministic evidence retrieval | `agent/llm.py` and `agent/loop.py`; no key is required for `/healthz` |
-| Report | Return findings, evidence, unresolved cases, and conclusion | Planned audit report; current API exposes upload metadata, SSE events, and traces |
-| UI | Upload documents, ask grounded questions, inspect run trace | `apps/web/src/app/page.tsx` and timeline components |
+| Align | Compare function clauses and preserve candidate refs | `audit/align.py`; weak cases remain unresolved |
+| Verify citations | Check exact `(doc, clause_id, quote)` provenance | `audit/report.py` |
+| LLM adjudication | Optional bounded interpretation of ambiguous findings | `agent/audit_llm.py`; deterministic fallback remains |
+| Report | Preserve findings, citations, coverage, warnings and conclusion | `audit/models.py`, `api/audits.py` |
+| UI | Upload editions, inspect findings, open both clauses, reopen saved report | `AuditWorkspace.tsx`, `AuditReport.tsx` |
 
-The cross-slice contract is the binding interface: SQLite is the persistence
-layer, `POST /upload` indexes documents, `POST /run` emits the SSE event
-envelope, and `GET /runs/{run_id}/trace` replays the stored trace. The
-keyless degraded path remains mandatory: missing `LLM_API_KEY` must not make
-the process crash, and the API must report that the LLM is not configured.
+The binding audit contract is in `docs/plan.md` §3: repeated multipart
+`before_files` and `after_files` to `POST /audits`, one terminal `final` event
+whose `data.payload` is the Report, and `GET /audits/{run_id}` for retrieval.
+Missing `LLM_API_KEY` is a supported deterministic mode. Existing kit routes
+and trace persistence remain available alongside the audit routes.
