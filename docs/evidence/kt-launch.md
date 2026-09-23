@@ -50,6 +50,10 @@ Therefore no live Report, browser run or Docker output is claimed by this
 record. Batyrkhan owns the shared runtime blocker; reproduce with the commands
 above on a machine with Docker Desktop.
 
+The final Askat delivery is revision `14da63e`; the disposable clone check was
+performed at `07a1708` before these delivery-only changes. No application or
+runtime files changed between those revisions.
+
 The source provenance for the two organizer-provided files is recorded in
 [`seeds/kt/manifest.json`](../../seeds/kt/manifest.json). No API key or other
 personal credential is stored here.
