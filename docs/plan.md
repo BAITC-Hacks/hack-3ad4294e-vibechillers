@@ -1,0 +1,103 @@
+# Stage 1 — Track 11 / Kazakhtelecom
+
+Scope: immediate three-person work through 15:30; later planning requires a separate command.
+Sources: `seeds/kt/TASK.md`, `seeds/kt/manifest.json`, both case editions, `CONTRACT.md`, inspected kit sources, and the user's track/team decision.
+All design choices, schedules, numerical targets and acceptance checks below are [ASSUMPTION] team decisions, not additional requirements from the ТЗ.
+
+## 1. Requirements
+
+Source limitation: `TASK.md` contains only the following English brief. No verbatim Russian ТЗ, detailed mandatory deliverables or evaluation criteria were supplied/found in the case materials. Translation cannot substitute for a verbatim Russian original. R1–R3 are provisional identifiers for this brief, not a claim of complete official-ТЗ coverage.
+> AI agent “Analysis of organizational structure and functions”
+> During a reorganization, org charts and regulations are compared by hand, so functions get lost or duplicated. The agent compares the before and after document sets, flags the gaps, and writes a conclusion with links back to the source clauses.
+>
+> Task owner: Kazakhtelecom
+
+- **R1 — Comparison:** “AI agent “Analysis of organizational structure and functions””; “The agent compares the before and after document sets”.
+- **R2 — Gaps:** “functions get lost or duplicated.”; “flags the gaps”. Loss/duplication are the stated problem; exact required classifications remain unconfirmed.
+- **R3 — Conclusion and evidence:** “writes a conclusion with links back to the source clauses.”
+Evaluation: no criteria, weights, accuracy threshold or prescribed report format occur in the available brief; do not import generic scoring as track criteria.
+Organiser questions (Askat owns): obtain the full Russian ТЗ, mandatory outputs and rubric; are separate org charts required/provided; what distinguishes legitimate shared duties from duplication; is a deterministic keyless report plus optional LLM acceptable?
+
+## 2. What we build
+
+- **Function Lineage Auditor** for an internal auditor reviewing a reorganisation [ASSUMPTION]; chosen approach comes from the user's selection.
+- Select/upload before and after document sets; demo starts with v8 (Protocol 13, 25.06.2021) → v9 (Protocol 7, 23.12.2022), per manifest (R1).
+- Deterministically extract numbered clauses, lettered subclauses, units and explicit reporting relations; preserve source text and hierarchy (R1).
+- Align exact text first, then lexical candidates across the complete sets; distinguish edits/moves from potentially missing or duplicated duties (R1–R2).
+- The LLM adjudicates only ambiguous candidates and drafts the conclusion; it cannot invent a source, unit or match. Without a key, unresolved pairs remain visible and the conclusion is templated (R2–R3).
+- The UI shows a before/after finding table, unit context, uncertainty and a conclusion; every evidence link opens its exact clause and quote (R1–R3).
+- Case evidence is anonymised as AO Company and cites Russian law (`v8.txt`/`v9.txt` §§1,3); do not present it as Kazakhtelecom's verified live structure. No separate org-chart file is in `seeds/kt/`.
+
+## 3. Contract
+
+Stage-1 domain extension to `CONTRACT.md`; existing routes, registry and SSE envelope remain unchanged. Batyrkhan owns integration and any shared-core changes.
+Reuse `ingest.pipeline.ingest_path`/`ingest_bytes`, existing DOCX/TXT extraction, SQLite, `agent.tools.ToolRegistry`, trace persistence, web upload/timeline components and SSE parsing. No new service, database or dependency is planned.
+Important kit boundaries: DOCX `page` is a block ordinal, not a physical page (`ingest/parsers.py`); `/upload` currently requires RAG indexing (`api/routes.py`); keyless `/run` currently emits an error (`CONTRACT.md`). The audit path must run ingestion + deterministic analysis directly, without requiring embeddings or `/run` to succeed.
+
+### Data (JSON; required fields unless explicitly nullable)
+
+```text
+Document = {doc: string, doc_id: string, sha256: string, edition: before|after, source: string}
+Citation = {doc: string, clause_id: string, quote: string}
+ClauseRef = {doc: string, clause_id: string}
+Clause = {doc: string, clause_id: string, label: string, parent_id: string|null,
+          text: string, ordinal: integer, kind: heading|function|structure|other, unit_ids: string[]}
+Unit = {doc: string, unit_id: string, name: string, kind: unit|role,
+        parent_unit_id: string|null, citations: Citation[]}
+Finding = {id: string, status: unchanged|changed|moved|added|missing|duplicate|unresolved,
+           before: ClauseRef[], after: ClauseRef[], citations: Citation[], reason: string,
+           method: exact|lexical|llm|human, review_required: boolean}
+Report = {run_id: string, mode: deterministic|llm_assisted, documents: Document[],
+          clauses: Clause[], units: Unit[], findings: Finding[],
+          conclusion: [{text: string, finding_ids: string[], citations: Citation[]}],
+          coverage: {before_total: integer, after_total: integer, before_accounted: integer,
+                     after_accounted: integer, unresolved: integer}, warnings: string[]}
+```
+
+- `doc` is a report-local alias: `v8`/`v9` for the manifest case, otherwise `before-1`/`after-1`, etc.; content identity is the kit's `doc_id` plus full file SHA-256. Never ingest TXT and DOCX exports as two editions of the same input.
+- `clause_id` is the numeric path without its final dot (`2.4.1`); letter children use `2.3.1/а` (original Cyrillic). Repeated paths append `@2`, `@3`; unlabelled blocks use `@p<ordinal>`. `label` retains the literal marker; IDs are unique within a document.
+- DOCX is the canonical seed source; TXT is a reading aid. Split embedded numeric markers as well as paragraph starts: `v9.txt` has §3.10–3.12 on one line. Retain every source span; do not silently drop unclassified text. Unit IDs use their defining clause IDs; parent links need explicit evidence, otherwise null.
+- Quotes are exact substrings of preserved clause text; normalisation is for matching only. Verify `(doc, clause_id, quote)` before publication. Invalid evidence becomes a warning/unresolved finding, never a supported conclusion.
+- `missing` means no supported successor found in the supplied after set, not proven organisational loss. `duplicate` means potentially overlapping responsibilities, not repeated wording alone; both require review. Renumbering/movement alone is not loss. Unresolved split/merge candidates retain all candidate refs.
+- Every before/after function clause is accounted for in at least one finding; coverage counts unique refs, never row counts. `unchanged` = same text/context; `moved` = preserved function with changed location/owner; `changed` = supported match with content changes; `added` = no supported predecessor. Ambiguity takes `unresolved`, not a forced match.
+
+### Agent tools and HTTP
+
+All tools use the existing typed registry; scope inputs to the current run's documents, not arbitrary filesystem paths.
+| Tool | Input | Output |
+| --- | --- | --- |
+| `parse_regulations` | `{documents: Document[]}` | `{clauses: Clause[], units: Unit[], warnings: string[]}` |
+| `align_functions` | `{before_docs: string[], after_docs: string[]}` | `{findings: Finding[]}` from deterministic matching |
+| `resolve_alignment` | `{finding_id, before: ClauseRef[], after: ClauseRef[], status, reason}` | `{finding: Finding}`; accept only offered candidate refs/statuses, otherwise keep unresolved |
+| `verify_citations` | `{citations: Citation[]}` | `{valid: Citation[], invalid: [{citation: Citation, reason: string}]}` |
+| `build_report` | `{finding_ids: string[], conclusion: Report.conclusion|null}` | `Report`; null gives deterministic conclusion, proposed prose must reference verified findings |
+
+`resolve_alignment` validates the LLM's proposed adjudication; it is not a second unbounded agent loop. Quote validity proves provenance, not semantic correctness; LLM decisions stay reviewable.
+- **New `POST /audits`**: multipart repeated `before_files` and `after_files`, optional `use_llm=false`; ingest with existing pipeline, then stream existing `Event` frames. `final.data={text: string, payload: Report}`; persist all frames through existing trace storage. Require at least one file per side; errors use the kit JSON envelope before streaming or one terminal `error` afterwards.
+- **New `GET /audits/{run_id}`**: return `Report` from the persisted final payload; 404 if absent, 409 if incomplete. Existing `GET /runs/{run_id}/trace` remains the replay route. UI quote links resolve against `Report.clauses` by doc + clause ID; do not invent Word page numbers.
+- No key/model failure: complete deterministic report with `mode=deterministic` and a warning; LLM use never gates comparison. Reuse the kit's configured model timeout. Existing Compose/runtime stays; no deployment redesign.
+
+### Ground truth handoff
+
+`seeds/kt/eval/labels.jsonl`: one JSON object per case, `{id, kind: real|synthetic, documents: [{doc, file, sha256}], before: ClauseRef[], after: ClauseRef[], expected_status, citations: Citation[], rationale: string, annotator: string, mutation: null|{operation, source: ClauseRef, description: string}}`.
+Use the same status enum and IDs as Finding; refs/citations must resolve in the named fixture. Synthetic fixtures live under `seeds/kt/eval/mutations/`, never overwrite originals. Mark uncertainty `unresolved`; do not label from model output. Compare sets of refs + status, not generated finding IDs or prose. Keep real and synthetic scores separate; citation validity/coverage are not semantic accuracy.
+
+## 4. Individual modules
+
+Time windows below are [ASSUMPTION] work order, not event rules; all three start independently now and stop this stage at 15:30.
+
+| Person / ownership | Ordered tasks through 15:30 | R-ids / done check |
+| --- | --- | --- |
+| **Batyrkhan — core, tools, API, UI, integration**; `apps/api/app/`, `apps/web/`, contract changes and lockfiles | **Now–14:00:** implement domain models and hierarchical parser over existing ingestion; preserve raw clauses and unit references. **14:00–14:30:** deterministic alignment + quote verifier + keyless `/audits` → visible report. **14:30–15:30:** wire the existing registry/model boundary for ambiguous pairs/conclusion, report retrieval and citation navigation; run Alibi's independent fixtures and fix actual failures. | **R1–R3.** Real v8→v9 report without a key, all function clauses accounted for, no invalid published quotes, moved/renumbered fixture not marked missing; browser proof of quote navigation and both real/model-unavailable completion. |
+| **Alibi — independent evidence and quality**; `seeds/kt/eval/`, `docs/evidence/kt-quality.*` only | **Now–14:00:** manually compare §§2.4, 3, 5 in both editions; record first 10 certain pairs with exact quotes, including unchanged and real changes where found; check DOCX against TXT. **14:00–14:30:** extend to 20 reviewed real labels; create separate deletion, duplication, move, renumbering and whitespace-only mutations with expected outcomes. **14:30–15:30:** score the report against labels; inspect every disagreement with Batyrkhan and record false positives/negatives, abstentions and fixture hashes. | **R1–R3.** Valid JSONL/ref/quote checks; labels predate model results; scores include denominators and separate real/synthetic results. If a category is absent in real editions, state that and use a clearly synthetic fixture, never invent a real change. |
+| **Askat — reproducibility, demo and progress**; deployment evidence, `docs/demo.*`, `docs/pitch.*`, `docs/PROGRESS.md`; README owner later | **Now–14:00:** ask the organiser the §1 questions; run the kit's existing Compose setup without personal credentials and record exact commands/errors in `docs/evidence/kt-launch.md`. **14:00–14:30:** exercise the audit UI when available; draft a 3-minute script and pitch outline: problem → real finding → source quote → unresolved case → keyless mode. **14:30–15:30:** independently replay v8→v9, capture screenshots/trace and source disclosures, review Alibi's labels; collect verified installation/env/main-scenario facts for the final README, not a speculative README now. | **R1–R3 evidence/delivery.** Another teammate follows recorded commands; demo claims trace to real report rows. Append exactly three progress lines at **14:00 and 15:00** and coordinate each checkpoint commit with Batyrkhan; later hourly checkpoints remain required by organiser regulation 5.4.8. |
+
+No cross-owner edits without coordination. Before each commit: `git pull --rebase --autostash`; commit owned paths only and push normally (repository working rules). README/self-deployability, disclosures and hourly evidence are organiser-regulation obligations (5.4.5–5.4.6, 5.4.8, 5.4.15–5.4.16, 5.6.3–5.6.6), not invented track R-ids.
+Three asynchronous scouts own only `research/findings/kt-edition-alignment.md`, `kt-public-audit-context.md`, `kt-quality-metrics.md`; their findings do not block this stage and are not graded artifacts.
+
+## 5. 14:30 gate
+
+- **Pass [ASSUMPTION]:** both real editions complete ingestion → hierarchical clauses/units → deterministic alignment → citation verification → visible conclusion, with no LLM key; clicking a finding resolves its source quote. Both sides' function coverage is complete or explicitly blocked by a visible parse warning.
+- Alibi's first 10 real labels and deletion/duplication/move/renumbering fixtures exercise the live pipeline; record actual agreement and all failures, not an invented accuracy target. Invalid quotes must never appear as supported evidence.
+- **Same-track fallback [ASSUMPTION]:** omit optional embeddings and LLM adjudication; use exact + lexical candidate alignment over the full supplied sets, explicit unresolved cases and a deterministic cited conclusion. Keep all R1–R3 outputs and the minimal report UI; no chatbot pivot, hardcoded report or silent subset of clauses.
+- If semantic adjudication or chart extraction remains unsupported, expose that limitation and ask the organiser whether it meets the full ТЗ; do not claim the fallback satisfies requirements not yet received. Later stages, deployment expansion and final README planning await the next command.
