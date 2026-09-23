@@ -1,5 +1,7 @@
 {
   "scope": "Source ingestion only. No audit inference or product accuracy claim.",
+  "expected_resolver": "eval/kt/score.py:source_clauses over canonical TXT; independent of application parser",
+  "expected_resolver_sha256": "0ed8a5aade140b393cdfda670da33771f64a43691794613c14ad4a6f0c6ad2b5",
   "parser_sha256": "85828f85e2b9c3f163d8a40b6ebcb038cbc18349be93ea48d8c5b57f418ee680",
   "ingest_parsers_sha256": "f58abb9fefa7bd007d248f2a0d0c6309a0024253f29078e74d5456b6f048bf92",
   "formats": [
@@ -10,7 +12,13 @@
       "clauses": 31,
       "units": 7,
       "numbered_clause_denominator": 29,
+      "numbered_clause_returned_count": 29,
+      "numbered_clause_absent_refs": [],
+      "numbered_clause_extra_refs": [],
+      "numbered_clause_duplicate_refs": {},
       "numbered_clause_text_mismatches": [],
+      "numbered_clause_exact_unique_count": 29,
+      "numbered_clauses_match_canonical": true,
       "normalized_extracted_text_matches_canonical": true,
       "warnings": [
         "before: 2 unlabelled block(s) kept as kind=other and excluded from alignment."
@@ -23,7 +31,13 @@
       "clauses": 31,
       "units": 7,
       "numbered_clause_denominator": 29,
+      "numbered_clause_returned_count": 29,
+      "numbered_clause_absent_refs": [],
+      "numbered_clause_extra_refs": [],
+      "numbered_clause_duplicate_refs": {},
       "numbered_clause_text_mismatches": [],
+      "numbered_clause_exact_unique_count": 29,
+      "numbered_clauses_match_canonical": true,
       "normalized_extracted_text_matches_canonical": true,
       "warnings": [
         "before: 2 unlabelled block(s) kept as kind=other and excluded from alignment."
@@ -36,6 +50,10 @@
       "clauses": 41,
       "units": 7,
       "numbered_clause_denominator": 29,
+      "numbered_clause_returned_count": 29,
+      "numbered_clause_absent_refs": [],
+      "numbered_clause_extra_refs": [],
+      "numbered_clause_duplicate_refs": {},
       "numbered_clause_text_mismatches": [
         "2.2",
         "4.1",
@@ -46,6 +64,8 @@
         "8.1",
         "9.1"
       ],
+      "numbered_clause_exact_unique_count": 21,
+      "numbered_clauses_match_canonical": false,
       "normalized_extracted_text_matches_canonical": true,
       "warnings": [
         "before: 12 unlabelled block(s) kept as kind=other and excluded from alignment."
@@ -58,7 +78,13 @@
       "clauses": 31,
       "units": 7,
       "numbered_clause_denominator": 29,
+      "numbered_clause_returned_count": 29,
+      "numbered_clause_absent_refs": [],
+      "numbered_clause_extra_refs": [],
+      "numbered_clause_duplicate_refs": {},
       "numbered_clause_text_mismatches": [],
+      "numbered_clause_exact_unique_count": 29,
+      "numbered_clauses_match_canonical": true,
       "normalized_extracted_text_matches_canonical": true,
       "warnings": [
         "before: 2 unlabelled block(s) kept as kind=other and excluded from alignment."
@@ -71,7 +97,13 @@
       "clauses": 41,
       "units": 8,
       "numbered_clause_denominator": 39,
+      "numbered_clause_returned_count": 39,
+      "numbered_clause_absent_refs": [],
+      "numbered_clause_extra_refs": [],
+      "numbered_clause_duplicate_refs": {},
       "numbered_clause_text_mismatches": [],
+      "numbered_clause_exact_unique_count": 39,
+      "numbered_clauses_match_canonical": true,
       "normalized_extracted_text_matches_canonical": true,
       "warnings": [
         "after: 2 unlabelled block(s) kept as kind=other and excluded from alignment."
@@ -84,7 +116,13 @@
       "clauses": 41,
       "units": 8,
       "numbered_clause_denominator": 39,
+      "numbered_clause_returned_count": 39,
+      "numbered_clause_absent_refs": [],
+      "numbered_clause_extra_refs": [],
+      "numbered_clause_duplicate_refs": {},
       "numbered_clause_text_mismatches": [],
+      "numbered_clause_exact_unique_count": 39,
+      "numbered_clauses_match_canonical": true,
       "normalized_extracted_text_matches_canonical": true,
       "warnings": [
         "after: 2 unlabelled block(s) kept as kind=other and excluded from alignment."
@@ -97,7 +135,13 @@
       "clauses": 61,
       "units": 8,
       "numbered_clause_denominator": 39,
+      "numbered_clause_returned_count": 39,
+      "numbered_clause_absent_refs": [],
+      "numbered_clause_extra_refs": [],
+      "numbered_clause_duplicate_refs": {},
       "numbered_clause_text_mismatches": [
+        "10.1",
+        "11.1",
         "2.1",
         "2.2",
         "2.3",
@@ -109,10 +153,10 @@
         "7.2",
         "7.4",
         "8.1",
-        "9.1",
-        "10.1",
-        "11.1"
+        "9.1"
       ],
+      "numbered_clause_exact_unique_count": 25,
+      "numbered_clauses_match_canonical": false,
       "normalized_extracted_text_matches_canonical": true,
       "warnings": [
         "after: 22 unlabelled block(s) kept as kind=other and excluded from alignment."
@@ -125,7 +169,13 @@
       "clauses": 41,
       "units": 8,
       "numbered_clause_denominator": 39,
+      "numbered_clause_returned_count": 39,
+      "numbered_clause_absent_refs": [],
+      "numbered_clause_extra_refs": [],
+      "numbered_clause_duplicate_refs": {},
       "numbered_clause_text_mismatches": [],
+      "numbered_clause_exact_unique_count": 39,
+      "numbered_clauses_match_canonical": true,
       "normalized_extracted_text_matches_canonical": true,
       "warnings": [
         "after: 2 unlabelled block(s) kept as kind=other and excluded from alignment."

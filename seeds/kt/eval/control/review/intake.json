@@ -1,0 +1,41 @@
+{
+  "at_utc": "2026-09-23T11:00:05.785798+00:00",
+  "review_artifact_sha256": {
+    "structure-and-real.json": "c03610438f99ac956847e498c59007d088b4bda92f925df492a400fdf0cf4775",
+    "duties-and-risks.json": "0b23b540c476f112f8795f13a0f1ba43a0a187b39ca9d7a726d2f5b2acece8de"
+  },
+  "gold_status": "pending_human",
+  "human_confirmed": 0,
+  "control_labels": 19,
+  "independence": "Separate built-in Codex reviewers saw source/contract before expectations or product output; procedural shared repo, not technically blind",
+  "reviewer_disclosure": "Duties reviewer accidentally read entire stage-3.md; no gold/reports read. Root had authored gold; root is not an independent vote.",
+  "source_conclusions": "Structural seven transitions and duty/risk proposals support control expectations; this is label review, not product accuracy.",
+  "disagreements": [
+    {
+      "id": "dev-real-shared-information",
+      "current_proposal": "changed",
+      "independent_proposal": "moved",
+      "evidence": "v8 5.3.5 -> v9 5.3.6 with governing 5.3; separate 5.4.3 already present in both editions",
+      "decision": "Keep versioned challenge unchanged pending human decision about preserved duty with changed owner scope."
+    },
+    {
+      "id": "dev-real-audit-goals",
+      "current_proposal": "moved",
+      "independent_proposal": "changed",
+      "evidence": "v8 9.36/з -> v9 9.36/е; 9.37 changes possible delegate while Chief Auditor remains accountable",
+      "decision": "Keep versioned challenge unchanged pending human decision about governing-context boundary."
+    }
+  ],
+  "existing_challenge_labels_changed": false,
+  "location_probes": {
+    "physical_refs": 3,
+    "format_specific_expectations": 9,
+    "method": "DOCX XML block order and XLSX source cell rows; PDF pages separately read using pypdf",
+    "added_after_local_domain_capture": true,
+    "local_product_outputs_not_used_to_choose_coordinates": true,
+    "no_semantic_labels_changed": true
+  },
+  "labels_sha256_before": "55f306a27ee780d1ea70bdda2fff467abdcd5cba8689dbedc8917d0c4fa1c31f",
+  "labels_sha256_after": "462d75c6d39bf30ab0c71c816232904b27019496355f3b0494685e26bdf02d7c",
+  "agent_product_accuracy": "unmeasured; external capture package pending"
+}

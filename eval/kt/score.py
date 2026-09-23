@@ -20,6 +20,58 @@ SPLIT = ROOT / "seeds/kt/eval/split.json"
 STATUSES = ("unchanged", "changed", "moved", "added", "missing", "duplicate", "unresolved")
 SEMANTIC_STATUSES = STATUSES[:-1]
 PARTITIONS = ("regression", "development", "holdout", "unassigned")
+UNIT_STATUSES = ("retained", "reorganised", "created", "unresolved")
+RISK_KINDS = ("potential_duplication", "potential_conflict_of_interest")
+TARGETS = ("function", "unit_change", "risk")
+AGENT_STATUSES = ("not_requested", "completed", "partial", "unavailable", "failed")
+
+
+def stage3_assessed(report: dict, section: str) -> bool:
+    """Schema 4da4390: historical default [] is not an assessed empty result.
+
+    A concrete AgentExecution marks a new producer; it is not evidence of live
+    inference or of full review. The required fields are status and stop_reason.
+    """
+    agent = report.get("agent")
+    return (isinstance(agent, dict) and agent.get("status") in AGENT_STATUSES
+            and isinstance(agent.get("stop_reason"), str) and isinstance(report.get(section), list))
+
+
+def label_target(row: dict) -> str:
+    return row.get("target", "function")
+
+
+def unit_refs(items: list[dict], aliases: dict[str, str] | None = None) -> frozenset:
+    return frozenset((aliases.get(r["doc"], r["doc"]) if aliases else r["doc"], r["unit_id"])
+                     for r in items)
+
+
+def target_signature(row: dict, target: str, aliases: dict[str, str] | None = None) -> tuple:
+    if target == "unit_change":
+        return unit_refs(row.get("before", []), aliases), unit_refs(row.get("after", []), aliases)
+    if target == "risk":
+        return refs(row.get("refs", []), aliases), unit_refs(row.get("units", []), aliases)
+    return signature(row, aliases)
+
+
+def expected_value(row: dict) -> str:
+    return row["expected_kind"] if label_target(row) == "risk" else row["expected_status"]
+
+
+def label_document_sides(row: dict, document: dict) -> set[str]:
+    alias = document["doc"]
+    sides = {side for side in ("before", "after") if any(ref["doc"] == alias for ref in row.get(side, []))}
+    if label_target(row) == "risk" and any(ref["doc"] == alias for ref in row.get("refs", []) + row.get("units", [])):
+        sides.add("after")
+    if document.get("edition"):
+        sides.add(document["edition"])
+    conventional = re.fullmatch(r"(before|after)-\d+", alias)
+    named_side = conventional.group(1) if conventional else {"v8": "before", "v9": "after"}.get(alias)
+    if named_side:
+        sides.add(named_side)
+    if len(sides) > 1:
+        raise ValueError(f"Label alias used on both sides: {row['id']} {alias}")
+    return sides
 
 
 def file_path(name: str) -> Path:
@@ -108,7 +160,10 @@ def load_labels(path: Path) -> list[dict]:
         if row["id"] in seen:
             raise ValueError(f"Duplicate label ID: {row['id']}")
         seen.add(row["id"])
-        if row["kind"] not in ("real", "synthetic") or row["expected_status"] not in STATUSES:
+        target = label_target(row)
+        allowed = {"function": STATUSES, "unit_change": UNIT_STATUSES, "risk": RISK_KINDS + ("none",)}
+        if (target not in TARGETS or row["kind"] not in ("real", "synthetic")
+                or expected_value(row) not in allowed[target]):
             raise ValueError(f"Invalid kind/status: {row['id']}")
         docs = {}
         for doc in row["documents"]:
@@ -118,21 +173,67 @@ def load_labels(path: Path) -> list[dict]:
             if hashlib.sha256(raw).hexdigest() != doc["sha256"]:
                 raise ValueError(f"Fixture hash mismatch: {row['id']} {doc['file']}")
             docs[doc["doc"]] = raw.decode("utf-8-sig")
-        required, cited = refs(row["before"] + row["after"]), refs(row["citations"])
+            if doc.get("edition") not in (None, "before", "after"):
+                raise ValueError(f"Invalid document edition: {row['id']}")
+            label_document_sides(row, doc)
+            for representation in doc.get("representations", []):
+                if hashlib.sha256(file_path(representation["file"]).read_bytes()).hexdigest() != representation["sha256"]:
+                    raise ValueError(f"Representation hash mismatch: {row['id']}")
+        evidence = row.get("unit_evidence", [])
+        evidence_citations = [c for unit in evidence for c in unit["citations"]]
+        if target == "function":
+            required = refs(row["before"] + row["after"])
+        elif target == "risk":
+            required = refs(row["refs"])
+            if not required or not row.get("units"):
+                raise ValueError(f"Risk requires source refs and units: {row['id']}")
+        else:
+            required = refs(evidence_citations)
+            status = row["expected_status"]
+            if (not row.get("after") and status != "unresolved"
+                    or status == "created" and row.get("before")
+                    or status in ("retained", "reorganised") and not row.get("before")):
+                raise ValueError(f"Invalid unit transition sides: {row['id']}")
+        if target != "function":
+            wanted_units = (unit_refs(row["before"] + row["after"]) if target == "unit_change"
+                            else unit_refs(row["units"]))
+            if not wanted_units or wanted_units != unit_refs(evidence) or len(evidence) != len(wanted_units):
+                raise ValueError(f"Missing/duplicate unit evidence: {row['id']}")
+            for unit in evidence:
+                if (unit.get("kind") not in (("unit",) if target == "unit_change" else ("unit", "role"))
+                        or not unit.get("name") or not unit["citations"]
+                        or any(c["doc"] != unit["doc"] for c in unit["citations"])):
+                    raise ValueError(f"Invalid defining unit evidence: {row['id']}")
+        all_citations = row["citations"] + evidence_citations
+        required |= refs(evidence_citations)
+        cited = refs(row["citations"])
         if not required or not required <= cited:
             raise ValueError(f"Missing citations for refs: {row['id']}")
         for alias, clause_id in required | cited:
             if alias not in docs:
                 raise ValueError(f"Unknown cited document: {row['id']} {alias}")
             clause_text(docs[alias], clause_id)
-        for citation in row["citations"]:
+        for citation in all_citations:
             if not citation["quote"] or citation["quote"] not in clause_text(docs[citation["doc"]], citation["clause_id"]):
                 raise ValueError(f"Quote outside cited clause: {row['id']} {citation['clause_id']}")
+        for unit in evidence:
+            if not any(unit["name"] in clause_text(docs[c["doc"]], c["clause_id"]) for c in unit["citations"]):
+                raise ValueError(f"Unit name outside defining clauses: {row['id']}")
+        for location in row.get("source_locations", []):
+            clause_text(docs[location["doc"]], location["clause_id"])
+            validate_location(location["location"])
+            if not location["location"]:
+                raise ValueError(f"Empty expected source location: {row['id']}")
+            source_doc = next(d for d in row["documents"] if d["doc"] == location["doc"])
+            if ("document_sha256" in location
+                    and location["document_sha256"] not in equivalent_hashes(source_doc, row["kind"])):
+                raise ValueError(f"Source location hash not a pinned representation: {row['id']}")
     return rows
 
 
 def equivalent_hashes(label_doc: dict, kind: str) -> set[str]:
     hashes = {label_doc["sha256"]}
+    hashes.update(item["sha256"] for item in label_doc.get("representations", []))
     if kind == "real" and label_doc["file"] in ("seeds/kt/v8.txt", "seeds/kt/v9.txt"):
         docx = file_path(label_doc["file"].removesuffix(".txt") + ".docx")
         hashes.add(hashlib.sha256(docx.read_bytes()).hexdigest())
@@ -171,17 +272,9 @@ def report_aliases(row: dict, report: dict) -> dict[str, str] | None:
     if not solutions(candidates):
         return None
     for index, labelled in enumerate(row["documents"]):
-        sides = {side for side in ("before", "after")
-                 if any(ref["doc"] == labelled["doc"] for ref in row[side])}
         # These aliases carry edition semantics in plan.md's public contract.
         # Arbitrary labels do not; ambiguous arbitrary aliases still fail.
-        conventional = re.fullmatch(r"(before|after)-\d+", labelled["doc"])
-        named_side = (conventional.group(1) if conventional else
-                      {"v8": "before", "v9": "after"}.get(labelled["doc"]))
-        if named_side:
-            sides.add(named_side)
-        if len(sides) > 1:
-            raise ValueError(f"Label alias used on both sides: {row['id']} {labelled['doc']}")
+        sides = label_document_sides(row, labelled)
         if sides:
             side = next(iter(sides))
             candidates[index] = [i for i in candidates[index] if documents[i].get("edition") == side]
@@ -206,28 +299,141 @@ def format_ratio(numerator: int, denominator: int) -> str:
     return f"{numerator}/{denominator} ({numerator / denominator:.1%})" if denominator else "0/0 (n/a)"
 
 
+def validate_location(location: dict) -> None:
+    if not isinstance(location, dict) or set(location) - {"page", "block", "sheet", "cell_range"}:
+        raise ValueError("Invalid source location fields")
+    for field in ("page", "block"):
+        value = location.get(field)
+        if value is not None and (type(value) is not int or value < 1):
+            raise ValueError(f"Invalid source location {field}")
+    for field in ("sheet", "cell_range"):
+        if location.get(field) is not None and (not isinstance(location[field], str) or not location[field]):
+            raise ValueError(f"Invalid source location {field}")
+
+
 def citation_diagnostics(report: dict) -> dict:
     """Report-internal provenance, independent of semantic status correctness."""
     clauses = {(c["doc"], c["clause_id"]): c["text"] for c in report.get("clauses", [])}
     errors, checked = [], 0
-    for section in ("findings", "conclusion"):
-        for index, item in enumerate(report.get(section, [])):
+    editions = {d["doc"]: d.get("edition") for d in report.get("documents", [])}
+    units = {(u["doc"], u["unit_id"]): u for u in report.get("units", [])}
+    conclusion_targets = {}
+    for field, section in (("finding_ids", "findings"), ("unit_change_ids", "unit_changes"), ("risk_ids", "risks")):
+        items = report[section] if isinstance(report.get(section), list) else []
+        conclusion_targets[field] = {item["id"] for item in items if "id" in item}
+    for section in ("findings", "conclusion", "unit_changes", "risks", "units"):
+        items = report[section] if isinstance(report.get(section), list) else []
+        for index, item in enumerate(items):
             item_id = item.get("id", str(index))
             cited = refs(item.get("citations", []))
+            if section == "conclusion":
+                for field, available_ids in conclusion_targets.items():
+                    for identifier in item.get(field, []):
+                        if identifier not in available_ids:
+                            errors.append({"item": item_id, "section": section, "error": "unknown_conclusion_link",
+                                           "field": field, "target_id": identifier})
             if section == "findings":
                 for key in refs(item["before"] + item["after"]) - cited:
                     errors.append({"item": item_id, "section": section, "error": "uncited_ref", "ref": list(key)})
+            if section in ("unit_changes", "risks"):
+                if not item.get("citations"):
+                    errors.append({"item": item_id, "section": section, "error": "missing_citations"})
+                sided_units = ([(r, side) for side in ("before", "after") for r in item.get(side, [])]
+                               if section == "unit_changes" else [(r, "after") for r in item.get("units", [])])
+                for ref, side in sided_units:
+                    key = ref["doc"], ref["unit_id"]
+                    unit = units.get(key)
+                    if unit is None:
+                        errors.append({"item": item_id, "section": section, "error": "unit_not_in_report", "ref": list(key)})
+                    elif section == "unit_changes" and unit.get("kind") != "unit":
+                        errors.append({"item": item_id, "section": section, "error": "role_used_as_structural_unit", "ref": list(key)})
+                    if editions.get(ref["doc"]) != side:
+                        errors.append({"item": item_id, "section": section, "error": "wrong_unit_edition", "ref": list(key)})
+                    if unit and (not unit.get("citations")
+                                 or section == "unit_changes" and not refs(unit["citations"]) & cited):
+                        errors.append({"item": item_id, "section": section, "error": "uncited_unit_definition", "ref": list(key)})
+            if section == "risks":
+                if item.get("review_required") is not True:
+                    errors.append({"item": item_id, "section": section, "error": "risk_not_review_required"})
+                for key in refs(item.get("refs", [])):
+                    if key not in cited:
+                        errors.append({"item": item_id, "section": section, "error": "uncited_ref", "ref": list(key)})
+                    if editions.get(key[0]) != "after":
+                        errors.append({"item": item_id, "section": section, "error": "risk_not_after", "ref": list(key)})
             for citation in item.get("citations", []):
                 checked += 1
                 key = citation["doc"], citation["clause_id"]
                 if key not in clauses or not citation.get("quote") or citation["quote"] not in clauses[key]:
                     errors.append({"item": item_id, "section": section, "error": "quote_not_in_report_clause", "ref": list(key)})
-    return {"scope": "Report.clauses only; not proof of source extraction completeness or semantic truth",
+    location_checked = 0
+    for clause in report.get("clauses", []):
+        if clause.get("location") is not None:
+            location_checked += 1
+            try:
+                validate_location(clause["location"])
+            except ValueError as exc:
+                errors.append({"section": "clauses", "ref": [clause["doc"], clause["clause_id"]],
+                               "error": "invalid_source_location", "detail": str(exc)})
+    return {"scope": "Report-internal only; not proof of source extraction completeness or semantic truth",
             "citations_checked": checked, "failures": len(errors),
+            "locations_shape_checked": location_checked,
+            "stage3_sections": {key: "present" if stage3_assessed(report, key) else "not_assessed"
+                                for key in ("unit_changes", "risks")},
             "duplicate_clause_keys": len(report.get("clauses", [])) - len(clauses), "errors": errors}
 
 
+def source_diagnostics(report: dict, row: dict, aliases: dict[str, str]) -> dict:
+    """Verify reported quotes against pinned source text, never report text alone.
+
+    Representation equivalence is an explicit label assertion under review; byte
+    hashes authenticate each file but do not themselves prove text equivalence.
+    """
+    sources = {d["doc"]: file_path(d["file"]).read_bytes().decode("utf-8-sig") for d in row["documents"]}
+    checked, errors = 0, []
+    for section in ("findings", "unit_changes", "risks", "conclusion", "units"):
+        items = report[section] if isinstance(report.get(section), list) else []
+        for index, item in enumerate(items):
+            for citation in item.get("citations", []):
+                checked += 1
+                try:
+                    source = sources[aliases[citation["doc"]]]
+                    source_text = clause_text(source, citation["clause_id"])
+                    if not citation.get("quote") or citation["quote"] not in source_text:
+                        raise ValueError("Quote outside pinned source clause")
+                except (KeyError, ValueError) as exc:
+                    errors.append({"item": item.get("id", str(index)), "section": section,
+                                   "ref": [citation["doc"], citation["clause_id"]], "error": str(exc)})
+    return {"citations_checked": checked, "failures": len(errors), "errors": errors,
+            "scope": "Pinned numbered text source; representation equivalence requires independent review"}
+
+
+def location_diagnostics(matched: list[tuple[dict, dict, dict[str, str]]]) -> dict:
+    expected_count, matched_count, errors = 0, 0, []
+    for report, row, aliases in matched:
+        inverse = {label: alias for alias, label in aliases.items()}
+        clauses = {(c["doc"], c["clause_id"]): c for c in report.get("clauses", [])}
+        documents = {d["doc"]: d for d in report.get("documents", [])}
+        for expected in row.get("source_locations", []):
+            key = inverse.get(expected["doc"], expected["doc"]), expected["clause_id"]
+            if expected.get("document_sha256") and documents.get(key[0], {}).get("sha256") != expected["document_sha256"]:
+                continue
+            expected_count += 1
+            actual = clauses.get(key, {}).get("location")
+            if isinstance(actual, dict) and all(actual.get(k) == v for k, v in expected["location"].items()):
+                matched_count += 1
+            else:
+                errors.append({"label_id": row["id"], "run_id": report.get("run_id"), "ref": list(key),
+                               "expected": expected["location"], "actual": actual})
+    return {"expected": expected_count, "matched": matched_count, "errors": errors,
+            "scope": "Label-location evaluations; absent expected coordinates are not assessed"}
+
+
 def score_group(name: str, matched: list[tuple[dict, dict, dict[str, str]]]) -> dict:
+    targets = {label_target(row) for _, row, _ in matched}
+    if len(targets) > 1:
+        raise ValueError("Score output types separately; do not pool function/unit/risk denominators")
+    if targets and targets != {"function"}:
+        return score_domain_group(name, matched, next(iter(targets)))
     gold, tp, fp, abstained, counts = Counter(), Counter(), Counter(), Counter(), Counter()
     errors, batches = [], {}
     for report, row, aliases in matched:
@@ -331,6 +537,7 @@ def score_group(name: str, matched: list[tuple[dict, dict, dict[str, str]]]) -> 
               "error_counts": dict(error_counts), "errors": errors,
               "candidate_recall": "unmeasured: Report does not expose complete candidate sets",
               "extraction_completeness": "unmeasured: missing gold refs checks only labelled source points"}
+    result["source_locations"] = location_diagnostics(matched)
     print(f"\n{name}: {len(matched)} label evaluations")
     print("status       TP FP FN gold precision          recall             overlap abstentions")
     for status, values in statuses.items():
@@ -346,17 +553,144 @@ def score_group(name: str, matched: list[tuple[dict, dict, dict[str, str]]]) -> 
     return result
 
 
+def score_domain_group(name: str, matched: list[tuple[dict, dict, dict[str, str]]], target: str) -> dict:
+    """Extend the same exact-set scorer; Stage 3 absent fields are not assessed.
+
+    Semantics and provenance are separate, just as for function findings. Scoped
+    risk precision uses intersecting labelled duty refs; units are also required
+    for a TP. A reviewed negative has no positive/recall denominator.
+    """
+    section = "unit_changes" if target == "unit_change" else "risks"
+    values = UNIT_STATUSES[:-1] if target == "unit_change" else RISK_KINDS
+    gold, tp, fp, counts = Counter(), Counter(), Counter(), Counter()
+    batches, errors = {}, []
+    locations = location_diagnostics(matched)
+    counts["source_locations_expected"] = locations["expected"]
+    counts["source_locations_matched"] = locations["matched"]
+    for report, row, aliases in matched:
+        inverse = {label: alias for alias, label in aliases.items()}
+        if not stage3_assessed(report, section):
+            counts["not_assessed_labels"] += 1
+            errors.append({"label_id": row["id"], "run_id": report.get("run_id"), "categories": ["output_not_assessed"],
+                           "agent_status": report.get("agent", {}).get("status") if isinstance(report.get("agent"), dict) else None})
+            continue
+        counts["assessed_labels"] += 1
+        batch = batches.setdefault(id(report), {"report": report, "cases": []})
+        batch["cases"].append((row, target_signature(row, target, inverse)))
+    for batch in batches.values():
+        report, cases = batch["report"], batch["cases"]
+        wanted = [(expected_value(row), key) for row, key in cases]
+        for status, _ in wanted:
+            if status == "unresolved":
+                counts["appropriate_abstention_gold"] += 1
+            elif status == "none":
+                counts["negative_gold"] += 1
+            else:
+                gold[status] += 1
+        # Risk scope uses duties, while unit-transition scope uses unit identities.
+        def scope(key):
+            if target == "risk":
+                return set(key[0])
+            return set(key[0] | key[1])
+        labelled = set().union(*(scope(key) for _, key in wanted))
+        claimed, appropriate, scoped = set(), set(), []
+        for index, item in enumerate(report[section]):
+            counts["outputs_total"] += 1
+            candidate = target_signature(item, target)
+            status = item.get("status" if target == "unit_change" else "kind")
+            if not scope(candidate) & labelled:
+                counts["unlabelled_outputs"] += 1
+                continue
+            counts["scoped_outputs"] += 1
+            scoped.append((index, item, status, candidate))
+            if status == "unresolved" and target == "unit_change":
+                counts["scoped_unresolved_outputs"] += 1
+                hit = next((i for i, key in enumerate(wanted) if i not in appropriate and key == (status, candidate)), None)
+                if hit is not None:
+                    appropriate.add(hit)
+                    counts["appropriate_abstention_matches"] += 1
+                else:
+                    counts["other_unresolved_outputs"] += 1
+                continue
+            if status not in values:
+                counts["unknown_value_outputs"] += 1
+                counts["invalid_prediction_fp"] += 1
+                continue
+            hit = next((i for i, key in enumerate(wanted) if i not in claimed and key == (status, candidate)), None)
+            if hit is None:
+                fp[status] += 1
+            else:
+                claimed.add(hit)
+                tp[status] += 1
+        for i, (row, key) in enumerate(cases):
+            expected = expected_value(row)
+            overlaps = [(item, status, candidate) for _, item, status, candidate in scoped if scope(key) & scope(candidate)]
+            resolved = [(item, status, candidate) for item, status, candidate in overlaps if status in values]
+            abstentions = [(item, candidate) for item, status, candidate in overlaps if status == "unresolved"]
+            categories = []
+            if expected == "none":
+                if overlaps:
+                    counts["negative_violations"] += 1
+                    categories.append("false_positive_on_negative")
+                else:
+                    counts["negative_correct"] += 1
+            elif expected == "unresolved":
+                if resolved:
+                    categories.append("unsupported_resolution")
+                if i not in appropriate:
+                    categories.append("wrong_abstention_refs" if abstentions else "no_appropriate_abstention")
+            elif i not in claimed:
+                if abstentions:
+                    counts["abstention_on_resolvable"] += 1
+                    categories.append("abstention_on_resolvable")
+                if not overlaps:
+                    categories.append("no_prediction")
+                if any(candidate == key and status != expected for _, status, candidate in resolved):
+                    categories.append("wrong_status" if target == "unit_change" else "wrong_risk_kind")
+                if any(candidate != key for _, _, candidate in resolved):
+                    categories.append("wrong_match")
+            if i in claimed and sum((status, candidate) == (expected, key) for _, status, candidate in resolved) > 1:
+                categories.append("extra_duplicate_prediction")
+            if any(status not in values + (("unresolved",) if target == "unit_change" else ()) for _, status, _ in overlaps):
+                categories.append("unknown_value_prediction")
+            if categories:
+                errors.append({"label_id": row["id"], "run_id": report.get("run_id"), "categories": categories,
+                               "output_ids": [item.get("id") for item, _, _ in overlaps]})
+    statuses = {status: {"gold": gold[status], "tp": tp[status], "fp": fp[status], "fn": gold[status] - tp[status],
+                         "precision_denominator": tp[status] + fp[status], "recall_denominator": gold[status]} for status in values}
+    counts = {key: counts[key] for key in ("assessed_labels", "not_assessed_labels", "outputs_total", "scoped_outputs",
+        "unlabelled_outputs", "unknown_value_outputs", "invalid_prediction_fp", "scoped_unresolved_outputs",
+        "appropriate_abstention_gold", "appropriate_abstention_matches", "other_unresolved_outputs", "abstention_on_resolvable",
+        "negative_gold", "negative_correct", "negative_violations", "source_locations_expected", "source_locations_matched")}
+    total_tp, total_fp = sum(tp.values()), sum(fp.values()) + counts["invalid_prediction_fp"]
+    result = {"group": name, "target": target, "label_evaluations": len(matched), "statuses": statuses,
+              "semantic_gold": sum(gold.values()), "tp": total_tp, "fp": total_fp,
+              "fn": sum(gold.values()) - total_tp, "precision_denominator": total_tp + total_fp,
+              "recall_denominator": sum(gold.values()), "counts": counts,
+              "error_counts": dict(Counter(c for error in errors for c in error["categories"])), "errors": errors,
+              "source_locations": locations, "source_location_errors": locations["errors"],
+              "risk_abstention": "unmeasured: Risk has no explicit abstention output; [] is assessed no-risk output",
+              "scope": "Exact sets and status/kind; precision on intersecting labelled refs; provenance separate; missing/null agent or sections excluded"}
+    print(f"\n{name}: target={target} assessed={counts['assessed_labels']} not_assessed={counts['not_assessed_labels']}")
+    print(f"TP={total_tp} FP={total_fp} FN={result['fn']}; precision={format_ratio(total_tp, total_tp + total_fp)}; "
+          f"recall={format_ratio(total_tp, result['semantic_gold'])}")
+    print("Appropriate abstention: " + format_ratio(counts["appropriate_abstention_matches"], counts["appropriate_abstention_gold"]))
+    print("Negative controls: " + format_ratio(counts["negative_correct"], counts["negative_gold"]))
+    return result
+
+
 def partitions(labels: list[dict], label_path: Path, split_path: Path = SPLIT) -> dict[str, str]:
+    requires_split = label_path.name == "challenge.jsonl" or any(label_target(row) != "function" for row in labels)
     if not split_path.exists():
-        if label_path.name == "challenge.jsonl":
-            raise ValueError("Challenge requires split.json membership; no implicit holdout")
+        if requires_split:
+            raise ValueError("Challenge/Stage3 requires split.json membership; no implicit holdout")
         return {row["id"]: "unassigned" for row in labels}
     split = json.loads(split_path.read_text(encoding="utf-8-sig"))
     if split.get("schema_version") != 1:
         raise ValueError("Unsupported split.json schema_version")
     relative = label_path.resolve().relative_to(ROOT).as_posix()
-    if label_path.name == "challenge.jsonl" and relative not in split.get("datasets", {}):
-        raise ValueError(f"Challenge dataset hash absent from split: {relative}")
+    if requires_split and relative not in split.get("datasets", {}):
+        raise ValueError(f"Challenge/Stage3 dataset hash absent from split: {relative}")
     if relative in split.get("datasets", {}):
         if hashlib.sha256(label_path.read_bytes()).hexdigest() != split["datasets"][relative]:
             raise ValueError(f"Split dataset hash mismatch: {relative}")
@@ -364,8 +698,8 @@ def partitions(labels: list[dict], label_path: Path, split_path: Path = SPLIT) -
     for row in labels:
         case = split.get("cases", {}).get(row["id"])
         if case is None:
-            if label_path.name == "challenge.jsonl":
-                raise ValueError(f"Challenge case absent from split: {row['id']}")
+            if requires_split:
+                raise ValueError(f"Challenge/Stage3 case absent from split: {row['id']}")
             membership[row["id"]] = "unassigned"
             continue
         if case["partition"] not in PARTITIONS or case["kind"] != row["kind"]:
@@ -427,9 +761,12 @@ def main() -> None:
         if not applicable:
             raise ValueError(f"No selected labels match a report's document hashes: {path}")
         require_reviewed_holdout([row for row, _ in applicable], membership, reviews)
-        diagnostics.append({"report": str(path), "run_id": data.get("run_id"), **citation_diagnostics(data)})
+        diagnostics.append({"report": str(path), "run_id": data.get("run_id"), **citation_diagnostics(data),
+                            "source_backed": source_diagnostics(data, applicable[0][0], applicable[0][1])})
         for row, aliases in applicable:
             group = membership[row["id"]] + "/" + row["kind"]
+            if label_target(row) != "function":
+                group += "/" + label_target(row)
             matched.setdefault(group, []).append((data, row, aliases))
             evaluated.add(row["id"])
     groups = []
@@ -437,7 +774,7 @@ def main() -> None:
         result = score_group(group, cases)
         result["review_status_counts"] = dict(Counter(reviews[row["id"]] for _, row, _ in cases))
         groups.append(result)
-    metrics = {"schema_version": 1, "labels_file": str(args.labels),
+    metrics = {"schema_version": 2, "labels_file": str(args.labels),
                "scope": "Exact refs/status; precision only on intersecting labelled refs; appropriate abstention separate",
                "group_counts_scope": "Each partition/kind has its own intersecting-ref scope; do not sum unlabelled counts across groups",
                "groups": groups,
@@ -446,6 +783,8 @@ def main() -> None:
     for item in diagnostics:
         print(f"Provenance {item['report']}: checked={item['citations_checked']} failures={item['failures']} "
               f"duplicate_clause_keys={item['duplicate_clause_keys']} (Report-internal only)")
+        print(f"Pinned-source quotes: {item['source_backed']['citations_checked']} checked, "
+              f"{item['source_backed']['failures']} failures")
     print(f"Selected labels without a matching report: {len(metrics['unevaluated_label_ids'])}")
     print("Unlabelled findings, candidate recall and full-source extraction completeness are unmeasured.")
     if args.json_out:

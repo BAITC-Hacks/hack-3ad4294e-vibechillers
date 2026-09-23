@@ -9,7 +9,7 @@
     "seeds/kt/eval/labels.jsonl": "87965da85193a0420dd2383fae056211c7cba5b1976bdc0e3f2783534526b7ed",
     "seeds/kt/eval/regression.jsonl": "87965da85193a0420dd2383fae056211c7cba5b1976bdc0e3f2783534526b7ed",
     "seeds/kt/eval/challenge.jsonl": "b31e4f1a124548cee9bacda752de78f216432c3dfb0b75dad445d19bd00e80b9",
-    "seeds/kt/eval/control/labels.jsonl": "55f306a27ee780d1ea70bdda2fff467abdcd5cba8689dbedc8917d0c4fa1c31f"
+    "seeds/kt/eval/control/labels.jsonl": "462d75c6d39bf30ab0c71c816232904b27019496355f3b0494685e26bdf02d7c"
   },
   "fixtures": {
     "seeds/kt/v8.txt": "f5ce4518f22ecad2701f1fed8929d93ff09bb45af6e35e8fd60726362b6bfbc8",
@@ -592,7 +592,7 @@
       "target": "unit_change",
       "review_status": "pending_human",
       "selection": "source-first synthetic Stage3 control",
-      "label_sha256": "f98a268f6411978679f3a09f6add43c51e58138943d5e78efcfe60decb17406c"
+      "label_sha256": "0f7fb638e2f6df2cc22ae46826a7e758c40847fecd27cbb80cefe31ee1f16957"
     },
     "ctrl-unit-finance": {
       "partition": "development",
@@ -656,7 +656,7 @@
       "target": "risk",
       "review_status": "pending_human",
       "selection": "source-first synthetic Stage3 control",
-      "label_sha256": "810b150124eec6bbbd0bfeb95079abe2cf38947908464401167bb97c9b078621"
+      "label_sha256": "92151c051c44547bd19688d81464d15f69b36d32b4cf65cc272f1b389a5a452f"
     },
     "ctrl-risk-cooperation-negative": {
       "partition": "development",
@@ -751,6 +751,18 @@
       "dataset_sha256_after": "b31e4f1a124548cee9bacda752de78f216432c3dfb0b75dad445d19bd00e80b9",
       "decision_file": "seeds/kt/eval/results/development-adjudication.json",
       "holdout_unchanged": true
+    },
+    {
+      "at_utc": "2026-09-23T11:00:05.785798+00:00",
+      "ids": [
+        "ctrl-risk-self-control",
+        "ctrl-unit-archive"
+      ],
+      "dataset_sha256_before": "55f306a27ee780d1ea70bdda2fff467abdcd5cba8689dbedc8917d0c4fa1c31f",
+      "dataset_sha256_after": "462d75c6d39bf30ab0c71c816232904b27019496355f3b0494685e26bdf02d7c",
+      "decision_file": "seeds/kt/eval/control/review/intake.json",
+      "holdout_unchanged": true,
+      "reason": "Add independent physical source-location probes; no status/ref/quote/source bytes changed"
     }
   ]
 }

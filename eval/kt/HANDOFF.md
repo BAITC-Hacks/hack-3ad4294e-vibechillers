@@ -22,6 +22,33 @@ must be resolved under Stage 3 §6 before inference. Holdout remains closed.
 
 ## Historical Stage 2 brief
 
+### Stage 3 update after schema delivery
+
+Schema `4da43907919867ce4e8579360fe5b2ff43f9a37c` is integrated. Early input commits were
+rebased to `76986e3` (TXT) and `d7e0354` (all formats and 19 provisional labels).
+Use `eval/kt/BATYRKHAN-CAPTURE.md` for exact DOCX hashes, real HTTP paired capture,
+external-package intake and a source-only reviewer request. Batyrkhan runs inference;
+Alibi independently checks the saved package. No provider setup is requested here.
+
+Local diagnostic Reports were produced **before** this schema integration, from the
+Stage 2 runtime based on `c0658ff`. They are public domain-API runs, not HTTP/agent runs;
+raw Reports and manifests are in `seeds/kt/eval/results/stage3-domain-reports/` and
+`stage3-local-evidence.json`. They establish these development issues:
+
+| Issue | Source evidence / reproducible observed behavior |
+|---|---|
+| PDF clause fragmentation | `before.pdf` §2.2 annual archive check and `after.pdf` §7.4 own procurement review wrap across lines. Full extracted text exists; 8/29 before and 14/39 after numbered clauses differ from source because continuations become separate `other` blocks. `build_control.py --verify-inputs` records exact refs. |
+| Lost cross-unit duplicate | DOCX/TXT/XLSX before §3.1 → after §§4.1,10.1 have the same all-client registration duty with no scope separation. Report emits F010 changed to §4.1 and F030 added at §10.1, missing the complete duplicate set. Confirm sources rather than hardcoding IDs. |
+| Preserved transfer called content change | Explicit split/merge orders after §§2.3–2.4; four preserved duties before §§4.1,4.2,5.1,6.1 → after §§5.1,6.1,7.1,7.3 are predicted changed instead of proposed moved. Proposed statuses remain pending_human. |
+| Source locations | Three independent refs have 9 format-specific expectations: DOCX blocks, PDF pages, XLSX cells. Old runtime supplies none: 0/3 per binary format; this is an old-core gap, not a measurement of schema-only commit behavior. |
+| Domain outputs | Old raw Reports lack unit_changes/risks: 7 unit and 3 risk labels unassessed per format. No risk TN or accuracy is claimed. Current null/missing agent marker also means not assessed even if lists are defaulted empty. |
+
+Unit creation/reorganisation and conflict expectations are independently source-reviewed
+by separate built-in Codex reviewers, still pending human confirmation. The two existing
+development annotation disputes remain open: preserved information request changed/moved;
+audit-goal procedure moved/changed when §9.37's permitted delegate changes. Original
+challenge bytes and historical answers are retained. No holdout answers are included.
+
 Stage 2 source review, baseline core at `94f216c`, public deterministic API capture after freeze `07a1708`. Only development examples below. Human confirmation by Alibi is pending; treat these as source-backed diagnoses to verify, not answers to hardcode. Do not read or tune on `hold-*` rows in `challenge.jsonl`, their fixture folders, the holdout sections of `REVIEW.md` or the source-first construction in `make_mutations.py`. `split.json` records membership and exact hashes. If any held-out example informs a fix, notify Alibi so it is moved to development before claiming results.
 
 | Class | Development example and evidence | Required behavior to investigate |

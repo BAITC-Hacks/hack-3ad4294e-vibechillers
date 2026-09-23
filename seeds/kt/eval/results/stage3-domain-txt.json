@@ -1,0 +1,402 @@
+{
+  "schema_version": 2,
+  "labels_file": "seeds\\kt\\eval\\control\\labels.jsonl",
+  "scope": "Exact refs/status; precision only on intersecting labelled refs; appropriate abstention separate",
+  "group_counts_scope": "Each partition/kind has its own intersecting-ref scope; do not sum unlabelled counts across groups",
+  "groups": [
+    {
+      "group": "development/synthetic",
+      "label_evaluations": 9,
+      "statuses": {
+        "unchanged": {
+          "gold": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 0,
+          "recall_denominator": 0,
+          "overlap_abstentions": 0
+        },
+        "changed": {
+          "gold": 2,
+          "tp": 2,
+          "fp": 5,
+          "fn": 0,
+          "precision_denominator": 7,
+          "recall_denominator": 2,
+          "overlap_abstentions": 0
+        },
+        "moved": {
+          "gold": 5,
+          "tp": 1,
+          "fp": 0,
+          "fn": 4,
+          "precision_denominator": 1,
+          "recall_denominator": 5,
+          "overlap_abstentions": 0
+        },
+        "added": {
+          "gold": 0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 0,
+          "precision_denominator": 1,
+          "recall_denominator": 0,
+          "overlap_abstentions": 0
+        },
+        "missing": {
+          "gold": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 1,
+          "recall_denominator": 1,
+          "overlap_abstentions": 0
+        },
+        "duplicate": {
+          "gold": 1,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1,
+          "precision_denominator": 0,
+          "recall_denominator": 1,
+          "overlap_abstentions": 0
+        }
+      },
+      "semantic_gold": 9,
+      "tp": 4,
+      "fp": 6,
+      "fn": 5,
+      "counts": {
+        "findings_total": 31,
+        "scoped_findings": 10,
+        "unlabelled_findings": 21,
+        "unknown_status_findings": 0,
+        "scoped_unresolved_findings": 0,
+        "appropriate_abstention_gold": 0,
+        "appropriate_abstention_matches": 0,
+        "other_unresolved_findings": 0,
+        "partial_overlap_refusal_labels": 0
+      },
+      "error_counts": {
+        "wrong_match": 1,
+        "wrong_status": 4
+      },
+      "errors": [
+        {
+          "label_id": "ctrl-function-duplicate",
+          "run_id": "alibi-20260923T105705236006-ac81cf01c9e1",
+          "categories": [
+            "wrong_match"
+          ],
+          "missing_report_refs": [],
+          "exact_ref_abstention": false,
+          "finding_ids": [
+            "F010",
+            "F030"
+          ]
+        },
+        {
+          "label_id": "ctrl-function-split-intake",
+          "run_id": "alibi-20260923T105705236006-ac81cf01c9e1",
+          "categories": [
+            "wrong_status"
+          ],
+          "missing_report_refs": [],
+          "exact_ref_abstention": false,
+          "finding_ids": [
+            "F011"
+          ]
+        },
+        {
+          "label_id": "ctrl-function-split-survey",
+          "run_id": "alibi-20260923T105705236006-ac81cf01c9e1",
+          "categories": [
+            "wrong_status"
+          ],
+          "missing_report_refs": [],
+          "exact_ref_abstention": false,
+          "finding_ids": [
+            "F012"
+          ]
+        },
+        {
+          "label_id": "ctrl-function-merge-contracts",
+          "run_id": "alibi-20260923T105705236006-ac81cf01c9e1",
+          "categories": [
+            "wrong_status"
+          ],
+          "missing_report_refs": [],
+          "exact_ref_abstention": false,
+          "finding_ids": [
+            "F013"
+          ]
+        },
+        {
+          "label_id": "ctrl-function-merge-stock",
+          "run_id": "alibi-20260923T105705236006-ac81cf01c9e1",
+          "categories": [
+            "wrong_status"
+          ],
+          "missing_report_refs": [],
+          "exact_ref_abstention": false,
+          "finding_ids": [
+            "F015"
+          ]
+        }
+      ],
+      "candidate_recall": "unmeasured: Report does not expose complete candidate sets",
+      "extraction_completeness": "unmeasured: missing gold refs checks only labelled source points",
+      "source_locations": {
+        "expected": 0,
+        "matched": 0,
+        "errors": [],
+        "scope": "Label-location evaluations; absent expected coordinates are not assessed"
+      },
+      "review_status_counts": {
+        "pending_human": 9
+      }
+    },
+    {
+      "group": "development/synthetic/risk",
+      "target": "risk",
+      "label_evaluations": 3,
+      "statuses": {
+        "potential_duplication": {
+          "gold": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 0,
+          "recall_denominator": 0
+        },
+        "potential_conflict_of_interest": {
+          "gold": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 0,
+          "recall_denominator": 0
+        }
+      },
+      "semantic_gold": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision_denominator": 0,
+      "recall_denominator": 0,
+      "counts": {
+        "assessed_labels": 0,
+        "not_assessed_labels": 3,
+        "outputs_total": 0,
+        "scoped_outputs": 0,
+        "unlabelled_outputs": 0,
+        "unknown_value_outputs": 0,
+        "invalid_prediction_fp": 0,
+        "scoped_unresolved_outputs": 0,
+        "appropriate_abstention_gold": 0,
+        "appropriate_abstention_matches": 0,
+        "other_unresolved_outputs": 0,
+        "abstention_on_resolvable": 0,
+        "negative_gold": 0,
+        "negative_correct": 0,
+        "negative_violations": 0,
+        "source_locations_expected": 0,
+        "source_locations_matched": 0
+      },
+      "error_counts": {
+        "output_not_assessed": 3
+      },
+      "errors": [
+        {
+          "label_id": "ctrl-risk-duplication",
+          "run_id": "alibi-20260923T105705236006-ac81cf01c9e1",
+          "categories": [
+            "output_not_assessed"
+          ],
+          "agent_status": null
+        },
+        {
+          "label_id": "ctrl-risk-self-control",
+          "run_id": "alibi-20260923T105705236006-ac81cf01c9e1",
+          "categories": [
+            "output_not_assessed"
+          ],
+          "agent_status": null
+        },
+        {
+          "label_id": "ctrl-risk-cooperation-negative",
+          "run_id": "alibi-20260923T105705236006-ac81cf01c9e1",
+          "categories": [
+            "output_not_assessed"
+          ],
+          "agent_status": null
+        }
+      ],
+      "source_locations": {
+        "expected": 0,
+        "matched": 0,
+        "errors": [],
+        "scope": "Label-location evaluations; absent expected coordinates are not assessed"
+      },
+      "source_location_errors": [],
+      "risk_abstention": "unmeasured: Risk has no explicit abstention output; [] is assessed no-risk output",
+      "scope": "Exact sets and status/kind; precision on intersecting labelled refs; provenance separate; missing/null agent or sections excluded",
+      "review_status_counts": {
+        "pending_human": 3
+      }
+    },
+    {
+      "group": "development/synthetic/unit_change",
+      "target": "unit_change",
+      "label_evaluations": 7,
+      "statuses": {
+        "retained": {
+          "gold": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 0,
+          "recall_denominator": 0
+        },
+        "reorganised": {
+          "gold": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 0,
+          "recall_denominator": 0
+        },
+        "created": {
+          "gold": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 0,
+          "recall_denominator": 0
+        }
+      },
+      "semantic_gold": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision_denominator": 0,
+      "recall_denominator": 0,
+      "counts": {
+        "assessed_labels": 0,
+        "not_assessed_labels": 7,
+        "outputs_total": 0,
+        "scoped_outputs": 0,
+        "unlabelled_outputs": 0,
+        "unknown_value_outputs": 0,
+        "invalid_prediction_fp": 0,
+        "scoped_unresolved_outputs": 0,
+        "appropriate_abstention_gold": 0,
+        "appropriate_abstention_matches": 0,
+        "other_unresolved_outputs": 0,
+        "abstention_on_resolvable": 0,
+        "negative_gold": 0,
+        "negative_correct": 0,
+        "negative_violations": 0,
+        "source_locations_expected": 0,
+        "source_locations_matched": 0
+      },
+      "error_counts": {
+        "output_not_assessed": 7
+      },
+      "errors": [
+        {
+          "label_id": "ctrl-unit-archive",
+          "run_id": "alibi-20260923T105705236006-ac81cf01c9e1",
+          "categories": [
+            "output_not_assessed"
+          ],
+          "agent_status": null
+        },
+        {
+          "label_id": "ctrl-unit-finance",
+          "run_id": "alibi-20260923T105705236006-ac81cf01c9e1",
+          "categories": [
+            "output_not_assessed"
+          ],
+          "agent_status": null
+        },
+        {
+          "label_id": "ctrl-unit-technical",
+          "run_id": "alibi-20260923T105705236006-ac81cf01c9e1",
+          "categories": [
+            "output_not_assessed"
+          ],
+          "agent_status": null
+        },
+        {
+          "label_id": "ctrl-unit-rename",
+          "run_id": "alibi-20260923T105705236006-ac81cf01c9e1",
+          "categories": [
+            "output_not_assessed"
+          ],
+          "agent_status": null
+        },
+        {
+          "label_id": "ctrl-unit-split",
+          "run_id": "alibi-20260923T105705236006-ac81cf01c9e1",
+          "categories": [
+            "output_not_assessed"
+          ],
+          "agent_status": null
+        },
+        {
+          "label_id": "ctrl-unit-merge",
+          "run_id": "alibi-20260923T105705236006-ac81cf01c9e1",
+          "categories": [
+            "output_not_assessed"
+          ],
+          "agent_status": null
+        },
+        {
+          "label_id": "ctrl-unit-created",
+          "run_id": "alibi-20260923T105705236006-ac81cf01c9e1",
+          "categories": [
+            "output_not_assessed"
+          ],
+          "agent_status": null
+        }
+      ],
+      "source_locations": {
+        "expected": 0,
+        "matched": 0,
+        "errors": [],
+        "scope": "Label-location evaluations; absent expected coordinates are not assessed"
+      },
+      "source_location_errors": [],
+      "risk_abstention": "unmeasured: Risk has no explicit abstention output; [] is assessed no-risk output",
+      "scope": "Exact sets and status/kind; precision on intersecting labelled refs; provenance separate; missing/null agent or sections excluded",
+      "review_status_counts": {
+        "pending_human": 7
+      }
+    }
+  ],
+  "provenance": [
+    {
+      "report": "seeds\\kt\\eval\\results\\stage3-domain-reports\\txt.json",
+      "run_id": "alibi-20260923T105705236006-ac81cf01c9e1",
+      "scope": "Report-internal only; not proof of source extraction completeness or semantic truth",
+      "citations_checked": 307,
+      "failures": 0,
+      "locations_shape_checked": 0,
+      "stage3_sections": {
+        "unit_changes": "not_assessed",
+        "risks": "not_assessed"
+      },
+      "duplicate_clause_keys": 0,
+      "errors": [],
+      "source_backed": {
+        "citations_checked": 307,
+        "failures": 0,
+        "errors": [],
+        "scope": "Pinned numbered text source; representation equivalence requires independent review"
+      }
+    }
+  ],
+  "unevaluated_label_ids": []
+}

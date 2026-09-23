@@ -1,5 +1,165 @@
 # Проверка качества Function Lineage Auditor
 
+## Stage 3 — inputs, evaluator и независимый review, 2026-09-23
+
+Подготовка выполнена; **финальное сравнение deterministic/actual agent ещё не измерено**.
+По уточнению Алиби реальные HTTP/model-прогоны выполняет Батырхан в своей среде.
+Здесь не устанавливались OMP, зависимости или API-ключи, не выбирался собственный provider.
+Ожидается пакет фактических Report/trace и конфигурация интегрированного запуска.
+Schema commit `4da43907919867ce4e8579360fe5b2ff43f9a37c` получен и подключён;
+это фиксация схем, а не свидетельство работающего или измеренного агента.
+
+Ранний input handoff: `76986e3` (первоначальный локальный ID `abfc85c`).
+Все форматы и source-first proposals: `d7e0354` (до rebase — `8401066`).
+Эти два ID переписаны обычным rebase при получении schema commit; исторические
+capture manifests сохраняют фактическую ревизию на момент запуска, а не задним числом
+подставленную новую. Runtime-файлы локальных диагностик соответствовали Stage 2 `c0658ff`.
+Полные SHA исходников, runtime и raw Reports сохранены в `results/stage3-local-evidence.json`.
+
+### Контрольные данные и custody
+
+`seeds/kt/eval/control/`: before/after в TXT, DOCX, PDF, XLSX, восемь закреплённых
+файлов с SHA-256 в `manifest.json`. Происхождение — авторская синтетика, **не документы
+организатора**. Есть retained, created, rename, split 1:2, merge 2:1, потеря архивной
+обязанности, настоящее пересечение регистрации заявок, потенциальная самопроверка
+закупок и отрицательный пример сотрудничества с разными предметами ответственности.
+Дополнительные before/after-table.xlsx содержат три колонки и два листа;
+их отдельные хеши/происхождение в `table-probe-manifest.json`. Это auxiliary input probe,
+не замена закреплённых представлений gold и не доказательство понимания произвольных оргсхем.
+
+В `control/labels.jsonl` **19 pending_human**: 9 function, 7 unit_change, 3 risk,
+из последних 2 положительных и 1 отрицательный. Human-confirmed новых меток: **0/19**.
+Source-first статусы/refs зафиксированы до локального domain capture. Позднее добавлены
+9 ожиданий физических координат для 3 refs × 3 формата: XML-порядок DOCX блоков,
+ячейки XLSX, физические страницы PDF независимо проверены по файлам. Эти координаты
+добавлены после capture, без использования предсказаний для выбора координат; статусы,
+refs, quotes и байты исходников не менялись. Предыдущая версия сохранена в
+`control/review/labels-v1-before-location-probes.jsonl`, причины и хеши — `review/intake.json`.
+
+Исходные labels/regression (25 строк) и challenge (30 строк) побайтно сохранены.
+Regression SHA: `87965da85193a0420dd2383fae056211c7cba5b1976bdc0e3f2783534526b7ed`.
+Challenge SHA: `b31e4f1a124548cee9bacda752de78f216432c3dfb0b75dad445d19bd00e80b9`.
+В split добавлены только control dataset/fixtures/19 случаев; прежние memberships и
+review statuses сохранены. Holdout не оценивался и не передавался для настройки.
+
+### Независимый AI review и открытые разногласия
+
+Три отдельных встроенных reviewer-агента Codex проверили структуру/источники,
+обязанности/риски и техническую целостность. Source-reviewers сначала получили TXT и
+контракт без expected labels и Report. Их артефакты в `control/review/` сохраняют
+цитаты, хеши, первичные решения и ограничения. Независимость процедурная: общий репозиторий
+доступен технически; автор gold не считается независимым голосом. Reviewer обязанностей
+раскрыл случайное чтение всего stage-3.md вместо §4; gold/Report при этом не читал.
+Согласие с предложениями — проверка разметки, **не точность продукта**.
+
+Оставлены открытыми два development-разногласия с сохранением прежних challenge-ответов:
+
+- `dev-real-shared-information`: changed против предложенного moved. §5.3 меняет круг
+  исполнителей при сохранении запроса/контроля информации; §5.4.3 существовал в обеих редакциях.
+- `dev-real-audit-goals`: moved против предложенного changed. v8 §9.36/з → v9 §9.36/е
+  сохраняет процедуру, но §9.37 меняет допустимого делегата. Это не фактическая передача
+  общей ответственности Главного аудитора; требуется решение о границе контекста.
+
+Новые disagreement events добавлены в reviews.json, прежние события и human-статусы
+не переписаны. Ошибочные буквенные refs в промежуточном поручении reviewer исправлены
+по источнику и раскрыты; это не объявлялось дефектом существующей разметки.
+
+### Scorer, capture и проверки
+
+Расширен существующий `eval/kt/score.py`, а не создан второй evaluator. Раздельные
+function/unit/risk counts сохраняют exact N:M refs, editions, aliases при одинаковых
+байтах, source quotes, форматные координаты, negative controls и appropriate abstention.
+`agent=null`/missing и отсутствующие domain sections дают not_assessed; явный assessed
+пустой список даёт FN положительных меток и отдельно проверяемое отсутствие риска.
+Risk не имеет explicit abstention object, поэтому отсутствие риска не считается
+appropriate abstention. 0/0 публикуется как N/A. Semantic agreement и provenance разделены.
+
+Независимый technical review нашёл и помог исправить ошибки проверки координат,
+пропуска знаменателя из-за ошибочного SHA, чрезмерного требования копировать unit
+citations в Risk, QA-пропусков missing/extra refs и capture custody. Исторический
+`technical.json` содержит воспроизводимые замечания и хеши просмотренной версии;
+schema-intake addendum относится к последующей интеграции.
+Финальные целевые проверки: **53/53 scorer tests** (25 прежних и 28 новых),
+**8/8 capture guard tests**. Валидация datasets: regression **25/25**, challenge **30/30**,
+control **19/19**. Это тесты evaluator/custody, а не успешность agent-прогонов.
+
+Capture встроен в `make_mutations.py --capture-control`. `capture_control.py` готовит
+несекретную attestation, сохраняет реальные HTTP/SSE/Report/reopened/trace, сверяет
+входные байты и стабильность ядра. Приёмка отдельно проверяет хеши всех artifacts,
+run_id, последовательность, terminal-last, равенство Report и trace, core hashes.
+Она **не утверждает inference по наличию событий**. Проверка зависимости последующих
+действий от результатов, provider evidence и охвата рассмотренных finding IDs остаётся
+отдельным анализом фактического пакета. Команды Батырхану: `eval/kt/BATYRKHAN-CAPTURE.md`.
+
+Контроль ухудшения scorer на копии настоящего локального TXT Report: намеренная замена
+статуса missing у before §2.2 на changed дала TP **4→3**, FP **6→7**, FN **5→6**.
+Это явно искусственное повреждение для проверки evaluator, не product/model run.
+Исходный raw Report не изменён; counts сохранены в `results/stage3-local-evidence.json`.
+
+### Реальные локальные диагностики старого ядра: provisional
+
+Четыре публичных domain-API deterministic запуска выполнены на одной ревизии `8401066`
+до получения схемы. Это **не HTTP, не agent и не измерение ядра после `4da4390`**.
+Raw Reports tracked в `results/stage3-domain-reports/`; полные per-status counts,
+refs ошибок и знаменатели — `results/stage3-domain-{txt,docx,pdf,xlsx}.json`.
+
+| Формат | Function gold | TP | FP | FN | Precision denominator | Recall denominator | Неоценённые findings |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| TXT | 9 | 4 | 6 | 5 | 10 | 9 | 21/31 |
+| DOCX | 9 | 4 | 6 | 5 | 10 | 9 | 21/31 |
+| XLSX | 9 | 4 | 6 | 5 | 10 | 9 | 21/31 |
+| PDF | 9 | 3 | 7 | 6 | 10 | 9 | 22/32 |
+
+Четыре представления повторяют одни случаи; **36 evaluations не являются 36 независимыми
+примерами**. Во всех четырёх scoped unresolved findings = 0; appropriate abstention
+**0/0, N/A**. Domain-выходы старого Report отсутствуют: **7 unit и 3 risk метки not_assessed**
+в каждом формате. Положительные risks/negative cooperation нельзя объявлять успешными.
+Ожидания координат: **0/3** совпадений на DOCX, PDF и XLSX, для TXT — **0/0 N/A**.
+
+Report-internal и source-backed цитаты: **0 ошибок / 307** для каждого TXT/DOCX/XLSX;
+PDF **0 / 317**. Это точность происхождения проверенных подстрок, не полнота цитирования
+всего пункта и не подтверждение смысла вывода. PDF сохраняет извлечённый полный текст,
+но parser разрывает wrapped clauses: **21/29** точных numbered clauses before и **25/39**
+after; 8 и 14 текстовых несовпадений. Для остальных трёх форматов — **29/29** и **39/39**.
+Пропусков/лишних/повторных numbered refs в этом контроле не найдено. Ожидаемые refs
+получены независимым source resolver, не тем же product parser. Полнота реальных
+организаторских документов и arbitrary diagrams этим не измерена.
+
+PDF страницы и XLSX листы визуально проверены. DOCX visual QA остаётся незавершённой:
+LibreOffice отсутствует; XML/text round-trip не заменяет рендер. Source-backed error
+brief с конкретными пунктами и повторяемыми командами передан в `eval/kt/HANDOFF.md`.
+
+### Воспроизведение и оставшийся integration gate
+
+```powershell
+python -B eval/kt/test_score.py
+python -B eval/kt/test_capture_control.py
+python -B eval/kt/score.py --labels seeds/kt/eval/control/labels.jsonl --validate-labels
+python -B eval/kt/score.py --labels seeds/kt/eval/regression.jsonl --validate-labels
+python -B eval/kt/score.py --labels seeds/kt/eval/challenge.jsonl --validate-labels
+python -B eval/kt/score.py --labels seeds/kt/eval/control/labels.jsonl --partition development --json-out seeds/kt/eval/data/recheck-docx.json seeds/kt/eval/results/stage3-domain-reports/docx.json
+```
+
+Для повторения локального domain capture нужен Python с уже имеющимися parser-зависимостями:
+
+```powershell
+$taskPython = 'C:/Users/torre/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe'
+& $taskPython -B eval/kt/build_control.py --verify-inputs
+& $taskPython -B eval/kt/build_control.py --verify-tables
+& $taskPython -B eval/kt/make_mutations.py --capture-reports seeds/kt/eval/data/new-domain-docx --labels seeds/kt/eval/control/labels.jsonl --partition development --control-format docx
+```
+
+Последняя команда на новом ядре даст новый эксперимент, не восстановит старую ревизию.
+Для реального paired HTTP capture и оценки пакета использовать точные команды
+`BATYRKHAN-CAPTURE.md`. Полученных external agent-пакетов сейчас **0**, agent TP/FP/FN,
+успешные/partial/fallback inference counts и result-dependent actions **не измерены**.
+Ожидаются actual integrated core, Report/trace/run_id, несекретная конфигурация и
+human confirmation; Stage 3 release acceptance пока не закрыт.
+
+Checkpoint 2026-09-23 11:04 UTC: ранние inputs закоммичены, source review/evaluator реализованы.
+Проверено: baseline gold bytes, source/format evidence, отдельные технические guard tests.
+Осталось: принять фактический пакет Батырхана, оценить оба режима и зафиксировать release gaps.
+
 ## Разметка и проверка источников
 
 В Stage 1 приняты 20 реальных пар редакций v8→v9 (§§2.4, 3, 4, 5) и пять случаев из отдельных копий v9: удаление, дублирование, перенос, перенумерация и изменение пробела. Они сохранены без изменений как regression. Этот набор не является blind holdout: в частности, ссылка real-019 была исправлена после первоначального просмотра расхождения.

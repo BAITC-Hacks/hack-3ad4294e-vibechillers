@@ -1,0 +1,52 @@
+{
+  "scope": "Auxiliary three-column, two-sheet XLSX public parser probe. No inference or gold scoring.",
+  "parser_sha256": "85828f85e2b9c3f163d8a40b6ebcb038cbc18349be93ea48d8c5b57f418ee680",
+  "ingest_parsers_sha256": "f58abb9fefa7bd007d248f2a0d0c6309a0024253f29078e74d5456b6f048bf92",
+  "formats": [
+    {
+      "file": "before-table.xlsx",
+      "sha256": "47ec73b9724e664496a359ccf26fda33076be0227ccb473163a53700ed3ee751",
+      "sheets": 2,
+      "clauses": 31,
+      "units": 7,
+      "warnings": [
+        "before: 2 unlabelled block(s) kept as kind=other and excluded from alignment."
+      ],
+      "sample_function": {
+        "doc": "before",
+        "clause_id": "2.2",
+        "label": "2.2.",
+        "parent_id": "2",
+        "text": "ОАУ\tОАУ ежегодно проверяет сроки хранения архивных дел и оформляет акт о достижении срока хранения.",
+        "ordinal": 14,
+        "kind": "function",
+        "unit_ids": [
+          "1.1/а"
+        ]
+      }
+    },
+    {
+      "file": "after-table.xlsx",
+      "sha256": "3ec21a40c37334fee7845d9aeedabacd29006bdb27850fc1fcc6b090c1e4480a",
+      "sheets": 2,
+      "clauses": 41,
+      "units": 8,
+      "warnings": [
+        "after: 2 unlabelled block(s) kept as kind=other and excluded from alignment."
+      ],
+      "sample_function": {
+        "doc": "after",
+        "clause_id": "7.4",
+        "label": "7.4.",
+        "parent_id": "7",
+        "text": "ЦС\tЦС проверяет обоснованность собственного выбора поставщика и самостоятельно утверждает заключение о соблюдении процедуры закупки. Внешнее согласование такого заключения не требуется.",
+        "ordinal": 32,
+        "kind": "function",
+        "unit_ids": [
+          "1.1/д"
+        ]
+      }
+    }
+  ],
+  "limitation": "The owner column is included in clause text by tab-flattening, e.g. repeated owner tokens. Ingestion support does not establish function matching accuracy."
+}

@@ -204,11 +204,11 @@ def review_packet() -> None:
     print("Wrote seeds/kt/eval/REVIEW.md")
 
 
-def capture_reports(labels_path: Path, output: Path, partition: str | None, canonical: bool) -> None:
+def capture_reports(labels_path: Path, output: Path, partition: str | None, canonical: bool, control_format: str = "txt") -> None:
     """Capture predictions using only the public audit/ingest API, never expected labels."""
     sys.path.insert(0, str(ROOT / "apps/api"))
     from app.audit import make_documents, load_manifest, run_deterministic_audit
-    from app.ingest.parsers import parse_docx, parse_txt
+    from app.ingest.parsers import parse_any
     rows = [json.loads(x) for x in labels_path.read_text(encoding="utf-8").splitlines() if x]
     split_path = ROOT / "seeds/kt/eval/split.json"
     split = json.loads(split_path.read_text(encoding="utf-8")) if split_path.exists() else {"cases": {}}
@@ -225,7 +225,7 @@ def capture_reports(labels_path: Path, output: Path, partition: str | None, cano
     started_at = datetime.datetime.now(datetime.timezone.utc)
     batch_id = started_at.strftime("%Y%m%dT%H%M%S%f")
     revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
-    core_files = list((ROOT / "apps/api/app/audit").glob("*.py")) + [ROOT / "apps/api/app/ingest/parsers.py"]
+    core_files = sorted((ROOT / "apps/api/app").rglob("*.py"))
     core_hashes = {p.relative_to(ROOT).as_posix(): sha(p) for p in core_files}
     for row in rows:
         # All capture fixtures use explicit conventional aliases. The scorer itself
@@ -237,6 +237,11 @@ def capture_reports(labels_path: Path, output: Path, partition: str | None, cano
             if side is None:
                 raise ValueError(f"Capture needs a side for {alias}; score an externally supplied Report instead")
             path = ROOT / d["file"]
+            if path.parent == ROOT / "seeds/kt/eval/control":
+                path = path.with_suffix("." + control_format)
+                allowed = {d["sha256"]} | {r["sha256"] for r in d.get("representations", [])}
+                if sha(path) not in allowed:
+                    raise ValueError("Control representation is not pinned in source-first labels")
             if canonical and row["kind"] == "real" and d["file"] in ("seeds/kt/v8.txt", "seeds/kt/v9.txt"):
                 path = path.with_suffix(".docx")
             inputs.append((side, path, sha(path)))
@@ -247,7 +252,7 @@ def capture_reports(labels_path: Path, output: Path, partition: str | None, cano
         sides = {side: [(digest[:16], digest, p.name) for s, p, digest in inputs if s == side] for side in ("before", "after")}
         documents, warnings = make_documents(sides["before"], sides["after"], load_manifest())
         ordered = [item for side in ("before", "after") for item in inputs if item[0] == side]
-        pages = {d.doc: (parse_docx(p) if p.suffix == ".docx" else parse_txt(p)) for d, (_, p, _) in zip(documents, ordered)}
+        pages = {d.doc: parse_any(p)[0] for d, (_, p, _) in zip(documents, ordered)}
         run_id = "alibi-" + batch_id + "-" + hashlib.sha256(repr(key).encode()).hexdigest()[:12]
         report = run_deterministic_audit(run_id, documents, pages, warnings)
         destination = output / f"{run_id}.json"
@@ -258,6 +263,8 @@ def capture_reports(labels_path: Path, output: Path, partition: str | None, cano
         print(destination.relative_to(ROOT).as_posix(), len(report.findings))
     if core_hashes != {p.relative_to(ROOT).as_posix(): sha(p) for p in core_files}:
         raise RuntimeError("Core changed during capture; discard this run batch")
+    if subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip() != revision:
+        raise RuntimeError("Revision changed during capture; discard this run batch")
     manifest = {"started_at_utc": started_at.isoformat(), "captured_at_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(), "revision": revision,
                 "core_hashes": core_hashes, "labels_file": labels_path.relative_to(ROOT).as_posix(),
                 "labels_sha256": sha(labels_path), "partition": partition, "transport": "public domain API; no HTTP claim",
@@ -530,12 +537,24 @@ def main() -> None:
     parser.add_argument("--stage2-freeze", action="store_true", help="Freeze source-first Stage 2 proposals once")
     parser.add_argument("--review-packet", action="store_true")
     parser.add_argument("--capture-reports", type=Path, help="Output directory for public pipeline predictions")
+    parser.add_argument("--capture-control", type=Path, help="New directory for public HTTP control capture")
+    parser.add_argument("--api-url", default="http://127.0.0.1:8000")
+    parser.add_argument("--control-format", choices=["txt", "docx", "pdf", "xlsx"], default="txt")
+    parser.add_argument("--control-mode", choices=["deterministic", "agent", "both"], default="deterministic")
+    parser.add_argument("--server-attestation", type=Path)
     parser.add_argument("--labels", type=Path, default=LABELS)
     parser.add_argument("--partition", choices=["regression", "development", "holdout"])
     parser.add_argument("--canonical-docx", action="store_true")
     parser.add_argument("--select-triage", type=Path)
     parser.add_argument("--add-development", action="store_true")
     args = parser.parse_args()
+    if args.capture_control:
+        if not args.server_attestation:
+            parser.error("--capture-control requires --server-attestation (revision, hashes, configuration and inference approval)")
+        from capture_control import capture
+        capture(args.capture_control.resolve(), args.api_url, args.control_format,
+                args.control_mode, args.server_attestation.resolve())
+        return
     if args.stage2_freeze:
         freeze_stage2()
         return
@@ -543,7 +562,7 @@ def main() -> None:
         review_packet()
         return
     if args.capture_reports:
-        capture_reports(args.labels.resolve(), args.capture_reports.resolve(), args.partition, args.canonical_docx)
+        capture_reports(args.labels.resolve(), args.capture_reports.resolve(), args.partition, args.canonical_docx, args.control_format)
         return
     if args.select_triage:
         select_triage(args.select_triage.resolve())

@@ -26,13 +26,15 @@ $runtime = 'C:/Users/torre/.cache/codex-runtimes/codex-primary-runtime/dependenc
 & "$runtime/python/python.exe" eval/kt/build_control.py --formats docx pdf xlsx --node "$runtime/node/bin/node.exe" --artifact-module "$runtime/node/node_modules/@oai/artifact-tool/dist/artifact_tool.mjs" --verify-inputs
 ```
 
-On another machine, substitute runtime paths and pass `--font` pointing to a Cyrillic-capable TTF. To refresh the manifest and reproduce ingestion verification without regenerating bytes:
+On another machine, substitute runtime paths and pass `--font` pointing to a Cyrillic-capable TTF. To reproduce ingestion verification without modifying input bytes or the pinned manifest:
 
 ```powershell
 uv run --no-sync python eval/kt/build_control.py --verify-inputs
 ```
 
 Binary container metadata may change on regeneration. Paired product runs must use the same recorded checked-in bytes, not separately regenerated equivalents. `manifest.json` records full file hashes, canonical hashes, synthetic origin, development split and pending status. `format-qa.json` records public ingestion checks and hashes of the parser source files used.
+
+Numbered-reference expectations in format QA are independently resolved from canonical TXT by `eval/kt/score.py:source_clauses`, not by the product parser being checked. The before/after denominators are 29/39 refs, including section and lettered structure markers. QA reports absent, extra and duplicate refs as well as text mismatches and exact unique matches. A missing clause cannot silently disappear from the denominator; ambiguous canonical source boundaries fail verification. Duplicate refs include excess occurrences that the product parser renames using `@2` suffixes.
 
 ## Format checks and known limitations
 
@@ -48,3 +50,15 @@ python <documents-skill>/render_docx.py seeds/kt/eval/control/after.docx --outpu
 ```
 
 Authoring formats are independent inputs to test, not evidence of product accuracy. Source expectations, ingestion checks, citations and actual agent behavior must be scored and reported separately.
+
+## Auxiliary table probe
+
+`before-table.xlsx` and `after-table.xlsx` separately test real three-column rows with headers `Пункт`, `Подразделение`, `Функция/основание`, and two worksheets `Структура` and `Функции`. They derive their clauses from the canonical TXT, move the marker to column A, and repeat the governing unit abbreviation in column B. This is an auxiliary **unlabelled format probe**, not an additional gold representation. Its independent `table-probe-manifest.json` marks every entry `auxiliary=true` and records canonical provenance and binary hashes. Original eight pinned inputs and the main manifest remain unchanged.
+
+All four worksheets were rendered and visually inspected. The public parser reads both sheets, yielding 31 before clauses / 7 units and 41 after clauses / 8 units. Its tab-flattened clause text includes the owner column, so extraction counts alone do not verify semantic function matching or table-cell citations. `table-probe-qa.json` preserves representative parsed duty clauses. No audit inference was run by the control-input author.
+
+```powershell
+& "$runtime/python/python.exe" eval/kt/build_control.py --auxiliary-tables --node "$runtime/node/bin/node.exe" --artifact-module "$runtime/node/node_modules/@oai/artifact-tool/dist/artifact_tool.mjs" --verify-tables
+uv run --no-sync python eval/kt/build_control.py --verify-tables
+curl.exe -N -X POST http://localhost:8000/audits -F "before_files=@seeds/kt/eval/control/before-table.xlsx" -F "after_files=@seeds/kt/eval/control/after-table.xlsx" -F "use_llm=false" -o control-table-deterministic.sse
+```

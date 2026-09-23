@@ -266,7 +266,18 @@
       "proposed_by": "Codex; source-read AI proposal",
       "human_reviewer": null,
       "human_decision": null,
-      "disagreements": [],
+      "disagreements": [
+        {
+          "id": "dev-real-audit-goals",
+          "current_proposal": "moved",
+          "independent_proposal": "changed",
+          "evidence": "v8 9.36/з -> v9 9.36/е; 9.37 changes possible delegate while Chief Auditor remains accountable",
+          "decision": "Keep versioned challenge unchanged pending human decision about governing-context boundary.",
+          "at_utc": "2026-09-23T11:00:05.785798+00:00",
+          "review_file": "seeds/kt/eval/control/review/structure-and-real.json",
+          "human_source_confirmation": false
+        }
+      ],
       "events": []
     },
     "dev-real-confidentiality": {
@@ -302,12 +313,23 @@
       "proposed_by": "Codex; source-read AI proposal",
       "human_reviewer": null,
       "human_decision": null,
-      "disagreements": [],
+      "disagreements": [
+        {
+          "id": "dev-real-shared-information",
+          "current_proposal": "changed",
+          "independent_proposal": "moved",
+          "evidence": "v8 5.3.5 -> v9 5.3.6 with governing 5.3; separate 5.4.3 already present in both editions",
+          "decision": "Keep versioned challenge unchanged pending human decision about preserved duty with changed owner scope.",
+          "at_utc": "2026-09-23T11:00:05.785798+00:00",
+          "review_file": "seeds/kt/eval/control/review/structure-and-real.json",
+          "human_source_confirmation": false
+        }
+      ],
       "events": []
     },
     "ctrl-unit-archive": {
       "status": "pending_human",
-      "label_sha256": "f98a268f6411978679f3a09f6add43c51e58138943d5e78efcfe60decb17406c",
+      "label_sha256": "0f7fb638e2f6df2cc22ae46826a7e758c40847fecd27cbb80cefe31ee1f16957",
       "proposed_by": "Alibi source-first AI",
       "human_reviewer": null,
       "human_decision": null,
@@ -317,6 +339,15 @@
           "type": "source_first_proposal",
           "at_utc": "2026-09-23T10:55:21.787915+00:00",
           "human_source_confirmation": false
+        },
+        {
+          "at_utc": "2026-09-23T11:00:05.785798+00:00",
+          "type": "independent_AI_source_review_intake",
+          "previous_label_sha256": "f98a268f6411978679f3a09f6add43c51e58138943d5e78efcfe60decb17406c",
+          "label_sha256": "0f7fb638e2f6df2cc22ae46826a7e758c40847fecd27cbb80cefe31ee1f16957",
+          "human_source_confirmation": false,
+          "status": "pending_human",
+          "record": "seeds/kt/eval/control/review/intake.json"
         }
       ]
     },
@@ -332,6 +363,15 @@
           "type": "source_first_proposal",
           "at_utc": "2026-09-23T10:55:21.787915+00:00",
           "human_source_confirmation": false
+        },
+        {
+          "at_utc": "2026-09-23T11:00:05.785798+00:00",
+          "type": "independent_AI_source_review_intake",
+          "previous_label_sha256": "c67fe56e6411772df6989778957518fd62f9411be96b87f5ba8140baf24cc6d6",
+          "label_sha256": "c67fe56e6411772df6989778957518fd62f9411be96b87f5ba8140baf24cc6d6",
+          "human_source_confirmation": false,
+          "status": "pending_human",
+          "record": "seeds/kt/eval/control/review/intake.json"
         }
       ]
     },
@@ -347,6 +387,15 @@
           "type": "source_first_proposal",
           "at_utc": "2026-09-23T10:55:21.787915+00:00",
           "human_source_confirmation": false
+        },
+        {
+          "at_utc": "2026-09-23T11:00:05.785798+00:00",
+          "type": "independent_AI_source_review_intake",
+          "previous_label_sha256": "320e9c6c412361330c66653d75ca6dcbe76ad0cb6eaae6fe12402df9389c9cce",
+          "label_sha256": "320e9c6c412361330c66653d75ca6dcbe76ad0cb6eaae6fe12402df9389c9cce",
+          "human_source_confirmation": false,
+          "status": "pending_human",
+          "record": "seeds/kt/eval/control/review/intake.json"
         }
       ]
     },
@@ -362,6 +411,15 @@
           "type": "source_first_proposal",
           "at_utc": "2026-09-23T10:55:21.787915+00:00",
           "human_source_confirmation": false
+        },
+        {
+          "at_utc": "2026-09-23T11:00:05.785798+00:00",
+          "type": "independent_AI_source_review_intake",
+          "previous_label_sha256": "511652b319fbd0de729cc9143d41dd98e7121e963574d207766cdb46888ff02d",
+          "label_sha256": "511652b319fbd0de729cc9143d41dd98e7121e963574d207766cdb46888ff02d",
+          "human_source_confirmation": false,
+          "status": "pending_human",
+          "record": "seeds/kt/eval/control/review/intake.json"
         }
       ]
     },
@@ -377,6 +435,15 @@
           "type": "source_first_proposal",
           "at_utc": "2026-09-23T10:55:21.787915+00:00",
           "human_source_confirmation": false
+        },
+        {
+          "at_utc": "2026-09-23T11:00:05.785798+00:00",
+          "type": "independent_AI_source_review_intake",
+          "previous_label_sha256": "db9fa7a0cb7e3958c27fc2d10900ea203946b53884ea5ac37b1420752e5e6dd3",
+          "label_sha256": "db9fa7a0cb7e3958c27fc2d10900ea203946b53884ea5ac37b1420752e5e6dd3",
+          "human_source_confirmation": false,
+          "status": "pending_human",
+          "record": "seeds/kt/eval/control/review/intake.json"
         }
       ]
     },
@@ -392,6 +459,15 @@
           "type": "source_first_proposal",
           "at_utc": "2026-09-23T10:55:21.787915+00:00",
           "human_source_confirmation": false
+        },
+        {
+          "at_utc": "2026-09-23T11:00:05.785798+00:00",
+          "type": "independent_AI_source_review_intake",
+          "previous_label_sha256": "2a174d539d2de150da4b351d0dae3afe7e8de168443604cfd18a9aa71278cb97",
+          "label_sha256": "2a174d539d2de150da4b351d0dae3afe7e8de168443604cfd18a9aa71278cb97",
+          "human_source_confirmation": false,
+          "status": "pending_human",
+          "record": "seeds/kt/eval/control/review/intake.json"
         }
       ]
     },
@@ -407,6 +483,15 @@
           "type": "source_first_proposal",
           "at_utc": "2026-09-23T10:55:21.787915+00:00",
           "human_source_confirmation": false
+        },
+        {
+          "at_utc": "2026-09-23T11:00:05.785798+00:00",
+          "type": "independent_AI_source_review_intake",
+          "previous_label_sha256": "df7bde28f829618f43df2bc19965567b3199d1a3354931bb57dc98f6bfaced22",
+          "label_sha256": "df7bde28f829618f43df2bc19965567b3199d1a3354931bb57dc98f6bfaced22",
+          "human_source_confirmation": false,
+          "status": "pending_human",
+          "record": "seeds/kt/eval/control/review/intake.json"
         }
       ]
     },
@@ -422,12 +507,21 @@
           "type": "source_first_proposal",
           "at_utc": "2026-09-23T10:55:21.787915+00:00",
           "human_source_confirmation": false
+        },
+        {
+          "at_utc": "2026-09-23T11:00:05.785798+00:00",
+          "type": "independent_AI_source_review_intake",
+          "previous_label_sha256": "fcf4d8185a885104a08cba8d674cd75ea18b1e1b8e3cd00c0f0fa2bbf068e20f",
+          "label_sha256": "fcf4d8185a885104a08cba8d674cd75ea18b1e1b8e3cd00c0f0fa2bbf068e20f",
+          "human_source_confirmation": false,
+          "status": "pending_human",
+          "record": "seeds/kt/eval/control/review/intake.json"
         }
       ]
     },
     "ctrl-risk-self-control": {
       "status": "pending_human",
-      "label_sha256": "810b150124eec6bbbd0bfeb95079abe2cf38947908464401167bb97c9b078621",
+      "label_sha256": "92151c051c44547bd19688d81464d15f69b36d32b4cf65cc272f1b389a5a452f",
       "proposed_by": "Alibi source-first AI",
       "human_reviewer": null,
       "human_decision": null,
@@ -437,6 +531,15 @@
           "type": "source_first_proposal",
           "at_utc": "2026-09-23T10:55:21.787915+00:00",
           "human_source_confirmation": false
+        },
+        {
+          "at_utc": "2026-09-23T11:00:05.785798+00:00",
+          "type": "independent_AI_source_review_intake",
+          "previous_label_sha256": "810b150124eec6bbbd0bfeb95079abe2cf38947908464401167bb97c9b078621",
+          "label_sha256": "92151c051c44547bd19688d81464d15f69b36d32b4cf65cc272f1b389a5a452f",
+          "human_source_confirmation": false,
+          "status": "pending_human",
+          "record": "seeds/kt/eval/control/review/intake.json"
         }
       ]
     },
@@ -452,6 +555,15 @@
           "type": "source_first_proposal",
           "at_utc": "2026-09-23T10:55:21.787915+00:00",
           "human_source_confirmation": false
+        },
+        {
+          "at_utc": "2026-09-23T11:00:05.785798+00:00",
+          "type": "independent_AI_source_review_intake",
+          "previous_label_sha256": "2788fc5701ef913b1356a20b7cfe86f66fff226caea472b94e0890527c769384",
+          "label_sha256": "2788fc5701ef913b1356a20b7cfe86f66fff226caea472b94e0890527c769384",
+          "human_source_confirmation": false,
+          "status": "pending_human",
+          "record": "seeds/kt/eval/control/review/intake.json"
         }
       ]
     },
@@ -467,6 +579,15 @@
           "type": "source_first_proposal",
           "at_utc": "2026-09-23T10:55:21.787915+00:00",
           "human_source_confirmation": false
+        },
+        {
+          "at_utc": "2026-09-23T11:00:05.785798+00:00",
+          "type": "independent_AI_source_review_intake",
+          "previous_label_sha256": "e44abe57978a74d8c9603e50daf3ef5d8f00d4a80dac731888fafa3fd6d4d642",
+          "label_sha256": "e44abe57978a74d8c9603e50daf3ef5d8f00d4a80dac731888fafa3fd6d4d642",
+          "human_source_confirmation": false,
+          "status": "pending_human",
+          "record": "seeds/kt/eval/control/review/intake.json"
         }
       ]
     },
@@ -482,6 +603,15 @@
           "type": "source_first_proposal",
           "at_utc": "2026-09-23T10:55:21.787915+00:00",
           "human_source_confirmation": false
+        },
+        {
+          "at_utc": "2026-09-23T11:00:05.785798+00:00",
+          "type": "independent_AI_source_review_intake",
+          "previous_label_sha256": "242253b7a670181b1a51862dfff53cc174946f2675ebe54efc87f6a17fb1a993",
+          "label_sha256": "242253b7a670181b1a51862dfff53cc174946f2675ebe54efc87f6a17fb1a993",
+          "human_source_confirmation": false,
+          "status": "pending_human",
+          "record": "seeds/kt/eval/control/review/intake.json"
         }
       ]
     },
@@ -497,6 +627,15 @@
           "type": "source_first_proposal",
           "at_utc": "2026-09-23T10:55:21.787915+00:00",
           "human_source_confirmation": false
+        },
+        {
+          "at_utc": "2026-09-23T11:00:05.785798+00:00",
+          "type": "independent_AI_source_review_intake",
+          "previous_label_sha256": "47d3580ae3888cf86359730ec785c59844ef4e7141c657da6cacf705a702e9ed",
+          "label_sha256": "47d3580ae3888cf86359730ec785c59844ef4e7141c657da6cacf705a702e9ed",
+          "human_source_confirmation": false,
+          "status": "pending_human",
+          "record": "seeds/kt/eval/control/review/intake.json"
         }
       ]
     },
@@ -512,6 +651,15 @@
           "type": "source_first_proposal",
           "at_utc": "2026-09-23T10:55:21.787915+00:00",
           "human_source_confirmation": false
+        },
+        {
+          "at_utc": "2026-09-23T11:00:05.785798+00:00",
+          "type": "independent_AI_source_review_intake",
+          "previous_label_sha256": "f771e3989bc251b2a17e8a58a34cabca9cff5b6b0728e21748805e9b9b93c940",
+          "label_sha256": "f771e3989bc251b2a17e8a58a34cabca9cff5b6b0728e21748805e9b9b93c940",
+          "human_source_confirmation": false,
+          "status": "pending_human",
+          "record": "seeds/kt/eval/control/review/intake.json"
         }
       ]
     },
@@ -527,6 +675,15 @@
           "type": "source_first_proposal",
           "at_utc": "2026-09-23T10:55:21.787915+00:00",
           "human_source_confirmation": false
+        },
+        {
+          "at_utc": "2026-09-23T11:00:05.785798+00:00",
+          "type": "independent_AI_source_review_intake",
+          "previous_label_sha256": "14ca06e7b8cc2dd9e7341a79840bbdbdd5a4b6d2f0f58ad0000794e04518a016",
+          "label_sha256": "14ca06e7b8cc2dd9e7341a79840bbdbdd5a4b6d2f0f58ad0000794e04518a016",
+          "human_source_confirmation": false,
+          "status": "pending_human",
+          "record": "seeds/kt/eval/control/review/intake.json"
         }
       ]
     },
@@ -542,6 +699,15 @@
           "type": "source_first_proposal",
           "at_utc": "2026-09-23T10:55:21.787915+00:00",
           "human_source_confirmation": false
+        },
+        {
+          "at_utc": "2026-09-23T11:00:05.785798+00:00",
+          "type": "independent_AI_source_review_intake",
+          "previous_label_sha256": "0bdea353993537695a3e3855d8f8949a0b02a46224526fdf224dc9b96602765e",
+          "label_sha256": "0bdea353993537695a3e3855d8f8949a0b02a46224526fdf224dc9b96602765e",
+          "human_source_confirmation": false,
+          "status": "pending_human",
+          "record": "seeds/kt/eval/control/review/intake.json"
         }
       ]
     },
@@ -557,6 +723,15 @@
           "type": "source_first_proposal",
           "at_utc": "2026-09-23T10:55:21.787915+00:00",
           "human_source_confirmation": false
+        },
+        {
+          "at_utc": "2026-09-23T11:00:05.785798+00:00",
+          "type": "independent_AI_source_review_intake",
+          "previous_label_sha256": "0edabd0552e2e7e9cdee2886034be7ea75fc4fa9d7a83535d2ba39d0c8a89f50",
+          "label_sha256": "0edabd0552e2e7e9cdee2886034be7ea75fc4fa9d7a83535d2ba39d0c8a89f50",
+          "human_source_confirmation": false,
+          "status": "pending_human",
+          "record": "seeds/kt/eval/control/review/intake.json"
         }
       ]
     },
@@ -572,6 +747,15 @@
           "type": "source_first_proposal",
           "at_utc": "2026-09-23T10:55:21.787915+00:00",
           "human_source_confirmation": false
+        },
+        {
+          "at_utc": "2026-09-23T11:00:05.785798+00:00",
+          "type": "independent_AI_source_review_intake",
+          "previous_label_sha256": "49d4e67273fd5406e1c6c8b12ad50e2e20b510f256bf71932e913bc1407362fd",
+          "label_sha256": "49d4e67273fd5406e1c6c8b12ad50e2e20b510f256bf71932e913bc1407362fd",
+          "human_source_confirmation": false,
+          "status": "pending_human",
+          "record": "seeds/kt/eval/control/review/intake.json"
         }
       ]
     },
@@ -587,6 +771,15 @@
           "type": "source_first_proposal",
           "at_utc": "2026-09-23T10:55:21.787915+00:00",
           "human_source_confirmation": false
+        },
+        {
+          "at_utc": "2026-09-23T11:00:05.785798+00:00",
+          "type": "independent_AI_source_review_intake",
+          "previous_label_sha256": "e6c9e69e52ea231dbebf4eb6f2b72d852de6a2913fbb2b46c97e2dec9f9a0b30",
+          "label_sha256": "e6c9e69e52ea231dbebf4eb6f2b72d852de6a2913fbb2b46c97e2dec9f9a0b30",
+          "human_source_confirmation": false,
+          "status": "pending_human",
+          "record": "seeds/kt/eval/control/review/intake.json"
         }
       ]
     }

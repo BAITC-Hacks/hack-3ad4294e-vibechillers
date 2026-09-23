@@ -1,0 +1,674 @@
+{
+  "scope": "Local public deterministic domain API; no HTTP, no model/agent run; Stage2 core only",
+  "labels_sha256": "462d75c6d39bf30ab0c71c816232904b27019496355f3b0494685e26bdf02d7c",
+  "evaluator_sha256": "b127fe77c5cfe38a9bc7fa1f4d06594a920b6b8afa70fa16f63d2ac67f23e07f",
+  "capture_script_sha256": "808e35c23f18c418db7742bb815f759c5ecb52e16dd0e979e0d2fed72b380974",
+  "records": [
+    {
+      "format": "txt",
+      "capture": {
+        "started_at_utc": "2026-09-23T10:57:05.236006+00:00",
+        "captured_at_utc": "2026-09-23T10:57:05.384823+00:00",
+        "revision": "8401066dd4bff9795b39dba3e49032c5924f8bc4",
+        "core_hashes": {
+          "apps/api/app/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "apps/api/app/agent/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "apps/api/app/agent/audit_llm.py": "83f746a805cbda54545f46dcd4a2fbc89d7fea5d7a614d1863903fc6ac866451",
+          "apps/api/app/agent/audit_tools.py": "406f53ef1b7320304ebf9d34aa9ec64927c854660519b872cc3d7ee35cda9c94",
+          "apps/api/app/agent/llm.py": "1deeab38dfb53abc4eeb534c4bc8d1b97d3b277da53572c48ddad243a6898891",
+          "apps/api/app/agent/loop.py": "e33d7e8ef2e0599e1f030d47d7a3a01d2f6865170d4cbe9dd20c3b8985933aa1",
+          "apps/api/app/agent/tools.py": "586614f3b2917f37b805694fe23848eb4c464cb10f6ab73ee4b060ee89ba2c5e",
+          "apps/api/app/agent/trace.py": "e07edec20b727365b256f1d155425769ab048d5117ab83af46f727646a09aeaa",
+          "apps/api/app/api/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "apps/api/app/api/audits.py": "6a0518d1ac6cce59d1a2d3004cc6f2504dbb9803b2c870eb8743cdb37d7a342a",
+          "apps/api/app/api/routes.py": "4785697250c1b83ceb8dcac556e655ea6403e8707c26175b4a4dc3cdace77316",
+          "apps/api/app/api/schemas.py": "887397b22f4360db95ee6577b55e94a8be1ad124515e59419a39272ad7795710",
+          "apps/api/app/audit/__init__.py": "e4ccb03e33a1b317306f13e1c2166c9a779ed020fff96bfaae1441e9ac7ca877",
+          "apps/api/app/audit/align.py": "10d6ef80521bcdbff8b124bb19bfe3d6fedc3c5b7337d762145cf4892d591233",
+          "apps/api/app/audit/citations.py": "18631b68d67b1e48b65a33e93144f8dbe0a40ab2d598811da64576d6726f3e3b",
+          "apps/api/app/audit/documents.py": "7b17939a08fe20c70cd061199cc4259f52170483a8e251af0756c46dd1c93d64",
+          "apps/api/app/audit/models.py": "dd5a3a13527758fa41c26d35ce3760058228b2e06f38f6ef2ea160b836a73bfb",
+          "apps/api/app/audit/parser.py": "85828f85e2b9c3f163d8a40b6ebcb038cbc18349be93ea48d8c5b57f418ee680",
+          "apps/api/app/audit/report.py": "36b42a28bb5f95004f423eeffe9f5634bdf56606c29ab24c16dda9eaa225d744",
+          "apps/api/app/audit/test_context.py": "1a0189948e36f89f953acbc74ee3f46fd794fb8314950ebdd50fa0aabc1fddf0",
+          "apps/api/app/audit/text.py": "87e6f98204eef95f2510b6e286aa2e2c988b7ae926eb13f040f1b565ead7a951",
+          "apps/api/app/config.py": "ff867074a025f3eaec5a9a6a73d6330f7699e16bc77bf664e9d9add472ac0886",
+          "apps/api/app/db.py": "98e69c6754386cb776d3433bc6b1ea01ad03c8cf27dc1751b6dd5a39069e7070",
+          "apps/api/app/events.py": "e8cdb579cba331b678aad79d78a4e5296cbfe1d452caeca5851b52e4c83fd3f7",
+          "apps/api/app/ingest/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "apps/api/app/ingest/parsers.py": "f58abb9fefa7bd007d248f2a0d0c6309a0024253f29078e74d5456b6f048bf92",
+          "apps/api/app/ingest/pipeline.py": "6c06c8586557c750ca130caa3b9b86b200d42698039abd7b01ee99ec0597463c",
+          "apps/api/app/main.py": "689424aa62ebf42dd37228a4a837ec675a9fafa8085fc0978856a5598485ad4a",
+          "apps/api/app/rag/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "apps/api/app/rag/chunk.py": "94e35195d97bb367f892786cb7af4244dc609d93ca5e1467d2b35c8fa6476b81",
+          "apps/api/app/rag/embed.py": "63301a089caa30655a467bc8bf33d6079c689066b1b2a41e3d266da848afe86a",
+          "apps/api/app/rag/search.py": "27b3fc3d02e95d52078fd281c034425397727adf938c4e08f92afd2962e4fe51",
+          "apps/api/app/rag/store.py": "2c2cf344a15a432a5e3f03c3d16d4f02a9c3a7fc799782a2aafd25e32aeee258"
+        },
+        "labels_file": "seeds/kt/eval/control/labels.jsonl",
+        "labels_sha256": "55f306a27ee780d1ea70bdda2fff467abdcd5cba8689dbedc8917d0c4fa1c31f",
+        "partition": "development",
+        "transport": "public domain API; no HTTP claim",
+        "reports": [
+          {
+            "file": "seeds/kt/eval/data/stage3-domain-txt/alibi-20260923T105705236006-ac81cf01c9e1.json",
+            "sha256": "2fa5509c022a4d863c4eaa0a4b464dc77157c1d02bf8c56cddc2d70cd11764c3",
+            "run_id": "alibi-20260923T105705236006-ac81cf01c9e1",
+            "documents": [
+              {
+                "doc": "before-1",
+                "doc_id": "ec55a43279922633",
+                "sha256": "ec55a432799226339f681d6d7034e9b2f3f03c1065af45506df97595956ddb76",
+                "edition": "before",
+                "source": "before.txt"
+              },
+              {
+                "doc": "after-1",
+                "doc_id": "4f085873ff55576b",
+                "sha256": "4f085873ff55576b5d9d5cbe1850132d47e86e3a539e6dabc7643db79c4b8207",
+                "edition": "after",
+                "source": "after.txt"
+              }
+            ],
+            "findings": 31,
+            "coverage": {
+              "before_total": 12,
+              "after_total": 19,
+              "before_accounted": 12,
+              "after_accounted": 19,
+              "unresolved": 3
+            }
+          }
+        ]
+      },
+      "archived_report": "seeds/kt/eval/results/stage3-domain-reports/txt.json",
+      "archived_report_sha256": "2fa5509c022a4d863c4eaa0a4b464dc77157c1d02bf8c56cddc2d70cd11764c3",
+      "metrics_file": "seeds/kt/eval/results/stage3-domain-txt.json",
+      "metrics_sha256": "c2a3de5a7a7acd39b3fa2990ae25a2e73966cf6a952f5bc28fbc942d9bf27979",
+      "groups": [
+        {
+          "group": "development/synthetic",
+          "tp": 4,
+          "fp": 6,
+          "fn": 5,
+          "semantic_gold": 9,
+          "counts": {
+            "findings_total": 31,
+            "scoped_findings": 10,
+            "unlabelled_findings": 21,
+            "unknown_status_findings": 0,
+            "scoped_unresolved_findings": 0,
+            "appropriate_abstention_gold": 0,
+            "appropriate_abstention_matches": 0,
+            "other_unresolved_findings": 0,
+            "partial_overlap_refusal_labels": 0
+          }
+        },
+        {
+          "group": "development/synthetic/risk",
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "semantic_gold": 0,
+          "counts": {
+            "assessed_labels": 0,
+            "not_assessed_labels": 3,
+            "outputs_total": 0,
+            "scoped_outputs": 0,
+            "unlabelled_outputs": 0,
+            "unknown_value_outputs": 0,
+            "invalid_prediction_fp": 0,
+            "scoped_unresolved_outputs": 0,
+            "appropriate_abstention_gold": 0,
+            "appropriate_abstention_matches": 0,
+            "other_unresolved_outputs": 0,
+            "abstention_on_resolvable": 0,
+            "negative_gold": 0,
+            "negative_correct": 0,
+            "negative_violations": 0,
+            "source_locations_expected": 0,
+            "source_locations_matched": 0
+          }
+        },
+        {
+          "group": "development/synthetic/unit_change",
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "semantic_gold": 0,
+          "counts": {
+            "assessed_labels": 0,
+            "not_assessed_labels": 7,
+            "outputs_total": 0,
+            "scoped_outputs": 0,
+            "unlabelled_outputs": 0,
+            "unknown_value_outputs": 0,
+            "invalid_prediction_fp": 0,
+            "scoped_unresolved_outputs": 0,
+            "appropriate_abstention_gold": 0,
+            "appropriate_abstention_matches": 0,
+            "other_unresolved_outputs": 0,
+            "abstention_on_resolvable": 0,
+            "negative_gold": 0,
+            "negative_correct": 0,
+            "negative_violations": 0,
+            "source_locations_expected": 0,
+            "source_locations_matched": 0
+          }
+        }
+      ],
+      "provenance": [
+        {
+          "citations_checked": 307,
+          "failures": 0,
+          "source_checked": 307,
+          "source_failures": 0
+        }
+      ]
+    },
+    {
+      "format": "docx",
+      "capture": {
+        "started_at_utc": "2026-09-23T10:57:05.708372+00:00",
+        "captured_at_utc": "2026-09-23T10:57:06.020978+00:00",
+        "revision": "8401066dd4bff9795b39dba3e49032c5924f8bc4",
+        "core_hashes": {
+          "apps/api/app/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "apps/api/app/agent/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "apps/api/app/agent/audit_llm.py": "83f746a805cbda54545f46dcd4a2fbc89d7fea5d7a614d1863903fc6ac866451",
+          "apps/api/app/agent/audit_tools.py": "406f53ef1b7320304ebf9d34aa9ec64927c854660519b872cc3d7ee35cda9c94",
+          "apps/api/app/agent/llm.py": "1deeab38dfb53abc4eeb534c4bc8d1b97d3b277da53572c48ddad243a6898891",
+          "apps/api/app/agent/loop.py": "e33d7e8ef2e0599e1f030d47d7a3a01d2f6865170d4cbe9dd20c3b8985933aa1",
+          "apps/api/app/agent/tools.py": "586614f3b2917f37b805694fe23848eb4c464cb10f6ab73ee4b060ee89ba2c5e",
+          "apps/api/app/agent/trace.py": "e07edec20b727365b256f1d155425769ab048d5117ab83af46f727646a09aeaa",
+          "apps/api/app/api/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "apps/api/app/api/audits.py": "6a0518d1ac6cce59d1a2d3004cc6f2504dbb9803b2c870eb8743cdb37d7a342a",
+          "apps/api/app/api/routes.py": "4785697250c1b83ceb8dcac556e655ea6403e8707c26175b4a4dc3cdace77316",
+          "apps/api/app/api/schemas.py": "887397b22f4360db95ee6577b55e94a8be1ad124515e59419a39272ad7795710",
+          "apps/api/app/audit/__init__.py": "e4ccb03e33a1b317306f13e1c2166c9a779ed020fff96bfaae1441e9ac7ca877",
+          "apps/api/app/audit/align.py": "10d6ef80521bcdbff8b124bb19bfe3d6fedc3c5b7337d762145cf4892d591233",
+          "apps/api/app/audit/citations.py": "18631b68d67b1e48b65a33e93144f8dbe0a40ab2d598811da64576d6726f3e3b",
+          "apps/api/app/audit/documents.py": "7b17939a08fe20c70cd061199cc4259f52170483a8e251af0756c46dd1c93d64",
+          "apps/api/app/audit/models.py": "dd5a3a13527758fa41c26d35ce3760058228b2e06f38f6ef2ea160b836a73bfb",
+          "apps/api/app/audit/parser.py": "85828f85e2b9c3f163d8a40b6ebcb038cbc18349be93ea48d8c5b57f418ee680",
+          "apps/api/app/audit/report.py": "36b42a28bb5f95004f423eeffe9f5634bdf56606c29ab24c16dda9eaa225d744",
+          "apps/api/app/audit/test_context.py": "1a0189948e36f89f953acbc74ee3f46fd794fb8314950ebdd50fa0aabc1fddf0",
+          "apps/api/app/audit/text.py": "87e6f98204eef95f2510b6e286aa2e2c988b7ae926eb13f040f1b565ead7a951",
+          "apps/api/app/config.py": "ff867074a025f3eaec5a9a6a73d6330f7699e16bc77bf664e9d9add472ac0886",
+          "apps/api/app/db.py": "98e69c6754386cb776d3433bc6b1ea01ad03c8cf27dc1751b6dd5a39069e7070",
+          "apps/api/app/events.py": "e8cdb579cba331b678aad79d78a4e5296cbfe1d452caeca5851b52e4c83fd3f7",
+          "apps/api/app/ingest/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "apps/api/app/ingest/parsers.py": "f58abb9fefa7bd007d248f2a0d0c6309a0024253f29078e74d5456b6f048bf92",
+          "apps/api/app/ingest/pipeline.py": "6c06c8586557c750ca130caa3b9b86b200d42698039abd7b01ee99ec0597463c",
+          "apps/api/app/main.py": "689424aa62ebf42dd37228a4a837ec675a9fafa8085fc0978856a5598485ad4a",
+          "apps/api/app/rag/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "apps/api/app/rag/chunk.py": "94e35195d97bb367f892786cb7af4244dc609d93ca5e1467d2b35c8fa6476b81",
+          "apps/api/app/rag/embed.py": "63301a089caa30655a467bc8bf33d6079c689066b1b2a41e3d266da848afe86a",
+          "apps/api/app/rag/search.py": "27b3fc3d02e95d52078fd281c034425397727adf938c4e08f92afd2962e4fe51",
+          "apps/api/app/rag/store.py": "2c2cf344a15a432a5e3f03c3d16d4f02a9c3a7fc799782a2aafd25e32aeee258"
+        },
+        "labels_file": "seeds/kt/eval/control/labels.jsonl",
+        "labels_sha256": "55f306a27ee780d1ea70bdda2fff467abdcd5cba8689dbedc8917d0c4fa1c31f",
+        "partition": "development",
+        "transport": "public domain API; no HTTP claim",
+        "reports": [
+          {
+            "file": "seeds/kt/eval/data/stage3-domain-docx/alibi-20260923T105705708372-10e61816f84d.json",
+            "sha256": "1f30e2e0586327b669c15bc7be3039ae35de102a9f99b2e443f75c4bd2d93085",
+            "run_id": "alibi-20260923T105705708372-10e61816f84d",
+            "documents": [
+              {
+                "doc": "before-1",
+                "doc_id": "253413fd6a1b5c69",
+                "sha256": "253413fd6a1b5c69d08959aaffd2838f83d7f1f2976fc02464b4711ba86483e5",
+                "edition": "before",
+                "source": "before.docx"
+              },
+              {
+                "doc": "after-1",
+                "doc_id": "cc751b88f6b5cf59",
+                "sha256": "cc751b88f6b5cf5910ef6505f02a6c6bc8b7740607fa2734bcafdfd409f01b9a",
+                "edition": "after",
+                "source": "after.docx"
+              }
+            ],
+            "findings": 31,
+            "coverage": {
+              "before_total": 12,
+              "after_total": 19,
+              "before_accounted": 12,
+              "after_accounted": 19,
+              "unresolved": 3
+            }
+          }
+        ]
+      },
+      "archived_report": "seeds/kt/eval/results/stage3-domain-reports/docx.json",
+      "archived_report_sha256": "1f30e2e0586327b669c15bc7be3039ae35de102a9f99b2e443f75c4bd2d93085",
+      "metrics_file": "seeds/kt/eval/results/stage3-domain-docx.json",
+      "metrics_sha256": "ce7ea2466a7024669493c19ec333716b5a1c7694a392a47d76e09479ebc19346",
+      "groups": [
+        {
+          "group": "development/synthetic",
+          "tp": 4,
+          "fp": 6,
+          "fn": 5,
+          "semantic_gold": 9,
+          "counts": {
+            "findings_total": 31,
+            "scoped_findings": 10,
+            "unlabelled_findings": 21,
+            "unknown_status_findings": 0,
+            "scoped_unresolved_findings": 0,
+            "appropriate_abstention_gold": 0,
+            "appropriate_abstention_matches": 0,
+            "other_unresolved_findings": 0,
+            "partial_overlap_refusal_labels": 0
+          }
+        },
+        {
+          "group": "development/synthetic/risk",
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "semantic_gold": 0,
+          "counts": {
+            "assessed_labels": 0,
+            "not_assessed_labels": 3,
+            "outputs_total": 0,
+            "scoped_outputs": 0,
+            "unlabelled_outputs": 0,
+            "unknown_value_outputs": 0,
+            "invalid_prediction_fp": 0,
+            "scoped_unresolved_outputs": 0,
+            "appropriate_abstention_gold": 0,
+            "appropriate_abstention_matches": 0,
+            "other_unresolved_outputs": 0,
+            "abstention_on_resolvable": 0,
+            "negative_gold": 0,
+            "negative_correct": 0,
+            "negative_violations": 0,
+            "source_locations_expected": 1,
+            "source_locations_matched": 0
+          }
+        },
+        {
+          "group": "development/synthetic/unit_change",
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "semantic_gold": 0,
+          "counts": {
+            "assessed_labels": 0,
+            "not_assessed_labels": 7,
+            "outputs_total": 0,
+            "scoped_outputs": 0,
+            "unlabelled_outputs": 0,
+            "unknown_value_outputs": 0,
+            "invalid_prediction_fp": 0,
+            "scoped_unresolved_outputs": 0,
+            "appropriate_abstention_gold": 0,
+            "appropriate_abstention_matches": 0,
+            "other_unresolved_outputs": 0,
+            "abstention_on_resolvable": 0,
+            "negative_gold": 0,
+            "negative_correct": 0,
+            "negative_violations": 0,
+            "source_locations_expected": 2,
+            "source_locations_matched": 0
+          }
+        }
+      ],
+      "provenance": [
+        {
+          "citations_checked": 307,
+          "failures": 0,
+          "source_checked": 307,
+          "source_failures": 0
+        }
+      ]
+    },
+    {
+      "format": "pdf",
+      "capture": {
+        "started_at_utc": "2026-09-23T10:57:06.395941+00:00",
+        "captured_at_utc": "2026-09-23T10:57:06.653193+00:00",
+        "revision": "8401066dd4bff9795b39dba3e49032c5924f8bc4",
+        "core_hashes": {
+          "apps/api/app/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "apps/api/app/agent/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "apps/api/app/agent/audit_llm.py": "83f746a805cbda54545f46dcd4a2fbc89d7fea5d7a614d1863903fc6ac866451",
+          "apps/api/app/agent/audit_tools.py": "406f53ef1b7320304ebf9d34aa9ec64927c854660519b872cc3d7ee35cda9c94",
+          "apps/api/app/agent/llm.py": "1deeab38dfb53abc4eeb534c4bc8d1b97d3b277da53572c48ddad243a6898891",
+          "apps/api/app/agent/loop.py": "e33d7e8ef2e0599e1f030d47d7a3a01d2f6865170d4cbe9dd20c3b8985933aa1",
+          "apps/api/app/agent/tools.py": "586614f3b2917f37b805694fe23848eb4c464cb10f6ab73ee4b060ee89ba2c5e",
+          "apps/api/app/agent/trace.py": "e07edec20b727365b256f1d155425769ab048d5117ab83af46f727646a09aeaa",
+          "apps/api/app/api/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "apps/api/app/api/audits.py": "6a0518d1ac6cce59d1a2d3004cc6f2504dbb9803b2c870eb8743cdb37d7a342a",
+          "apps/api/app/api/routes.py": "4785697250c1b83ceb8dcac556e655ea6403e8707c26175b4a4dc3cdace77316",
+          "apps/api/app/api/schemas.py": "887397b22f4360db95ee6577b55e94a8be1ad124515e59419a39272ad7795710",
+          "apps/api/app/audit/__init__.py": "e4ccb03e33a1b317306f13e1c2166c9a779ed020fff96bfaae1441e9ac7ca877",
+          "apps/api/app/audit/align.py": "10d6ef80521bcdbff8b124bb19bfe3d6fedc3c5b7337d762145cf4892d591233",
+          "apps/api/app/audit/citations.py": "18631b68d67b1e48b65a33e93144f8dbe0a40ab2d598811da64576d6726f3e3b",
+          "apps/api/app/audit/documents.py": "7b17939a08fe20c70cd061199cc4259f52170483a8e251af0756c46dd1c93d64",
+          "apps/api/app/audit/models.py": "dd5a3a13527758fa41c26d35ce3760058228b2e06f38f6ef2ea160b836a73bfb",
+          "apps/api/app/audit/parser.py": "85828f85e2b9c3f163d8a40b6ebcb038cbc18349be93ea48d8c5b57f418ee680",
+          "apps/api/app/audit/report.py": "36b42a28bb5f95004f423eeffe9f5634bdf56606c29ab24c16dda9eaa225d744",
+          "apps/api/app/audit/test_context.py": "1a0189948e36f89f953acbc74ee3f46fd794fb8314950ebdd50fa0aabc1fddf0",
+          "apps/api/app/audit/text.py": "87e6f98204eef95f2510b6e286aa2e2c988b7ae926eb13f040f1b565ead7a951",
+          "apps/api/app/config.py": "ff867074a025f3eaec5a9a6a73d6330f7699e16bc77bf664e9d9add472ac0886",
+          "apps/api/app/db.py": "98e69c6754386cb776d3433bc6b1ea01ad03c8cf27dc1751b6dd5a39069e7070",
+          "apps/api/app/events.py": "e8cdb579cba331b678aad79d78a4e5296cbfe1d452caeca5851b52e4c83fd3f7",
+          "apps/api/app/ingest/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "apps/api/app/ingest/parsers.py": "f58abb9fefa7bd007d248f2a0d0c6309a0024253f29078e74d5456b6f048bf92",
+          "apps/api/app/ingest/pipeline.py": "6c06c8586557c750ca130caa3b9b86b200d42698039abd7b01ee99ec0597463c",
+          "apps/api/app/main.py": "689424aa62ebf42dd37228a4a837ec675a9fafa8085fc0978856a5598485ad4a",
+          "apps/api/app/rag/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "apps/api/app/rag/chunk.py": "94e35195d97bb367f892786cb7af4244dc609d93ca5e1467d2b35c8fa6476b81",
+          "apps/api/app/rag/embed.py": "63301a089caa30655a467bc8bf33d6079c689066b1b2a41e3d266da848afe86a",
+          "apps/api/app/rag/search.py": "27b3fc3d02e95d52078fd281c034425397727adf938c4e08f92afd2962e4fe51",
+          "apps/api/app/rag/store.py": "2c2cf344a15a432a5e3f03c3d16d4f02a9c3a7fc799782a2aafd25e32aeee258"
+        },
+        "labels_file": "seeds/kt/eval/control/labels.jsonl",
+        "labels_sha256": "55f306a27ee780d1ea70bdda2fff467abdcd5cba8689dbedc8917d0c4fa1c31f",
+        "partition": "development",
+        "transport": "public domain API; no HTTP claim",
+        "reports": [
+          {
+            "file": "seeds/kt/eval/data/stage3-domain-pdf/alibi-20260923T105706395941-0f2d97a8518f.json",
+            "sha256": "a3ed0f07d230c7203d3d287b3edc668ac469f1729656f87cc77d94f225691886",
+            "run_id": "alibi-20260923T105706395941-0f2d97a8518f",
+            "documents": [
+              {
+                "doc": "before-1",
+                "doc_id": "a867051f06c9bc5e",
+                "sha256": "a867051f06c9bc5ef963eb136428319653bf3748c74a9f275c62432f45211dd4",
+                "edition": "before",
+                "source": "before.pdf"
+              },
+              {
+                "doc": "after-1",
+                "doc_id": "ec9e741b6d13b5d1",
+                "sha256": "ec9e741b6d13b5d1a8de53340ffbaa72fcb14812f4a30ea958d151b4d9013ce5",
+                "edition": "after",
+                "source": "after.pdf"
+              }
+            ],
+            "findings": 32,
+            "coverage": {
+              "before_total": 12,
+              "after_total": 19,
+              "before_accounted": 12,
+              "after_accounted": 19,
+              "unresolved": 0
+            }
+          }
+        ]
+      },
+      "archived_report": "seeds/kt/eval/results/stage3-domain-reports/pdf.json",
+      "archived_report_sha256": "a3ed0f07d230c7203d3d287b3edc668ac469f1729656f87cc77d94f225691886",
+      "metrics_file": "seeds/kt/eval/results/stage3-domain-pdf.json",
+      "metrics_sha256": "de7b291c0f09f571a89a417a2573b46603be6b24f8c603a82364f4ef77729e91",
+      "groups": [
+        {
+          "group": "development/synthetic",
+          "tp": 3,
+          "fp": 7,
+          "fn": 6,
+          "semantic_gold": 9,
+          "counts": {
+            "findings_total": 32,
+            "scoped_findings": 10,
+            "unlabelled_findings": 22,
+            "unknown_status_findings": 0,
+            "scoped_unresolved_findings": 0,
+            "appropriate_abstention_gold": 0,
+            "appropriate_abstention_matches": 0,
+            "other_unresolved_findings": 0,
+            "partial_overlap_refusal_labels": 0
+          }
+        },
+        {
+          "group": "development/synthetic/risk",
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "semantic_gold": 0,
+          "counts": {
+            "assessed_labels": 0,
+            "not_assessed_labels": 3,
+            "outputs_total": 0,
+            "scoped_outputs": 0,
+            "unlabelled_outputs": 0,
+            "unknown_value_outputs": 0,
+            "invalid_prediction_fp": 0,
+            "scoped_unresolved_outputs": 0,
+            "appropriate_abstention_gold": 0,
+            "appropriate_abstention_matches": 0,
+            "other_unresolved_outputs": 0,
+            "abstention_on_resolvable": 0,
+            "negative_gold": 0,
+            "negative_correct": 0,
+            "negative_violations": 0,
+            "source_locations_expected": 1,
+            "source_locations_matched": 0
+          }
+        },
+        {
+          "group": "development/synthetic/unit_change",
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "semantic_gold": 0,
+          "counts": {
+            "assessed_labels": 0,
+            "not_assessed_labels": 7,
+            "outputs_total": 0,
+            "scoped_outputs": 0,
+            "unlabelled_outputs": 0,
+            "unknown_value_outputs": 0,
+            "invalid_prediction_fp": 0,
+            "scoped_unresolved_outputs": 0,
+            "appropriate_abstention_gold": 0,
+            "appropriate_abstention_matches": 0,
+            "other_unresolved_outputs": 0,
+            "abstention_on_resolvable": 0,
+            "negative_gold": 0,
+            "negative_correct": 0,
+            "negative_violations": 0,
+            "source_locations_expected": 2,
+            "source_locations_matched": 0
+          }
+        }
+      ],
+      "provenance": [
+        {
+          "citations_checked": 317,
+          "failures": 0,
+          "source_checked": 317,
+          "source_failures": 0
+        }
+      ]
+    },
+    {
+      "format": "xlsx",
+      "capture": {
+        "started_at_utc": "2026-09-23T10:57:06.953752+00:00",
+        "captured_at_utc": "2026-09-23T10:57:07.462455+00:00",
+        "revision": "8401066dd4bff9795b39dba3e49032c5924f8bc4",
+        "core_hashes": {
+          "apps/api/app/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "apps/api/app/agent/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "apps/api/app/agent/audit_llm.py": "83f746a805cbda54545f46dcd4a2fbc89d7fea5d7a614d1863903fc6ac866451",
+          "apps/api/app/agent/audit_tools.py": "406f53ef1b7320304ebf9d34aa9ec64927c854660519b872cc3d7ee35cda9c94",
+          "apps/api/app/agent/llm.py": "1deeab38dfb53abc4eeb534c4bc8d1b97d3b277da53572c48ddad243a6898891",
+          "apps/api/app/agent/loop.py": "e33d7e8ef2e0599e1f030d47d7a3a01d2f6865170d4cbe9dd20c3b8985933aa1",
+          "apps/api/app/agent/tools.py": "586614f3b2917f37b805694fe23848eb4c464cb10f6ab73ee4b060ee89ba2c5e",
+          "apps/api/app/agent/trace.py": "e07edec20b727365b256f1d155425769ab048d5117ab83af46f727646a09aeaa",
+          "apps/api/app/api/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "apps/api/app/api/audits.py": "6a0518d1ac6cce59d1a2d3004cc6f2504dbb9803b2c870eb8743cdb37d7a342a",
+          "apps/api/app/api/routes.py": "4785697250c1b83ceb8dcac556e655ea6403e8707c26175b4a4dc3cdace77316",
+          "apps/api/app/api/schemas.py": "887397b22f4360db95ee6577b55e94a8be1ad124515e59419a39272ad7795710",
+          "apps/api/app/audit/__init__.py": "e4ccb03e33a1b317306f13e1c2166c9a779ed020fff96bfaae1441e9ac7ca877",
+          "apps/api/app/audit/align.py": "10d6ef80521bcdbff8b124bb19bfe3d6fedc3c5b7337d762145cf4892d591233",
+          "apps/api/app/audit/citations.py": "18631b68d67b1e48b65a33e93144f8dbe0a40ab2d598811da64576d6726f3e3b",
+          "apps/api/app/audit/documents.py": "7b17939a08fe20c70cd061199cc4259f52170483a8e251af0756c46dd1c93d64",
+          "apps/api/app/audit/models.py": "dd5a3a13527758fa41c26d35ce3760058228b2e06f38f6ef2ea160b836a73bfb",
+          "apps/api/app/audit/parser.py": "85828f85e2b9c3f163d8a40b6ebcb038cbc18349be93ea48d8c5b57f418ee680",
+          "apps/api/app/audit/report.py": "36b42a28bb5f95004f423eeffe9f5634bdf56606c29ab24c16dda9eaa225d744",
+          "apps/api/app/audit/test_context.py": "1a0189948e36f89f953acbc74ee3f46fd794fb8314950ebdd50fa0aabc1fddf0",
+          "apps/api/app/audit/text.py": "87e6f98204eef95f2510b6e286aa2e2c988b7ae926eb13f040f1b565ead7a951",
+          "apps/api/app/config.py": "ff867074a025f3eaec5a9a6a73d6330f7699e16bc77bf664e9d9add472ac0886",
+          "apps/api/app/db.py": "98e69c6754386cb776d3433bc6b1ea01ad03c8cf27dc1751b6dd5a39069e7070",
+          "apps/api/app/events.py": "e8cdb579cba331b678aad79d78a4e5296cbfe1d452caeca5851b52e4c83fd3f7",
+          "apps/api/app/ingest/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "apps/api/app/ingest/parsers.py": "f58abb9fefa7bd007d248f2a0d0c6309a0024253f29078e74d5456b6f048bf92",
+          "apps/api/app/ingest/pipeline.py": "6c06c8586557c750ca130caa3b9b86b200d42698039abd7b01ee99ec0597463c",
+          "apps/api/app/main.py": "689424aa62ebf42dd37228a4a837ec675a9fafa8085fc0978856a5598485ad4a",
+          "apps/api/app/rag/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "apps/api/app/rag/chunk.py": "94e35195d97bb367f892786cb7af4244dc609d93ca5e1467d2b35c8fa6476b81",
+          "apps/api/app/rag/embed.py": "63301a089caa30655a467bc8bf33d6079c689066b1b2a41e3d266da848afe86a",
+          "apps/api/app/rag/search.py": "27b3fc3d02e95d52078fd281c034425397727adf938c4e08f92afd2962e4fe51",
+          "apps/api/app/rag/store.py": "2c2cf344a15a432a5e3f03c3d16d4f02a9c3a7fc799782a2aafd25e32aeee258"
+        },
+        "labels_file": "seeds/kt/eval/control/labels.jsonl",
+        "labels_sha256": "55f306a27ee780d1ea70bdda2fff467abdcd5cba8689dbedc8917d0c4fa1c31f",
+        "partition": "development",
+        "transport": "public domain API; no HTTP claim",
+        "reports": [
+          {
+            "file": "seeds/kt/eval/data/stage3-domain-xlsx/alibi-20260923T105706953752-b7466cfa994f.json",
+            "sha256": "8a477f3990d54566e73ce11e6a49816a9ce8a6823c98e7b88df011363df3b272",
+            "run_id": "alibi-20260923T105706953752-b7466cfa994f",
+            "documents": [
+              {
+                "doc": "before-1",
+                "doc_id": "fe41fb5d32a9cd31",
+                "sha256": "fe41fb5d32a9cd31943c93d8e02cabbab7198c001feb732d7bd288c70aac4aed",
+                "edition": "before",
+                "source": "before.xlsx"
+              },
+              {
+                "doc": "after-1",
+                "doc_id": "7a8fd8054153913b",
+                "sha256": "7a8fd8054153913bbe03cef7ae2233f8dd235210e41cb53240ac0049b23f9256",
+                "edition": "after",
+                "source": "after.xlsx"
+              }
+            ],
+            "findings": 31,
+            "coverage": {
+              "before_total": 12,
+              "after_total": 19,
+              "before_accounted": 12,
+              "after_accounted": 19,
+              "unresolved": 3
+            }
+          }
+        ]
+      },
+      "archived_report": "seeds/kt/eval/results/stage3-domain-reports/xlsx.json",
+      "archived_report_sha256": "8a477f3990d54566e73ce11e6a49816a9ce8a6823c98e7b88df011363df3b272",
+      "metrics_file": "seeds/kt/eval/results/stage3-domain-xlsx.json",
+      "metrics_sha256": "313f06bbfc7de87f16640cf9e3c9b28ffab4f77a2681f9896f9bb9e447182a13",
+      "groups": [
+        {
+          "group": "development/synthetic",
+          "tp": 4,
+          "fp": 6,
+          "fn": 5,
+          "semantic_gold": 9,
+          "counts": {
+            "findings_total": 31,
+            "scoped_findings": 10,
+            "unlabelled_findings": 21,
+            "unknown_status_findings": 0,
+            "scoped_unresolved_findings": 0,
+            "appropriate_abstention_gold": 0,
+            "appropriate_abstention_matches": 0,
+            "other_unresolved_findings": 0,
+            "partial_overlap_refusal_labels": 0
+          }
+        },
+        {
+          "group": "development/synthetic/risk",
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "semantic_gold": 0,
+          "counts": {
+            "assessed_labels": 0,
+            "not_assessed_labels": 3,
+            "outputs_total": 0,
+            "scoped_outputs": 0,
+            "unlabelled_outputs": 0,
+            "unknown_value_outputs": 0,
+            "invalid_prediction_fp": 0,
+            "scoped_unresolved_outputs": 0,
+            "appropriate_abstention_gold": 0,
+            "appropriate_abstention_matches": 0,
+            "other_unresolved_outputs": 0,
+            "abstention_on_resolvable": 0,
+            "negative_gold": 0,
+            "negative_correct": 0,
+            "negative_violations": 0,
+            "source_locations_expected": 1,
+            "source_locations_matched": 0
+          }
+        },
+        {
+          "group": "development/synthetic/unit_change",
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "semantic_gold": 0,
+          "counts": {
+            "assessed_labels": 0,
+            "not_assessed_labels": 7,
+            "outputs_total": 0,
+            "scoped_outputs": 0,
+            "unlabelled_outputs": 0,
+            "unknown_value_outputs": 0,
+            "invalid_prediction_fp": 0,
+            "scoped_unresolved_outputs": 0,
+            "appropriate_abstention_gold": 0,
+            "appropriate_abstention_matches": 0,
+            "other_unresolved_outputs": 0,
+            "abstention_on_resolvable": 0,
+            "negative_gold": 0,
+            "negative_correct": 0,
+            "negative_violations": 0,
+            "source_locations_expected": 2,
+            "source_locations_matched": 0
+          }
+        }
+      ],
+      "provenance": [
+        {
+          "citations_checked": 307,
+          "failures": 0,
+          "source_checked": 307,
+          "source_failures": 0
+        }
+      ]
+    }
+  ],
+  "scorer_degradation_control": {
+    "description": "In-memory copy of real TXT Report: missing before 2.2 status deliberately replaced by changed",
+    "product_prediction": false,
+    "baseline": {
+      "tp": 4,
+      "fp": 6,
+      "fn": 5,
+      "semantic_gold": 9
+    },
+    "damaged": {
+      "tp": 3,
+      "fp": 7,
+      "fn": 6,
+      "semantic_gold": 9
+    }
+  },
+  "real_agent_comparison": "pending external capture/schema package from Batyrkhan",
+  "human_confirmation": "pending_human; 19/19 control labels"
+}

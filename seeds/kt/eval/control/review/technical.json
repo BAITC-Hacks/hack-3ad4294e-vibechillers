@@ -1,0 +1,126 @@
+{
+  "review_type": "independent_ai_technical_review",
+  "reviewed_at_utc": "2026-09-23T11:01:42.416011+00:00",
+  "baseline": "c0658ff7ae526adef0ccf823fe0041979767ad41",
+  "human_gold_confirmed": false,
+  "scope": "Evaluator and control evidence integrity. Read-only except this report. No holdout answers inspected; legacy files compared as raw bytes/digests, split/review custody compared as metadata. No product inference, provider calls, API calls, dependency changes, commits or shared build.",
+  "artifact_sha256": {
+    "eval/kt/score.py": "0ed8a5aade140b393cdfda670da33771f64a43691794613c14ad4a6f0c6ad2b5",
+    "eval/kt/test_score.py": "9a3111a19e1d60c8533ae4cec16f09a0c1811352d26221c610023f15be5066d8",
+    "eval/kt/capture_control.py": "bd3e9d031d8f2cc8a0417383c18180b5dd756d941d32f85ee42992e04cf6347a",
+    "eval/kt/make_mutations.py": "808e35c23f18c418db7742bb815f759c5ecb52e16dd0e979e0d2fed72b380974",
+    "eval/kt/build_control.py": "b3eae647ddfa9de5345e2c7f4a0394a3fdfd85ed83b94bf09c146d49c39d96c8",
+    "seeds/kt/eval/control/labels.jsonl": "462d75c6d39bf30ab0c71c816232904b27019496355f3b0494685e26bdf02d7c",
+    "seeds/kt/eval/control/manifest.json": "d848ebd8c0995ba460f28d7ef64585a22a6736a2fc0e5be3d45ef0f5597fc1d2",
+    "seeds/kt/eval/control/format-qa.json": "1e4b462574fbfa6a4c0bb6b50d70f01cd62979246283b490faa9132691ef05c3"
+  },
+  "legacy": {
+    "seeds/kt/eval/labels.jsonl": {
+      "sha256": "87965da85193a0420dd2383fae056211c7cba5b1976bdc0e3f2783534526b7ed",
+      "byte_identical_to_baseline": true
+    },
+    "seeds/kt/eval/regression.jsonl": {
+      "sha256": "87965da85193a0420dd2383fae056211c7cba5b1976bdc0e3f2783534526b7ed",
+      "byte_identical_to_baseline": true
+    },
+    "seeds/kt/eval/challenge.jsonl": {
+      "sha256": "b31e4f1a124548cee9bacda752de78f216432c3dfb0b75dad445d19bd00e80b9",
+      "byte_identical_to_baseline": true
+    }
+  },
+  "custody": {
+    "all_preexisting_split_mapping_entries_preserved": true,
+    "new_control_cases": 19,
+    "control_cases_all_development_pending_human": true,
+    "reviews_preservation": "All original review states and entries retained. Exactly dev-real-audit-goals and dev-real-shared-information append one disagreement each; prior disagreement lists remain intact prefixes. Reviews are therefore not byte-identical.",
+    "control_versioning": "labels-v1-before-location-probes.jsonl retains earlier control version; only coordinate probes added to existing control semantics."
+  },
+  "verification": [
+    {
+      "check": "Evaluator local tests",
+      "result": "50 tests passed, including 25 unchanged legacy test method ASTs; no product accuracy claim."
+    },
+    {
+      "check": "Control labels CLI validation",
+      "result": "19 synthetic development labels validated with source hashes, references, exact quotes and all pending_human."
+    },
+    {
+      "check": "Pinned input and QA hashes",
+      "result": "All eight main control input file hashes match manifest and format QA; parser source hashes match recorded format QA."
+    },
+    {
+      "check": "Physical coordinate probes",
+      "result": "Nine representation-specific coordinates independently checked from DOCX/XLSX package XML and pypdf physical pages. Before and after 1.1/а: DOCX 1-based block 5, XLSX A5, PDF page 1. After 7.4: block 32, A32, page 2. Workbook sheet names match. Three refs across three formats is bounded probe coverage, not full source-location recall."
+    }
+  ],
+  "resolved_findings": [
+    {
+      "id": "T1",
+      "severity": "P1",
+      "area": "capture_control.capture",
+      "finding": "Freshly computed hashes accepted altered control files; returned document identities were not checked; final run input mutation could still succeed.",
+      "reproduction": "Initial capture code had no manifest comparison, no Report.documents comparison, and final check covered only revision/core.",
+      "resolution": "Root added frozen manifest verification, Report document hash+edition multiset comparison, deterministic mode check and final input rehash. Source reviewed; this reviewer did not call HTTP."
+    },
+    {
+      "id": "T2",
+      "severity": "P2",
+      "area": "score_group/function",
+      "finding": "Function source_locations silently ignored.",
+      "reproduction": "A perfect function prediction plus expected page=1 and no actual location returned TP=1/errors=[] and no location counters.",
+      "resolution": "Reusable location_diagnostics now applies to function and domain outputs. Independent rerun returns expected=1,matched=0 with explicit missing-location error."
+    },
+    {
+      "id": "T3",
+      "severity": "P2",
+      "area": "load_labels/source_locations",
+      "finding": "Unknown document_sha256 accepted then skipped every location denominator.",
+      "reproduction": "Set first control location document_sha256 to mistyped-not-a-real-hash; load_labels accepted and scoring counted zero expected locations.",
+      "resolution": "Label validation now rejects unknown representation hashes and empty coordinate objects. Independent rerun rejected with Source location hash not a pinned representation."
+    },
+    {
+      "id": "T4",
+      "severity": "P2",
+      "area": "citation_diagnostics and source_diagnostics",
+      "finding": "Malformed non-list domain section was documented as not assessed but crashed CLI diagnostics before scoring.",
+      "reproduction": "unit_changes={unexpected:1} or a nonempty string raised AttributeError on item.get.",
+      "resolution": "Diagnostics skip non-list sections consistently; independent dict/string reruns report not_assessed without crash."
+    },
+    {
+      "id": "T5",
+      "severity": "P2",
+      "area": "citation_diagnostics/risks",
+      "finding": "Required risk citations to duplicate defining-unit citations despite valid source-backed Report.units references, stricter than Stage3 contract.",
+      "resolution": "Risk checks retain actual unit existence, after edition, duty citations and valid unit definitions without demanding copied structural citations. Unit-change structural evidence requirement retained."
+    },
+    {
+      "id": "T6",
+      "severity": "P2",
+      "area": "control source location coverage",
+      "finding": "Initial 19 control rows contained zero source_locations; format counts could not measure physical citation accuracy.",
+      "resolution": "Root added nine independently checked physical coordinate expectations to two labels, preserving status/ref semantics and original control label version."
+    },
+    {
+      "id": "T7",
+      "severity": "P2",
+      "area": "build_control format QA",
+      "finding": "Text mismatch list iterated only observed clauses, hiding absent/extra/duplicate numbered IDs.",
+      "resolution": "Root added independent expected-versus-observed ID diagnostics and scoped parser-derived reference limitations. No semantic quality is inferred from successful text extraction."
+    },
+    {
+      "id": "T8",
+      "severity": "P2",
+      "area": "capture evidence intake",
+      "finding": "Template schema/configuration placeholders and events after a single terminal could pass superficial evidence checks.",
+      "resolution": "Root requires actual schema/config values and the sole final event last; package verifies pinned artifacts, reopened equality, event sequence/run IDs and persisted trace equality. Source reviewed."
+    }
+  ],
+  "remaining_limits": [
+    "No integrated Stage3 deterministic-versus-actual-agent package was executed or accepted by this reviewer. Batyrkhan owns provider/API runs; mode/tool-event counts and local guard tests do not prove inference or result-dependent action.",
+    "Real integrated schema/revision, provider/server provenance, actual runtime configuration and independent trace review remain release prerequisites.",
+    "All 19 control expectations remain pending_human. AI agreement and scorer correctness do not establish product accuracy.",
+    "PDF ingestion currently splits wrapped numbered text: recorded 8 before and 14 after mismatches. DOCX rendering remains unverified due to missing LibreOffice, as disclosed in README.",
+    "Coordinate probes cover three references, not complete source location extraction. Auxiliary multi-column workbook is an unlabelled ingestion probe."
+  ],
+  "conclusion": "Concrete evaluator/capture defects found during review were corrected and scorer regressions independently verified. Provisional source labels and capture tooling are reviewable; no actual agent quality or human approval claimed."
+}

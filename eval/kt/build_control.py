@@ -6,6 +6,7 @@ The checked-in TXT files are authoritative; formatting never changes their text.
 from __future__ import annotations
 
 import argparse
+from collections import Counter, defaultdict
 import hashlib
 import json
 from pathlib import Path
@@ -23,9 +24,42 @@ def digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def compare_numbered_clauses(expected: dict[str, str | None], clauses: list) -> dict:
+    """Check coverage, identity and text against independently resolved source refs."""
+    ambiguous = [ref for ref, text in expected.items() if text is None]
+    if ambiguous:
+        raise ValueError(f"Ambiguous canonical source refs: {ambiguous}")
+    actual = defaultdict(list)
+    base_occurrences = defaultdict(list)
+    for clause in clauses:
+        if clause.label:
+            actual[clause.clause_id].append(clause.text)
+            base_occurrences[re.sub(r"@\d+$", "", clause.clause_id)].append(clause.clause_id)
+    expected_counts = Counter(re.sub(r"@\d+$", "", ref) for ref in expected)
+    absent = sorted(set(expected) - set(actual))
+    extra = sorted(set(actual) - set(expected))
+    duplicates = {base: refs for base, refs in sorted(base_occurrences.items())
+                  if len(refs) > max(1, expected_counts[base])}
+    normalize = lambda text: re.sub(r"\s+", " ", text).strip()
+    mismatches = sorted(ref for ref in set(expected) & set(actual)
+                        if any(normalize(text) != normalize(expected[ref]) for text in actual[ref]))
+    return {"numbered_clause_denominator": len(expected),
+            "numbered_clause_returned_count": sum(len(texts) for texts in actual.values()),
+            "numbered_clause_absent_refs": absent,
+            "numbered_clause_extra_refs": extra,
+            "numbered_clause_duplicate_refs": duplicates,
+            "numbered_clause_text_mismatches": mismatches,
+            "numbered_clause_exact_unique_count": sum(
+                len(actual.get(ref, [])) == 1 and ref not in mismatches
+                and re.sub(r"@\d+$", "", ref) not in duplicates for ref in expected),
+            "numbered_clauses_match_canonical": not (absent or extra or duplicates or mismatches)}
+
+
 def verify_inputs(dest: Path) -> None:
     """Measure public ingestion only, keeping semantic expectations separate."""
     sys.path.insert(0, str(ROOT / "apps/api"))
+    sys.path.insert(0, str(ROOT / "eval/kt"))
+    from score import source_clauses
     from app.ingest.parsers import parse_any
     from app.audit.parser import parse_clauses, extract_units
 
@@ -33,8 +67,7 @@ def verify_inputs(dest: Path) -> None:
     rows = []
     for edition in ("before", "after"):
         canonical = (dest / f"{edition}.txt").read_text(encoding="utf-8")
-        expected, _ = parse_clauses(edition, [{"page": 1, "text": canonical}])
-        expected = {c.clause_id: c.text for c in expected if c.label}
+        expected = source_clauses(canonical)
         for suffix in ("txt", "docx", "pdf", "xlsx"):
             path = dest / f"{edition}.{suffix}"
             if not path.exists():
@@ -42,21 +75,42 @@ def verify_inputs(dest: Path) -> None:
             pages, _ = parse_any(path)
             clauses, warnings = parse_clauses(edition, pages)
             units = extract_units(edition, clauses)
-            mismatches = [c.clause_id for c in clauses if c.clause_id in expected
-                          and normalize(c.text) != normalize(expected[c.clause_id])]
             rows.append({"file": path.name, "sha256": digest(path), "pages_or_blocks": len(pages),
                          "clauses": len(clauses), "units": len(units),
-                         "numbered_clause_denominator": len(expected),
-                         "numbered_clause_text_mismatches": mismatches,
+                         **compare_numbered_clauses(expected, clauses),
                          "normalized_extracted_text_matches_canonical":
                              normalize(" ".join(p["text"] for p in pages)) == normalize(canonical),
                          "warnings": warnings})
     record = {"scope": "Source ingestion only. No audit inference or product accuracy claim.",
+              "expected_resolver": "eval/kt/score.py:source_clauses over canonical TXT; independent of application parser",
+              "expected_resolver_sha256": digest(ROOT / "eval/kt/score.py"),
               "parser_sha256": digest(ROOT / "apps/api/app/audit/parser.py"),
               "ingest_parsers_sha256": digest(ROOT / "apps/api/app/ingest/parsers.py"),
               "formats": rows}
     (dest / "format-qa.json").write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"verified_files": len(rows), "qa_record": str(dest / "format-qa.json")}))
+
+
+def verify_tables(dest: Path) -> None:
+    sys.path.insert(0, str(ROOT / "apps/api"))
+    from app.ingest.parsers import parse_any
+    from app.audit.parser import parse_clauses, extract_units
+    rows = []
+    for edition in ("before", "after"):
+        path = dest / f"{edition}-table.xlsx"
+        pages, _ = parse_any(path)
+        clauses, warnings = parse_clauses(edition, pages)
+        units = extract_units(edition, clauses)
+        sample_id = "2.2" if edition == "before" else "7.4"
+        rows.append({"file": path.name, "sha256": digest(path), "sheets": len(pages),
+                     "clauses": len(clauses), "units": len(units), "warnings": warnings,
+                     "sample_function": next(c.model_dump() for c in clauses if c.clause_id == sample_id)})
+    record = {"scope": "Auxiliary three-column, two-sheet XLSX public parser probe. No inference or gold scoring.",
+              "parser_sha256": digest(ROOT / "apps/api/app/audit/parser.py"),
+              "ingest_parsers_sha256": digest(ROOT / "apps/api/app/ingest/parsers.py"),
+              "formats": rows,
+              "limitation": "The owner column is included in clause text by tab-flattening, e.g. repeated owner tokens. Ingestion support does not establish function matching accuracy."}
+    (dest / "table-probe-qa.json").write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
 def build_docx(lines: list[str], target: Path) -> None:
@@ -200,9 +254,16 @@ def main() -> None:
     parser.add_argument("--verify-inputs", action="store_true", help="Public ingestion check; does not run audit inference")
     parser.add_argument("--auxiliary-tables", action="store_true",
                         help="Build separate 3-column / 2-sheet XLSX probes; leave pinned inputs and main manifest unchanged")
+    parser.add_argument("--verify-tables", action="store_true", help="Verify existing auxiliary XLSX without regeneration")
     args = parser.parse_args()
     dest = args.directory.resolve()
     args.qa_dir.mkdir(parents=True, exist_ok=True)
+    if args.verify_tables and not args.auxiliary_tables:
+        verify_tables(dest)
+        return
+    if args.verify_inputs and not args.formats and not args.auxiliary_tables:
+        verify_inputs(dest)
+        return
     if args.auxiliary_tables:
         if not args.artifact_module:
             parser.error("--artifact-module is required for auxiliary tables")
@@ -219,6 +280,8 @@ def main() -> None:
                                       "canonical": f"{edition}.txt", "canonical_sha256": digest(dest / f"{edition}.txt")})
         (dest / "table-probe-manifest.json").write_text(json.dumps(auxiliary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         print("Built auxiliary table probes; pinned manifest and original 8 input files unchanged.")
+        if args.verify_tables:
+            verify_tables(dest)
         return
     for edition in ("before", "after"):
         lines = (dest / f"{edition}.txt").read_text(encoding="utf-8").splitlines()

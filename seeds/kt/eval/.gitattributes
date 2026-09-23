@@ -3,4 +3,4 @@
 *.json -text
 mutations/** -text
 independent-review/** -text
-control/** -text
+control/** -text whitespace=cr-at-eol

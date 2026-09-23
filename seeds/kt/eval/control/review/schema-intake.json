@@ -1,0 +1,80 @@
+{
+  "review_type": "independent_ai_schema_intake_addendum",
+  "reviewed_at_utc": "2026-09-23T11:06:14.192836+00:00",
+  "schema_revision": "4da43907919867ce4e8579360fe5b2ff43f9a37c",
+  "checkout_revision": "d7e03549b7dc421b31db2211c99c870d73c0ea85",
+  "historical_report": "technical.json",
+  "historical_report_sha256": "75c1f932f58fbf4c34c8a68c8f1ba04ebdadbeb2a7e7eac43cc0bd426bd65b60",
+  "historical_report_modified": false,
+  "scope": "Focused source review and local evaluator/capture guard tests only. No API/provider run, no inference, no repo-wide tests or dependency changes. Temporary offline custody probe is explicitly synthetic and not evidence of agent behavior.",
+  "artifact_sha256": {
+    "CONTRACT.md": "d642064cca22db3b255606671f5ca63a2a301901a6ed91ad31d05bce098db1df",
+    "apps/api/app/audit/models.py": "498323d0e2af6403f21a9bd5848df74d66014b93a148a6a79bd93875efaf2cb0",
+    "eval/kt/score.py": "b127fe77c5cfe38a9bc7fa1f4d06594a920b6b8afa70fa16f63d2ac67f23e07f",
+    "eval/kt/test_score.py": "b8443fd5c30b82dc1916d6f7c911571c865108827e0aa5050b16c84c77d05ef0",
+    "eval/kt/capture_control.py": "e80ddd43b8935ff6176dfaa5e5f0ce45252f2d967bbf390432272d2a13b2c3ef",
+    "eval/kt/test_capture_control.py": "cd709449e105fa07cbdf9b90d64e171daff783aa231045474d794ee307fd897e"
+  },
+  "schema_compatibility": {
+    "unit_and_risk_wire_fields": "UnitRef, statuses, Risk kinds, exact citations and review_required agree with 4da4390 schema. Legacy seven function statuses unchanged.",
+    "historical_agent_null": "Confirmed null/missing Report.agent excludes Stage3 semantic and risk-negative denominators even when schema defaults output lists to []. A concrete AgentExecution marker with required status and stop_reason marks assessed new-producer output; marker is not proof of inference.",
+    "agent_statuses": [
+      "not_requested",
+      "completed",
+      "partial",
+      "unavailable",
+      "failed"
+    ],
+    "source_locations": "PDF page and DOCX block are integers >=1 or null; scorer rejects block=0. Prior technical review behavior allowing zero was superseded by this received schema.",
+    "conclusion_links": "Supplied finding_ids, unit_change_ids and risk_ids checked against corresponding namespaces; generic advisory text need not supply a link.",
+    "capture_null_agent": "trace_summary and genuine_agent_acceptance handle agent:null without crash; inference remains unproven."
+  },
+  "verification": [
+    {
+      "command": "python -m unittest discover -s eval/kt -p test_score.py",
+      "passed": 53
+    },
+    {
+      "command": "python -m unittest discover -s eval/kt -p test_capture_control.py",
+      "passed": 8
+    }
+  ],
+  "finding": {
+    "id": "SI1",
+    "severity": "P2",
+    "status": "resolved_independently_retested",
+    "area": "capture_control.verify_package",
+    "issue": "Two frozen before representations pass two-input cardinality check without any after document.",
+    "offline_reproduction": {
+      "input_files": [
+        "seeds/kt/eval/control/before.txt",
+        "seeds/kt/eval/control/before.docx"
+      ],
+      "report_editions": [
+        "before",
+        "before"
+      ],
+      "internally_consistent_artifacts": [
+        "final SSE",
+        "saved report",
+        "reopened report",
+        "persisted trace"
+      ],
+      "observed_integrity_failures": 0
+    },
+    "requested_fix": "Require exactly one before and one after input and a single common format for paired control packages.",
+    "resolution": "complete_input_pair requires one before and one after with common supported extension; offline same-edition package now rejected.",
+    "retest": {
+      "integrity_failures": 1,
+      "errors": [
+        "Expected exactly one before and one after representation of the same format"
+      ]
+    }
+  },
+  "revision_custody": "Rebased input commits are now 76986e3 and d7e0354 after schema4da4390. Historical prerebase captured revision values must remain unchanged; they describe the actual past capture. Schema intake alone is not engine integration or a rerun.",
+  "release_limits": [
+    "No genuine-agent execution accepted. Batyrkhan remains provider/API run owner.",
+    "All source labels remain pending human review; local guard/test agreement is not product quality.",
+    "Current source schema is frozen, but actual integrated producer behavior and result-dependent tool actions require captured evidence."
+  ]
+}

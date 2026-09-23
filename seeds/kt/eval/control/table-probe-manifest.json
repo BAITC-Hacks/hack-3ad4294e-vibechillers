@@ -1,0 +1,26 @@
+{
+  "bundle_id": "kt-stage3-synthetic-table-probe-v1",
+  "auxiliary": true,
+  "provenance": "synthetic tables derived from canonical control TXT; not organiser data",
+  "expectations_status": "unlabelled_format_probe",
+  "files": [
+    {
+      "path": "before-table.xlsx",
+      "edition": "before",
+      "auxiliary": true,
+      "sha256": "47ec73b9724e664496a359ccf26fda33076be0227ccb473163a53700ed3ee751",
+      "bytes": 6099,
+      "canonical": "before.txt",
+      "canonical_sha256": "ec55a432799226339f681d6d7034e9b2f3f03c1065af45506df97595956ddb76"
+    },
+    {
+      "path": "after-table.xlsx",
+      "edition": "after",
+      "auxiliary": true,
+      "sha256": "3ec21a40c37334fee7845d9aeedabacd29006bdb27850fc1fcc6b090c1e4480a",
+      "bytes": 6888,
+      "canonical": "after.txt",
+      "canonical_sha256": "4f085873ff55576b5d9d5cbe1850132d47e86e3a539e6dabc7643db79c4b8207"
+    }
+  ]
+}
