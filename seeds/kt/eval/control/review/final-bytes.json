@@ -1,0 +1,285 @@
+{
+  "review_type": "independent_final_byte_custody",
+  "at_utc": "2026-09-23T11:08:59.464184+00:00",
+  "comparison_revision": "cd6117ed0bee4b5ffe12d869f97d50ce3a074fa9",
+  "checkout_revision": "cd6117ed0bee4b5ffe12d869f97d50ce3a074fa9",
+  "scope": "Final evaluator Python bytes and frozen source/gold custody only. No semantic edits, API/provider calls or repository-wide checks. Historical review artifacts retained unchanged.",
+  "python_sources": {
+    "eval/kt/build_control.py": {
+      "sha256": "b3eae647ddfa9de5345e2c7f4a0394a3fdfd85ed83b94bf09c146d49c39d96c8",
+      "bytes": 17942,
+      "crlf_sequences": 0,
+      "git_filtered_blob": "becafd427b152cb793b12fcfcf71ea4602adb4ac",
+      "baseline_blob": "becafd427b152cb793b12fcfcf71ea4602adb4ac",
+      "normalized_git_blob_equal": true,
+      "lf_normalized_bytes_equal": true
+    },
+    "eval/kt/build_control_labels.py": {
+      "sha256": "e1aed8a7eb3f3f0e75fcb45fcf553187b7021f6bbdf0d49c6ef985f1b4fd6c9c",
+      "bytes": 8065,
+      "crlf_sequences": 0,
+      "git_filtered_blob": "30c87c49d743892f6f678f67700219c3ed65ffa9",
+      "baseline_blob": "30c87c49d743892f6f678f67700219c3ed65ffa9",
+      "normalized_git_blob_equal": true,
+      "lf_normalized_bytes_equal": true
+    },
+    "eval/kt/capture_control.py": {
+      "sha256": "e80ddd43b8935ff6176dfaa5e5f0ce45252f2d967bbf390432272d2a13b2c3ef",
+      "bytes": 17509,
+      "crlf_sequences": 0,
+      "git_filtered_blob": "11610b188746a41817980c775110011a92a73b7c",
+      "baseline_blob": "11610b188746a41817980c775110011a92a73b7c",
+      "normalized_git_blob_equal": true,
+      "lf_normalized_bytes_equal": true
+    },
+    "eval/kt/make_mutations.py": {
+      "sha256": "8f0a6b3394347bb0d5f47eb5427e72a9dd3614ad43acef245d4d7f458b6cfcd3",
+      "bytes": 46281,
+      "crlf_sequences": 0,
+      "git_filtered_blob": "5b8f4dee867036542e391154f52ed43c25436c9f",
+      "baseline_blob": "5b8f4dee867036542e391154f52ed43c25436c9f",
+      "normalized_git_blob_equal": true,
+      "lf_normalized_bytes_equal": true
+    },
+    "eval/kt/record_control_review.py": {
+      "sha256": "ce12261922c743aef0e1f82e156db731f0702c766174dd3f3dcde84a6da6d311",
+      "bytes": 5714,
+      "crlf_sequences": 0,
+      "git_filtered_blob": "931d90b9484a3f3686464e514eed5d07e375b9fb",
+      "baseline_blob": "931d90b9484a3f3686464e514eed5d07e375b9fb",
+      "normalized_git_blob_equal": true,
+      "lf_normalized_bytes_equal": true
+    },
+    "eval/kt/score.py": {
+      "sha256": "6a503bb7b6b5bced0a78398899d397f2ceacdcf5a5fb67b40e953103a3c59059",
+      "bytes": 45632,
+      "crlf_sequences": 0,
+      "git_filtered_blob": "61a5d89996e8b91f0d95c99b4bc4c0ca8495fab1",
+      "baseline_blob": "61a5d89996e8b91f0d95c99b4bc4c0ca8495fab1",
+      "normalized_git_blob_equal": true,
+      "lf_normalized_bytes_equal": true
+    },
+    "eval/kt/summarize_stage3_local.py": {
+      "sha256": "d6a78f5d59b5f28f2c5d8e87342022648811328058614452681eb90c0b3e87a5",
+      "bytes": 3754,
+      "crlf_sequences": 0,
+      "git_filtered_blob": "0c21ad1f1b34e0f24b77dff3a543a643de29441e",
+      "baseline_blob": "0c21ad1f1b34e0f24b77dff3a543a643de29441e",
+      "normalized_git_blob_equal": true,
+      "lf_normalized_bytes_equal": true
+    },
+    "eval/kt/test_capture_control.py": {
+      "sha256": "cd709449e105fa07cbdf9b90d64e171daff783aa231045474d794ee307fd897e",
+      "bytes": 3889,
+      "crlf_sequences": 0,
+      "git_filtered_blob": "86caacbcca2aafda463d85732290735688a73cbb",
+      "baseline_blob": "86caacbcca2aafda463d85732290735688a73cbb",
+      "normalized_git_blob_equal": true,
+      "lf_normalized_bytes_equal": true
+    },
+    "eval/kt/test_score.py": {
+      "sha256": "441390b60ba152003ed43f4e9ab19b5d1bf552b39de0930ee4164414ce141bf2",
+      "bytes": 35478,
+      "crlf_sequences": 0,
+      "git_filtered_blob": "2834bff36b221e0fbc58957d1c6e33a9b81a59f6",
+      "baseline_blob": "2834bff36b221e0fbc58957d1c6e33a9b81a59f6",
+      "normalized_git_blob_equal": true,
+      "lf_normalized_bytes_equal": true
+    }
+  },
+  "all_python_normalized_git_blobs_equal_to_baseline": true,
+  "all_python_sources_use_lf": true,
+  "gold_and_sources": {
+    "seeds/kt/v8.txt": {
+      "sha256": "f5ce4518f22ecad2701f1fed8929d93ff09bb45af6e35e8fd60726362b6bfbc8",
+      "reference": "recorded frozen source/manifest SHA in cd6117e",
+      "expected_sha256": "f5ce4518f22ecad2701f1fed8929d93ff09bb45af6e35e8fd60726362b6bfbc8",
+      "matches_reference": true,
+      "raw_git_blob_equal": false
+    },
+    "seeds/kt/v9.txt": {
+      "sha256": "7ab6a7fc5396dffbcd9228149b47ed28e0c3338284ad6c2180f8acb94fdd738b",
+      "reference": "recorded frozen source/manifest SHA in cd6117e",
+      "expected_sha256": "7ab6a7fc5396dffbcd9228149b47ed28e0c3338284ad6c2180f8acb94fdd738b",
+      "matches_reference": true,
+      "raw_git_blob_equal": false
+    },
+    "seeds/kt/v8.docx": {
+      "sha256": "a91fb0f5e81ea323a7ff1f3a6205eb2631a487d9e7122f136f70577d0c410e98",
+      "reference": "raw Git blob SHA in cd6117e",
+      "expected_sha256": "a91fb0f5e81ea323a7ff1f3a6205eb2631a487d9e7122f136f70577d0c410e98",
+      "matches_reference": true,
+      "raw_git_blob_equal": true
+    },
+    "seeds/kt/v9.docx": {
+      "sha256": "043853e555b8eb90b294186ee0dba33d89997827185c6be67db6fdaf3dc2a8ef",
+      "reference": "raw Git blob SHA in cd6117e",
+      "expected_sha256": "043853e555b8eb90b294186ee0dba33d89997827185c6be67db6fdaf3dc2a8ef",
+      "matches_reference": true,
+      "raw_git_blob_equal": true
+    },
+    "seeds/kt/eval/labels.jsonl": {
+      "sha256": "87965da85193a0420dd2383fae056211c7cba5b1976bdc0e3f2783534526b7ed",
+      "reference": "raw Git blob SHA in cd6117e",
+      "expected_sha256": "87965da85193a0420dd2383fae056211c7cba5b1976bdc0e3f2783534526b7ed",
+      "matches_reference": true,
+      "raw_git_blob_equal": true
+    },
+    "seeds/kt/eval/regression.jsonl": {
+      "sha256": "87965da85193a0420dd2383fae056211c7cba5b1976bdc0e3f2783534526b7ed",
+      "reference": "raw Git blob SHA in cd6117e",
+      "expected_sha256": "87965da85193a0420dd2383fae056211c7cba5b1976bdc0e3f2783534526b7ed",
+      "matches_reference": true,
+      "raw_git_blob_equal": true
+    },
+    "seeds/kt/eval/challenge.jsonl": {
+      "sha256": "b31e4f1a124548cee9bacda752de78f216432c3dfb0b75dad445d19bd00e80b9",
+      "reference": "raw Git blob SHA in cd6117e",
+      "expected_sha256": "b31e4f1a124548cee9bacda752de78f216432c3dfb0b75dad445d19bd00e80b9",
+      "matches_reference": true,
+      "raw_git_blob_equal": true
+    },
+    "seeds/kt/eval/split.json": {
+      "sha256": "62875980dddc963c276784cff6905fb769c2c92613b3865c9af48174a468cf6f",
+      "reference": "raw Git blob SHA in cd6117e",
+      "expected_sha256": "62875980dddc963c276784cff6905fb769c2c92613b3865c9af48174a468cf6f",
+      "matches_reference": true,
+      "raw_git_blob_equal": true
+    },
+    "seeds/kt/eval/reviews.json": {
+      "sha256": "fe568c0ba4da80e96fa055cc3a9f03d62d06c29cd6a43dc9912ed86579a73c97",
+      "reference": "raw Git blob SHA in cd6117e",
+      "expected_sha256": "fe568c0ba4da80e96fa055cc3a9f03d62d06c29cd6a43dc9912ed86579a73c97",
+      "matches_reference": true,
+      "raw_git_blob_equal": true
+    },
+    "seeds/kt/eval/control/labels.jsonl": {
+      "sha256": "462d75c6d39bf30ab0c71c816232904b27019496355f3b0494685e26bdf02d7c",
+      "reference": "raw Git blob SHA in cd6117e",
+      "expected_sha256": "462d75c6d39bf30ab0c71c816232904b27019496355f3b0494685e26bdf02d7c",
+      "matches_reference": true,
+      "raw_git_blob_equal": true
+    },
+    "seeds/kt/eval/control/manifest.json": {
+      "sha256": "d848ebd8c0995ba460f28d7ef64585a22a6736a2fc0e5be3d45ef0f5597fc1d2",
+      "reference": "raw Git blob SHA in cd6117e",
+      "expected_sha256": "d848ebd8c0995ba460f28d7ef64585a22a6736a2fc0e5be3d45ef0f5597fc1d2",
+      "matches_reference": true,
+      "raw_git_blob_equal": true
+    },
+    "seeds/kt/eval/control/expectations.preliminary.md": {
+      "sha256": "595313a6ce4ae4f872ea8e823c5794f5c5bd2d8c3c83331f8e793d5c132fb8b6",
+      "reference": "raw Git blob SHA in cd6117e",
+      "expected_sha256": "595313a6ce4ae4f872ea8e823c5794f5c5bd2d8c3c83331f8e793d5c132fb8b6",
+      "matches_reference": true,
+      "raw_git_blob_equal": true
+    },
+    "seeds/kt/eval/control/before.txt": {
+      "sha256": "ec55a432799226339f681d6d7034e9b2f3f03c1065af45506df97595956ddb76",
+      "reference": "recorded frozen source/manifest SHA in cd6117e",
+      "expected_sha256": "ec55a432799226339f681d6d7034e9b2f3f03c1065af45506df97595956ddb76",
+      "matches_reference": true,
+      "raw_git_blob_equal": true
+    },
+    "seeds/kt/eval/control/after.txt": {
+      "sha256": "4f085873ff55576b5d9d5cbe1850132d47e86e3a539e6dabc7643db79c4b8207",
+      "reference": "recorded frozen source/manifest SHA in cd6117e",
+      "expected_sha256": "4f085873ff55576b5d9d5cbe1850132d47e86e3a539e6dabc7643db79c4b8207",
+      "matches_reference": true,
+      "raw_git_blob_equal": true
+    },
+    "seeds/kt/eval/control/before.docx": {
+      "sha256": "253413fd6a1b5c69d08959aaffd2838f83d7f1f2976fc02464b4711ba86483e5",
+      "reference": "recorded frozen source/manifest SHA in cd6117e",
+      "expected_sha256": "253413fd6a1b5c69d08959aaffd2838f83d7f1f2976fc02464b4711ba86483e5",
+      "matches_reference": true,
+      "raw_git_blob_equal": true
+    },
+    "seeds/kt/eval/control/after.docx": {
+      "sha256": "cc751b88f6b5cf5910ef6505f02a6c6bc8b7740607fa2734bcafdfd409f01b9a",
+      "reference": "recorded frozen source/manifest SHA in cd6117e",
+      "expected_sha256": "cc751b88f6b5cf5910ef6505f02a6c6bc8b7740607fa2734bcafdfd409f01b9a",
+      "matches_reference": true,
+      "raw_git_blob_equal": true
+    },
+    "seeds/kt/eval/control/before.pdf": {
+      "sha256": "a867051f06c9bc5ef963eb136428319653bf3748c74a9f275c62432f45211dd4",
+      "reference": "recorded frozen source/manifest SHA in cd6117e",
+      "expected_sha256": "a867051f06c9bc5ef963eb136428319653bf3748c74a9f275c62432f45211dd4",
+      "matches_reference": true,
+      "raw_git_blob_equal": true
+    },
+    "seeds/kt/eval/control/after.pdf": {
+      "sha256": "ec9e741b6d13b5d1a8de53340ffbaa72fcb14812f4a30ea958d151b4d9013ce5",
+      "reference": "recorded frozen source/manifest SHA in cd6117e",
+      "expected_sha256": "ec9e741b6d13b5d1a8de53340ffbaa72fcb14812f4a30ea958d151b4d9013ce5",
+      "matches_reference": true,
+      "raw_git_blob_equal": true
+    },
+    "seeds/kt/eval/control/before.xlsx": {
+      "sha256": "fe41fb5d32a9cd31943c93d8e02cabbab7198c001feb732d7bd288c70aac4aed",
+      "reference": "recorded frozen source/manifest SHA in cd6117e",
+      "expected_sha256": "fe41fb5d32a9cd31943c93d8e02cabbab7198c001feb732d7bd288c70aac4aed",
+      "matches_reference": true,
+      "raw_git_blob_equal": true
+    },
+    "seeds/kt/eval/control/after.xlsx": {
+      "sha256": "7a8fd8054153913bbe03cef7ae2233f8dd235210e41cb53240ac0049b23f9256",
+      "reference": "recorded frozen source/manifest SHA in cd6117e",
+      "expected_sha256": "7a8fd8054153913bbe03cef7ae2233f8dd235210e41cb53240ac0049b23f9256",
+      "matches_reference": true,
+      "raw_git_blob_equal": true
+    },
+    "seeds/kt/eval/control/before-table.xlsx": {
+      "sha256": "47ec73b9724e664496a359ccf26fda33076be0227ccb473163a53700ed3ee751",
+      "reference": "recorded frozen source/manifest SHA in cd6117e",
+      "expected_sha256": "47ec73b9724e664496a359ccf26fda33076be0227ccb473163a53700ed3ee751",
+      "matches_reference": true,
+      "raw_git_blob_equal": true
+    },
+    "seeds/kt/eval/control/after-table.xlsx": {
+      "sha256": "3ec21a40c37334fee7845d9aeedabacd29006bdb27850fc1fcc6b090c1e4480a",
+      "reference": "recorded frozen source/manifest SHA in cd6117e",
+      "expected_sha256": "3ec21a40c37334fee7845d9aeedabacd29006bdb27850fc1fcc6b090c1e4480a",
+      "matches_reference": true,
+      "raw_git_blob_equal": true
+    },
+    "seeds/kt/eval/control/table-probe-manifest.json": {
+      "sha256": "48be86572c1a4b01b3d8afc3cb5f4fdf84bc755fa1421f6024ae109057e08d27",
+      "reference": "raw Git blob SHA in cd6117e",
+      "expected_sha256": "48be86572c1a4b01b3d8afc3cb5f4fdf84bc755fa1421f6024ae109057e08d27",
+      "matches_reference": true,
+      "raw_git_blob_equal": true
+    }
+  },
+  "all_gold_and_sources_match_recorded_frozen_or_git_bytes": true,
+  "source_byte_note": "v8/v9 TXT raw working bytes differ from normalized Git blobs but match the preexisting recorded frozen source SHA; do not conflate normalized Git equality with byte identity.",
+  "historical_review_artifacts": {
+    "seeds/kt/eval/control/review/technical.json": {
+      "sha256": "75c1f932f58fbf4c34c8a68c8f1ba04ebdadbeb2a7e7eac43cc0bd426bd65b60",
+      "byte_identical_to_baseline": true
+    },
+    "seeds/kt/eval/control/review/schema-intake.json": {
+      "sha256": "1c9ee95bb674f83e17b5ebf8d100dbd1a40e910ff1dfd7e1a2f9af6cd08c6e43",
+      "byte_identical_to_baseline": true
+    }
+  },
+  "line_ending_policy": {
+    "path": "eval/kt/.gitattributes",
+    "sha256": "dfe4f5876e5b41f1c337d63f346fecb0c07e82f0eec40844f80aa292fb4e5df8",
+    "rule": "*.py text eol=lf"
+  },
+  "independent_tests": [
+    {
+      "command": "python -m unittest discover -s eval/kt -p test_score.py",
+      "passed": 53,
+      "exit_code": 0
+    },
+    {
+      "command": "python -m unittest discover -s eval/kt -p test_capture_control.py",
+      "passed": 8,
+      "exit_code": 0
+    }
+  ],
+  "conclusion": "Final evaluator LF normalization preserves every checked Python Git blob. Source/gold hashes match their recorded references; historical review artifacts remain unchanged. Tests are guard evidence, not product or agent quality."
+}

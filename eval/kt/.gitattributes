@@ -1,0 +1,2 @@
+# Evaluator source digests must survive Windows/Linux checkout.
+*.py text eol=lf
