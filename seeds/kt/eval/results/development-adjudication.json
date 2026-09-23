@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "authority": "User delegated the dev-split/dev-merge decision to the primary agent; no human source review claimed",
+  "decision_by": "Codex primary agent",
+  "review_status": "pending_human",
+  "previous_snapshot_commit": "ad3cbf5",
+  "independent_review_manifest": "seeds/kt/eval/independent-review/manifest.json",
+  "decisions": [
+    {
+      "id": "dev-split",
+      "previous_status": "changed",
+      "expected_status": "moved",
+      "rationale": "Действия и ответственный аудитор сохранены. Контроль исполнения рекомендаций перемещён из составного §2.1.1 в отдельный §2.1.2; изменилось расположение, а не содержание функции. Полное соответствие 1:2 сохраняет обе части. По контракту это moved.",
+      "label_before": {
+        "id": "dev-split",
+        "kind": "synthetic",
+        "documents": [
+          {
+            "doc": "before-1",
+            "file": "seeds/kt/eval/mutations/stage2/dev-split/before-1.txt",
+            "sha256": "08d436545a6e4abe50e6fb3f8c4bf47e9d3bd28066e7c9b24ed740c1396521be"
+          },
+          {
+            "doc": "after-1",
+            "file": "seeds/kt/eval/mutations/stage2/dev-split/after-1.txt",
+            "sha256": "892cb62256c049894ba20e6e70d79c9477f83639bcd74b063f82e01fe37c9af0"
+          }
+        ],
+        "before": [
+          {
+            "doc": "before-1",
+            "clause_id": "2.1.1"
+          }
+        ],
+        "after": [
+          {
+            "doc": "after-1",
+            "clause_id": "2.1.1"
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "2.1.2"
+          }
+        ],
+        "expected_status": "changed",
+        "citations": [
+          {
+            "doc": "before-1",
+            "clause_id": "2.1.1",
+            "quote": "проверять заявки и контролировать исполнение рекомендаций."
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "2.1.1",
+            "quote": "проверять заявки."
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "2.1.2",
+            "quote": "контролировать исполнение рекомендаций."
+          }
+        ],
+        "rationale": "Одна составная обязанность разделена на два пункта без утраты частей.",
+        "annotator": "AI proposal; Alibi human confirmation pending",
+        "mutation": {
+          "operation": "split",
+          "source": {
+            "doc": "before-1",
+            "clause_id": "2.1.1"
+          },
+          "description": "Синтетический независимый текст: Одна составная обязанность разделена на два пункта без утраты частей."
+        }
+      },
+      "label_sha256_before": "b7421f91a5d34c78d550d3546b5ef7d2b0a7d6c92294ea1ff8482f80eb5cf680",
+      "label_sha256_after": "e854f836794698b658adc5f902b0514ec24e5995c5d9d46f4b884ff8e904c27c"
+    },
+    {
+      "id": "dev-merge",
+      "previous_status": "changed",
+      "expected_status": "moved",
+      "rationale": "Регистрация и хранение материалов остаются обязанностями того же секретаря. Хранение перемещено из §2.1.2 в объединённый §2.1.1; содержание обеих функций сохранено. Полное соответствие 2:1 требует обоих исходных refs. По контракту это moved.",
+      "label_before": {
+        "id": "dev-merge",
+        "kind": "synthetic",
+        "documents": [
+          {
+            "doc": "before-1",
+            "file": "seeds/kt/eval/mutations/stage2/dev-merge/before-1.txt",
+            "sha256": "87c1a4f930f3e21ce8fa2cd1bb0f462926a537f8ab09457a53f1b92a5767db56"
+          },
+          {
+            "doc": "after-1",
+            "file": "seeds/kt/eval/mutations/stage2/dev-merge/after-1.txt",
+            "sha256": "844f227acc84e4eb95830fdbbd2c3349fec9dec150cc5f29aecfdd34cff084a5"
+          }
+        ],
+        "before": [
+          {
+            "doc": "before-1",
+            "clause_id": "2.1.1"
+          },
+          {
+            "doc": "before-1",
+            "clause_id": "2.1.2"
+          }
+        ],
+        "after": [
+          {
+            "doc": "after-1",
+            "clause_id": "2.1.1"
+          }
+        ],
+        "expected_status": "changed",
+        "citations": [
+          {
+            "doc": "before-1",
+            "clause_id": "2.1.1",
+            "quote": "регистрировать материалы."
+          },
+          {
+            "doc": "before-1",
+            "clause_id": "2.1.2",
+            "quote": "хранить материалы."
+          },
+          {
+            "doc": "after-1",
+            "clause_id": "2.1.1",
+            "quote": "регистрировать материалы и хранить материалы."
+          }
+        ],
+        "rationale": "Две обязанности объединены в одном пункте; требуется полное множество refs.",
+        "annotator": "AI proposal; Alibi human confirmation pending",
+        "mutation": {
+          "operation": "merge",
+          "source": {
+            "doc": "before-1",
+            "clause_id": "2.1.1"
+          },
+          "description": "Синтетический независимый текст: Две обязанности объединены в одном пункте; требуется полное множество refs."
+        }
+      },
+      "label_sha256_before": "a59fc73133808cbfac7af902e398924df88a3dc83f3360e7645867666920f472",
+      "label_sha256_after": "e8244db7b9edf75196564eabfe6349da07718732e8a75c1c7cc41e8b5c8c834d"
+    }
+  ],
+  "decided_at_utc": "2026-09-23T10:27:16.850012+00:00",
+  "dataset_sha256_before": "d11ddfb3baaa5cf08c0478badfead00095c2f868d7964353bf3ef7312547effe",
+  "dataset_sha256_after": "b31e4f1a124548cee9bacda752de78f216432c3dfb0b75dad445d19bd00e80b9"
+}

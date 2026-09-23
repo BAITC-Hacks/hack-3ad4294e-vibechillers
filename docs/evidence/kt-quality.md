@@ -133,3 +133,31 @@ python eval/kt/score.py --labels seeds/kt/eval/challenge.jsonl --partition devel
 - `dev-real-audit-goals`: добавить к рассмотрению §9.37 обеих редакций, меняющий возможного делегата контроля при сохранении общей ответственности Главного аудитора. Требуется решение о границе контекста целевой процедуры; нельзя утверждать неизменность всего контекста по одному дочернему тексту.
 
 Текущие 30 challenge-меток и их хеши при приёмке не изменены, статус остаётся `pending_human`. Человеческого подтверждения нет. Опубликованные выше development-метрики относятся к прежней версии предложений; изменение ожидаемых статусов потребует отдельной версии и пересчёта с явным указанием причины. Новых запусков системы и оценки holdout при приёмке не проводилось. В challenge нет положительных gold missing/duplicate, поэтому recall этих классов на challenge не измерен; их наличие в regression не восполняет это ограничение.
+
+### Решение по dev-split / dev-merge после приёмки
+
+Пользователь делегировал главному агенту решение этих двух споров. Для обоих выбрано **moved**: действия и ответственный сохранены, изменилось только расположение действий между пунктами. Само число пунктов не доказывает изменения содержания функции. Это решение агента по контракту, не подтверждение личного чтения источников человеком; `pending_human` сохранён. Другие метки, все refs и holdout остались прежними.
+
+`results/development-adjudication.json` сохраняет оба прежних ответа, основания, время, хеши до/после и ссылку на исходный снимок `ad3cbf5`. `reviews.json` и `split.json` отражают изменение и историю. Пакет `independent-review/` остаётся неизменным историческим свидетельством проверки версии из `ad3cbf5`; его хеши разметки относятся к этой версии, а не к изменённым двум строкам. Первая таблица development выше также относится к версии до решения.
+
+Тем же scorer повторно оценены **прежние development-предсказания** из `data/stage2-development/`, без нового запуска ядра. Это пересчёт после изменения development-разметки, не независимая оценка и не улучшение системы. Результат: `results/development-adjudicated-provisional.json`. Real: TP=6, FP=5, FN=6 из 12. Synthetic: TP=6, FP=6, FN=4 из 10 — суммы не изменились. Изменилось распределение знаменателей и FN по двум статусам synthetic:
+
+| Статус synthetic после решения | Gold | TP | FP | FN | Precision | Recall |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| unchanged | 4 | 4 | 2 | 0 | 4/6 | 4/4 |
+| changed | 2 | 1 | 2 | 1 | 1/3 | 1/2 |
+| moved | 4 | 1 | 0 | 3 | 1/1 | 1/4 |
+| added | 0 | 0 | 1 | 0 | 0/1 | N/A (0) |
+| missing | 0 | 0 | 1 | 0 | 0/1 | N/A (0) |
+| duplicate | 0 | 0 | 0 | 0 | N/A (0) | N/A (0) |
+
+Appropriate abstention: 0/0, N/A отдельно от semantic TP; synthetic ошибки по-прежнему wrong_match=2, wrong_status=2. Валидация всех 30 challenge-строк после изменения успешна; refs, цитаты и хеши разрешаются. Holdout не оценивался.
+
+Команды этого пересчёта:
+
+```powershell
+python -B eval/kt/make_mutations.py --review-packet
+python -B eval/kt/score.py --labels seeds/kt/eval/challenge.jsonl --validate-labels
+$taskReports = (Get-ChildItem seeds/kt/eval/data/stage2-development -Filter 'alibi-*.json').FullName
+python -B eval/kt/score.py --labels seeds/kt/eval/challenge.jsonl --partition development --json-out seeds/kt/eval/results/development-adjudicated-provisional.json @taskReports
+```

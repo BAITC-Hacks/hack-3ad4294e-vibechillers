@@ -32,21 +32,53 @@
     },
     "dev-split": {
       "status": "pending_human",
-      "label_sha256": "b7421f91a5d34c78d550d3546b5ef7d2b0a7d6c92294ea1ff8482f80eb5cf680",
+      "label_sha256": "e854f836794698b658adc5f902b0514ec24e5995c5d9d46f4b884ff8e904c27c",
       "proposed_by": "Codex; source-read AI proposal",
       "human_reviewer": null,
       "human_decision": null,
-      "disagreements": [],
-      "events": []
+      "disagreements": [
+        {
+          "first_reviewer": "changed",
+          "second_reviewer": "moved",
+          "agent_resolution": "moved",
+          "human_source_confirmation": false
+        }
+      ],
+      "events": [
+        {
+          "at_utc": "2026-09-23T10:27:16.850012+00:00",
+          "type": "agent_adjudication_after_user_delegation",
+          "previous_label_sha256": "b7421f91a5d34c78d550d3546b5ef7d2b0a7d6c92294ea1ff8482f80eb5cf680",
+          "label_sha256": "e854f836794698b658adc5f902b0514ec24e5995c5d9d46f4b884ff8e904c27c",
+          "decision_file": "seeds/kt/eval/results/development-adjudication.json",
+          "human_source_confirmation": false
+        }
+      ]
     },
     "dev-merge": {
       "status": "pending_human",
-      "label_sha256": "a59fc73133808cbfac7af902e398924df88a3dc83f3360e7645867666920f472",
+      "label_sha256": "e8244db7b9edf75196564eabfe6349da07718732e8a75c1c7cc41e8b5c8c834d",
       "proposed_by": "Codex; source-read AI proposal",
       "human_reviewer": null,
       "human_decision": null,
-      "disagreements": [],
-      "events": []
+      "disagreements": [
+        {
+          "first_reviewer": "changed",
+          "second_reviewer": "moved",
+          "agent_resolution": "moved",
+          "human_source_confirmation": false
+        }
+      ],
+      "events": [
+        {
+          "at_utc": "2026-09-23T10:27:16.850012+00:00",
+          "type": "agent_adjudication_after_user_delegation",
+          "previous_label_sha256": "a59fc73133808cbfac7af902e398924df88a3dc83f3360e7645867666920f472",
+          "label_sha256": "e8244db7b9edf75196564eabfe6349da07718732e8a75c1c7cc41e8b5c8c834d",
+          "decision_file": "seeds/kt/eval/results/development-adjudication.json",
+          "human_source_confirmation": false
+        }
+      ]
     },
     "dev-shared-dnm": {
       "status": "pending_human",
