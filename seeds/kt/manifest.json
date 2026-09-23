@@ -1,0 +1,38 @@
+[
+  {
+    "file": "v8.docx",
+    "label": "Протокол № 13 от 25.06.2021, редакция № 8",
+    "source": "https://docs.google.com/document/d/1X2tNOF9_ZF2ms0Fnx1mWrUaAoMLHabTu/edit",
+    "export_url": "https://docs.google.com/document/d/1X2tNOF9_ZF2ms0Fnx1mWrUaAoMLHabTu/export?format=docx",
+    "sha256": "a91fb0f5e81ea323a7ff1f3a6205eb2631a487d9e7122f136f70577d0c410e98",
+    "bytes": 68185,
+    "license": "organizer-provided case material (Kazakhtelecom track), hackathon use only"
+  },
+  {
+    "file": "v8.txt",
+    "label": "Протокол № 13 от 25.06.2021, редакция № 8",
+    "source": "https://docs.google.com/document/d/1X2tNOF9_ZF2ms0Fnx1mWrUaAoMLHabTu/edit",
+    "export_url": "https://docs.google.com/document/d/1X2tNOF9_ZF2ms0Fnx1mWrUaAoMLHabTu/export?format=txt",
+    "sha256": "f5ce4518f22ecad2701f1fed8929d93ff09bb45af6e35e8fd60726362b6bfbc8",
+    "bytes": 155502,
+    "license": "organizer-provided case material (Kazakhtelecom track), hackathon use only"
+  },
+  {
+    "file": "v9.docx",
+    "label": "Протокол № 7 от 23.12.2022, редакция № 9",
+    "source": "https://docs.google.com/document/d/1FUh7Ld40xk-gwXMdj5-_3-p-cYeIl2hu/edit",
+    "export_url": "https://docs.google.com/document/d/1FUh7Ld40xk-gwXMdj5-_3-p-cYeIl2hu/export?format=docx",
+    "sha256": "043853e555b8eb90b294186ee0dba33d89997827185c6be67db6fdaf3dc2a8ef",
+    "bytes": 68480,
+    "license": "organizer-provided case material (Kazakhtelecom track), hackathon use only"
+  },
+  {
+    "file": "v9.txt",
+    "label": "Протокол № 7 от 23.12.2022, редакция № 9",
+    "source": "https://docs.google.com/document/d/1FUh7Ld40xk-gwXMdj5-_3-p-cYeIl2hu/edit",
+    "export_url": "https://docs.google.com/document/d/1FUh7Ld40xk-gwXMdj5-_3-p-cYeIl2hu/export?format=txt",
+    "sha256": "7ab6a7fc5396dffbcd9228149b47ed28e0c3338284ad6c2180f8acb94fdd738b",
+    "bytes": 154213,
+    "license": "organizer-provided case material (Kazakhtelecom track), hackathon use only"
+  }
+]
