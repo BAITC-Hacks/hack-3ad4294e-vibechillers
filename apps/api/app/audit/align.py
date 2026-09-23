@@ -8,7 +8,8 @@ Order of evidence, strongest first:
    owner context tells the copies apart; the rest stays ``unresolved`` or, when an
    extra copy appears under a different owner, ``duplicate``.
 2. **Lexical** — mutual best candidates above ``STRONG`` with a clear ``MARGIN``
-   over the runner-up on both sides become ``changed``. Iterated until stable.
+   become ``changed``, or ``moved`` when source-backed owners change but the
+   complete duty after their leading names is identical. Iterated until stable.
 3. **Leftovers** — no candidate at all gives ``missing``/``added``; candidates
    that are ambiguous or weak give ``unresolved`` listing every candidate ref;
    one predecessor strongly matching several owners gives ``duplicate``.
@@ -60,6 +61,7 @@ class _Item:
     clause: Clause
     norm: str
     stems: frozenset[str]
+    body_norm: str
     base_id: str
     owners: frozenset[str]
     context: tuple[str, ...] = ()
@@ -121,6 +123,21 @@ def _governing_context(clause: Clause, clauses: dict[str, Clause], units: dict[s
     return tuple(sorted(context))
 
 
+def _body_without_owner(norm: str, owners: frozenset[str]) -> str:
+    """Only strip a leading name when the parser sourced exactly that owner."""
+    if len(owners) != 1:
+        return ""
+    prefix = normalize(next(iter(owners))) + " "
+    return norm[len(prefix):] if norm.startswith(prefix) else ""
+
+
+def _owner_transfer_preserves_duty(b: _Item, a: _Item) -> bool:
+    return bool(
+        b.owners and a.owners and b.owners != a.owners
+        and b.context == a.context and b.body_norm and b.body_norm == a.body_norm
+    )
+
+
 def _items(clauses: list[Clause], units: list[Unit], docs: list[str]) -> list[_Item]:
     wanted = set(docs)
     by_doc_clause: dict[str, dict[str, Clause]] = {}
@@ -133,13 +150,26 @@ def _items(clauses: list[Clause], units: list[Unit], docs: list[str]) -> list[_I
     items = []
     for clause in sorted((c for c in clauses if c.doc in wanted and c.kind == "function"),
                          key=lambda c: (order[c.doc], c.ordinal)):
+        owners = owner_keys(clause, by_doc_clause.get(clause.doc, {}), by_doc_unit.get(clause.doc, {}))
+        # An explicit absence of partitioning is evidence of shared scope, not
+        # an additional operational action. Keep the full original citation.
+        sentences = re.split(r"(?<=[.!?])\s+", clause.text.strip(), maxsplit=1)
+        duty_text = clause.text
+        if len(sentences) == 2 and re.fullmatch(
+            r"(?:Разделение|Разграничение)\b[^.!?]{1,400}\bне\s+"
+            r"(?:установлено|предусмотрено|определено)\s*[.!?]?",
+            sentences[1], re.IGNORECASE,
+        ):
+            duty_text = sentences[0]
+        norm = normalize(duty_text)
         items.append(
             _Item(
                 clause=clause,
-                norm=normalize(clause.text),
+                norm=norm,
+                body_norm=_body_without_owner(norm, owners),
                 stems=stems(clause.text),
                 base_id=_base_id(clause.clause_id),
-                owners=owner_keys(clause, by_doc_clause.get(clause.doc, {}), by_doc_unit.get(clause.doc, {})),
+                owners=owners,
                 context=_governing_context(clause, by_doc_clause.get(clause.doc, {}), by_doc_unit.get(clause.doc, {})),
             )
         )
@@ -169,7 +199,10 @@ class _Scorer:
         key = (bi, ai)
         if key not in self._cache:
             b, a = self.before[bi], self.after[ai]
-            self._cache[key] = 1.0 if b.norm and b.norm == a.norm else similarity(b.norm, b.stems, a.norm, a.stems)
+            self._cache[key] = (
+                1.0 if (b.norm and b.norm == a.norm) or _owner_transfer_preserves_duty(b, a)
+                else similarity(b.norm, b.stems, a.norm, a.stems)
+            )
         return self._cache[key]
 
     def _candidates(self, item: _Item, index: dict[str, list[int]], others: list[_Item]) -> list[int]:
@@ -248,13 +281,25 @@ def _pair_status(b: _Item, a: _Item) -> tuple[str, str]:
 def _exact_phase(before, after, out: _Builder, paired_b: dict[int, int], paired_a: dict[int, int], handled_b, handled_a):
     groups: dict[str, tuple[list[int], list[int]]] = {}
     for i, item in enumerate(before):
-        if item.norm:
-            groups.setdefault(item.norm, ([], []))[0].append(i)
+        key = item.body_norm or item.norm
+        if key:
+            groups.setdefault(key, ([], []))[0].append(i)
     for i, item in enumerate(after):
-        if item.norm and item.norm in groups:
-            groups[item.norm][1].append(i)
+        key = item.body_norm or item.norm
+        if key and key in groups:
+            groups[key][1].append(i)
     for norm, (bs, as_) in groups.items():
         if not as_:
+            continue
+        if (len(bs) == 1 and len(as_) > 1
+                and _distinct_owners([after[a] for a in as_])
+                and all(before[bs[0]].context == after[a].context for a in as_)):
+            out.add("duplicate", [before[bs[0]]], [after[a] for a in as_],
+                    "Та же функция закреплена за несколькими различными владельцами "
+                    "новой редакции без установленного разделения объёма; требуется проверка.",
+                    "exact", True)
+            handled_b.update(bs)
+            handled_a.update(as_)
             continue
         pairs: list[tuple[int, int]] = []
         if len(bs) == 1 and len(as_) == 1:
@@ -352,12 +397,16 @@ def _lexical_phase(before, after, scorer: _Scorer, out: _Builder, paired_b, pair
                 continue
             b, a = before[bi], after[ai]
             note = _context_note(b, a)
-            reason = f"Лексическое сходство {s1:.2f}; формулировка изменена" + (f"; {note}." if note else ".")
+            preserved_transfer = _owner_transfer_preserves_duty(b, a)
+            if preserved_transfer:
+                reason = f"После обозначения владельца текст функции совпадает; {note}."
+            else:
+                reason = f"Лексическое сходство {s1:.2f}; формулировка изменена" + (f"; {note}." if note else ".")
             context_changed = b.context != a.context
             if context_changed:
                 reason += " Родительский контекст изменён; смысл и ограничения требуют отдельной проверки."
-            out.add("changed", [b], [a], reason, "lexical",
-                    s1 < REVIEW_BELOW or context_changed or b.owners != a.owners)
+            out.add("moved" if preserved_transfer else "changed", [b], [a], reason, "lexical",
+                    preserved_transfer or s1 < REVIEW_BELOW or context_changed or b.owners != a.owners)
             paired_b[bi], paired_a[ai] = ai, bi
             handled_b.add(bi)
             handled_a.add(ai)

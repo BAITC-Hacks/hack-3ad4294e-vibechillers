@@ -1,0 +1,104 @@
+{
+  "capture_commit": "1b0e40d",
+  "core_sha": "b392d9bd18687eb4905f296897399d0a5eb581e9",
+  "schema_revision": "4da43907919867ce4e8579360fe5b2ff43f9a37c",
+  "archives": [
+    {
+      "path": "docs/evidence/stage3-capture-b392d9b-openai.zip",
+      "sha256": "d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d",
+      "bytes": 223337,
+      "entries": 24,
+      "credential_matches": 0
+    },
+    {
+      "path": "docs/evidence/stage3-capture-b392d9b-budget-limited.zip",
+      "sha256": "d52753f0c406533ba1228caa4560daaa1fe93b38e5978df5198f00293869fbe9",
+      "bytes": 109780,
+      "entries": 14,
+      "credential_matches": 0
+    },
+    {
+      "path": "docs/evidence/stage3-prior-attempts.zip",
+      "sha256": "0ce1b32b2eddfe6f4f4278127166c7bc3d6711cc07d405f23a85c450cd261c80",
+      "bytes": 133945,
+      "entries": 15,
+      "credential_matches": 0
+    }
+  ],
+  "runs": {
+    "deterministic": {
+      "run_id": "2a5b5e1e16b1423193dcff0be2323447",
+      "mode": "deterministic",
+      "agent": {
+        "status": "not_requested",
+        "model": null,
+        "turns": 0,
+        "tool_calls": 0,
+        "investigated_finding_ids": [],
+        "stop_reason": "Model investigation not requested."
+      }
+    },
+    "agent": {
+      "run_id": "9c7199f33a9f4ca3a9a47abfd65b8c6f",
+      "mode": "llm_assisted",
+      "agent": {
+        "status": "completed",
+        "model": "gpt-5.5-2026-04-23",
+        "turns": 7,
+        "tool_calls": 22,
+        "investigated_finding_ids": [
+          "F001",
+          "F002",
+          "F003",
+          "F004",
+          "F005",
+          "F006",
+          "F007",
+          "F008",
+          "F009",
+          "F010",
+          "F011",
+          "F012",
+          "F013",
+          "F014",
+          "F015",
+          "F016",
+          "F017",
+          "F018",
+          "F019"
+        ],
+        "stop_reason": "Model inspected run-local evidence and finalized the verified report."
+      }
+    }
+  },
+  "model": "gpt-5.5-2026-04-23",
+  "provider": "https://api.openai.com/v1",
+  "usage": {
+    "all_tests_usd": 2.4361939999999995,
+    "final_run_usd": 0.744242,
+    "final_run_request_numbers": [
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22
+    ],
+    "pricing_is_usage_based_estimate_not_invoice": true
+  },
+  "acceptance": "Independent intake pending. No full Stage 3 or F1 acceptance claimed.",
+  "known_limitations": [
+    "Successful agent completion and exact citations do not imply semantic accuracy. Function counts remain 4 TP / 6 FP / 5 FN on provisional controls.",
+    "Some governance-order clauses remain in operational function findings; do not claim that this core fully solves order/function distinction.",
+    "All recommendations require human review. No legal-breach conclusion or absence-of-risk guarantee.",
+    "DOCX locations are body block ordinals, not physical pages. PDF geometry/diagram semantics are not claimed. Legacy .doc/.xls require conversion; image-only PDFs depend on available OCR.",
+    "Original organizer DOCX files were checked keylessly only; no authorized organizer-data inference was performed.",
+    "User chose OpenAI backend-only for judge access. No external production deployment or access-control verification has been performed.",
+    "Browser dev navigation recorded two aborted GET requests; final Report/trace loaded, export matched, no JavaScript exception was reported.",
+    "Existing single-column XLSX control retained source cells but extracted zero functions: F1 is blocked for that representation. PDF control retains coordinates but domain output differs from DOCX; format equivalence is not established."
+  ],
+  "configuration_note": "Approved OpenAI values are in .env.example; the private key remains local/backend-only. Existing LLM_* process variables override .env and must be cleared or explicitly overridden at service launch. No external production deployment performed.",
+  "backend_launch": "uv run --no-sync python -m dotenv -f .env run --override -- uv run --no-sync uvicorn app.main:app --app-dir apps/api --host 127.0.0.1 --port 8000",
+  "backend_launch_note": "The dotenv/uv configuration chain was exercised with get_settings; this is a local backend-only launch, not an external deployment claim. The private .env is excluded from evidence."
+}

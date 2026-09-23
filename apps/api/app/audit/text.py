@@ -1,7 +1,7 @@
-"""Matching-only text normalisation and lexical similarity.
+"""Source-text predicates and matching-only lexical normalisation.
 
-Nothing here rewrites stored clause text: normalised forms are used to compare
-clauses, never published as quotes.
+Neither matching nor governance classification rewrites stored clause text:
+normalised forms are used for comparison, never published as quotes.
 """
 
 from __future__ import annotations
@@ -25,6 +25,52 @@ _STOP = frozenset(
 
 _STEM_LEN = 6
 
+# A governance clause remains source evidence, but is not an ongoing function.
+# Match the statement, not just a topic word: a duty may itself concern orders
+# or reorganisation. The parser supplies ancestor headings for context.
+_UNIT_SUBJECT = (
+    r"(?:отдел\w*|служб\w*|управлени\w*|департамент\w*|центр\w*|"
+    r"дирекци\w*|сектор\w*|подразделени\w*|групп\w*|комитет\w*|"
+    r"блок\w*|(?-i:[А-ЯЁA-Z]{2,8}))"
+)
+_STRUCTURAL_EVENT = re.compile(
+    rf"^(?:на\s+основании\s+(?:приказа|распоряжения)\b[^.;!?]{{0,120}}?\s+)?"
+    rf"{_UNIT_SUBJECT}\b[^.;!?]{{0,180}}\b"
+    r"(?:переименован[аыо]?|реорганизован[аыо]?|преобразован[аыо]?|"
+    r"разделен[аыо]?|объединен[аыо]?|создан[аыо]?|образован[аыо]?|"
+    r"упразднен[аыо]?|ликвидирован[аыо]?|"
+    r"сохранен[аыо]?\s+без\s+изменени\w*)\b", re.IGNORECASE,
+)
+_SUCCESSION = re.compile(
+    rf"^{_UNIT_SUBJECT}\b[^.;!?]{{0,140}}\bявляется\s+правопреемником\b", re.IGNORECASE,
+)
+_COMPLETENESS = re.compile(
+    r"^(?:настоящ\w*|данн\w*)\s+(?:приложени\w*|комплект\w*|документ\w*|"
+    r"положени\w*)\b[^.;!?]{0,140}\b(?:полный|исчерпывающий)\s+перечень\b",
+    re.IGNORECASE,
+)
+_GOVERNANCE_HEADING = re.compile(
+    r"\b(?:распорядительн\w*\s+(?:основани\w*|документ\w*|акт\w*)|"
+    r"реорганизаци\w*|организационн\w*\s+изменени\w*)\b", re.IGNORECASE,
+)
+_TRANSFER = re.compile(
+    r"^[^.;!?]{0,180}\bпередан[аыо]?\s+из\s+[^.;!?]{1,100}\bв\s+\S+",
+    re.IGNORECASE,
+)
+_ORDER_BASIS = re.compile(
+    r"^(?:(?:настоящ\w*\s+)?(?:положени\w*|регламент\w*|приложени\w*|"
+    r"штатное\s+расписание|организационн\w*\s+структур\w*)\b"
+    r"[^.;!?]{0,160}\b(?:утвержден[аыо]?|введен[аыо]?\s+в\s+действие)\b|"
+    r"(?:приказ|распоряжение)\s+(?:об?\s+|№\s*)[^.;!?]{1,160})",
+    re.IGNORECASE,
+)
+_ONGOING_DUTY = re.compile(
+    r"\b(?:вед[её]т|проводит|обеспечивает|осуществляет|исполняет|готовит|"
+    r"составляет|согласует|проверяет|регистрирует|разрабатывает|"
+    r"поддерживает|утверждает|принимает|организует|реорганизует)\b",
+    re.IGNORECASE,
+)
+
 
 def normalize(text: str) -> str:
     """Lower-case, fold ё, drop punctuation and collapse whitespace."""
@@ -34,6 +80,25 @@ def normalize(text: str) -> str:
 
 def collapse_ws(text: str) -> str:
     return _SPACE.sub(" ", text).strip()
+
+
+def is_governance_statement(text: str, ancestors: list[str]) -> bool:
+    """Identify an explicit organisational decision or annex declaration, not a duty.
+
+    Ancestors can support an order/transfer reading, but cannot turn an
+    operational sentence about maintaining orders into governance on their own.
+    Source text and clause identity are untouched; the parser decides its kind.
+    """
+    statement = collapse_ws(text).replace("ё", "е").replace("Ё", "Е")
+    if not statement or _ONGOING_DUTY.search(statement):
+        return False
+    if _STRUCTURAL_EVENT.search(statement) or _SUCCESSION.search(statement):
+        return True
+    if _COMPLETENESS.search(statement):
+        return True
+    if any(_GOVERNANCE_HEADING.search(ancestor) for ancestor in ancestors):
+        return bool(_TRANSFER.search(statement) or _ORDER_BASIS.search(statement))
+    return False
 
 
 def stems(text: str) -> frozenset[str]:

@@ -7,6 +7,7 @@ from . import Document, run_deterministic_audit, verify_citations
 from .models import ClauseRef, Finding
 from .report import resolve_alignment
 from .parser import owner_keys
+from .text import is_governance_statement
 
 
 def audit(before: str, after: str):
@@ -65,6 +66,55 @@ class SourceContextTests(unittest.TestCase):
         )
         finding, = report.findings
         self.assertEqual(finding.status, 'unchanged')
+
+    def test_governance_statement_never_swallows_an_order_related_duty(self):
+        governance = [
+            ('На основании приказа управление поставок реорганизовано в департамент логистики.', []),
+            ('Сектор логистики преобразован в управление поставок.', []),
+            ('Служба доставки является правопреемником сектора маршрутизации.', []),
+            ('Настоящий документ содержит исчерпывающий перечень подразделений и их функций.', []),
+            ('Учет поставок передан из сектора логистики в управление поставок.',
+             ['Реорганизация подразделений']),
+            ('Положение утверждено приказом руководителя.', ['Распорядительные документы']),
+        ]
+        duties = [
+            'Управление ведет журнал приказов о реорганизации подразделений.',
+            'Служба обеспечивает реорганизацию складских работ по утвержденному плану.',
+            'Сектор составляет перечень подразделений и обновляет его ежемесячно.',
+            'Управление создано для контроля и ведет журнал поставок.',
+        ]
+        for statement, ancestors in governance:
+            with self.subTest(statement=statement):
+                self.assertTrue(is_governance_statement(statement, ancestors))
+        for statement in duties:
+            with self.subTest(statement=statement):
+                self.assertFalse(is_governance_statement(statement, ['Реорганизация и распорядительные документы']))
+
+    def test_sourced_leading_owner_change_preserves_only_the_same_duty(self):
+        before = (
+            '1. Состав\n1.1. Дирекция состоит из следующих подразделений:\n'
+            'а) Сектор входного контроля (СВК).\n'
+            '2. СВК\n2.1. СВК сверяет серийные номера изделий с реестром.'
+        )
+        after = (
+            '1. Состав\n1.1. Дирекция состоит из следующих подразделений:\n'
+            'а) Центр приемки (ЦП).\n'
+            '2. ЦП\n2.1. ЦП сверяет серийные номера изделий с реестром.'
+        )
+        report = audit(before, after)
+        finding, = child_findings(report, '2.1')
+        self.assertEqual(finding.status, 'moved')
+        self.assertTrue(finding.review_required)
+        self.assertFalse(verify_citations(finding.citations, report.clauses).invalid)
+
+        restricted = after.replace(
+            'сверяет серийные номера изделий с реестром.',
+            'сверяет серийные номера изделий с реестром только после согласования с кладовщиком.',
+        )
+        altered, = child_findings(audit(before, restricted), '2.1')
+        self.assertIn(altered.status, {'changed', 'unresolved'})
+        self.assertTrue(altered.review_required)
+
 
 
     def test_parent_citation_cannot_substitute_missing_child_evidence(self):
@@ -232,6 +282,24 @@ class SourceContextTests(unittest.TestCase):
                 self.assertEqual(result.after, after)
                 self.assertTrue(result.review_required)
                 self.assertFalse(verify_citations(result.citations, report.clauses).invalid)
+
+    def test_shared_duty_keeps_all_successors_without_erasing_scope_changes(self):
+        before = ('1. Структура\n1.1. В состав входят следующие подразделения:\n'
+                  'а) Отдел поставок (ОП).\n2. ОП\n2.1. ОП регистрирует все заявки в журнале.')
+        after = ('1. Структура\n1.1. В состав входят следующие подразделения:\n'
+                 'а) Центр поставок (ЦП).\nб) Служба сопровождения (СС).\n'
+                 '3. ЦП\n3.1. ЦП регистрирует все заявки в журнале.\n'
+                 '4. СС\n4.1. СС регистрирует все заявки в журнале. '
+                 'Разграничение заявок по категориям не предусмотрено.')
+        report = audit(before, after)
+        duplicates = [f for f in report.findings if f.status == 'duplicate']
+        self.assertEqual(len(duplicates), 1)
+        self.assertEqual({r.clause_id for r in duplicates[0].before}, {'2.1'})
+        self.assertEqual({r.clause_id for r in duplicates[0].after}, {'3.1', '4.1'})
+        self.assertTrue(duplicates[0].review_required)
+        scoped = after.replace('СС регистрирует все заявки в журнале. Разграничение заявок по категориям не предусмотрено.',
+                               'СС регистрирует только заявки зарубежных клиентов в журнале.')
+        self.assertFalse(any(f.status == 'duplicate' for f in audit(before, scoped).findings))
 
 
 if __name__ == '__main__':

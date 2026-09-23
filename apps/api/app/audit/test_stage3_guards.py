@@ -114,6 +114,53 @@ class SourceGuardTests(unittest.TestCase):
                 self.assertEqual(set(owner_keys(duty,clauses,units)),expected)
                 self.assertEqual(duty.location.cell_range,'C3')
 
+    def test_numbered_single_column_cells_preserve_coordinates_and_skip_formulas(self):
+        from openpyxl import Workbook
+        with tempfile.TemporaryDirectory() as folder:
+            wb = Workbook()
+            ws = wb.active
+            ws.title = 'Annex'
+            ws['B1'] = '1. Обязанности'
+            ws['B2'] = '1.1. Ведение реестра архивных дел.'
+            ws['B3'] = '=B2'
+            ws['B4'] = 'а) Проверка сроков хранения.'
+            other = wb.create_sheet('Unheaded')
+            other.append(['1. Обязанности', 'Подразделение'])
+            other.append(['1.1. Ведение реестра.', 'Отдел учета'])
+            path = Path(folder) / 'annex.xlsx'
+            wb.save(path)
+            pages, _ = parse_any(path)
+            parsed = parse_document(document('after'), pages)
+        clauses = {c.clause_id: c for c in parsed.clauses if c.location and c.location.sheet == 'Annex'}
+        self.assertEqual(clauses['1.1'].text, 'Ведение реестра архивных дел.')
+        self.assertEqual(clauses['1.1'].kind, 'function')
+        self.assertEqual(clauses['1.1'].location.cell_range, 'B2')
+        self.assertEqual(clauses['1.1/а'].parent_id, '1.1')
+        self.assertEqual(clauses['1.1/а'].location.cell_range, 'B4')
+        self.assertTrue(any(c.text == '=B2' and c.kind == 'other'
+                            and c.location.cell_range == 'B3' for c in clauses.values()))
+        self.assertFalse(any(c.kind == 'function' for c in parsed.clauses
+                             if c.location and c.location.sheet == 'Unheaded'))
+
+    def test_pdf_wrapped_numbered_and_lettered_paragraphs_keep_page_and_source_text(self):
+        pages = [
+            {'page': 1, 'physical_page': 1,
+             'text': '1. Обязанности\r\n1.1. Ведение реестра\r\nархивных дел.\r\n'
+                     'а) Проверка\r\nсроков хранения.\r\nНеозаглавленное приложение.'},
+            {'page': 2, 'physical_page': 2,
+             'text': '2. Контроль\r\n2.1. Составление отчета\r\nпо итогам сверки.'},
+        ]
+        parsed = parse_document(document('after'), pages)
+        clauses = {c.clause_id: c for c in parsed.clauses}
+        for clause_id, page_number in [('1.1', 1), ('1.1/а', 1), ('2.1', 2)]:
+            clause = clauses[clause_id]
+            self.assertEqual(clause.location.page, page_number)
+            self.assertIn(clause.label + ' ' + clause.text, pages[page_number - 1]['text'])
+        self.assertEqual(clauses['1.1'].text, 'Ведение реестра\r\nархивных дел.')
+        self.assertEqual(clauses['1.1/а'].text, 'Проверка\r\nсроков хранения.')
+        self.assertTrue(any(c.text == 'Неозаглавленное приложение.' and c.kind == 'other'
+                            for c in parsed.clauses))
+
 
 class AgentGuardTests(unittest.IsolatedAsyncioTestCase):
     async def test_same_response_read_and_finalize_is_not_completed(self):

@@ -1,8 +1,8 @@
 """Hierarchical regulation parser over the ingestion pipeline's page records.
 
 Ordinary DOCX/PDF/TXT clauses retain their numbered/lettered hierarchy.
-Explicit DOCX/XLSX table headers instead define sourced unit/role rows and
-duty cells; an unlabelled workbook is not silently promoted to functions.
+Explicit DOCX/XLSX table headers define sourced unit/role rows and duty cells;
+unheaded single-column numbered annexes retain their individual cell locations.
 Locations refer to physical PDF pages, DOCX body blocks or Excel cells, never
 to an invented Word page number.
 """
@@ -13,7 +13,7 @@ import re
 from dataclasses import dataclass
 
 from .models import Citation, Clause, Document, ParseResult, SourceLocation, Unit
-from .text import normalize
+from .text import is_governance_statement, normalize
 
 _NUM_START = re.compile(r"^(?P<label>(?P<path>\d{1,3}(?:\.\d{1,3})*)\.)(?=\s|[^\d\s.])")
 _LETTER_START = re.compile(r"^(?P<label>(?P<letter>[а-яё])[.)])(?:\s+|(?=[А-ЯЁ]))")
@@ -319,6 +319,34 @@ def _table_segments(page: dict) -> tuple[list[_Segment], bool]:
     return segments, recognised
 
 
+def _flow_column(page: dict) -> int | None:
+    """Only a genuinely one-column, sequentially numbered sheet is flowing text."""
+    columns = {
+        column
+        for row in page["rows"]
+        for column, value in enumerate(row["cells"], start=1)
+        if value.strip()
+    }
+    if len(columns) != 1 or any(
+        span["min_col"] != span["max_col"] for span in page.get("merges", ())
+    ):
+        return None
+    column = next(iter(columns))
+    paths = [
+        _parse_path(match.group("path"))
+        for row in page["rows"]
+        if column not in row.get("formulas", ())
+        for line in row["cells"][column - 1].splitlines()
+        if (match := _NUM_START.match(line.strip().lstrip("\ufeff").strip()))
+    ]
+    if len(paths) < 2 or any(
+        not _is_successor(later, earlier)
+        for earlier, later in zip(paths, paths[1:])
+    ):
+        return None
+    return column
+
+
 def _segments(pages: list[dict]) -> tuple[list[_Segment], int, list[str]]:
     """Turn source pages and table rows into labelled, located segments."""
     out: list[_Segment] = []
@@ -326,6 +354,64 @@ def _segments(pages: list[dict]) -> tuple[list[_Segment], int, list[str]]:
     in_toc = False
     embedded = 0
     warnings: list[str] = []
+
+    def append_lines(page: dict, text: str, location: SourceLocation | None) -> None:
+        nonlocal current, in_toc, embedded
+        can_continue = False
+        previous_break = ""
+        for raw_line in text.splitlines(keepends=True):
+            line = raw_line.strip().lstrip("\ufeff").strip()
+            line_break = raw_line[len(raw_line.rstrip("\r\n")):]
+            if not line or page.get("extraction") == "unreadable":
+                can_continue = False
+                previous_break = line_break
+                continue
+            num = _NUM_START.match(line)
+            letter = _LETTER_START.match(line) if not num else None
+            # PDF extraction can wrap a paragraph at a physical line boundary.
+            # Attach only a lowercase continuation to its preceding labelled
+            # clause on this page; do not infer order across cells or columns.
+            if (
+                "physical_page" in page and can_continue and not num and not letter
+                and not _NUM_EMBEDDED.search(line)
+                and re.match(r"^[a-zа-яё]", line)
+            ):
+                out[-1].text += previous_break + line
+                can_continue = line[-1] not in ".!?:;"
+                previous_break = line_break
+                continue
+            if _TOC_TITLE.match(line):
+                in_toc = True
+                out.append(_Segment("", "plain", None, None, line, location))
+                can_continue = False
+                previous_break = line_break
+                continue
+            if in_toc:
+                if num and _TOC_ENTRY_TAIL.search(line):
+                    out.append(_Segment(num.group("label"), "toc", _parse_path(num.group("path")), None,
+                                        line[num.end():].strip(), location))
+                    can_continue = False
+                    previous_break = line_break
+                    continue
+                in_toc = False
+            if num:
+                path = _parse_path(num.group("path"))
+                segs, current = _split_embedded(num.group("label"), "num", path, None, line[num.end():], current)
+            elif letter:
+                segs, current = _split_embedded(letter.group("label"), "letter", None, letter.group("letter"),
+                                                line[letter.end():], current)
+            else:
+                segs, current = _split_embedded("", "plain", None, None, line, current)
+            embedded += len(segs) - 1
+            for seg in segs:
+                seg.location = location
+            out.extend(segs)
+            can_continue = (
+                "physical_page" in page and segs[-1].kind in ("num", "letter")
+                and line[-1] not in ".!?:;"
+            )
+            previous_break = line_break
+
     for page in pages:
         if "rows" in page:
             table_segments, recognised = _table_segments(page)
@@ -335,44 +421,27 @@ def _segments(pages: list[dict]) -> tuple[list[_Segment], int, list[str]]:
                     f"Sheet {page['sheet']!r}: {formula_count} formula cell(s) retained as "
                     "source text but not evaluated as units, parents or duties."
                 )
-            if recognised or "sheet" in page:
-                out.extend(table_segments)
-                if "sheet" in page and page["rows"] and not recognised:
-                    warnings.append(
-                        f"Sheet {page['sheet']!r}: no explicit unit/function column headers; "
-                        "rows retained as source only, not invented duties."
-                    )
-                continue
-        location = _source_location(page)
-        for raw_line in str(page.get("text") or "").splitlines():
-            line = raw_line.strip().lstrip("\ufeff").strip()
-            if not line or page.get("extraction") == "unreadable":
-                continue
-            if _TOC_TITLE.match(line):
-                in_toc = True
-                out.append(_Segment("", "plain", None, None, line, location))
-                continue
-            num = _NUM_START.match(line)
-            if in_toc:
-                if num and _TOC_ENTRY_TAIL.search(line):
-                    out.append(_Segment(num.group("label"), "toc", _parse_path(num.group("path")), None,
-                                        line[num.end():].strip(), location))
-                    continue
+            column = None if recognised else _flow_column(page)
+            if column is not None:
+                current = None
                 in_toc = False
-            if num:
-                path = _parse_path(num.group("path"))
-                segs, current = _split_embedded(num.group("label"), "num", path, None, line[num.end():], current)
-            else:
-                letter = _LETTER_START.match(line)
-                if letter:
-                    segs, current = _split_embedded(letter.group("label"), "letter", None, letter.group("letter"),
-                                                    line[letter.end():], current)
-                else:
-                    segs, current = _split_embedded("", "plain", None, None, line, current)
-            embedded += len(segs) - 1
-            for seg in segs:
-                seg.location = location
-            out.extend(segs)
+                for row in page["rows"]:
+                    value = row["cells"][column - 1]
+                    location = _source_location(page, row, column)
+                    if column in row.get("formulas", ()):
+                        out.append(_Segment("", "table_other", None, None, value, location,
+                                            (page["page"], row["row"])))
+                    else:
+                        append_lines(page, value, location)
+                continue
+            out.extend(table_segments)
+            if "sheet" in page and page["rows"] and not recognised:
+                warnings.append(
+                    f"Sheet {page['sheet']!r}: no explicit unit/function column headers; "
+                    "rows retained as source only, not invented duties."
+                )
+            continue
+        append_lines(page, str(page.get("text") or ""), _source_location(page))
     return out, embedded, warnings
 
 
@@ -908,6 +977,24 @@ def owner_keys(clause: Clause, clauses_by_id: dict[str, Clause], units_by_id: di
 def parse_document(document: Document, pages: list[dict]) -> ParseResult:
     """Clauses, units and parse warnings for one ingested document."""
     clauses, warnings, table_definitions = _parse_clauses(document.doc, pages)
+    by_id = {clause.clause_id: clause for clause in clauses}
+    governing_count = 0
+    for clause in clauses:
+        if clause.kind != "function":
+            continue
+        ancestors = []
+        parent = by_id.get(clause.parent_id)
+        while parent is not None:
+            ancestors.append(parent.text)
+            parent = by_id.get(parent.parent_id)
+        if is_governance_statement(clause.text, ancestors):
+            clause.kind = "other"
+            governing_count += 1
+    if governing_count:
+        warnings.append(
+            f"{document.doc}: {governing_count} governing/completeness statement(s) "
+            "retained as source context, not counted as operational duties."
+        )
     units = extract_units(document.doc, clauses, table_definitions=table_definitions)
     units_by_id = {unit.unit_id: unit for unit in units}
     unresolved_parents = [
