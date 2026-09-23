@@ -176,18 +176,30 @@ def review_packet() -> None:
     base = ROOT / "seeds/kt/eval"
     rows = [json.loads(x) for x in (base / "challenge.jsonl").read_text(encoding="utf-8").splitlines() if x]
     split = json.loads((base / "split.json").read_text(encoding="utf-8"))
-    out = ["# Пакет проверки Alibi", "", "Это предложения AI по исходникам. Подтверждение человеком пока не получено. "
+    out = ["# Пакет проверки Alibi", "", "Это предложения AI. Решения человека хранятся в reviews.json. "
            "Проверить статус, полный набор refs, область ответственности и родительские условия. "
-           "Holdout нельзя передавать для настройки ядра.", ""]
+           "Holdout нельзя передавать для настройки ядра.", "",
+           "**REAL:** цитаты из настоящих предоставленных v8/v9; сверяйте их с исходным регламентом. "
+           "**SYNTHETIC:** искусственные тексты, написанные для проверки системы; в v8/v9 их нет. "
+           "Для них проверяется логика теста, а не наличие ситуации у компании.", "",
+           "JSON редактировать не нужно. Ответьте `ID — подтверждаю` либо `ID — статус/refs нужно изменить, потому что …`. "
+           "Сомнительный случай можно оставить без подтверждения. Читайте контекст родителя вместе с целевым пунктом.", ""]
     for row in rows:
         member = split["cases"][row["id"]]
         out += [f"## {row['id']} — {member['partition']} / {row['kind']}", "",
+                ("**ИСКУССТВЕННЫЙ ТЕСТ. Текст создан для проверки; это не цитата из реального регламента v8/v9.**"
+                 if row["kind"] == "synthetic" else "**РЕАЛЬНЫЕ ИСХОДНИКИ. Цитаты из предоставленных редакций v8/v9.**"), "",
                 f"Предложение: **{row['expected_status']}**. {row['rationale']}", "",
                 "До: " + json.dumps(row["before"], ensure_ascii=False), "",
                 "После: " + json.dumps(row["after"], ensure_ascii=False), ""]
         files = {d["doc"]: d["file"] for d in row["documents"]}
-        for c in row["citations"]:
-            out += [f"{c['doc']} §{c['clause_id']} — `{files[c['doc']]}`", "", "> " + c["quote"].replace("\n", "\n> "), ""]
+        target_refs = {(r["doc"], r["clause_id"]) for r in row["before"] + row["after"]}
+        for alias in files:
+            local = [c for c in row["citations"] if c["doc"] == alias]
+            local.sort(key=lambda c: ((c["doc"], c["clause_id"]) in target_refs, len(c["clause_id"])))
+            for c in local:
+                role = "Целевой пункт" if (c["doc"], c["clause_id"]) in target_refs else "Контекст источника"
+                out += [f"{role}: {c['doc']} §{c['clause_id']} — `{files[c['doc']]}`", "", "> " + c["quote"].replace("\n", "\n> "), ""]
     (base / "REVIEW.md").write_text("\n".join(out) + "\n", encoding="utf-8", newline="\n")
     print("Wrote seeds/kt/eval/REVIEW.md")
 

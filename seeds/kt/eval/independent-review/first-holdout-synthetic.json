@@ -1,0 +1,96 @@
+[
+  {
+    "blind_id": "HS01",
+    "proposed_status": "moved",
+    "before": [{"doc": "before-1", "clause_id": "4.2.1"}],
+    "after": [{"doc": "after-1", "clause_id": "4.2.1"}],
+    "citations": [
+      {"doc": "before-1", "clause_id": "4.2", "quote": "Директор аудита:"},
+      {"doc": "before-1", "clause_id": "4.2.1", "quote": "утверждает план проверок."},
+      {"doc": "after-1", "clause_id": "4.2", "quote": "Комитет по аудиту:"},
+      {"doc": "after-1", "clause_id": "4.2.1", "quote": "утверждает план проверок."}
+    ],
+    "explanation": "Функция утверждения плана сохранена дословно, но родительский пункт назначает другого ответственного: вместо директора аудита — комитет по аудиту. Это перенос функции по владельцу, а не её исчезновение.",
+    "uncertainties": [],
+    "source_checks": {"before_refs_resolve": true, "after_refs_resolve": true, "citations_exact_in_source_text": true, "parent_context_checked": true, "complete_candidate_sets": true}
+  },
+  {
+    "blind_id": "HS02",
+    "proposed_status": "changed",
+    "before": [{"doc": "before-1", "clause_id": "4.1"}],
+    "after": [{"doc": "after-1", "clause_id": "4.1"}],
+    "citations": [
+      {"doc": "before-1", "clause_id": "4.1", "quote": "Руководитель аудита поручает секретарю подготовку протокола и отвечает за результат."},
+      {"doc": "after-1", "clause_id": "4.1", "quote": "Руководитель аудита поручает заместителю подготовку протокола и отвечает за результат."}
+    ],
+    "explanation": "Подготовка протокола остаётся поручением руководителя аудита, который в обеих редакциях отвечает за результат. Исполнитель поручения изменён с секретаря на заместителя; это содержательное изменение функции, а не перенос ответственности руководителя.",
+    "uncertainties": [],
+    "source_checks": {"before_refs_resolve": true, "after_refs_resolve": true, "citations_exact_in_source_text": true, "accountable_and_delegate_checked": true, "complete_candidate_sets": true}
+  },
+  {
+    "blind_id": "HS03",
+    "proposed_status": "changed",
+    "before": [{"doc": "before-1", "clause_id": "4.1.1"}],
+    "after": [{"doc": "after-1", "clause_id": "4.1.1"}],
+    "citations": [
+      {"doc": "before-1", "clause_id": "4.1", "quote": "Аудитор не вправе:"},
+      {"doc": "before-1", "clause_id": "4.1.1", "quote": "использовать данные проверки в личных целях."},
+      {"doc": "after-1", "clause_id": "4.1", "quote": "Аудитор вправе:"},
+      {"doc": "after-1", "clause_id": "4.1.1", "quote": "использовать данные проверки в личных целях."}
+    ],
+    "explanation": "Текст дочернего пункта совпадает, но родительский пункт меняет запрет на разрешение использования данных в личных целях. Смысл положения изменён, несмотря на дословное совпадение дочернего текста.",
+    "uncertainties": [],
+    "source_checks": {"before_refs_resolve": true, "after_refs_resolve": true, "citations_exact_in_source_text": true, "parent_polarity_checked": true, "complete_candidate_sets": true}
+  },
+  {
+    "blind_id": "HS04",
+    "proposed_status": "moved",
+    "before": [{"doc": "before-1", "clause_id": "4.1"}],
+    "after": [
+      {"doc": "after-1", "clause_id": "4.1"},
+      {"doc": "after-1", "clause_id": "4.2"}
+    ],
+    "citations": [
+      {"doc": "before-1", "clause_id": "4.1", "quote": "Куратор согласует сроки и утверждает состав группы."},
+      {"doc": "after-1", "clause_id": "4.1", "quote": "Куратор согласует сроки."},
+      {"doc": "after-1", "clause_id": "4.2", "quote": "Куратор утверждает состав группы."}
+    ],
+    "explanation": "Обе обязанности куратора сохранены с прежним смыслом. Их расположение изменилось: единый пункт 4.1 разделён между пунктами 4.1 и 4.2. Полный преемник исходного пункта — совокупность двух after-ссылок; потери функции нет.",
+    "uncertainties": [],
+    "source_checks": {"before_refs_resolve": true, "after_refs_resolve": true, "citations_exact_in_source_text": true, "split_and_all_successor_refs_checked": true, "complete_candidate_sets": true}
+  },
+  {
+    "blind_id": "HS05",
+    "proposed_status": "unchanged",
+    "before": [{"doc": "before-1", "clause_id": "4.2.1"}],
+    "after": [{"doc": "after-1", "clause_id": "4.2.1"}],
+    "citations": [
+      {"doc": "before-1", "clause_id": "4.1", "quote": "Аудитор Северного филиала в пределах своего филиала:"},
+      {"doc": "before-1", "clause_id": "4.2", "quote": "Аудитор Южного филиала в пределах своего филиала:"},
+      {"doc": "before-1", "clause_id": "4.2.1", "quote": "составляет график проверки."},
+      {"doc": "after-1", "clause_id": "4.2", "quote": "Аудитор Южного филиала в пределах своего филиала:"},
+      {"doc": "after-1", "clause_id": "4.2.1", "quote": "составляет график проверки."}
+    ],
+    "explanation": "Пункт и его родительский контекст в обеих редакциях совпадают. Северный и Южный аудиторы составляют графики каждый в пределах своего филиала; одинаковые формулировки относятся к разным областям ответственности и сами по себе не образуют дублирование.",
+    "uncertainties": [],
+    "source_checks": {"before_refs_resolve": true, "after_refs_resolve": true, "citations_exact_in_source_text": true, "branch_scopes_checked": true, "complete_candidate_sets": true}
+  },
+  {
+    "blind_id": "HS06",
+    "proposed_status": "unresolved",
+    "before": [{"doc": "before-1", "clause_id": "4.1"}],
+    "after": [
+      {"doc": "after-1", "clause_id": "4.1.1"},
+      {"doc": "after-1", "clause_id": "4.1.2"}
+    ],
+    "citations": [
+      {"doc": "before-1", "clause_id": "4.1", "quote": "Отдел А контролирует исполнение плана."},
+      {"doc": "after-1", "clause_id": "4.1", "quote": "Применяется ровно один из следующих вариантов по отдельному решению, которое не входит в комплект документов:"},
+      {"doc": "after-1", "clause_id": "4.1.1", "quote": "Отдел Б контролирует исполнение плана."},
+      {"doc": "after-1", "clause_id": "4.1.2", "quote": "Отдел В контролирует исполнение плана."}
+    ],
+    "explanation": "Контроль исполнения плана сохраняется как возможная функция, но после редакции её выполняет ровно один из двух отделов по решению вне комплекта документов. Нельзя установить выбранного преемника или заявить одновременное дублирование; обе кандидатные ссылки сохраняются как unresolved.",
+    "uncertainties": ["Отдельное решение о выборе Отдела Б либо Отдела В отсутствует в предоставленных source_text."],
+    "source_checks": {"before_refs_resolve": true, "after_refs_resolve": true, "citations_exact_in_source_text": true, "exclusive_alternatives_checked": true, "complete_candidate_sets": true}
+  }
+]

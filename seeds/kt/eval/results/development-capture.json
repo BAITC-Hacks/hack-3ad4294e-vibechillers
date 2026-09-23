@@ -1,0 +1,297 @@
+{
+  "started_at_utc": "2026-09-23T10:06:34.560795+00:00",
+  "captured_at_utc": "2026-09-23T10:06:35.993828+00:00",
+  "revision": "4af5b5bf23e4eb24f487fbe405b9bc106177e459",
+  "core_hashes": {
+    "apps/api/app/audit/align.py": "c562a03f096934fba0044b27ee313cbe04efb523cc01041441aa26a8a6224551",
+    "apps/api/app/audit/citations.py": "3823ae2c0ba6ea80366da12e0dac0fbc849f4e7ea778fa324c725061161c4209",
+    "apps/api/app/audit/documents.py": "7b17939a08fe20c70cd061199cc4259f52170483a8e251af0756c46dd1c93d64",
+    "apps/api/app/audit/models.py": "dd5a3a13527758fa41c26d35ce3760058228b2e06f38f6ef2ea160b836a73bfb",
+    "apps/api/app/audit/parser.py": "871676de671b3bacd02586b6f7e2e2447eea4c144797f29926a857eb31e5407f",
+    "apps/api/app/audit/report.py": "470dac2d6c15c62a00609af942209f5773bb62d4289d0952fa121fd6fb7c5282",
+    "apps/api/app/audit/text.py": "87e6f98204eef95f2510b6e286aa2e2c988b7ae926eb13f040f1b565ead7a951",
+    "apps/api/app/audit/__init__.py": "e4ccb03e33a1b317306f13e1c2166c9a779ed020fff96bfaae1441e9ac7ca877",
+    "apps/api/app/ingest/parsers.py": "f58abb9fefa7bd007d248f2a0d0c6309a0024253f29078e74d5456b6f048bf92"
+  },
+  "labels_file": "seeds/kt/eval/challenge.jsonl",
+  "labels_sha256": "d11ddfb3baaa5cf08c0478badfead00095c2f868d7964353bf3ef7312547effe",
+  "partition": "development",
+  "transport": "public domain API; no HTTP claim",
+  "reports": [
+    {
+      "file": "seeds/kt/eval/data/stage2-development/alibi-20260923T100634560795-16e6da9e9240.json",
+      "sha256": "dd2603beb4d7bef655539f22ee9aedf28ca10e8a631b60e00cfac3c65166aae3",
+      "run_id": "alibi-20260923T100634560795-16e6da9e9240",
+      "documents": [
+        {
+          "doc": "before-1",
+          "doc_id": "5b78e765bf22e7a6",
+          "sha256": "5b78e765bf22e7a6276db0bcb9900c323b6a386b0de4a3b826533665fc8d11bd",
+          "edition": "before",
+          "source": "before-1.txt"
+        },
+        {
+          "doc": "after-1",
+          "doc_id": "49d0d35b784b8f0d",
+          "sha256": "49d0d35b784b8f0dc117170738cf4497b06cab3cc7ef8b08ff928db69608244d",
+          "edition": "after",
+          "source": "after-1.txt"
+        }
+      ],
+      "findings": 2,
+      "coverage": {
+        "before_total": 2,
+        "after_total": 2,
+        "before_accounted": 2,
+        "after_accounted": 2,
+        "unresolved": 2
+      }
+    },
+    {
+      "file": "seeds/kt/eval/data/stage2-development/alibi-20260923T100634560795-38e1b8c273e6.json",
+      "sha256": "9b236effaede5c969b9d1c670e30ca4c06204ffb115d40149431553a12237c4c",
+      "run_id": "alibi-20260923T100634560795-38e1b8c273e6",
+      "documents": [
+        {
+          "doc": "before-1",
+          "doc_id": "68a720271ef17a67",
+          "sha256": "68a720271ef17a676fd7955bc231d7a97d416eb23d08d8661563de057eb7f768",
+          "edition": "before",
+          "source": "before-1.txt"
+        },
+        {
+          "doc": "after-1",
+          "doc_id": "47581a28739f17fb",
+          "sha256": "47581a28739f17fbb4eed20a1fb5a3a9fbff1edd1d2924b1aec37571b6328739",
+          "edition": "after",
+          "source": "after-1.txt"
+        }
+      ],
+      "findings": 1,
+      "coverage": {
+        "before_total": 1,
+        "after_total": 1,
+        "before_accounted": 1,
+        "after_accounted": 1,
+        "unresolved": 0
+      }
+    },
+    {
+      "file": "seeds/kt/eval/data/stage2-development/alibi-20260923T100634560795-71e94b47a458.json",
+      "sha256": "50ba03fc450bcad1470dcbeb8a76f8056b04dc1f486e4e78cb39a0e25eb47bb2",
+      "run_id": "alibi-20260923T100634560795-71e94b47a458",
+      "documents": [
+        {
+          "doc": "before-1",
+          "doc_id": "2df5a76eea96a149",
+          "sha256": "2df5a76eea96a1499e1e5817b43653d5f228a1eaf42608aed5be5d35abb75491",
+          "edition": "before",
+          "source": "before-1.txt"
+        },
+        {
+          "doc": "after-1",
+          "doc_id": "d3826ba39bcf099b",
+          "sha256": "d3826ba39bcf099b6594e84ae0a012cdf4f1168448cd41a72b749502613b1ca0",
+          "edition": "after",
+          "source": "after-1.txt"
+        }
+      ],
+      "findings": 2,
+      "coverage": {
+        "before_total": 2,
+        "after_total": 2,
+        "before_accounted": 2,
+        "after_accounted": 2,
+        "unresolved": 2
+      }
+    },
+    {
+      "file": "seeds/kt/eval/data/stage2-development/alibi-20260923T100634560795-bef0dca4a7f6.json",
+      "sha256": "3a90c9d6310256e310fa8ead02adbaa2ffdca7a3687413322ac12c2d1e37dde8",
+      "run_id": "alibi-20260923T100634560795-bef0dca4a7f6",
+      "documents": [
+        {
+          "doc": "before-1",
+          "doc_id": "08d436545a6e4abe",
+          "sha256": "08d436545a6e4abe50e6fb3f8c4bf47e9d3bd28066e7c9b24ed740c1396521be",
+          "edition": "before",
+          "source": "before-1.txt"
+        },
+        {
+          "doc": "after-1",
+          "doc_id": "892cb62256c04989",
+          "sha256": "892cb62256c049894ba20e6e70d79c9477f83639bcd74b063f82e01fe37c9af0",
+          "edition": "after",
+          "source": "after-1.txt"
+        }
+      ],
+      "findings": 3,
+      "coverage": {
+        "before_total": 2,
+        "after_total": 3,
+        "before_accounted": 2,
+        "after_accounted": 3,
+        "unresolved": 0
+      }
+    },
+    {
+      "file": "seeds/kt/eval/data/stage2-development/alibi-20260923T100634560795-c60e573e6c05.json",
+      "sha256": "a1bf1f740bacf1ff2f3112dd28db6f4fa03b44f673120882f742389e50bc7adb",
+      "run_id": "alibi-20260923T100634560795-c60e573e6c05",
+      "documents": [
+        {
+          "doc": "before-1",
+          "doc_id": "87c1a4f930f3e21c",
+          "sha256": "87c1a4f930f3e21ce8fa2cd1bb0f462926a537f8ab09457a53f1b92a5767db56",
+          "edition": "before",
+          "source": "before-1.txt"
+        },
+        {
+          "doc": "after-1",
+          "doc_id": "844f227acc84e4eb",
+          "sha256": "844f227acc84e4eb95830fdbbd2c3349fec9dec150cc5f29aecfdd34cff084a5",
+          "edition": "after",
+          "source": "after-1.txt"
+        }
+      ],
+      "findings": 3,
+      "coverage": {
+        "before_total": 3,
+        "after_total": 2,
+        "before_accounted": 3,
+        "after_accounted": 2,
+        "unresolved": 0
+      }
+    },
+    {
+      "file": "seeds/kt/eval/data/stage2-development/alibi-20260923T100634560795-c23ab93ca261.json",
+      "sha256": "a361cd2dbb40b9d868ca0cfb088da7b00b0755356cae9e4f3a6f6ad8a6124732",
+      "run_id": "alibi-20260923T100634560795-c23ab93ca261",
+      "documents": [
+        {
+          "doc": "before-1",
+          "doc_id": "808d821dae1a187e",
+          "sha256": "808d821dae1a187eeeeed05618495c15ed95ea1e4483fa3b5d91617aff1ebd7c",
+          "edition": "before",
+          "source": "before-1.txt"
+        },
+        {
+          "doc": "after-1",
+          "doc_id": "808d821dae1a187e",
+          "sha256": "808d821dae1a187eeeeed05618495c15ed95ea1e4483fa3b5d91617aff1ebd7c",
+          "edition": "after",
+          "source": "after-1.txt"
+        }
+      ],
+      "findings": 4,
+      "coverage": {
+        "before_total": 4,
+        "after_total": 4,
+        "before_accounted": 4,
+        "after_accounted": 4,
+        "unresolved": 0
+      }
+    },
+    {
+      "file": "seeds/kt/eval/data/stage2-development/alibi-20260923T100634560795-7ce3583b6d16.json",
+      "sha256": "e94a6b0c2ee260847c1516411b77f9fca90395a206018a76946c3acdca63e9b0",
+      "run_id": "alibi-20260923T100634560795-7ce3583b6d16",
+      "documents": [
+        {
+          "doc": "before-1",
+          "doc_id": "426d282749b74b7b",
+          "sha256": "426d282749b74b7b09979f634a46d3294bf5393779479f2ec3db8ddfda4a972f",
+          "edition": "before",
+          "source": "identical.txt"
+        },
+        {
+          "doc": "after-1",
+          "doc_id": "426d282749b74b7b",
+          "sha256": "426d282749b74b7b09979f634a46d3294bf5393779479f2ec3db8ddfda4a972f",
+          "edition": "after",
+          "source": "identical.txt"
+        }
+      ],
+      "findings": 5,
+      "coverage": {
+        "before_total": 5,
+        "after_total": 5,
+        "before_accounted": 5,
+        "after_accounted": 5,
+        "unresolved": 0
+      }
+    },
+    {
+      "file": "seeds/kt/eval/data/stage2-development/alibi-20260923T100634560795-7fd93757d116.json",
+      "sha256": "d195954f50bf4272703d2d4e0c5a3c15d653a4e39b968546b07a9b26c7869d1b",
+      "run_id": "alibi-20260923T100634560795-7fd93757d116",
+      "documents": [
+        {
+          "doc": "before-1",
+          "doc_id": "b367c875b90ad8c2",
+          "sha256": "b367c875b90ad8c23ccff9c1957b45976cc410b5cf8ae67aade2b494f03191cb",
+          "edition": "before",
+          "source": "before-1.txt"
+        },
+        {
+          "doc": "before-2",
+          "doc_id": "48a1aa12cd7b7fec",
+          "sha256": "48a1aa12cd7b7feced9053f5c89f3f317202084a18859fcc20b975b5d1fafd12",
+          "edition": "before",
+          "source": "before-2.txt"
+        },
+        {
+          "doc": "after-1",
+          "doc_id": "9e1792633b4600e5",
+          "sha256": "9e1792633b4600e56e8d356c9d355f9ef45e8c6227ed03bb9bdabdf003d453a9",
+          "edition": "after",
+          "source": "after-1.txt"
+        },
+        {
+          "doc": "after-2",
+          "doc_id": "48a1aa12cd7b7fec",
+          "sha256": "48a1aa12cd7b7feced9053f5c89f3f317202084a18859fcc20b975b5d1fafd12",
+          "edition": "after",
+          "source": "after-2.txt"
+        }
+      ],
+      "findings": 2,
+      "coverage": {
+        "before_total": 2,
+        "after_total": 2,
+        "before_accounted": 2,
+        "after_accounted": 2,
+        "unresolved": 0
+      }
+    },
+    {
+      "file": "seeds/kt/eval/data/stage2-development/alibi-20260923T100634560795-4b2147f4fcf1.json",
+      "sha256": "87b9ea681cb8d7ac364f4f263bb4e753f43bb48512c21f6e8fa0fe98fd0e0b9b",
+      "run_id": "alibi-20260923T100634560795-4b2147f4fcf1",
+      "documents": [
+        {
+          "doc": "v8",
+          "doc_id": "a91fb0f5e81ea323",
+          "sha256": "a91fb0f5e81ea323a7ff1f3a6205eb2631a487d9e7122f136f70577d0c410e98",
+          "edition": "before",
+          "source": "v8.docx"
+        },
+        {
+          "doc": "v9",
+          "doc_id": "043853e555b8eb90",
+          "sha256": "043853e555b8eb90b294186ee0dba33d89997827185c6be67db6fdaf3dc2a8ef",
+          "edition": "after",
+          "source": "v9.docx"
+        }
+      ],
+      "findings": 457,
+      "coverage": {
+        "before_total": 420,
+        "after_total": 413,
+        "before_accounted": 420,
+        "after_accounted": 413,
+        "unresolved": 33
+      }
+    }
+  ]
+}

@@ -1,0 +1,196 @@
+[
+  {
+    "blind_id": "HS01",
+    "partition": "holdout",
+    "kind": "synthetic",
+    "before": [
+      {
+        "doc": "before-1",
+        "clause_id": "4.2.1"
+      }
+    ],
+    "after": [
+      {
+        "doc": "after-1",
+        "clause_id": "4.2.1"
+      }
+    ],
+    "documents": [
+      {
+        "doc": "before-1",
+        "file": "seeds/kt/eval/mutations/stage2/hold-owner/before-1.txt",
+        "sha256": "4e48bd58878202641f1168f65dfe79f575d3f9d5e56db1ec08be083bb16c3c15",
+        "source_text": "4. Проверки\n4.2. Директор аудита:\n4.2.1. утверждает план проверок.\n"
+      },
+      {
+        "doc": "after-1",
+        "file": "seeds/kt/eval/mutations/stage2/hold-owner/after-1.txt",
+        "sha256": "9da238249bb39cac93a1ffe0db07d66cced1afb0c34a77dbda15ca0eeee05fa8",
+        "source_text": "4. Проверки\n4.2. Комитет по аудиту:\n4.2.1. утверждает план проверок.\n"
+      }
+    ]
+  },
+  {
+    "blind_id": "HS02",
+    "partition": "holdout",
+    "kind": "synthetic",
+    "before": [
+      {
+        "doc": "before-1",
+        "clause_id": "4.1"
+      }
+    ],
+    "after": [
+      {
+        "doc": "after-1",
+        "clause_id": "4.1"
+      }
+    ],
+    "documents": [
+      {
+        "doc": "before-1",
+        "file": "seeds/kt/eval/mutations/stage2/hold-delegate/before-1.txt",
+        "sha256": "c0e3f287ee6d921e6a46aaeacc50674b96f2cdbbf250f3977494a3ad1d5e85eb",
+        "source_text": "4. Делегирование\n4.1. Руководитель аудита поручает секретарю подготовку протокола и отвечает за результат.\n"
+      },
+      {
+        "doc": "after-1",
+        "file": "seeds/kt/eval/mutations/stage2/hold-delegate/after-1.txt",
+        "sha256": "531ff182fd546dbc0b1992bf897b1d77cb7b5a0ec2e00df0f4a3742fe3a8f276",
+        "source_text": "4. Делегирование\n4.1. Руководитель аудита поручает заместителю подготовку протокола и отвечает за результат.\n"
+      }
+    ]
+  },
+  {
+    "blind_id": "HS03",
+    "partition": "holdout",
+    "kind": "synthetic",
+    "before": [
+      {
+        "doc": "before-1",
+        "clause_id": "4.1.1"
+      }
+    ],
+    "after": [
+      {
+        "doc": "after-1",
+        "clause_id": "4.1.1"
+      }
+    ],
+    "documents": [
+      {
+        "doc": "before-1",
+        "file": "seeds/kt/eval/mutations/stage2/hold-parent/before-1.txt",
+        "sha256": "5c39a1e24e80b69b33a6a176eae7561490434260096057ebf71edff5218853f2",
+        "source_text": "4. Использование данных\n4.1. Аудитор не вправе:\n4.1.1. использовать данные проверки в личных целях.\n"
+      },
+      {
+        "doc": "after-1",
+        "file": "seeds/kt/eval/mutations/stage2/hold-parent/after-1.txt",
+        "sha256": "c02c34561dfcb51d1e3c4cd165cfc2849f27cfabce2d5a6e67c64f5843629933",
+        "source_text": "4. Использование данных\n4.1. Аудитор вправе:\n4.1.1. использовать данные проверки в личных целях.\n"
+      }
+    ]
+  },
+  {
+    "blind_id": "HS04",
+    "partition": "holdout",
+    "kind": "synthetic",
+    "before": [
+      {
+        "doc": "before-1",
+        "clause_id": "4.1"
+      }
+    ],
+    "after": [
+      {
+        "doc": "after-1",
+        "clause_id": "4.1"
+      },
+      {
+        "doc": "after-1",
+        "clause_id": "4.2"
+      }
+    ],
+    "documents": [
+      {
+        "doc": "before-1",
+        "file": "seeds/kt/eval/mutations/stage2/hold-split/before-1.txt",
+        "sha256": "80c0f0ef7e2eb99dd00b37cfb399bf68f17f07f33871903988ad38cc5a748775",
+        "source_text": "4. Согласование проверки\n4.1. Куратор согласует сроки и утверждает состав группы.\n"
+      },
+      {
+        "doc": "after-1",
+        "file": "seeds/kt/eval/mutations/stage2/hold-split/after-1.txt",
+        "sha256": "50ec660e2995d42b86413f5f73c0f48e10af6105ee595030faa12198d363ad26",
+        "source_text": "4. Согласование проверки\n4.1. Куратор согласует сроки.\n4.2. Куратор утверждает состав группы.\n"
+      }
+    ]
+  },
+  {
+    "blind_id": "HS05",
+    "partition": "holdout",
+    "kind": "synthetic",
+    "before": [
+      {
+        "doc": "before-1",
+        "clause_id": "4.2.1"
+      }
+    ],
+    "after": [
+      {
+        "doc": "after-1",
+        "clause_id": "4.2.1"
+      }
+    ],
+    "documents": [
+      {
+        "doc": "before-1",
+        "file": "seeds/kt/eval/mutations/stage2/hold-shared/before-1.txt",
+        "sha256": "5de5905b6f473ed7ea0d6edd1ac07c503dbe538c8c547a7d8a419b2b915a9d2b",
+        "source_text": "4. Работа филиалов\n4.1. Аудитор Северного филиала в пределах своего филиала:\n4.1.1. составляет график проверки.\n4.2. Аудитор Южного филиала в пределах своего филиала:\n4.2.1. составляет график проверки.\n"
+      },
+      {
+        "doc": "after-1",
+        "file": "seeds/kt/eval/mutations/stage2/hold-shared/after-1.txt",
+        "sha256": "5de5905b6f473ed7ea0d6edd1ac07c503dbe538c8c547a7d8a419b2b915a9d2b",
+        "source_text": "4. Работа филиалов\n4.1. Аудитор Северного филиала в пределах своего филиала:\n4.1.1. составляет график проверки.\n4.2. Аудитор Южного филиала в пределах своего филиала:\n4.2.1. составляет график проверки.\n"
+      }
+    ]
+  },
+  {
+    "blind_id": "HS06",
+    "partition": "holdout",
+    "kind": "synthetic",
+    "before": [
+      {
+        "doc": "before-1",
+        "clause_id": "4.1"
+      }
+    ],
+    "after": [
+      {
+        "doc": "after-1",
+        "clause_id": "4.1.1"
+      },
+      {
+        "doc": "after-1",
+        "clause_id": "4.1.2"
+      }
+    ],
+    "documents": [
+      {
+        "doc": "before-1",
+        "file": "seeds/kt/eval/mutations/stage2/hold-uncertainty/before-1.txt",
+        "sha256": "3ce496c5a71c67fcb70c3986aca8378781b2964302338153fb09572bf9cebc9a",
+        "source_text": "4. Контроль\n4.1. Отдел А контролирует исполнение плана.\n"
+      },
+      {
+        "doc": "after-1",
+        "file": "seeds/kt/eval/mutations/stage2/hold-uncertainty/after-1.txt",
+        "sha256": "842237ccd70248a4c9368406707415130b1cd21229c771e520472945f66bcf77",
+        "source_text": "4. Проект распределения ответственности\n4.1. Применяется ровно один из следующих вариантов по отдельному решению, которое не входит в комплект документов:\n4.1.1. Отдел Б контролирует исполнение плана.\n4.1.2. Отдел В контролирует исполнение плана.\n"
+      }
+    ]
+  }
+]

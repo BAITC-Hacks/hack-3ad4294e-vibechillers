@@ -1,0 +1,195 @@
+{
+  "captured_at_utc": "2026-09-23T09:59:05.955429+00:00",
+  "revision": "07a1708d1410a908bacde7c8f2201d08e75431aa",
+  "core_hashes": {
+    "apps/api/app/audit/align.py": "c562a03f096934fba0044b27ee313cbe04efb523cc01041441aa26a8a6224551",
+    "apps/api/app/audit/citations.py": "3823ae2c0ba6ea80366da12e0dac0fbc849f4e7ea778fa324c725061161c4209",
+    "apps/api/app/audit/documents.py": "7b17939a08fe20c70cd061199cc4259f52170483a8e251af0756c46dd1c93d64",
+    "apps/api/app/audit/models.py": "dd5a3a13527758fa41c26d35ce3760058228b2e06f38f6ef2ea160b836a73bfb",
+    "apps/api/app/audit/parser.py": "871676de671b3bacd02586b6f7e2e2447eea4c144797f29926a857eb31e5407f",
+    "apps/api/app/audit/report.py": "470dac2d6c15c62a00609af942209f5773bb62d4289d0952fa121fd6fb7c5282",
+    "apps/api/app/audit/text.py": "87e6f98204eef95f2510b6e286aa2e2c988b7ae926eb13f040f1b565ead7a951",
+    "apps/api/app/audit/__init__.py": "e4ccb03e33a1b317306f13e1c2166c9a779ed020fff96bfaae1441e9ac7ca877",
+    "apps/api/app/ingest/parsers.py": "f58abb9fefa7bd007d248f2a0d0c6309a0024253f29078e74d5456b6f048bf92"
+  },
+  "labels_file": "seeds/kt/eval/regression.jsonl",
+  "labels_sha256": "87965da85193a0420dd2383fae056211c7cba5b1976bdc0e3f2783534526b7ed",
+  "partition": null,
+  "transport": "public domain API; no HTTP claim",
+  "reports": [
+    {
+      "file": "seeds/kt/eval/data/stage2-regression/alibi-4b2147f4fcf1.json",
+      "sha256": "a16dbbed27a2381d51939d3c307cdb30e38d8d2423b9f25e39b31e9f3ea5b5ca",
+      "run_id": "alibi-4b2147f4fcf1",
+      "documents": [
+        {
+          "doc": "v8",
+          "doc_id": "a91fb0f5e81ea323",
+          "sha256": "a91fb0f5e81ea323a7ff1f3a6205eb2631a487d9e7122f136f70577d0c410e98",
+          "edition": "before",
+          "source": "v8.docx"
+        },
+        {
+          "doc": "v9",
+          "doc_id": "043853e555b8eb90",
+          "sha256": "043853e555b8eb90b294186ee0dba33d89997827185c6be67db6fdaf3dc2a8ef",
+          "edition": "after",
+          "source": "v9.docx"
+        }
+      ],
+      "findings": 457,
+      "coverage": {
+        "before_total": 420,
+        "after_total": 413,
+        "before_accounted": 420,
+        "after_accounted": 413,
+        "unresolved": 33
+      }
+    },
+    {
+      "file": "seeds/kt/eval/data/stage2-regression/alibi-0626ecf7cfab.json",
+      "sha256": "01f3d1e9e587824d115c6193647678fd97f9f4368fc49304dfe1517e3334e470",
+      "run_id": "alibi-0626ecf7cfab",
+      "documents": [
+        {
+          "doc": "v9",
+          "doc_id": "7ab6a7fc5396dffb",
+          "sha256": "7ab6a7fc5396dffbcd9228149b47ed28e0c3338284ad6c2180f8acb94fdd738b",
+          "edition": "before",
+          "source": "v9.txt"
+        },
+        {
+          "doc": "after-1",
+          "doc_id": "25f83e8b16d00672",
+          "sha256": "25f83e8b16d006726095903a15c5a0e595e30c5b415a435f2483767c51e0352a",
+          "edition": "after",
+          "source": "deleted-function.txt"
+        }
+      ],
+      "findings": 434,
+      "coverage": {
+        "before_total": 413,
+        "after_total": 412,
+        "before_accounted": 413,
+        "after_accounted": 412,
+        "unresolved": 0
+      }
+    },
+    {
+      "file": "seeds/kt/eval/data/stage2-regression/alibi-41e4d46bfa51.json",
+      "sha256": "8a05404687f749b33bd80392fc6040e1cae7dc3ba3e886474d9d6247a4192bad",
+      "run_id": "alibi-41e4d46bfa51",
+      "documents": [
+        {
+          "doc": "v9",
+          "doc_id": "7ab6a7fc5396dffb",
+          "sha256": "7ab6a7fc5396dffbcd9228149b47ed28e0c3338284ad6c2180f8acb94fdd738b",
+          "edition": "before",
+          "source": "v9.txt"
+        },
+        {
+          "doc": "after-1",
+          "doc_id": "b668949ceddd4c53",
+          "sha256": "b668949ceddd4c536db21d9acf09e7eabdc426ec64f132cf1e005990d54efff7",
+          "edition": "after",
+          "source": "duplicated-function.txt"
+        }
+      ],
+      "findings": 434,
+      "coverage": {
+        "before_total": 413,
+        "after_total": 414,
+        "before_accounted": 413,
+        "after_accounted": 414,
+        "unresolved": 0
+      }
+    },
+    {
+      "file": "seeds/kt/eval/data/stage2-regression/alibi-213a5f00375a.json",
+      "sha256": "2ec31934d986134957a27ffef641919d3de79e6776537bcf2527893d88a9f704",
+      "run_id": "alibi-213a5f00375a",
+      "documents": [
+        {
+          "doc": "v9",
+          "doc_id": "7ab6a7fc5396dffb",
+          "sha256": "7ab6a7fc5396dffbcd9228149b47ed28e0c3338284ad6c2180f8acb94fdd738b",
+          "edition": "before",
+          "source": "v9.txt"
+        },
+        {
+          "doc": "after-1",
+          "doc_id": "7551dd32a4a6634d",
+          "sha256": "7551dd32a4a6634d10aadbefe95b7ae9cc4751521c75150810f5f98b7c25660b",
+          "edition": "after",
+          "source": "moved-function.txt"
+        }
+      ],
+      "findings": 434,
+      "coverage": {
+        "before_total": 413,
+        "after_total": 413,
+        "before_accounted": 413,
+        "after_accounted": 413,
+        "unresolved": 0
+      }
+    },
+    {
+      "file": "seeds/kt/eval/data/stage2-regression/alibi-cc775246f35a.json",
+      "sha256": "c9f62c9cd9ec7984e2db3af13efa39fa09770f37974be94715bf9ab772b9d070",
+      "run_id": "alibi-cc775246f35a",
+      "documents": [
+        {
+          "doc": "v9",
+          "doc_id": "7ab6a7fc5396dffb",
+          "sha256": "7ab6a7fc5396dffbcd9228149b47ed28e0c3338284ad6c2180f8acb94fdd738b",
+          "edition": "before",
+          "source": "v9.txt"
+        },
+        {
+          "doc": "after-1",
+          "doc_id": "da37e98bff8d9337",
+          "sha256": "da37e98bff8d933789a86d29d6ca3ade1bc3ce18dd6318acc8e085629e010822",
+          "edition": "after",
+          "source": "renumbered-section.txt"
+        }
+      ],
+      "findings": 434,
+      "coverage": {
+        "before_total": 413,
+        "after_total": 413,
+        "before_accounted": 413,
+        "after_accounted": 413,
+        "unresolved": 0
+      }
+    },
+    {
+      "file": "seeds/kt/eval/data/stage2-regression/alibi-dd3e55eb7e08.json",
+      "sha256": "c6d363cba34570a4c1f72455f0db96097fc6ddcef66803151672e785aab651de",
+      "run_id": "alibi-dd3e55eb7e08",
+      "documents": [
+        {
+          "doc": "v9",
+          "doc_id": "7ab6a7fc5396dffb",
+          "sha256": "7ab6a7fc5396dffbcd9228149b47ed28e0c3338284ad6c2180f8acb94fdd738b",
+          "edition": "before",
+          "source": "v9.txt"
+        },
+        {
+          "doc": "after-1",
+          "doc_id": "af77254cc29d2329",
+          "sha256": "af77254cc29d23299b43e3da667b85dc1758fca04217888cb5e2873243fd1ee0",
+          "edition": "after",
+          "source": "whitespace-only.txt"
+        }
+      ],
+      "findings": 434,
+      "coverage": {
+        "before_total": 413,
+        "after_total": 413,
+        "before_accounted": 413,
+        "after_accounted": 413,
+        "unresolved": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,1358 @@
+{
+  "utc": "2026-09-23T10:22:21.625167+00:00",
+  "commands": [
+    {
+      "command": "python -B eval/kt/score.py --labels seeds/kt/eval/challenge.jsonl --validate-labels",
+      "exit_code": 0,
+      "stdout": "Validated 30 labels: 14 real, 16 synthetic; all fixture hashes, clause refs and quotes resolve\nHuman review: {\"pending_human\": 30}; pending/unrecorded labels yield provisional agreement, not confirmed human gold\n",
+      "stderr": ""
+    },
+    {
+      "command": "python -B eval/kt/score.py --labels seeds/kt/eval/regression.jsonl --validate-labels",
+      "exit_code": 0,
+      "stdout": "Validated 25 labels: 20 real, 5 synthetic; all fixture hashes, clause refs and quotes resolve\nHuman review: {\"legacy_accepted\": 25}; pending/unrecorded labels yield provisional agreement, not confirmed human gold\n",
+      "stderr": ""
+    }
+  ],
+  "cases": [
+    {
+      "id": "dev-owner",
+      "kind": "synthetic",
+      "partition": "development",
+      "current_label_sha256": "9ef3a54fee111ae76f45b54e44e8b098352fd3798d4d1bcdedde3f784a974acf",
+      "review_hash_matches": true,
+      "review_status": "pending_human",
+      "target_refs_count": 2,
+      "citations": [
+        {
+          "doc": "before-1",
+          "clause_id": "2.1.1",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.1.1",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "2.1",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.1",
+          "scorer_clause_quote_exact": true
+        }
+      ]
+    },
+    {
+      "id": "dev-delegate",
+      "kind": "synthetic",
+      "partition": "development",
+      "current_label_sha256": "57b8b2890d936dd1c458001656faf00f54639c0c903dc777baea24e656f5612d",
+      "review_hash_matches": true,
+      "review_status": "pending_human",
+      "target_refs_count": 2,
+      "citations": [
+        {
+          "doc": "before-1",
+          "clause_id": "2.1",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.1",
+          "scorer_clause_quote_exact": true
+        }
+      ]
+    },
+    {
+      "id": "dev-prohibition",
+      "kind": "synthetic",
+      "partition": "development",
+      "current_label_sha256": "f3f31dca4c953e8eab735d08c7664b535401dd063378b434bf179d22f31bdeaf",
+      "review_hash_matches": true,
+      "review_status": "pending_human",
+      "target_refs_count": 2,
+      "citations": [
+        {
+          "doc": "before-1",
+          "clause_id": "2.1.1",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.1.1",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "2.1",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.1",
+          "scorer_clause_quote_exact": true
+        }
+      ]
+    },
+    {
+      "id": "dev-split",
+      "kind": "synthetic",
+      "partition": "development",
+      "current_label_sha256": "b7421f91a5d34c78d550d3546b5ef7d2b0a7d6c92294ea1ff8482f80eb5cf680",
+      "review_hash_matches": true,
+      "review_status": "pending_human",
+      "target_refs_count": 3,
+      "citations": [
+        {
+          "doc": "before-1",
+          "clause_id": "2.1.1",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.1.1",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.1.2",
+          "scorer_clause_quote_exact": true
+        }
+      ]
+    },
+    {
+      "id": "dev-merge",
+      "kind": "synthetic",
+      "partition": "development",
+      "current_label_sha256": "a59fc73133808cbfac7af902e398924df88a3dc83f3360e7645867666920f472",
+      "review_hash_matches": true,
+      "review_status": "pending_human",
+      "target_refs_count": 3,
+      "citations": [
+        {
+          "doc": "before-1",
+          "clause_id": "2.1.1",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "2.1.2",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.1.1",
+          "scorer_clause_quote_exact": true
+        }
+      ]
+    },
+    {
+      "id": "dev-shared-dnm",
+      "kind": "synthetic",
+      "partition": "development",
+      "current_label_sha256": "79978000fd44ccdfe74dd92d98591108d789ab682a15e4c573d9a437c09143c9",
+      "review_hash_matches": true,
+      "review_status": "pending_human",
+      "target_refs_count": 2,
+      "citations": [
+        {
+          "doc": "before-1",
+          "clause_id": "2.1.1",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.1.1",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "2.1",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.1",
+          "scorer_clause_quote_exact": true
+        }
+      ]
+    },
+    {
+      "id": "dev-shared-dkkm",
+      "kind": "synthetic",
+      "partition": "development",
+      "current_label_sha256": "5a4aa9e129e65ff9a1ac6092b4a09980a8ecc76cc0b290665ee39acadbbaf34b",
+      "review_hash_matches": true,
+      "review_status": "pending_human",
+      "target_refs_count": 2,
+      "citations": [
+        {
+          "doc": "before-1",
+          "clause_id": "2.2.1",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.2.1",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "2.2",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "2.2",
+          "scorer_clause_quote_exact": true
+        }
+      ]
+    },
+    {
+      "id": "dev-identical-inline",
+      "kind": "synthetic",
+      "partition": "development",
+      "current_label_sha256": "1c99e9a03170a8a0e25b01378ae2ff1e6576caa961d86d978284377e45e587ba",
+      "review_hash_matches": true,
+      "review_status": "pending_human",
+      "target_refs_count": 2,
+      "citations": [
+        {
+          "doc": "before-1",
+          "clause_id": "3.11",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "3.11",
+          "scorer_clause_quote_exact": true
+        }
+      ]
+    },
+    {
+      "id": "dev-identical-repeated",
+      "kind": "synthetic",
+      "partition": "development",
+      "current_label_sha256": "d786d5dba901bbcca771dd5f869aa3c82326d72f993ae7c4ff1b7973fd9e15bb",
+      "review_hash_matches": true,
+      "review_status": "pending_human",
+      "target_refs_count": 2,
+      "citations": [
+        {
+          "doc": "before-1",
+          "clause_id": "3.10@2",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "3.10@2",
+          "scorer_clause_quote_exact": true
+        }
+      ]
+    },
+    {
+      "id": "dev-multidoc",
+      "kind": "synthetic",
+      "partition": "development",
+      "current_label_sha256": "7c3ab5579154ed21d8dcd26201f95a333c2e41ad6d83ba09dd73b9c248de9ef0",
+      "review_hash_matches": true,
+      "review_status": "pending_human",
+      "target_refs_count": 2,
+      "citations": [
+        {
+          "doc": "before-1",
+          "clause_id": "2.1",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "4.1",
+          "scorer_clause_quote_exact": true
+        }
+      ]
+    },
+    {
+      "id": "hold-owner",
+      "kind": "synthetic",
+      "partition": "holdout",
+      "current_label_sha256": "bd35a22cdd3b0427051db28fc79dcd0359dbfed8cfd0fe630d92037f95a26f92",
+      "review_hash_matches": true,
+      "review_status": "pending_human",
+      "target_refs_count": 2,
+      "citations": [
+        {
+          "doc": "before-1",
+          "clause_id": "4.2.1",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "4.2.1",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "4.2",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "4.2",
+          "scorer_clause_quote_exact": true
+        }
+      ]
+    },
+    {
+      "id": "hold-delegate",
+      "kind": "synthetic",
+      "partition": "holdout",
+      "current_label_sha256": "8de96aed6518541244c2f8763454db335f8e6223dcaa9b657660c9be2bff1c6b",
+      "review_hash_matches": true,
+      "review_status": "pending_human",
+      "target_refs_count": 2,
+      "citations": [
+        {
+          "doc": "before-1",
+          "clause_id": "4.1",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "4.1",
+          "scorer_clause_quote_exact": true
+        }
+      ]
+    },
+    {
+      "id": "hold-parent",
+      "kind": "synthetic",
+      "partition": "holdout",
+      "current_label_sha256": "16d6ad49bcf81e0252aa01bd529464753250beb357e6c4286e0c3971c5046d1d",
+      "review_hash_matches": true,
+      "review_status": "pending_human",
+      "target_refs_count": 2,
+      "citations": [
+        {
+          "doc": "before-1",
+          "clause_id": "4.1.1",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "4.1.1",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "4.1",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "4.1",
+          "scorer_clause_quote_exact": true
+        }
+      ]
+    },
+    {
+      "id": "hold-split",
+      "kind": "synthetic",
+      "partition": "holdout",
+      "current_label_sha256": "481f15d7063ffc5e36b0ad54fbf5c4527bb398cb86adf989fc7d79c161e7466f",
+      "review_hash_matches": true,
+      "review_status": "pending_human",
+      "target_refs_count": 3,
+      "citations": [
+        {
+          "doc": "before-1",
+          "clause_id": "4.1",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "4.1",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "4.2",
+          "scorer_clause_quote_exact": true
+        }
+      ]
+    },
+    {
+      "id": "hold-shared",
+      "kind": "synthetic",
+      "partition": "holdout",
+      "current_label_sha256": "341f9cc453b2c9bd42c6a046639337371d012236d5a0836e9c1cc4b641719e24",
+      "review_hash_matches": true,
+      "review_status": "pending_human",
+      "target_refs_count": 2,
+      "citations": [
+        {
+          "doc": "before-1",
+          "clause_id": "4.2.1",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "4.2.1",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "4.1",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "before-1",
+          "clause_id": "4.2",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "4.1",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "4.2",
+          "scorer_clause_quote_exact": true
+        }
+      ]
+    },
+    {
+      "id": "hold-uncertainty",
+      "kind": "synthetic",
+      "partition": "holdout",
+      "current_label_sha256": "9fa01b95c7076b00aa6652f89c2b0b92c50292bbeb68095f26ceb919cb8f5bb8",
+      "review_hash_matches": true,
+      "review_status": "pending_human",
+      "target_refs_count": 3,
+      "citations": [
+        {
+          "doc": "before-1",
+          "clause_id": "4.1",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "4.1.1",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "4.1.2",
+          "scorer_clause_quote_exact": true
+        },
+        {
+          "doc": "after-1",
+          "clause_id": "4.1",
+          "scorer_clause_quote_exact": true
+        }
+      ]
+    },
+    {
+      "id": "hold-real-01",
+      "kind": "real",
+      "partition": "holdout",
+      "current_label_sha256": "4eb1e9f242483d9a5bf5258526ff5b39b58242cc21cb31027c75754d30fbe5a5",
+      "review_hash_matches": true,
+      "review_status": "pending_human",
+      "target_refs_count": 2,
+      "citations": [
+        {
+          "doc": "v8",
+          "clause_id": "7.1",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v9",
+          "clause_id": "7.1",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        }
+      ]
+    },
+    {
+      "id": "hold-real-02",
+      "kind": "real",
+      "partition": "holdout",
+      "current_label_sha256": "562a70321c1a72867116b0426f83701be63c859ebce55653b8a30bafbb45ccb2",
+      "review_hash_matches": true,
+      "review_status": "pending_human",
+      "target_refs_count": 2,
+      "citations": [
+        {
+          "doc": "v8",
+          "clause_id": "8.11",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v9",
+          "clause_id": "8.11",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        }
+      ]
+    },
+    {
+      "id": "dev-real-admin",
+      "kind": "real",
+      "partition": "development",
+      "current_label_sha256": "dfe6eeda40404ff88d5f80cdc0b58896ac2920a863f6c8a8a69464bfd65bc7d6",
+      "review_hash_matches": true,
+      "review_status": "pending_human",
+      "target_refs_count": 2,
+      "citations": [
+        {
+          "doc": "v8",
+          "clause_id": "1.6",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v9",
+          "clause_id": "1.6",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        }
+      ]
+    },
+    {
+      "id": "dev-real-roles",
+      "kind": "real",
+      "partition": "development",
+      "current_label_sha256": "5c31c61bf36ee8020ab974f6853f44bd9d5360f763e07ec8e75f7b3038e70683",
+      "review_hash_matches": true,
+      "review_status": "pending_human",
+      "target_refs_count": 2,
+      "citations": [
+        {
+          "doc": "v8",
+          "clause_id": "5.3",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.3",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        }
+      ]
+    },
+    {
+      "id": "dev-real-merge",
+      "kind": "real",
+      "partition": "development",
+      "current_label_sha256": "64775bdf199424af92e92f345c1ac3b1e59278ca479e73c7edbbe3a840bffafe",
+      "review_hash_matches": true,
+      "review_status": "pending_human",
+      "target_refs_count": 3,
+      "citations": [
+        {
+          "doc": "v8",
+          "clause_id": "5.3.2",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v8",
+          "clause_id": "5.4.4",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.3.3",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v8",
+          "clause_id": "5.3",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v8",
+          "clause_id": "5.4",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.3",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v8",
+          "clause_id": "5.4.4/а",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v8",
+          "clause_id": "5.4.4/б",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.3.3/а",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.3.3/б",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        }
+      ]
+    },
+    {
+      "id": "dev-real-functional-reporting",
+      "kind": "real",
+      "partition": "development",
+      "current_label_sha256": "67595916e9645e86695fc85d79931896043db386a33898ca5bb291ba497a8088",
+      "review_hash_matches": true,
+      "review_status": "pending_human",
+      "target_refs_count": 2,
+      "citations": [
+        {
+          "doc": "v8",
+          "clause_id": "1.5",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v9",
+          "clause_id": "1.5",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        }
+      ]
+    },
+    {
+      "id": "dev-real-significance",
+      "kind": "real",
+      "partition": "development",
+      "current_label_sha256": "7500f5a7216c1ad98b57c235acf941b17ae0ae4f097da929285fcd9929609185",
+      "review_hash_matches": true,
+      "review_status": "pending_human",
+      "target_refs_count": 2,
+      "citations": [
+        {
+          "doc": "v8",
+          "clause_id": "9.60/а",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v9",
+          "clause_id": "9.60/а",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v8",
+          "clause_id": "9.60",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v9",
+          "clause_id": "9.60",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        }
+      ]
+    },
+    {
+      "id": "dev-real-access",
+      "kind": "real",
+      "partition": "development",
+      "current_label_sha256": "e3ee4d86853ce58b441f0c548fd7e6f912b8e9bf062661b24195f107f0c63f19",
+      "review_hash_matches": true,
+      "review_status": "pending_human",
+      "target_refs_count": 2,
+      "citations": [
+        {
+          "doc": "v8",
+          "clause_id": "9.42",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v9",
+          "clause_id": "9.42",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        }
+      ]
+    },
+    {
+      "id": "dev-real-instructions",
+      "kind": "real",
+      "partition": "development",
+      "current_label_sha256": "a6d82d96806c7da9c9030c752e61b8bd424a31d1f7e558d2fd5bf602b0ffd9c5",
+      "review_hash_matches": true,
+      "review_status": "pending_human",
+      "target_refs_count": 2,
+      "citations": [
+        {
+          "doc": "v8",
+          "clause_id": "5.5.14",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.5.10",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v8",
+          "clause_id": "5.5",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.5",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        }
+      ]
+    },
+    {
+      "id": "dev-real-audit-goals",
+      "kind": "real",
+      "partition": "development",
+      "current_label_sha256": "763cb9bfa8ecf64b03733dc8dc5fae9f06b96be2ca424f9e4129d641d44e37e3",
+      "review_hash_matches": true,
+      "review_status": "pending_human",
+      "target_refs_count": 2,
+      "citations": [
+        {
+          "doc": "v8",
+          "clause_id": "9.36/з",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v9",
+          "clause_id": "9.36/е",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v8",
+          "clause_id": "9.36",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v9",
+          "clause_id": "9.36",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        }
+      ]
+    },
+    {
+      "id": "dev-real-confidentiality",
+      "kind": "real",
+      "partition": "development",
+      "current_label_sha256": "92e59fbeb1f0ebdb590b3b33083cfb1c0e48187c2e26adc991576558daa6dd95",
+      "review_hash_matches": true,
+      "review_status": "pending_human",
+      "target_refs_count": 2,
+      "citations": [
+        {
+          "doc": "v8",
+          "clause_id": "5.10.5",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.9.5",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v8",
+          "clause_id": "5.10",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.9",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        }
+      ]
+    },
+    {
+      "id": "dev-real-correspondence",
+      "kind": "real",
+      "partition": "development",
+      "current_label_sha256": "9cffefbdb298ed0b082c006ce741a1c2110a2e87e1db70fe74b7335280ff8a95",
+      "review_hash_matches": true,
+      "review_status": "pending_human",
+      "target_refs_count": 3,
+      "citations": [
+        {
+          "doc": "v8",
+          "clause_id": "5.6.5",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v8",
+          "clause_id": "5.7.3",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.6.3",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v8",
+          "clause_id": "5.6",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v8",
+          "clause_id": "5.7",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.6",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        }
+      ]
+    },
+    {
+      "id": "dev-real-staffing",
+      "kind": "real",
+      "partition": "development",
+      "current_label_sha256": "b65e2258a3c5f4811956003253b777dc6aef76e795f5fd8e2baa83ce7264a529",
+      "review_hash_matches": true,
+      "review_status": "pending_human",
+      "target_refs_count": 3,
+      "citations": [
+        {
+          "doc": "v8",
+          "clause_id": "5.6.7",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v8",
+          "clause_id": "5.7.5",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.6.5",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v8",
+          "clause_id": "5.6",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v8",
+          "clause_id": "5.7",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.6",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        }
+      ]
+    },
+    {
+      "id": "dev-real-shared-information",
+      "kind": "real",
+      "partition": "development",
+      "current_label_sha256": "290c90b21e86511231977b9316dae9f9f21bc54b4a04b33d1dd1949b4b7620d3",
+      "review_hash_matches": true,
+      "review_status": "pending_human",
+      "target_refs_count": 2,
+      "citations": [
+        {
+          "doc": "v8",
+          "clause_id": "5.3.5",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.3.6",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v8",
+          "clause_id": "5.3",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.3",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v8",
+          "clause_id": "5.4",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.4",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v8",
+          "clause_id": "5.4.3",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        },
+        {
+          "doc": "v9",
+          "clause_id": "5.4.3",
+          "scorer_clause_quote_exact": true,
+          "quote_exact_in_canonical_docx_visible_text": true,
+          "quote_exact_in_canonical_docx_clause": true
+        }
+      ]
+    }
+  ],
+  "docx": {
+    "v8": {
+      "file": "seeds/kt/v8.docx",
+      "sha256": "a91fb0f5e81ea323a7ff1f3a6205eb2631a487d9e7122f136f70577d0c410e98",
+      "paragraphs": 492,
+      "method": "ZIP word/document.xml, w:p/w:t visible text; no normalization; no rendering/layout claim"
+    },
+    "v9": {
+      "file": "seeds/kt/v9.docx",
+      "sha256": "043853e555b8eb90b294186ee0dba33d89997827185c6be67db6fdaf3dc2a8ef",
+      "paragraphs": 491,
+      "method": "ZIP word/document.xml, w:p/w:t visible text; no normalization; no rendering/layout claim"
+    }
+  },
+  "reviewer_notes_checks": [
+    {
+      "file": "addendum-development-real.json",
+      "cases": [
+        {
+          "blind_id": "DR08",
+          "refs_count": 2,
+          "citations_count": 10,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "first-development-real.json",
+      "cases": [
+        {
+          "blind_id": "DR01",
+          "refs_count": 2,
+          "citations_count": 2,
+          "errors": []
+        },
+        {
+          "blind_id": "DR02",
+          "refs_count": 2,
+          "citations_count": 5,
+          "errors": []
+        },
+        {
+          "blind_id": "DR03",
+          "refs_count": 3,
+          "citations_count": 8,
+          "errors": []
+        },
+        {
+          "blind_id": "DR04",
+          "refs_count": 2,
+          "citations_count": 2,
+          "errors": []
+        },
+        {
+          "blind_id": "DR05",
+          "refs_count": 2,
+          "citations_count": 4,
+          "errors": []
+        },
+        {
+          "blind_id": "DR06",
+          "refs_count": 2,
+          "citations_count": 2,
+          "errors": []
+        },
+        {
+          "blind_id": "DR07",
+          "refs_count": 2,
+          "citations_count": 4,
+          "errors": []
+        },
+        {
+          "blind_id": "DR08",
+          "refs_count": 2,
+          "citations_count": 4,
+          "errors": []
+        },
+        {
+          "blind_id": "DR09",
+          "refs_count": 2,
+          "citations_count": 4,
+          "errors": []
+        },
+        {
+          "blind_id": "DR10",
+          "refs_count": 3,
+          "citations_count": 6,
+          "errors": []
+        },
+        {
+          "blind_id": "DR11",
+          "refs_count": 3,
+          "citations_count": 6,
+          "errors": []
+        },
+        {
+          "blind_id": "DR12",
+          "refs_count": 2,
+          "citations_count": 4,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "first-development-synthetic.json",
+      "cases": [
+        {
+          "blind_id": "DS01",
+          "refs_count": 2,
+          "citations_count": 4,
+          "errors": []
+        },
+        {
+          "blind_id": "DS02",
+          "refs_count": 2,
+          "citations_count": 2,
+          "errors": []
+        },
+        {
+          "blind_id": "DS03",
+          "refs_count": 2,
+          "citations_count": 4,
+          "errors": []
+        },
+        {
+          "blind_id": "DS04",
+          "refs_count": 3,
+          "citations_count": 3,
+          "errors": []
+        },
+        {
+          "blind_id": "DS05",
+          "refs_count": 3,
+          "citations_count": 3,
+          "errors": []
+        },
+        {
+          "blind_id": "DS06",
+          "refs_count": 2,
+          "citations_count": 4,
+          "errors": []
+        },
+        {
+          "blind_id": "DS07",
+          "refs_count": 2,
+          "citations_count": 4,
+          "errors": []
+        },
+        {
+          "blind_id": "DS08",
+          "refs_count": 2,
+          "citations_count": 2,
+          "errors": []
+        },
+        {
+          "blind_id": "DS09",
+          "refs_count": 2,
+          "citations_count": 2,
+          "errors": []
+        },
+        {
+          "blind_id": "DS10",
+          "refs_count": 2,
+          "citations_count": 2,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "first-holdout-real.json",
+      "cases": [
+        {
+          "blind_id": "HR01",
+          "refs_count": 2,
+          "citations_count": 6,
+          "errors": []
+        },
+        {
+          "blind_id": "HR02",
+          "refs_count": 2,
+          "citations_count": 6,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "first-holdout-synthetic.json",
+      "cases": [
+        {
+          "blind_id": "HS01",
+          "refs_count": 2,
+          "citations_count": 4,
+          "errors": []
+        },
+        {
+          "blind_id": "HS02",
+          "refs_count": 2,
+          "citations_count": 2,
+          "errors": []
+        },
+        {
+          "blind_id": "HS03",
+          "refs_count": 2,
+          "citations_count": 4,
+          "errors": []
+        },
+        {
+          "blind_id": "HS04",
+          "refs_count": 3,
+          "citations_count": 3,
+          "errors": []
+        },
+        {
+          "blind_id": "HS05",
+          "refs_count": 2,
+          "citations_count": 5,
+          "errors": []
+        },
+        {
+          "blind_id": "HS06",
+          "refs_count": 3,
+          "citations_count": 4,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "second-development-real.json",
+      "cases": [
+        {
+          "blind_id": "DR02",
+          "refs_count": 2,
+          "citations_count": 5,
+          "errors": []
+        },
+        {
+          "blind_id": "DR03",
+          "refs_count": 3,
+          "citations_count": 10,
+          "errors": []
+        },
+        {
+          "blind_id": "DR08",
+          "refs_count": 2,
+          "citations_count": 8,
+          "errors": []
+        },
+        {
+          "blind_id": "DR10",
+          "refs_count": 3,
+          "citations_count": 6,
+          "errors": []
+        },
+        {
+          "blind_id": "DR11",
+          "refs_count": 3,
+          "citations_count": 6,
+          "errors": []
+        },
+        {
+          "blind_id": "DR12",
+          "refs_count": 2,
+          "citations_count": 4,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "second-development-synthetic.json",
+      "cases": [
+        {
+          "blind_id": "DS01",
+          "refs_count": 2,
+          "citations_count": 4,
+          "errors": []
+        },
+        {
+          "blind_id": "DS02",
+          "refs_count": 2,
+          "citations_count": 2,
+          "errors": []
+        },
+        {
+          "blind_id": "DS04",
+          "refs_count": 3,
+          "citations_count": 5,
+          "errors": []
+        },
+        {
+          "blind_id": "DS05",
+          "refs_count": 3,
+          "citations_count": 5,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "second-holdout-synthetic.json",
+      "cases": [
+        {
+          "blind_id": "HS01",
+          "refs_count": 2,
+          "citations_count": 4,
+          "errors": []
+        },
+        {
+          "blind_id": "HS02",
+          "refs_count": 2,
+          "citations_count": 2,
+          "errors": []
+        },
+        {
+          "blind_id": "HS03",
+          "refs_count": 2,
+          "citations_count": 4,
+          "errors": []
+        },
+        {
+          "blind_id": "HS04",
+          "refs_count": 3,
+          "citations_count": 3,
+          "errors": []
+        },
+        {
+          "blind_id": "HS05",
+          "refs_count": 2,
+          "citations_count": 8,
+          "errors": []
+        },
+        {
+          "blind_id": "HS06",
+          "refs_count": 3,
+          "citations_count": 4,
+          "errors": []
+        }
+      ]
+    }
+  ]
+}

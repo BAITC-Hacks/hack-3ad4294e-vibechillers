@@ -1,0 +1,128 @@
+{
+  "scope": "Deliberately corrupted copy of a Report; this is a scorer control, NOT model/core output.",
+  "changed_label_id": "real-001",
+  "mutation": "unchanged -> changed, exact same refs",
+  "before": {
+    "tp": 19,
+    "fp": 0,
+    "fn": 1,
+    "statuses": {
+      "unchanged": {
+        "gold": 9,
+        "tp": 9,
+        "fp": 0,
+        "fn": 0,
+        "precision_denominator": 9,
+        "recall_denominator": 9,
+        "overlap_abstentions": 0
+      },
+      "changed": {
+        "gold": 2,
+        "tp": 1,
+        "fp": 0,
+        "fn": 1,
+        "precision_denominator": 1,
+        "recall_denominator": 2,
+        "overlap_abstentions": 1
+      },
+      "moved": {
+        "gold": 4,
+        "tp": 4,
+        "fp": 0,
+        "fn": 0,
+        "precision_denominator": 4,
+        "recall_denominator": 4,
+        "overlap_abstentions": 0
+      },
+      "added": {
+        "gold": 4,
+        "tp": 4,
+        "fp": 0,
+        "fn": 0,
+        "precision_denominator": 4,
+        "recall_denominator": 4,
+        "overlap_abstentions": 0
+      },
+      "missing": {
+        "gold": 1,
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "precision_denominator": 1,
+        "recall_denominator": 1,
+        "overlap_abstentions": 0
+      },
+      "duplicate": {
+        "gold": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "precision_denominator": 0,
+        "recall_denominator": 0,
+        "overlap_abstentions": 0
+      }
+    }
+  },
+  "after": {
+    "tp": 18,
+    "fp": 1,
+    "fn": 2,
+    "statuses": {
+      "unchanged": {
+        "gold": 9,
+        "tp": 8,
+        "fp": 0,
+        "fn": 1,
+        "precision_denominator": 8,
+        "recall_denominator": 9,
+        "overlap_abstentions": 0
+      },
+      "changed": {
+        "gold": 2,
+        "tp": 1,
+        "fp": 1,
+        "fn": 1,
+        "precision_denominator": 2,
+        "recall_denominator": 2,
+        "overlap_abstentions": 1
+      },
+      "moved": {
+        "gold": 4,
+        "tp": 4,
+        "fp": 0,
+        "fn": 0,
+        "precision_denominator": 4,
+        "recall_denominator": 4,
+        "overlap_abstentions": 0
+      },
+      "added": {
+        "gold": 4,
+        "tp": 4,
+        "fp": 0,
+        "fn": 0,
+        "precision_denominator": 4,
+        "recall_denominator": 4,
+        "overlap_abstentions": 0
+      },
+      "missing": {
+        "gold": 1,
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "precision_denominator": 1,
+        "recall_denominator": 1,
+        "overlap_abstentions": 0
+      },
+      "duplicate": {
+        "gold": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "precision_denominator": 0,
+        "recall_denominator": 0,
+        "overlap_abstentions": 0
+      }
+    }
+  },
+  "assertions_passed": true
+}

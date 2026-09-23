@@ -1,0 +1,596 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-09-23",
+  "completed_at_utc": "2026-09-23T10:23:40.071360+00:00",
+  "timezone": "Asia/Qyzylorda",
+  "repository": "C:\\Users\\torre\\Documents\\GitHub\\hack-3ad4294e-vibechillers",
+  "initial_head": "4af5b5bf23e4eb24f487fbe405b9bc106177e459",
+  "final_head": "96e41c65cd3f82429e00ac38d192d0ff08bc0b0d",
+  "scope": "all 30 challenge examples; independent AI label review; no system scoring",
+  "counts": {
+    "development": {
+      "cases": 22,
+      "kind_counts": {
+        "synthetic": 10,
+        "real": 12
+      },
+      "first_matches_current": 22,
+      "first_disagrees_current": 0,
+      "second_reviewed": 10,
+      "reviewer_agreements": 7,
+      "reviewer_disagreements": 3,
+      "proposed_status_changes": 3,
+      "evidence_corrections_only": 1
+    },
+    "holdout": {
+      "cases": 8,
+      "kind_counts": {
+        "synthetic": 6,
+        "real": 2
+      },
+      "first_matches_current": 7,
+      "first_disagrees_current": 1,
+      "second_reviewed": 6,
+      "reviewer_agreements": 6,
+      "reviewer_disagreements": 0,
+      "proposed_status_changes": 1,
+      "evidence_corrections_only": 0
+    }
+  },
+  "cases": [
+    {
+      "id": "dev-owner",
+      "blind_id": "DS01",
+      "partition": "development",
+      "kind": "synthetic",
+      "label_sha256": "9ef3a54fee111ae76f45b54e44e8b098352fd3798d4d1bcdedde3f784a974acf",
+      "first_review_file": "first-development-synthetic.json",
+      "second_review_file": "second-development-synthetic.json",
+      "addendum_file": null,
+      "review_status": "pending_human"
+    },
+    {
+      "id": "dev-delegate",
+      "blind_id": "DS02",
+      "partition": "development",
+      "kind": "synthetic",
+      "label_sha256": "57b8b2890d936dd1c458001656faf00f54639c0c903dc777baea24e656f5612d",
+      "first_review_file": "first-development-synthetic.json",
+      "second_review_file": "second-development-synthetic.json",
+      "addendum_file": null,
+      "review_status": "pending_human"
+    },
+    {
+      "id": "dev-prohibition",
+      "blind_id": "DS03",
+      "partition": "development",
+      "kind": "synthetic",
+      "label_sha256": "f3f31dca4c953e8eab735d08c7664b535401dd063378b434bf179d22f31bdeaf",
+      "first_review_file": "first-development-synthetic.json",
+      "second_review_file": null,
+      "addendum_file": null,
+      "review_status": "pending_human"
+    },
+    {
+      "id": "dev-split",
+      "blind_id": "DS04",
+      "partition": "development",
+      "kind": "synthetic",
+      "label_sha256": "b7421f91a5d34c78d550d3546b5ef7d2b0a7d6c92294ea1ff8482f80eb5cf680",
+      "first_review_file": "first-development-synthetic.json",
+      "second_review_file": "second-development-synthetic.json",
+      "addendum_file": null,
+      "review_status": "pending_human"
+    },
+    {
+      "id": "dev-merge",
+      "blind_id": "DS05",
+      "partition": "development",
+      "kind": "synthetic",
+      "label_sha256": "a59fc73133808cbfac7af902e398924df88a3dc83f3360e7645867666920f472",
+      "first_review_file": "first-development-synthetic.json",
+      "second_review_file": "second-development-synthetic.json",
+      "addendum_file": null,
+      "review_status": "pending_human"
+    },
+    {
+      "id": "dev-shared-dnm",
+      "blind_id": "DS06",
+      "partition": "development",
+      "kind": "synthetic",
+      "label_sha256": "79978000fd44ccdfe74dd92d98591108d789ab682a15e4c573d9a437c09143c9",
+      "first_review_file": "first-development-synthetic.json",
+      "second_review_file": null,
+      "addendum_file": null,
+      "review_status": "pending_human"
+    },
+    {
+      "id": "dev-shared-dkkm",
+      "blind_id": "DS07",
+      "partition": "development",
+      "kind": "synthetic",
+      "label_sha256": "5a4aa9e129e65ff9a1ac6092b4a09980a8ecc76cc0b290665ee39acadbbaf34b",
+      "first_review_file": "first-development-synthetic.json",
+      "second_review_file": null,
+      "addendum_file": null,
+      "review_status": "pending_human"
+    },
+    {
+      "id": "dev-identical-inline",
+      "blind_id": "DS08",
+      "partition": "development",
+      "kind": "synthetic",
+      "label_sha256": "1c99e9a03170a8a0e25b01378ae2ff1e6576caa961d86d978284377e45e587ba",
+      "first_review_file": "first-development-synthetic.json",
+      "second_review_file": null,
+      "addendum_file": null,
+      "review_status": "pending_human"
+    },
+    {
+      "id": "dev-identical-repeated",
+      "blind_id": "DS09",
+      "partition": "development",
+      "kind": "synthetic",
+      "label_sha256": "d786d5dba901bbcca771dd5f869aa3c82326d72f993ae7c4ff1b7973fd9e15bb",
+      "first_review_file": "first-development-synthetic.json",
+      "second_review_file": null,
+      "addendum_file": null,
+      "review_status": "pending_human"
+    },
+    {
+      "id": "dev-multidoc",
+      "blind_id": "DS10",
+      "partition": "development",
+      "kind": "synthetic",
+      "label_sha256": "7c3ab5579154ed21d8dcd26201f95a333c2e41ad6d83ba09dd73b9c248de9ef0",
+      "first_review_file": "first-development-synthetic.json",
+      "second_review_file": null,
+      "addendum_file": null,
+      "review_status": "pending_human"
+    },
+    {
+      "id": "dev-real-admin",
+      "blind_id": "DR01",
+      "partition": "development",
+      "kind": "real",
+      "label_sha256": "dfe6eeda40404ff88d5f80cdc0b58896ac2920a863f6c8a8a69464bfd65bc7d6",
+      "first_review_file": "first-development-real.json",
+      "second_review_file": null,
+      "addendum_file": null,
+      "review_status": "pending_human"
+    },
+    {
+      "id": "dev-real-roles",
+      "blind_id": "DR02",
+      "partition": "development",
+      "kind": "real",
+      "label_sha256": "5c31c61bf36ee8020ab974f6853f44bd9d5360f763e07ec8e75f7b3038e70683",
+      "first_review_file": "first-development-real.json",
+      "second_review_file": "second-development-real.json",
+      "addendum_file": null,
+      "review_status": "pending_human"
+    },
+    {
+      "id": "dev-real-merge",
+      "blind_id": "DR03",
+      "partition": "development",
+      "kind": "real",
+      "label_sha256": "64775bdf199424af92e92f345c1ac3b1e59278ca479e73c7edbbe3a840bffafe",
+      "first_review_file": "first-development-real.json",
+      "second_review_file": "second-development-real.json",
+      "addendum_file": null,
+      "review_status": "pending_human"
+    },
+    {
+      "id": "dev-real-functional-reporting",
+      "blind_id": "DR04",
+      "partition": "development",
+      "kind": "real",
+      "label_sha256": "67595916e9645e86695fc85d79931896043db386a33898ca5bb291ba497a8088",
+      "first_review_file": "first-development-real.json",
+      "second_review_file": null,
+      "addendum_file": null,
+      "review_status": "pending_human"
+    },
+    {
+      "id": "dev-real-significance",
+      "blind_id": "DR05",
+      "partition": "development",
+      "kind": "real",
+      "label_sha256": "7500f5a7216c1ad98b57c235acf941b17ae0ae4f097da929285fcd9929609185",
+      "first_review_file": "first-development-real.json",
+      "second_review_file": null,
+      "addendum_file": null,
+      "review_status": "pending_human"
+    },
+    {
+      "id": "dev-real-access",
+      "blind_id": "DR06",
+      "partition": "development",
+      "kind": "real",
+      "label_sha256": "e3ee4d86853ce58b441f0c548fd7e6f912b8e9bf062661b24195f107f0c63f19",
+      "first_review_file": "first-development-real.json",
+      "second_review_file": null,
+      "addendum_file": null,
+      "review_status": "pending_human"
+    },
+    {
+      "id": "dev-real-instructions",
+      "blind_id": "DR07",
+      "partition": "development",
+      "kind": "real",
+      "label_sha256": "a6d82d96806c7da9c9030c752e61b8bd424a31d1f7e558d2fd5bf602b0ffd9c5",
+      "first_review_file": "first-development-real.json",
+      "second_review_file": null,
+      "addendum_file": null,
+      "review_status": "pending_human"
+    },
+    {
+      "id": "dev-real-audit-goals",
+      "blind_id": "DR08",
+      "partition": "development",
+      "kind": "real",
+      "label_sha256": "763cb9bfa8ecf64b03733dc8dc5fae9f06b96be2ca424f9e4129d641d44e37e3",
+      "first_review_file": "first-development-real.json",
+      "second_review_file": "second-development-real.json",
+      "addendum_file": "addendum-development-real.json",
+      "review_status": "pending_human"
+    },
+    {
+      "id": "dev-real-confidentiality",
+      "blind_id": "DR09",
+      "partition": "development",
+      "kind": "real",
+      "label_sha256": "92e59fbeb1f0ebdb590b3b33083cfb1c0e48187c2e26adc991576558daa6dd95",
+      "first_review_file": "first-development-real.json",
+      "second_review_file": null,
+      "addendum_file": null,
+      "review_status": "pending_human"
+    },
+    {
+      "id": "dev-real-correspondence",
+      "blind_id": "DR10",
+      "partition": "development",
+      "kind": "real",
+      "label_sha256": "9cffefbdb298ed0b082c006ce741a1c2110a2e87e1db70fe74b7335280ff8a95",
+      "first_review_file": "first-development-real.json",
+      "second_review_file": "second-development-real.json",
+      "addendum_file": null,
+      "review_status": "pending_human"
+    },
+    {
+      "id": "dev-real-staffing",
+      "blind_id": "DR11",
+      "partition": "development",
+      "kind": "real",
+      "label_sha256": "b65e2258a3c5f4811956003253b777dc6aef76e795f5fd8e2baa83ce7264a529",
+      "first_review_file": "first-development-real.json",
+      "second_review_file": "second-development-real.json",
+      "addendum_file": null,
+      "review_status": "pending_human"
+    },
+    {
+      "id": "dev-real-shared-information",
+      "blind_id": "DR12",
+      "partition": "development",
+      "kind": "real",
+      "label_sha256": "290c90b21e86511231977b9316dae9f9f21bc54b4a04b33d1dd1949b4b7620d3",
+      "first_review_file": "first-development-real.json",
+      "second_review_file": "second-development-real.json",
+      "addendum_file": null,
+      "review_status": "pending_human"
+    },
+    {
+      "id": "hold-owner",
+      "blind_id": "HS01",
+      "partition": "holdout",
+      "kind": "synthetic",
+      "label_sha256": "bd35a22cdd3b0427051db28fc79dcd0359dbfed8cfd0fe630d92037f95a26f92",
+      "first_review_file": "first-holdout-synthetic.json",
+      "second_review_file": "second-holdout-synthetic.json",
+      "addendum_file": null,
+      "review_status": "pending_human"
+    },
+    {
+      "id": "hold-delegate",
+      "blind_id": "HS02",
+      "partition": "holdout",
+      "kind": "synthetic",
+      "label_sha256": "8de96aed6518541244c2f8763454db335f8e6223dcaa9b657660c9be2bff1c6b",
+      "first_review_file": "first-holdout-synthetic.json",
+      "second_review_file": "second-holdout-synthetic.json",
+      "addendum_file": null,
+      "review_status": "pending_human"
+    },
+    {
+      "id": "hold-parent",
+      "blind_id": "HS03",
+      "partition": "holdout",
+      "kind": "synthetic",
+      "label_sha256": "16d6ad49bcf81e0252aa01bd529464753250beb357e6c4286e0c3971c5046d1d",
+      "first_review_file": "first-holdout-synthetic.json",
+      "second_review_file": "second-holdout-synthetic.json",
+      "addendum_file": null,
+      "review_status": "pending_human"
+    },
+    {
+      "id": "hold-split",
+      "blind_id": "HS04",
+      "partition": "holdout",
+      "kind": "synthetic",
+      "label_sha256": "481f15d7063ffc5e36b0ad54fbf5c4527bb398cb86adf989fc7d79c161e7466f",
+      "first_review_file": "first-holdout-synthetic.json",
+      "second_review_file": "second-holdout-synthetic.json",
+      "addendum_file": null,
+      "review_status": "pending_human"
+    },
+    {
+      "id": "hold-shared",
+      "blind_id": "HS05",
+      "partition": "holdout",
+      "kind": "synthetic",
+      "label_sha256": "341f9cc453b2c9bd42c6a046639337371d012236d5a0836e9c1cc4b641719e24",
+      "first_review_file": "first-holdout-synthetic.json",
+      "second_review_file": "second-holdout-synthetic.json",
+      "addendum_file": null,
+      "review_status": "pending_human"
+    },
+    {
+      "id": "hold-uncertainty",
+      "blind_id": "HS06",
+      "partition": "holdout",
+      "kind": "synthetic",
+      "label_sha256": "9fa01b95c7076b00aa6652f89c2b0b92c50292bbeb68095f26ceb919cb8f5bb8",
+      "first_review_file": "first-holdout-synthetic.json",
+      "second_review_file": "second-holdout-synthetic.json",
+      "addendum_file": null,
+      "review_status": "pending_human"
+    },
+    {
+      "id": "hold-real-01",
+      "blind_id": "HR01",
+      "partition": "holdout",
+      "kind": "real",
+      "label_sha256": "4eb1e9f242483d9a5bf5258526ff5b39b58242cc21cb31027c75754d30fbe5a5",
+      "first_review_file": "first-holdout-real.json",
+      "second_review_file": null,
+      "addendum_file": null,
+      "review_status": "pending_human"
+    },
+    {
+      "id": "hold-real-02",
+      "blind_id": "HR02",
+      "partition": "holdout",
+      "kind": "real",
+      "label_sha256": "562a70321c1a72867116b0426f83701be63c859ebce55653b8a30bafbb45ccb2",
+      "first_review_file": "first-holdout-real.json",
+      "second_review_file": null,
+      "addendum_file": null,
+      "review_status": "pending_human"
+    }
+  ],
+  "source_sha256": {
+    "seeds/kt/eval/mutations/stage2/dev-delegate/after-1.txt": "47581a28739f17fbb4eed20a1fb5a3a9fbff1edd1d2924b1aec37571b6328739",
+    "seeds/kt/eval/mutations/stage2/dev-delegate/before-1.txt": "68a720271ef17a676fd7955bc231d7a97d416eb23d08d8661563de057eb7f768",
+    "seeds/kt/eval/mutations/stage2/dev-identical-inline/identical.txt": "426d282749b74b7b09979f634a46d3294bf5393779479f2ec3db8ddfda4a972f",
+    "seeds/kt/eval/mutations/stage2/dev-identical-repeated/identical.txt": "426d282749b74b7b09979f634a46d3294bf5393779479f2ec3db8ddfda4a972f",
+    "seeds/kt/eval/mutations/stage2/dev-merge/after-1.txt": "844f227acc84e4eb95830fdbbd2c3349fec9dec150cc5f29aecfdd34cff084a5",
+    "seeds/kt/eval/mutations/stage2/dev-merge/before-1.txt": "87c1a4f930f3e21ce8fa2cd1bb0f462926a537f8ab09457a53f1b92a5767db56",
+    "seeds/kt/eval/mutations/stage2/dev-multidoc/after-1.txt": "9e1792633b4600e56e8d356c9d355f9ef45e8c6227ed03bb9bdabdf003d453a9",
+    "seeds/kt/eval/mutations/stage2/dev-multidoc/after-2.txt": "48a1aa12cd7b7feced9053f5c89f3f317202084a18859fcc20b975b5d1fafd12",
+    "seeds/kt/eval/mutations/stage2/dev-multidoc/before-1.txt": "b367c875b90ad8c23ccff9c1957b45976cc410b5cf8ae67aade2b494f03191cb",
+    "seeds/kt/eval/mutations/stage2/dev-multidoc/before-2.txt": "48a1aa12cd7b7feced9053f5c89f3f317202084a18859fcc20b975b5d1fafd12",
+    "seeds/kt/eval/mutations/stage2/dev-owner/after-1.txt": "49d0d35b784b8f0dc117170738cf4497b06cab3cc7ef8b08ff928db69608244d",
+    "seeds/kt/eval/mutations/stage2/dev-owner/before-1.txt": "5b78e765bf22e7a6276db0bcb9900c323b6a386b0de4a3b826533665fc8d11bd",
+    "seeds/kt/eval/mutations/stage2/dev-prohibition/after-1.txt": "d3826ba39bcf099b6594e84ae0a012cdf4f1168448cd41a72b749502613b1ca0",
+    "seeds/kt/eval/mutations/stage2/dev-prohibition/before-1.txt": "2df5a76eea96a1499e1e5817b43653d5f228a1eaf42608aed5be5d35abb75491",
+    "seeds/kt/eval/mutations/stage2/dev-shared-dkkm/after-1.txt": "808d821dae1a187eeeeed05618495c15ed95ea1e4483fa3b5d91617aff1ebd7c",
+    "seeds/kt/eval/mutations/stage2/dev-shared-dkkm/before-1.txt": "808d821dae1a187eeeeed05618495c15ed95ea1e4483fa3b5d91617aff1ebd7c",
+    "seeds/kt/eval/mutations/stage2/dev-shared-dnm/after-1.txt": "808d821dae1a187eeeeed05618495c15ed95ea1e4483fa3b5d91617aff1ebd7c",
+    "seeds/kt/eval/mutations/stage2/dev-shared-dnm/before-1.txt": "808d821dae1a187eeeeed05618495c15ed95ea1e4483fa3b5d91617aff1ebd7c",
+    "seeds/kt/eval/mutations/stage2/dev-split/after-1.txt": "892cb62256c049894ba20e6e70d79c9477f83639bcd74b063f82e01fe37c9af0",
+    "seeds/kt/eval/mutations/stage2/dev-split/before-1.txt": "08d436545a6e4abe50e6fb3f8c4bf47e9d3bd28066e7c9b24ed740c1396521be",
+    "seeds/kt/eval/mutations/stage2/hold-delegate/after-1.txt": "531ff182fd546dbc0b1992bf897b1d77cb7b5a0ec2e00df0f4a3742fe3a8f276",
+    "seeds/kt/eval/mutations/stage2/hold-delegate/before-1.txt": "c0e3f287ee6d921e6a46aaeacc50674b96f2cdbbf250f3977494a3ad1d5e85eb",
+    "seeds/kt/eval/mutations/stage2/hold-owner/after-1.txt": "9da238249bb39cac93a1ffe0db07d66cced1afb0c34a77dbda15ca0eeee05fa8",
+    "seeds/kt/eval/mutations/stage2/hold-owner/before-1.txt": "4e48bd58878202641f1168f65dfe79f575d3f9d5e56db1ec08be083bb16c3c15",
+    "seeds/kt/eval/mutations/stage2/hold-parent/after-1.txt": "c02c34561dfcb51d1e3c4cd165cfc2849f27cfabce2d5a6e67c64f5843629933",
+    "seeds/kt/eval/mutations/stage2/hold-parent/before-1.txt": "5c39a1e24e80b69b33a6a176eae7561490434260096057ebf71edff5218853f2",
+    "seeds/kt/eval/mutations/stage2/hold-shared/after-1.txt": "5de5905b6f473ed7ea0d6edd1ac07c503dbe538c8c547a7d8a419b2b915a9d2b",
+    "seeds/kt/eval/mutations/stage2/hold-shared/before-1.txt": "5de5905b6f473ed7ea0d6edd1ac07c503dbe538c8c547a7d8a419b2b915a9d2b",
+    "seeds/kt/eval/mutations/stage2/hold-split/after-1.txt": "50ec660e2995d42b86413f5f73c0f48e10af6105ee595030faa12198d363ad26",
+    "seeds/kt/eval/mutations/stage2/hold-split/before-1.txt": "80c0f0ef7e2eb99dd00b37cfb399bf68f17f07f33871903988ad38cc5a748775",
+    "seeds/kt/eval/mutations/stage2/hold-uncertainty/after-1.txt": "842237ccd70248a4c9368406707415130b1cd21229c771e520472945f66bcf77",
+    "seeds/kt/eval/mutations/stage2/hold-uncertainty/before-1.txt": "3ce496c5a71c67fcb70c3986aca8378781b2964302338153fb09572bf9cebc9a",
+    "seeds/kt/v8.docx": "a91fb0f5e81ea323a7ff1f3a6205eb2631a487d9e7122f136f70577d0c410e98",
+    "seeds/kt/v8.txt": "f5ce4518f22ecad2701f1fed8929d93ff09bb45af6e35e8fd60726362b6bfbc8",
+    "seeds/kt/v9.docx": "043853e555b8eb90b294186ee0dba33d89997827185c6be67db6fdaf3dc2a8ef",
+    "seeds/kt/v9.txt": "7ab6a7fc5396dffbcd9228149b47ed28e0c3338284ad6c2180f8acb94fdd738b"
+  },
+  "label_and_custody_sha256": {
+    "seeds/kt/eval/challenge.jsonl": "d11ddfb3baaa5cf08c0478badfead00095c2f868d7964353bf3ef7312547effe",
+    "seeds/kt/eval/regression.jsonl": "87965da85193a0420dd2383fae056211c7cba5b1976bdc0e3f2783534526b7ed",
+    "seeds/kt/eval/labels.jsonl": "87965da85193a0420dd2383fae056211c7cba5b1976bdc0e3f2783534526b7ed",
+    "seeds/kt/eval/split.json": "6b3bb3840259ec2b642af1a7748d96d89ab243e1a5b826b55b8780e0b9e18e65",
+    "seeds/kt/eval/reviews.json": "fea4bcbf33b6d55ebb0f43609ddad3fb9014c7a4d81585cab2fd23d81aa3138c",
+    "seeds/kt/eval/REVIEW.md": "6c6c9ca762a8671ec014cc0298d9fea37d04511a9459ac2069664ba78e349793"
+  },
+  "contract_and_tool_sha256": {
+    "docs/stage-2.md": "1153f162136f6accd2a03abff0e2207a927e07c6794d0bc19b07506878876f31",
+    "docs/plan.md": "8387776345325d2fc2678738ea1ac500554814549e42d7f7fcee3ae04d6629be",
+    "docs/evidence/kt-quality.md": "f54c528cfa9e5d3d7c38ec7c02f10376a79d9cbede19268259d1835776c2e473",
+    "eval/kt/SELECTION.md": "2d8005bd094ec3c883b6b2a1050ee1c9eee6b9c83ea47067c25a8c7a1dbb135c",
+    "eval/kt/make_mutations.py": "d62f423b7a5bbb79de130ff5196d6006e926114beba53e639fe9901aa34d8358",
+    "eval/kt/score.py": "86bfce50b179369948e57bb0c76d7df49d045510f2ea97c79f3fbdd448e07d9a"
+  },
+  "reviewers": [
+    {
+      "agent": "/root",
+      "role": "unblinded source/context verification and sole synthesis; never represented as independent blind vote"
+    },
+    {
+      "agent": "/root/dev_real_blind",
+      "model": "gpt-6-sol",
+      "first": "development/real DR01..DR12",
+      "second": "development/synthetic DS01,DS02,DS04,DS05",
+      "addendum": "DR08 governing context and canonical DOCX"
+    },
+    {
+      "agent": "/root/dev_synthetic_blind",
+      "model": "gpt-6-sol",
+      "first": "development/synthetic DS01..DS10",
+      "second": "development/real DR02,DR03,DR08,DR10,DR11,DR12"
+    },
+    {
+      "agent": "/root/hold_real_blind",
+      "model": "gpt-6-sol",
+      "first": "holdout/real HR01..HR02",
+      "second": "holdout/synthetic HS01..HS06"
+    },
+    {
+      "agent": "/root/hold_synthetic_blind",
+      "model": "gpt-6-sol",
+      "first": "holdout/synthetic HS01..HS06"
+    }
+  ],
+  "independence": {
+    "fresh_context": "all four spawned with fork_turns=none and explicit gpt-6-sol",
+    "withheld": [
+      "current expected_status",
+      "current rationale",
+      "system reports",
+      "other reviewer conclusions until notes frozen"
+    ],
+    "provided": [
+      "contract excerpt",
+      "neutral blind case ID",
+      "target before/after refs",
+      "source filenames and raw hashes",
+      "full synthetic texts or full relevant real sections"
+    ],
+    "limitations": [
+      "procedural separation in shared repository, not access control",
+      "source filenames may suggest synthetic operation",
+      "target refs constrain proposed lineage; reviewers were allowed to change them",
+      "root read requested docs/evidence and current labels; root was not blind",
+      "real partitions share source editions but were assigned to separate agents; no development assignments went to holdout agents"
+    ]
+  },
+  "verification": {
+    "existing_scorer": "30 challenge and 25 regression validate-labels, exit 0",
+    "real_current_citations_exact_in_correct_docx_clause": "58/58",
+    "review_hash_mismatches": 0,
+    "details": "technical-checks.json",
+    "no_system_reports_read_by_reviewers": true,
+    "no_holdout_run_or_tuning": true,
+    "human_confirmation_performed": false,
+    "labels_modified": false
+  },
+  "preservation": {
+    "initial_snapshot": "initial-state.json",
+    "initial_files_count": 137,
+    "protected_files_unchanged": true,
+    "concurrent_changes_outside_package": [
+      {
+        "file": "README.md",
+        "initial_sha256": "9393af69ad14aa14719159b5e5737a88b787bc17cf9cb23d14bfb354b85986f7",
+        "final_sha256": "b4e08eeaca57cc1df91b94ca8d6d1c64999a02b7523fa35d88375c2b3a3f8417"
+      },
+      {
+        "file": "docs/PROGRESS.md",
+        "initial_sha256": "b9bfccfdbd610ddb16179d570061c8c20e54b1d3413879c76ca792a8429bb0e0",
+        "final_sha256": "36ee8cd07f0d5962634df1168d93ef99ecb206892d9a652398713147ce63e84f"
+      },
+      {
+        "file": "docs/architecture.md",
+        "initial_sha256": "82cc4226c79f88dd5ca3792c18dc130f2ccf79d0dfa36385da3700b75dcd84c5",
+        "final_sha256": "28aa63ae11637aca02a12e9198f143bda106f2c0bd204c7919b9689597bb03e3"
+      },
+      {
+        "file": "docs/business-case.md",
+        "initial_sha256": "c35b3c175c6af8956924cdae9a40cc628b1a8f8f2e586f8f1466cff45032a0f0",
+        "final_sha256": "5dc0dac7fe39e92748c6d3ed5fa123359a2a3604c8c742c76a4b2607a2c3dce7"
+      },
+      {
+        "file": "docs/demo.md",
+        "initial_sha256": "7abf2e39cff7ecdb7cdcf79c9e92a90b89ffd5e69b9e903c25506dcbb46ad018",
+        "final_sha256": "210d186715a1402e20686b64c8afd9df46031272b2641b6a48e0e0ce4f44fe17"
+      },
+      {
+        "file": "docs/evidence/kt-launch.md",
+        "initial_sha256": "96e006651fd931b4e3f48babc1601095a39609adba6c9f105bfa7fb171acab2e",
+        "final_sha256": "7b64da213c1465e31434bb1ef54ca727af3229b4aa2d72f850ed01b812556165"
+      }
+    ],
+    "new_files_outside_package": [
+      "scripts/export_report.py"
+    ],
+    "new_concurrent_file_sha256": {
+      "scripts/export_report.py": "a9e93c102ca7945e61ea5af8f99c61513aa6962d9ee6820b95017da4407010f3"
+    },
+    "writes_by_this_review": "only seeds/kt/eval/independent-review/",
+    "concurrent_work_note": "Other shared-workspace work advanced HEAD, changed six delivery documents, and added scripts/export_report.py. This review did not edit, reset, commit, or push them. Initial snapshot and current hashes are retained.",
+    "git_status_final": " M docs/evidence/kt-quality.md\n M eval/kt/make_mutations.py\n M seeds/kt/eval/REVIEW.md\n?? seeds/kt/eval/independent-review/\n?? seeds/kt/eval/results/\n"
+  },
+  "commands": [
+    {
+      "command": "python -B eval/kt/score.py --labels seeds/kt/eval/challenge.jsonl --validate-labels",
+      "exit_code": 0,
+      "stdout": "Validated 30 labels: 14 real, 16 synthetic; all fixture hashes, clause refs and quotes resolve\nHuman review: {\"pending_human\": 30}; pending/unrecorded labels yield provisional agreement, not confirmed human gold\n",
+      "stderr": ""
+    },
+    {
+      "command": "python -B eval/kt/score.py --labels seeds/kt/eval/regression.jsonl --validate-labels",
+      "exit_code": 0,
+      "stdout": "Validated 25 labels: 20 real, 5 synthetic; all fixture hashes, clause refs and quotes resolve\nHuman review: {\"legacy_accepted\": 25}; pending/unrecorded labels yield provisional agreement, not confirmed human gold\n",
+      "stderr": ""
+    },
+    {
+      "command": "python seeds/kt/eval/independent-review/prepare.py (initial invocation)",
+      "exit_code": 0,
+      "result": "four source-only packets, 30 cases, initial snapshot of 137 files; repeat execution now guarded"
+    },
+    {
+      "command": "python -B seeds/kt/eval/independent-review/technical_audit.py",
+      "result": "existing scorer validation + DOCX raw text/numbered clause provenance + reviewer citation checks; see technical-checks.json"
+    },
+    {
+      "command": "python -B seeds/kt/eval/independent-review/assemble.py (first invocation)",
+      "exit_code": 1,
+      "result": "Conservative all-files preservation assertion detected six concurrent delivery-document changes; no outside files altered by this review. Manifest had not yet been written."
+    },
+    {
+      "command": "python -B seeds/kt/eval/independent-review/assemble.py (final invocation)",
+      "exit_code": 0,
+      "result": "root-only synthesis; protected inputs preservation assertion passes; concurrent documentation changes recorded separately"
+    },
+    {
+      "command": "git status --short",
+      "result": "three pre-existing modified paths and results/ preserved; only new independent-review/ added"
+    }
+  ],
+  "artifacts_sha256": {
+    "addendum-development-real.json": "2ac5777e9773861419b2ff64414ee07f71aecc98e5d78d9d1f85e08f3f44bebf",
+    "assemble.py": "3bb47a91625598de8289810e6e71a9ca05ca6ca64646ed3127e16f73f4f0471b",
+    "blind-development-real.json": "21f180b88d99d38317610a6599f9f738cd071b196124eb92af120d72c4e78099",
+    "blind-development-synthetic.json": "5492d5e2b907795cd9538b812cae2de36ed588d9232536889cf60f474f58995a",
+    "blind-holdout-real.json": "d1fecff2343da6dc268adb0341a653429b03eb90da14056b35e35fe7053e5970",
+    "blind-holdout-synthetic.json": "6369d75c8e890598276eb6066ece3bdaa0bac1c1d690263c8cdd7062df6d18f8",
+    "case-map.json": "5eace03fec64fa03ce431777ffdabdea7afde14b8e9218d0e00d75863c3ba5bc",
+    "contract.md": "dcf6b8ff0c1be04ba5e59d4902a170dc19a5dbf1bc014d0b584f13c0a33f984d",
+    "development.md": "2b51efe192b8c6d1802d659217af7bb78bb61605fc7b1a85869a6592467be285",
+    "disagreements.md": "04ab3db875f4a73b5b3ab64793f865ddd0c05a5cbcba142702c2f6bdcbe72bfa",
+    "first-development-real.json": "6a2062e4654e97a6f1d3ec991e290b8294314387a5290169e658dc8b522289ee",
+    "first-development-synthetic.json": "f80c106fce8900c40f9d051ad4773971a6826aecfe1e518b8bbd6d8a51fc8504",
+    "first-holdout-real.json": "84235f94b16c13e6c7b3b118496534cae6d546b053b01f9fb830b565b31718d0",
+    "first-holdout-synthetic.json": "d7776b9096967d5f998f3e0ef33ed84ba7c2540cb7a1abbc4d3a03c5ed7957b1",
+    "holdout.md": "4fd6812a5650ed76b7f00e4f7fb6cb1c78d56ea362b7ffad1fa70318821b778d",
+    "initial-state.json": "0815864f6fe27c8c6e2d7b688125056497ce97ce15b9722b0691c85165d9a0bb",
+    "prepare.py": "728745f28f748bc84e47c555659df57025097ced23b26794dbf2b5e55e04ac97",
+    "second-development-real.json": "291f8ecc929e9308ad0eaf113f0c79d3d297c7d27c3acabd0f8b03ddba12e9de",
+    "second-development-synthetic.json": "66ea8623b2ecb28eafd77ca59a9e4ce7cab58ef4adf1e818bf07927302278cd7",
+    "second-holdout-synthetic.json": "71ef788a9d354ff6cb6b6db68c47661c8df32691a298ca2101d721e3ff683e40",
+    "technical-checks.json": "d291bb895b5f774b8f430d66311b2419ba00b00714ac41ce065d6ddcb5db1db3",
+    "technical_audit.py": "36d9ae93e72ffcee27d3372e0cfbd8077248dd732e0535c06797bdbb2fd7eb7f"
+  }
+}

@@ -1,0 +1,244 @@
+{
+  "schema_version": 1,
+  "labels_file": "seeds\\kt\\eval\\regression.jsonl",
+  "scope": "Exact refs/status; precision only on intersecting labelled refs; appropriate abstention separate",
+  "group_counts_scope": "Each partition/kind has its own intersecting-ref scope; do not sum unlabelled counts across groups",
+  "groups": [
+    {
+      "group": "regression/real",
+      "label_evaluations": 20,
+      "statuses": {
+        "unchanged": {
+          "gold": 9,
+          "tp": 9,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 9,
+          "recall_denominator": 9,
+          "overlap_abstentions": 0
+        },
+        "changed": {
+          "gold": 2,
+          "tp": 1,
+          "fp": 0,
+          "fn": 1,
+          "precision_denominator": 1,
+          "recall_denominator": 2,
+          "overlap_abstentions": 1
+        },
+        "moved": {
+          "gold": 4,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 4,
+          "recall_denominator": 4,
+          "overlap_abstentions": 0
+        },
+        "added": {
+          "gold": 4,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 4,
+          "recall_denominator": 4,
+          "overlap_abstentions": 0
+        },
+        "missing": {
+          "gold": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 1,
+          "recall_denominator": 1,
+          "overlap_abstentions": 0
+        },
+        "duplicate": {
+          "gold": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 0,
+          "recall_denominator": 0,
+          "overlap_abstentions": 0
+        }
+      },
+      "semantic_gold": 20,
+      "tp": 19,
+      "fp": 0,
+      "fn": 1,
+      "counts": {
+        "findings_total": 457,
+        "scoped_findings": 20,
+        "unlabelled_findings": 437,
+        "unknown_status_findings": 0,
+        "scoped_unresolved_findings": 1,
+        "appropriate_abstention_gold": 0,
+        "appropriate_abstention_matches": 0,
+        "other_unresolved_findings": 1,
+        "partial_overlap_refusal_labels": 0
+      },
+      "error_counts": {
+        "abstention_on_resolvable": 1
+      },
+      "errors": [
+        {
+          "label_id": "real-019",
+          "run_id": "alibi-4b2147f4fcf1",
+          "categories": [
+            "abstention_on_resolvable"
+          ],
+          "missing_report_refs": [],
+          "exact_ref_abstention": true,
+          "finding_ids": [
+            "F133"
+          ]
+        }
+      ],
+      "candidate_recall": "unmeasured: Report does not expose complete candidate sets",
+      "extraction_completeness": "unmeasured: missing gold refs checks only labelled source points",
+      "review_status_counts": {
+        "legacy_accepted": 20
+      }
+    },
+    {
+      "group": "regression/synthetic",
+      "label_evaluations": 5,
+      "statuses": {
+        "unchanged": {
+          "gold": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 1,
+          "recall_denominator": 1,
+          "overlap_abstentions": 0
+        },
+        "changed": {
+          "gold": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 0,
+          "recall_denominator": 0,
+          "overlap_abstentions": 0
+        },
+        "moved": {
+          "gold": 2,
+          "tp": 2,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 2,
+          "recall_denominator": 2,
+          "overlap_abstentions": 0
+        },
+        "added": {
+          "gold": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 0,
+          "recall_denominator": 0,
+          "overlap_abstentions": 0
+        },
+        "missing": {
+          "gold": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 1,
+          "recall_denominator": 1,
+          "overlap_abstentions": 0
+        },
+        "duplicate": {
+          "gold": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 1,
+          "recall_denominator": 1,
+          "overlap_abstentions": 0
+        }
+      },
+      "semantic_gold": 5,
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "counts": {
+        "findings_total": 2170,
+        "scoped_findings": 5,
+        "unlabelled_findings": 2165,
+        "unknown_status_findings": 0,
+        "scoped_unresolved_findings": 0,
+        "appropriate_abstention_gold": 0,
+        "appropriate_abstention_matches": 0,
+        "other_unresolved_findings": 0,
+        "partial_overlap_refusal_labels": 0
+      },
+      "error_counts": {},
+      "errors": [],
+      "candidate_recall": "unmeasured: Report does not expose complete candidate sets",
+      "extraction_completeness": "unmeasured: missing gold refs checks only labelled source points",
+      "review_status_counts": {
+        "legacy_accepted": 5
+      }
+    }
+  ],
+  "provenance": [
+    {
+      "report": "C:\\Users\\torre\\Documents\\GitHub\\hack-3ad4294e-vibechillers\\seeds\\kt\\eval\\data\\stage2-regression\\alibi-0626ecf7cfab.json",
+      "run_id": "alibi-0626ecf7cfab",
+      "scope": "Report.clauses only; not proof of source extraction completeness or semantic truth",
+      "citations_checked": 1734,
+      "failures": 0,
+      "duplicate_clause_keys": 0,
+      "errors": []
+    },
+    {
+      "report": "C:\\Users\\torre\\Documents\\GitHub\\hack-3ad4294e-vibechillers\\seeds\\kt\\eval\\data\\stage2-regression\\alibi-213a5f00375a.json",
+      "run_id": "alibi-213a5f00375a",
+      "scope": "Report.clauses only; not proof of source extraction completeness or semantic truth",
+      "citations_checked": 1736,
+      "failures": 0,
+      "duplicate_clause_keys": 0,
+      "errors": []
+    },
+    {
+      "report": "C:\\Users\\torre\\Documents\\GitHub\\hack-3ad4294e-vibechillers\\seeds\\kt\\eval\\data\\stage2-regression\\alibi-41e4d46bfa51.json",
+      "run_id": "alibi-41e4d46bfa51",
+      "scope": "Report.clauses only; not proof of source extraction completeness or semantic truth",
+      "citations_checked": 1738,
+      "failures": 0,
+      "duplicate_clause_keys": 0,
+      "errors": []
+    },
+    {
+      "report": "C:\\Users\\torre\\Documents\\GitHub\\hack-3ad4294e-vibechillers\\seeds\\kt\\eval\\data\\stage2-regression\\alibi-4b2147f4fcf1.json",
+      "run_id": "alibi-4b2147f4fcf1",
+      "scope": "Report.clauses only; not proof of source extraction completeness or semantic truth",
+      "citations_checked": 1750,
+      "failures": 0,
+      "duplicate_clause_keys": 0,
+      "errors": []
+    },
+    {
+      "report": "C:\\Users\\torre\\Documents\\GitHub\\hack-3ad4294e-vibechillers\\seeds\\kt\\eval\\data\\stage2-regression\\alibi-cc775246f35a.json",
+      "run_id": "alibi-cc775246f35a",
+      "scope": "Report.clauses only; not proof of source extraction completeness or semantic truth",
+      "citations_checked": 1736,
+      "failures": 0,
+      "duplicate_clause_keys": 0,
+      "errors": []
+    },
+    {
+      "report": "C:\\Users\\torre\\Documents\\GitHub\\hack-3ad4294e-vibechillers\\seeds\\kt\\eval\\data\\stage2-regression\\alibi-dd3e55eb7e08.json",
+      "run_id": "alibi-dd3e55eb7e08",
+      "scope": "Report.clauses only; not proof of source extraction completeness or semantic truth",
+      "citations_checked": 1736,
+      "failures": 0,
+      "duplicate_clause_keys": 0,
+      "errors": []
+    }
+  ],
+  "unevaluated_label_ids": []
+}

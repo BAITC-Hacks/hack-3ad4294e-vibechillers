@@ -1,0 +1,332 @@
+[
+  {
+    "blind_id": "DS01",
+    "partition": "development",
+    "kind": "synthetic",
+    "before": [
+      {
+        "doc": "before-1",
+        "clause_id": "2.1.1"
+      }
+    ],
+    "after": [
+      {
+        "doc": "after-1",
+        "clause_id": "2.1.1"
+      }
+    ],
+    "documents": [
+      {
+        "doc": "before-1",
+        "file": "seeds/kt/eval/mutations/stage2/dev-owner/before-1.txt",
+        "sha256": "5b78e765bf22e7a6276db0bcb9900c323b6a386b0de4a3b826533665fc8d11bd",
+        "source_text": "2. Обязанности\n2.1. Отдел рисков обязан:\n2.1.1. готовить реестр рисков.\n"
+      },
+      {
+        "doc": "after-1",
+        "file": "seeds/kt/eval/mutations/stage2/dev-owner/after-1.txt",
+        "sha256": "49d0d35b784b8f0dc117170738cf4497b06cab3cc7ef8b08ff928db69608244d",
+        "source_text": "2. Обязанности\n2.1. Отдел комплаенса обязан:\n2.1.1. готовить реестр рисков.\n"
+      }
+    ]
+  },
+  {
+    "blind_id": "DS02",
+    "partition": "development",
+    "kind": "synthetic",
+    "before": [
+      {
+        "doc": "before-1",
+        "clause_id": "2.1"
+      }
+    ],
+    "after": [
+      {
+        "doc": "after-1",
+        "clause_id": "2.1"
+      }
+    ],
+    "documents": [
+      {
+        "doc": "before-1",
+        "file": "seeds/kt/eval/mutations/stage2/dev-delegate/before-1.txt",
+        "sha256": "68a720271ef17a676fd7955bc231d7a97d416eb23d08d8661563de057eb7f768",
+        "source_text": "2. Обязанности\n2.1. Главный аудитор поручает директору ДНМ подготовку отчёта; ответственность сохраняет Главный аудитор.\n"
+      },
+      {
+        "doc": "after-1",
+        "file": "seeds/kt/eval/mutations/stage2/dev-delegate/after-1.txt",
+        "sha256": "47581a28739f17fbb4eed20a1fb5a3a9fbff1edd1d2924b1aec37571b6328739",
+        "source_text": "2. Обязанности\n2.1. Главный аудитор поручает директору ДККМ подготовку отчёта; ответственность сохраняет Главный аудитор.\n"
+      }
+    ]
+  },
+  {
+    "blind_id": "DS03",
+    "partition": "development",
+    "kind": "synthetic",
+    "before": [
+      {
+        "doc": "before-1",
+        "clause_id": "2.1.1"
+      }
+    ],
+    "after": [
+      {
+        "doc": "after-1",
+        "clause_id": "2.1.1"
+      }
+    ],
+    "documents": [
+      {
+        "doc": "before-1",
+        "file": "seeds/kt/eval/mutations/stage2/dev-prohibition/before-1.txt",
+        "sha256": "2df5a76eea96a1499e1e5817b43653d5f228a1eaf42608aed5be5d35abb75491",
+        "source_text": "2. Ограничения\n2.1. Работникам аудита запрещается:\n2.1.1. подписывать платёжные документы.\n"
+      },
+      {
+        "doc": "after-1",
+        "file": "seeds/kt/eval/mutations/stage2/dev-prohibition/after-1.txt",
+        "sha256": "d3826ba39bcf099b6594e84ae0a012cdf4f1168448cd41a72b749502613b1ca0",
+        "source_text": "2. Ограничения\n2.1. Работники аудита обязаны:\n2.1.1. подписывать платёжные документы.\n"
+      }
+    ]
+  },
+  {
+    "blind_id": "DS04",
+    "partition": "development",
+    "kind": "synthetic",
+    "before": [
+      {
+        "doc": "before-1",
+        "clause_id": "2.1.1"
+      }
+    ],
+    "after": [
+      {
+        "doc": "after-1",
+        "clause_id": "2.1.1"
+      },
+      {
+        "doc": "after-1",
+        "clause_id": "2.1.2"
+      }
+    ],
+    "documents": [
+      {
+        "doc": "before-1",
+        "file": "seeds/kt/eval/mutations/stage2/dev-split/before-1.txt",
+        "sha256": "08d436545a6e4abe50e6fb3f8c4bf47e9d3bd28066e7c9b24ed740c1396521be",
+        "source_text": "2. Проверка заявок\n2.1. Аудитор обязан:\n2.1.1. проверять заявки и контролировать исполнение рекомендаций.\n"
+      },
+      {
+        "doc": "after-1",
+        "file": "seeds/kt/eval/mutations/stage2/dev-split/after-1.txt",
+        "sha256": "892cb62256c049894ba20e6e70d79c9477f83639bcd74b063f82e01fe37c9af0",
+        "source_text": "2. Проверка заявок\n2.1. Аудитор обязан:\n2.1.1. проверять заявки.\n2.1.2. контролировать исполнение рекомендаций.\n"
+      }
+    ]
+  },
+  {
+    "blind_id": "DS05",
+    "partition": "development",
+    "kind": "synthetic",
+    "before": [
+      {
+        "doc": "before-1",
+        "clause_id": "2.1.1"
+      },
+      {
+        "doc": "before-1",
+        "clause_id": "2.1.2"
+      }
+    ],
+    "after": [
+      {
+        "doc": "after-1",
+        "clause_id": "2.1.1"
+      }
+    ],
+    "documents": [
+      {
+        "doc": "before-1",
+        "file": "seeds/kt/eval/mutations/stage2/dev-merge/before-1.txt",
+        "sha256": "87c1a4f930f3e21ce8fa2cd1bb0f462926a537f8ab09457a53f1b92a5767db56",
+        "source_text": "2. Учёт материалов\n2.1. Секретарь обязан:\n2.1.1. регистрировать материалы.\n2.1.2. хранить материалы.\n"
+      },
+      {
+        "doc": "after-1",
+        "file": "seeds/kt/eval/mutations/stage2/dev-merge/after-1.txt",
+        "sha256": "844f227acc84e4eb95830fdbbd2c3349fec9dec150cc5f29aecfdd34cff084a5",
+        "source_text": "2. Учёт материалов\n2.1. Секретарь обязан:\n2.1.1. регистрировать материалы и хранить материалы.\n"
+      }
+    ]
+  },
+  {
+    "blind_id": "DS06",
+    "partition": "development",
+    "kind": "synthetic",
+    "before": [
+      {
+        "doc": "before-1",
+        "clause_id": "2.1.1"
+      }
+    ],
+    "after": [
+      {
+        "doc": "after-1",
+        "clause_id": "2.1.1"
+      }
+    ],
+    "documents": [
+      {
+        "doc": "before-1",
+        "file": "seeds/kt/eval/mutations/stage2/dev-shared-dnm/before-1.txt",
+        "sha256": "808d821dae1a187eeeeed05618495c15ed95ea1e4483fa3b5d91617aff1ebd7c",
+        "source_text": "2. Совместная подготовка плана\n2.1. ДНМ в пределах своего направления:\n2.1.1. готовит предложения в план.\n2.2. ДККМ в пределах своего направления:\n2.2.1. готовит предложения в план.\n"
+      },
+      {
+        "doc": "after-1",
+        "file": "seeds/kt/eval/mutations/stage2/dev-shared-dnm/after-1.txt",
+        "sha256": "808d821dae1a187eeeeed05618495c15ed95ea1e4483fa3b5d91617aff1ebd7c",
+        "source_text": "2. Совместная подготовка плана\n2.1. ДНМ в пределах своего направления:\n2.1.1. готовит предложения в план.\n2.2. ДККМ в пределах своего направления:\n2.2.1. готовит предложения в план.\n"
+      }
+    ]
+  },
+  {
+    "blind_id": "DS07",
+    "partition": "development",
+    "kind": "synthetic",
+    "before": [
+      {
+        "doc": "before-1",
+        "clause_id": "2.2.1"
+      }
+    ],
+    "after": [
+      {
+        "doc": "after-1",
+        "clause_id": "2.2.1"
+      }
+    ],
+    "documents": [
+      {
+        "doc": "before-1",
+        "file": "seeds/kt/eval/mutations/stage2/dev-shared-dkkm/before-1.txt",
+        "sha256": "808d821dae1a187eeeeed05618495c15ed95ea1e4483fa3b5d91617aff1ebd7c",
+        "source_text": "2. Совместная подготовка плана\n2.1. ДНМ в пределах своего направления:\n2.1.1. готовит предложения в план.\n2.2. ДККМ в пределах своего направления:\n2.2.1. готовит предложения в план.\n"
+      },
+      {
+        "doc": "after-1",
+        "file": "seeds/kt/eval/mutations/stage2/dev-shared-dkkm/after-1.txt",
+        "sha256": "808d821dae1a187eeeeed05618495c15ed95ea1e4483fa3b5d91617aff1ebd7c",
+        "source_text": "2. Совместная подготовка плана\n2.1. ДНМ в пределах своего направления:\n2.1.1. готовит предложения в план.\n2.2. ДККМ в пределах своего направления:\n2.2.1. готовит предложения в план.\n"
+      }
+    ]
+  },
+  {
+    "blind_id": "DS08",
+    "partition": "development",
+    "kind": "synthetic",
+    "before": [
+      {
+        "doc": "before-1",
+        "clause_id": "3.11"
+      }
+    ],
+    "after": [
+      {
+        "doc": "after-1",
+        "clause_id": "3.11"
+      }
+    ],
+    "documents": [
+      {
+        "doc": "before-1",
+        "file": "seeds/kt/eval/mutations/stage2/dev-identical-inline/identical.txt",
+        "sha256": "426d282749b74b7b09979f634a46d3294bf5393779479f2ec3db8ddfda4a972f",
+        "source_text": "3. Работа с журналом\n3.9. Рабочее место. 3.10.Работники ведут журнал. 3.11.Работники хранят журнал.\n3.12. Ссылка на пункт 3.10. не вводит новую обязанность.\n3.10. Дополнительная обязанность по проверке архива.\n"
+      },
+      {
+        "doc": "after-1",
+        "file": "seeds/kt/eval/mutations/stage2/dev-identical-inline/identical.txt",
+        "sha256": "426d282749b74b7b09979f634a46d3294bf5393779479f2ec3db8ddfda4a972f",
+        "source_text": "3. Работа с журналом\n3.9. Рабочее место. 3.10.Работники ведут журнал. 3.11.Работники хранят журнал.\n3.12. Ссылка на пункт 3.10. не вводит новую обязанность.\n3.10. Дополнительная обязанность по проверке архива.\n"
+      }
+    ]
+  },
+  {
+    "blind_id": "DS09",
+    "partition": "development",
+    "kind": "synthetic",
+    "before": [
+      {
+        "doc": "before-1",
+        "clause_id": "3.10@2"
+      }
+    ],
+    "after": [
+      {
+        "doc": "after-1",
+        "clause_id": "3.10@2"
+      }
+    ],
+    "documents": [
+      {
+        "doc": "before-1",
+        "file": "seeds/kt/eval/mutations/stage2/dev-identical-repeated/identical.txt",
+        "sha256": "426d282749b74b7b09979f634a46d3294bf5393779479f2ec3db8ddfda4a972f",
+        "source_text": "3. Работа с журналом\n3.9. Рабочее место. 3.10.Работники ведут журнал. 3.11.Работники хранят журнал.\n3.12. Ссылка на пункт 3.10. не вводит новую обязанность.\n3.10. Дополнительная обязанность по проверке архива.\n"
+      },
+      {
+        "doc": "after-1",
+        "file": "seeds/kt/eval/mutations/stage2/dev-identical-repeated/identical.txt",
+        "sha256": "426d282749b74b7b09979f634a46d3294bf5393779479f2ec3db8ddfda4a972f",
+        "source_text": "3. Работа с журналом\n3.9. Рабочее место. 3.10.Работники ведут журнал. 3.11.Работники хранят журнал.\n3.12. Ссылка на пункт 3.10. не вводит новую обязанность.\n3.10. Дополнительная обязанность по проверке архива.\n"
+      }
+    ]
+  },
+  {
+    "blind_id": "DS10",
+    "partition": "development",
+    "kind": "synthetic",
+    "before": [
+      {
+        "doc": "before-1",
+        "clause_id": "2.1"
+      }
+    ],
+    "after": [
+      {
+        "doc": "after-1",
+        "clause_id": "4.1"
+      }
+    ],
+    "documents": [
+      {
+        "doc": "before-1",
+        "file": "seeds/kt/eval/mutations/stage2/dev-multidoc/before-1.txt",
+        "sha256": "b367c875b90ad8c23ccff9c1957b45976cc410b5cf8ae67aade2b494f03191cb",
+        "source_text": "2. Служба аудита\n2.1. Служба аудита проверяет закупки.\n"
+      },
+      {
+        "doc": "before-2",
+        "file": "seeds/kt/eval/mutations/stage2/dev-multidoc/before-2.txt",
+        "sha256": "48a1aa12cd7b7feced9053f5c89f3f317202084a18859fcc20b975b5d1fafd12",
+        "source_text": "1. Секретариат\n1.1. Секретариат регистрирует письма.\n"
+      },
+      {
+        "doc": "after-1",
+        "file": "seeds/kt/eval/mutations/stage2/dev-multidoc/after-1.txt",
+        "sha256": "9e1792633b4600e56e8d356c9d355f9ef45e8c6227ed03bb9bdabdf003d453a9",
+        "source_text": "4. Служба аудита\n4.1. Служба аудита проверяет закупки.\n"
+      },
+      {
+        "doc": "after-2",
+        "file": "seeds/kt/eval/mutations/stage2/dev-multidoc/after-2.txt",
+        "sha256": "48a1aa12cd7b7feced9053f5c89f3f317202084a18859fcc20b975b5d1fafd12",
+        "source_text": "1. Секретариат\n1.1. Секретариат регистрирует письма.\n"
+      }
+    ]
+  }
+]

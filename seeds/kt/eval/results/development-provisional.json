@@ -1,0 +1,389 @@
+{
+  "schema_version": 1,
+  "labels_file": "seeds\\kt\\eval\\challenge.jsonl",
+  "scope": "Exact refs/status; precision only on intersecting labelled refs; appropriate abstention separate",
+  "group_counts_scope": "Each partition/kind has its own intersecting-ref scope; do not sum unlabelled counts across groups",
+  "groups": [
+    {
+      "group": "development/real",
+      "label_evaluations": 12,
+      "statuses": {
+        "unchanged": {
+          "gold": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 0,
+          "recall_denominator": 0,
+          "overlap_abstentions": 0
+        },
+        "changed": {
+          "gold": 9,
+          "tp": 3,
+          "fp": 1,
+          "fn": 6,
+          "precision_denominator": 4,
+          "recall_denominator": 9,
+          "overlap_abstentions": 3
+        },
+        "moved": {
+          "gold": 3,
+          "tp": 3,
+          "fp": 1,
+          "fn": 0,
+          "precision_denominator": 4,
+          "recall_denominator": 3,
+          "overlap_abstentions": 0
+        },
+        "added": {
+          "gold": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 0,
+          "recall_denominator": 0,
+          "overlap_abstentions": 0
+        },
+        "missing": {
+          "gold": 0,
+          "tp": 0,
+          "fp": 2,
+          "fn": 0,
+          "precision_denominator": 2,
+          "recall_denominator": 0,
+          "overlap_abstentions": 0
+        },
+        "duplicate": {
+          "gold": 0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 0,
+          "precision_denominator": 1,
+          "recall_denominator": 0,
+          "overlap_abstentions": 0
+        }
+      },
+      "semantic_gold": 12,
+      "tp": 6,
+      "fp": 5,
+      "fn": 6,
+      "counts": {
+        "findings_total": 457,
+        "scoped_findings": 16,
+        "unlabelled_findings": 441,
+        "unknown_status_findings": 0,
+        "scoped_unresolved_findings": 5,
+        "appropriate_abstention_gold": 0,
+        "appropriate_abstention_matches": 0,
+        "other_unresolved_findings": 5,
+        "partial_overlap_refusal_labels": 1
+      },
+      "error_counts": {
+        "abstention_on_resolvable": 3,
+        "wrong_match": 3
+      },
+      "errors": [
+        {
+          "label_id": "dev-real-admin",
+          "run_id": "alibi-20260923T100634560795-4b2147f4fcf1",
+          "categories": [
+            "abstention_on_resolvable"
+          ],
+          "missing_report_refs": [],
+          "exact_ref_abstention": true,
+          "finding_ids": [
+            "F006"
+          ]
+        },
+        {
+          "label_id": "dev-real-roles",
+          "run_id": "alibi-20260923T100634560795-4b2147f4fcf1",
+          "categories": [
+            "abstention_on_resolvable"
+          ],
+          "missing_report_refs": [],
+          "exact_ref_abstention": true,
+          "finding_ids": [
+            "F119"
+          ]
+        },
+        {
+          "label_id": "dev-real-merge",
+          "run_id": "alibi-20260923T100634560795-4b2147f4fcf1",
+          "categories": [
+            "abstention_on_resolvable"
+          ],
+          "missing_report_refs": [],
+          "exact_ref_abstention": false,
+          "finding_ids": [
+            "F121",
+            "F146"
+          ]
+        },
+        {
+          "label_id": "dev-real-correspondence",
+          "run_id": "alibi-20260923T100634560795-4b2147f4fcf1",
+          "categories": [
+            "wrong_match"
+          ],
+          "missing_report_refs": [],
+          "exact_ref_abstention": false,
+          "finding_ids": [
+            "F175",
+            "F181"
+          ]
+        },
+        {
+          "label_id": "dev-real-staffing",
+          "run_id": "alibi-20260923T100634560795-4b2147f4fcf1",
+          "categories": [
+            "wrong_match"
+          ],
+          "missing_report_refs": [],
+          "exact_ref_abstention": false,
+          "finding_ids": [
+            "F177",
+            "F183"
+          ]
+        },
+        {
+          "label_id": "dev-real-shared-information",
+          "run_id": "alibi-20260923T100634560795-4b2147f4fcf1",
+          "categories": [
+            "wrong_match"
+          ],
+          "missing_report_refs": [],
+          "exact_ref_abstention": false,
+          "finding_ids": [
+            "F132"
+          ]
+        }
+      ],
+      "candidate_recall": "unmeasured: Report does not expose complete candidate sets",
+      "extraction_completeness": "unmeasured: missing gold refs checks only labelled source points",
+      "review_status_counts": {
+        "pending_human": 12
+      }
+    },
+    {
+      "group": "development/synthetic",
+      "label_evaluations": 10,
+      "statuses": {
+        "unchanged": {
+          "gold": 4,
+          "tp": 4,
+          "fp": 2,
+          "fn": 0,
+          "precision_denominator": 6,
+          "recall_denominator": 4,
+          "overlap_abstentions": 0
+        },
+        "changed": {
+          "gold": 4,
+          "tp": 1,
+          "fp": 2,
+          "fn": 3,
+          "precision_denominator": 3,
+          "recall_denominator": 4,
+          "overlap_abstentions": 0
+        },
+        "moved": {
+          "gold": 2,
+          "tp": 1,
+          "fp": 0,
+          "fn": 1,
+          "precision_denominator": 1,
+          "recall_denominator": 2,
+          "overlap_abstentions": 0
+        },
+        "added": {
+          "gold": 0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 0,
+          "precision_denominator": 1,
+          "recall_denominator": 0,
+          "overlap_abstentions": 0
+        },
+        "missing": {
+          "gold": 0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 0,
+          "precision_denominator": 1,
+          "recall_denominator": 0,
+          "overlap_abstentions": 0
+        },
+        "duplicate": {
+          "gold": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision_denominator": 0,
+          "recall_denominator": 0,
+          "overlap_abstentions": 0
+        }
+      },
+      "semantic_gold": 10,
+      "tp": 6,
+      "fp": 6,
+      "fn": 4,
+      "counts": {
+        "findings_total": 22,
+        "scoped_findings": 12,
+        "unlabelled_findings": 10,
+        "unknown_status_findings": 0,
+        "scoped_unresolved_findings": 0,
+        "appropriate_abstention_gold": 0,
+        "appropriate_abstention_matches": 0,
+        "other_unresolved_findings": 0,
+        "partial_overlap_refusal_labels": 0
+      },
+      "error_counts": {
+        "wrong_status": 2,
+        "wrong_match": 2
+      },
+      "errors": [
+        {
+          "label_id": "dev-owner",
+          "run_id": "alibi-20260923T100634560795-16e6da9e9240",
+          "categories": [
+            "wrong_status"
+          ],
+          "missing_report_refs": [],
+          "exact_ref_abstention": false,
+          "finding_ids": [
+            "F002"
+          ]
+        },
+        {
+          "label_id": "dev-prohibition",
+          "run_id": "alibi-20260923T100634560795-71e94b47a458",
+          "categories": [
+            "wrong_status"
+          ],
+          "missing_report_refs": [],
+          "exact_ref_abstention": false,
+          "finding_ids": [
+            "F002"
+          ]
+        },
+        {
+          "label_id": "dev-split",
+          "run_id": "alibi-20260923T100634560795-bef0dca4a7f6",
+          "categories": [
+            "wrong_match"
+          ],
+          "missing_report_refs": [],
+          "exact_ref_abstention": false,
+          "finding_ids": [
+            "F002",
+            "F003"
+          ]
+        },
+        {
+          "label_id": "dev-merge",
+          "run_id": "alibi-20260923T100634560795-c60e573e6c05",
+          "categories": [
+            "wrong_match"
+          ],
+          "missing_report_refs": [],
+          "exact_ref_abstention": false,
+          "finding_ids": [
+            "F002",
+            "F003"
+          ]
+        }
+      ],
+      "candidate_recall": "unmeasured: Report does not expose complete candidate sets",
+      "extraction_completeness": "unmeasured: missing gold refs checks only labelled source points",
+      "review_status_counts": {
+        "pending_human": 10
+      }
+    }
+  ],
+  "provenance": [
+    {
+      "report": "C:\\Users\\torre\\Documents\\GitHub\\hack-3ad4294e-vibechillers\\seeds\\kt\\eval\\data\\stage2-development\\alibi-20260923T100634560795-16e6da9e9240.json",
+      "run_id": "alibi-20260923T100634560795-16e6da9e9240",
+      "scope": "Report.clauses only; not proof of source extraction completeness or semantic truth",
+      "citations_checked": 8,
+      "failures": 0,
+      "duplicate_clause_keys": 0,
+      "errors": []
+    },
+    {
+      "report": "C:\\Users\\torre\\Documents\\GitHub\\hack-3ad4294e-vibechillers\\seeds\\kt\\eval\\data\\stage2-development\\alibi-20260923T100634560795-38e1b8c273e6.json",
+      "run_id": "alibi-20260923T100634560795-38e1b8c273e6",
+      "scope": "Report.clauses only; not proof of source extraction completeness or semantic truth",
+      "citations_checked": 4,
+      "failures": 0,
+      "duplicate_clause_keys": 0,
+      "errors": []
+    },
+    {
+      "report": "C:\\Users\\torre\\Documents\\GitHub\\hack-3ad4294e-vibechillers\\seeds\\kt\\eval\\data\\stage2-development\\alibi-20260923T100634560795-4b2147f4fcf1.json",
+      "run_id": "alibi-20260923T100634560795-4b2147f4fcf1",
+      "scope": "Report.clauses only; not proof of source extraction completeness or semantic truth",
+      "citations_checked": 1750,
+      "failures": 0,
+      "duplicate_clause_keys": 0,
+      "errors": []
+    },
+    {
+      "report": "C:\\Users\\torre\\Documents\\GitHub\\hack-3ad4294e-vibechillers\\seeds\\kt\\eval\\data\\stage2-development\\alibi-20260923T100634560795-71e94b47a458.json",
+      "run_id": "alibi-20260923T100634560795-71e94b47a458",
+      "scope": "Report.clauses only; not proof of source extraction completeness or semantic truth",
+      "citations_checked": 8,
+      "failures": 0,
+      "duplicate_clause_keys": 0,
+      "errors": []
+    },
+    {
+      "report": "C:\\Users\\torre\\Documents\\GitHub\\hack-3ad4294e-vibechillers\\seeds\\kt\\eval\\data\\stage2-development\\alibi-20260923T100634560795-7ce3583b6d16.json",
+      "run_id": "alibi-20260923T100634560795-7ce3583b6d16",
+      "scope": "Report.clauses only; not proof of source extraction completeness or semantic truth",
+      "citations_checked": 20,
+      "failures": 0,
+      "duplicate_clause_keys": 0,
+      "errors": []
+    },
+    {
+      "report": "C:\\Users\\torre\\Documents\\GitHub\\hack-3ad4294e-vibechillers\\seeds\\kt\\eval\\data\\stage2-development\\alibi-20260923T100634560795-7fd93757d116.json",
+      "run_id": "alibi-20260923T100634560795-7fd93757d116",
+      "scope": "Report.clauses only; not proof of source extraction completeness or semantic truth",
+      "citations_checked": 8,
+      "failures": 0,
+      "duplicate_clause_keys": 0,
+      "errors": []
+    },
+    {
+      "report": "C:\\Users\\torre\\Documents\\GitHub\\hack-3ad4294e-vibechillers\\seeds\\kt\\eval\\data\\stage2-development\\alibi-20260923T100634560795-bef0dca4a7f6.json",
+      "run_id": "alibi-20260923T100634560795-bef0dca4a7f6",
+      "scope": "Report.clauses only; not proof of source extraction completeness or semantic truth",
+      "citations_checked": 10,
+      "failures": 0,
+      "duplicate_clause_keys": 0,
+      "errors": []
+    },
+    {
+      "report": "C:\\Users\\torre\\Documents\\GitHub\\hack-3ad4294e-vibechillers\\seeds\\kt\\eval\\data\\stage2-development\\alibi-20260923T100634560795-c23ab93ca261.json",
+      "run_id": "alibi-20260923T100634560795-c23ab93ca261",
+      "scope": "Report.clauses only; not proof of source extraction completeness or semantic truth",
+      "citations_checked": 16,
+      "failures": 0,
+      "duplicate_clause_keys": 0,
+      "errors": []
+    },
+    {
+      "report": "C:\\Users\\torre\\Documents\\GitHub\\hack-3ad4294e-vibechillers\\seeds\\kt\\eval\\data\\stage2-development\\alibi-20260923T100634560795-c60e573e6c05.json",
+      "run_id": "alibi-20260923T100634560795-c60e573e6c05",
+      "scope": "Report.clauses only; not proof of source extraction completeness or semantic truth",
+      "citations_checked": 10,
+      "failures": 0,
+      "duplicate_clause_keys": 0,
+      "errors": []
+    }
+  ],
+  "unevaluated_label_ids": []
+}
