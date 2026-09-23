@@ -2,7 +2,7 @@
 
 Русское рабочее место для проверки изменений функций и подразделений между комплектами документов «До» и «После»: сопоставления, возможные потери/дублирование, потенциальные конфликты интересов, аналитическое заключение и точные источники. Сигналы требуют экспертной проверки и не являются доказанными нарушениями.
 
-Frontend и offline-export поддерживают Stage 3 контракт `4da4390`. Текущий опубликованный backend ещё не подтверждает полноценное выполнение Stage 3: `agent: null` и исторические пустые поля показываются как **«не оценивалось»**, а не «рисков нет». Проверенные результаты и незакрытые gates перечислены в [launch evidence](docs/evidence/kt-launch.md).
+Frontend и offline-export поддерживают публичный Stage 3 контракт. Изолированный keyless-прогон backend `b392d9b` на control DOCX вернул **7 изменений подразделений и 2 риска**; отчёт целиком сохраняется и повторно читается. Полученный OpenAI capture на той же ревизии содержит `completed`, 7 ходов и 22 вызова инструментов; отдельно сохранена частичная попытка с остановкой по бюджету. Это сохранённые исполнения, не обещание доступного live-agent для эксперта. Старые `agent: null`/неоценённые поля не означают «рисков нет». Точные ревизии, run IDs и ограничения — в [launch evidence](docs/evidence/kt-launch.md).
 
 ## Основной путь: изолированный локальный запуск Windows
 
@@ -15,7 +15,7 @@ Frontend и offline-export поддерживают Stage 3 контракт `4d
 В новом PowerShell без личных ключей:
 
 ```powershell
-$Revision = "8b896c15d56f0730a6c4fc3173c944d76c29dea8"
+$Revision = "996512db146a045966f30335e40bed89b2a0d1a0"
 $Source = Read-Host "Путь к репозиторию с указанным коммитом или одобренный Git URL"
 $Checkout = Join-Path $env:TEMP ("fla-check-" + [guid]::NewGuid().ToString("N"))
 git clone --no-hardlinks --no-checkout $Source $Checkout
@@ -40,21 +40,21 @@ if ($LASTEXITCODE -ne 0) { throw "Locked web install failed" }
 Pop-Location
 ```
 
-Это локальный pinned clone, не обещание наличия коммита на remote. Не копируйте `.env` из личной/общей среды. Организаторские DOCX сверяются с `seeds/kt/manifest.json`. У исходных TXT остаётся известное несоответствие committed LF-байтов и manifest CRLF-хэшей; не меняйте expected SHA и не заявляйте, что все четыре источника прошли проверку. Детали и владельцы исправления — в launch evidence. Control bundle Алиби отдельно закреплён своим manifest.
+Не копируйте `.env` из личной/общей среды. В чистом checkout `b392d9b` все **4/4 организаторских источника** совпали с `seeds/kt/manifest.json`, включая исходные TXT; прежнее LF/CRLF-несоответствие больше не воспроизводится на этой ревизии. Все **8/8 основных файлов** control bundle отдельно совпали с его manifest. Не нормализуйте входные байты и не меняйте expected SHA.
 
 ### 2. Запустить API на loopback
 
-Из корня этого checkout, в первом терминале (порт 18764 должен быть свободен):
+Из корня этого checkout, в первом терминале (порт 19764 должен быть свободен):
 
 ```powershell
 $env:LLM_API_KEY = ""
 $env:DB_PATH = Join-Path (Get-Location) "data\review.db"
 $env:DATA_DIR = Join-Path (Get-Location) "data"
-$env:CORS_ORIGINS = "http://127.0.0.1:18874"
-uv run --no-sync python -m uvicorn apps.api.app.main:app --host 127.0.0.1 --port 18764
+$env:CORS_ORIGINS = "http://127.0.0.1:19874"
+uv run --no-sync python -m uvicorn apps.api.app.main:app --host 127.0.0.1 --port 19764
 ```
 
-В другом терминале: `Invoke-RestMethod http://127.0.0.1:18764/healthz`. Для keyless-проверки обязательны `status: ok`, `db: ok`, `llm_configured: false`. Не продолжайте с неожиданно активной моделью. Наличие ключа само по себе не разрешает его использовать.
+В другом терминале: `Invoke-RestMethod http://127.0.0.1:19764/healthz`. Для keyless-проверки обязательны `status: ok`, `db: ok`, `llm_configured: false`. Не продолжайте с неожиданно активной моделью. Наличие ключа само по себе не разрешает его использовать.
 
 ### 3. Собрать и запустить production frontend
 
@@ -62,17 +62,17 @@ uv run --no-sync python -m uvicorn apps.api.app.main:app --host 127.0.0.1 --port
 
 ```powershell
 Set-Location (Join-Path $Checkout "apps\web")
-$env:NEXT_PUBLIC_API_BASE = "http://127.0.0.1:18764"
+$env:NEXT_PUBLIC_API_BASE = "http://127.0.0.1:19764"
 $env:NEXT_TELEMETRY_DISABLED = "1"
 & $Node $Npm run build
 if ($LASTEXITCODE -ne 0) { throw "Web build failed" }
 Copy-Item .next/static .next/standalone/.next/static -Recurse -Force
 $env:HOSTNAME = "127.0.0.1"
-$env:PORT = "18874"
+$env:PORT = "19874"
 & $Node .next/standalone/server.js
 ```
 
-Откройте **http://127.0.0.1:18874**. Сохраните весь checkout с установленными зависимостями; перенос одного `server.js` не является проверенным deployment. `NEXT_PUBLIC_API_BASE` встраивается при сборке, а не при старте. Изменяя порты, согласованно меняйте API bind, CORS, web build URL и demo URL. Не освобождайте порты остановкой чужих процессов. Оба сервера завершайте Ctrl+C только в своих терминалах.
+Откройте **http://127.0.0.1:19874**. Сохраните весь checkout с установленными зависимостями; перенос одного `server.js` не является проверенным deployment. `NEXT_PUBLIC_API_BASE` встраивается при сборке, а не при старте. Изменяя порты, согласованно меняйте API bind, CORS, web build URL и demo URL. Не освобождайте порты остановкой чужих процессов. Оба сервера завершайте Ctrl+C только в своих терминалах.
 
 Next при production build обновляет generated `apps/web/next-env.d.ts`: пути `.next/dev/types` становятся `.next/types`. В проверочном checkout это единственное tracked-изменение после запуска; оно не является ручным изменением исходников или lockfiles. Не переносите этот generated diff в общую рабочую копию.
 
@@ -83,7 +83,7 @@ Next при production build обновляет generated `apps/web/next-env.d.t
 ```powershell
 $GitShell = "C:\Program Files\Git\bin\sh.exe"
 & $GitShell --version
-$env:API_BASE_URL = "http://127.0.0.1:18764"
+$env:API_BASE_URL = "http://127.0.0.1:19764"
 & $GitShell scripts/demo.sh
 if ($LASTEXITCODE -ne 0) { throw "Audit failed" }
 uv run --no-sync python scripts/export_report.py --report data/demo-report.json --out data/demo-report.html
@@ -120,7 +120,7 @@ print("Persisted Report matches:", saved["run_id"])
 
 Нужен согласованный неперсональный demo/test provider/model, разрешённые входные данные и лимит расходов либо реально проверенный self-hosted/local model. Подписка на coding assistant не предоставляет inference этому приложению. BYO-key, keyless fallback и записанный trace не закрывают этот gate.
 
-До согласования не вызывайте внешнюю модель и не публикуйте приложение/документы. После согласования сначала проверьте синтетический комплект, реальные result-dependent tool actions, `Report.mode`, `agent.status`, stop reason, investigated subset, partial/failure и сохранение. Checkbox `use_llm` не является доказательством работы агента. В текущей поставке live-model путь не проверен.
+До согласования не вызывайте внешнюю модель и не публикуйте приложение/документы. После согласования сначала проверьте синтетический комплект, реальные result-dependent tool actions, `Report.mode`, `agent.status`, stop reason, investigated subset, partial/failure и сохранение. Checkbox `use_llm` не доказывает работу агента. Собственный runtime Askat проверен keyless: `not_requested` или `unavailable`, ноль tool calls. Отдельно получены и сохранены backend OpenAI captures на `b392d9b`: completed `9c7199f33a9f4ca3a9a47abfd65b8c6f` и budget-limited partial `1c3f51541f754b20925f1d50ec47ec07`; [независимый review](docs/evidence/kt-quality.md) подтверждает действия в границах сохранённого DOCX-прогона, но не полную приёмку Stage 3. Нового вызова провайдера Askat и готового inference-маршрута для экспертов эта поставка не утверждает.
 
 ## Конфигурация и ограничения
 
@@ -128,7 +128,7 @@ print("Persisted Report matches:", saved["run_id"])
 
 - Native dependencies закреплены locks. Изображения Docker и embedding weights не закреплены content digest; Docker/Compose здесь не запускались. Compose публикует 8000/3000 на всех интерфейсах: не используйте его на публичном хосте без согласованной изоляции.
 - Проверены цифровые документы; OCR extra не устанавливался. Работа со сканами и произвольными оргсхемами не подтверждена.
-- PDF line wraps и табличная семантика XLSX имеют backend-ограничения. Координаты показываются только из `Clause.location`; пока backend возвращает null, они неизвестны.
+- Проверенные control DOCX/PDF/XLSX на `b392d9b` содержат `Clause.location`: блок DOCX, физическую страницу PDF или лист/ячейки XLSX. Координаты не означают правильную семантику: PDF остаётся фрагментированным; оба проверенных XLSX-варианта не извлекают функции и не дают оценки межподразделенческих рисков. Нулевые результаты здесь не означают отсутствие изменений или рисков. Неизвестные координаты старых/других отчётов не выдумываются.
 - `missing` означает отсутствие подтверждённого преемника в предоставленном комплекте, а не доказанную утрату. `duplicate`, межподразделенческие риски и `unresolved` требуют проверки.
 - Исторические retrieval-метрики инфраструктурного kit не являются точностью аудита. Реальные, синтетические и held-out evidence разделены.
 

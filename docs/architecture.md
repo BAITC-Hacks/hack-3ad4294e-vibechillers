@@ -35,9 +35,15 @@ Backend owns domain decisions and evidence validation. The browser and exporter 
 
 ## Implemented versus integrated
 
-The new frontend/export consumers implement the published Stage 3 shape. The `4da4390` handoff adds schemas, not the completed Stage 3 producer: the exercised API still returns no unit changes/risks and `agent: null`. Current model orchestration remains the Stage 2 pass until Batyrkhan's agent integration lands. The UI does not label these results as a successful Stage 3 agent audit.
+The published backend now includes the Stage 3 producer and bounded investigation loop (`f104c91`), followed by source-risk/finalization corrections (`b392d9b`). Do not describe the current code as schema-only. The old `8b896c1` local run remains evidence of its own earlier empty outputs/null-agent behavior, not the new backend.
 
-Real DOCX upload, persistence, both-side source navigation and keyless fallback were exercised locally; controlled PDF text is extracted and matched. The controlled two-column XLSX probe exposes missing table semantics, and PDF/XLSX locations remain null in that backend. These are backend integration blockers with reproduction in [launch evidence](evidence/kt-launch.md), not frontend-generated substitutes. Synthetic local JSON checks only consumer navigation and safety.
+Isolated integration exercised that producer with real inputs. Control DOCX returned 19 findings, seven unit changes and two risks; all 72 clauses carry block coordinates. Full saved Reports survived API restart and retained all fields in browser JSON and standalone HTML. Published Askat code pin `996512db146a045966f30335e40bed89b2a0d1a0` has identical application/script trees to the built and browser-verified pre-rebase `085975f`; the only additional application change makes source limitations readable without changing their originals or the Report. PDF page and XLSX sheet/cell coordinates exist, but PDF fragmentation and XLSX extraction remain backend handoffs.
+
+The immutable supplied `f104c91` capture contains seven unit changes and a genuine partial agent investigation: 25 observational tool calls, a turn-limit stop and deterministic final mode. Its analytical payload is unchanged from the paired baseline. That is historical supplied execution evidence, not a new live run by Askat or proof of completed agent review at `b392d9b`. Current integration checks and backend reproductions are recorded separately in [launch evidence](evidence/kt-launch.md).
+
+The subsequently received `b392d9b` OpenAI capture supersedes a missing-current-capture claim: completed run `9c7199f33a9f4ca3a9a47abfd65b8c6f` has 7 turns/22 calls, while separately preserved budget-limited `1c3f51541f754b20925f1d50ec47ec07` remains partial at 8/26. Both retain 19 findings, seven unit changes and two risks. Independent review `7c5b273` confirms source-dependent saved execution, not full semantic acceptance or an expert-access route. Askat consumes these artifacts without invoking the provider.
+
+Visual delivery `93f5479` preserves the Report and navigation contract: Russian diagnostic captions retain verbatim originals in disclosures, coverage bars describe extracted-clause accounting rather than accuracy, filenames wrap without overlapping controls, and the desktop action panel remains visible during sidebar scrolling.
 
 ## Security and ownership
 

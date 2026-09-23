@@ -1,6 +1,88 @@
 # Stage 3 — Askat delivery / launch evidence
 
-## Verdict — 2026-09-23
+## Final isolated integration — 2026-09-23
+
+**Published application pin: `996512db146a045966f30335e40bed89b2a0d1a0`.** It includes backend `b392d9bd18687eb4905f296897399d0a5eb581e9`, visual delivery `93f547987720c81a5bf354264583ab46a55d5db2`, and Askat's warning-presentation correction. The native build/browser proof below was first produced at pre-rebase `085975ff934548381a9c3cfb9ece3b6d87ce1a97`. Rebase changed only ancestry: both revisions have identical `apps` tree **`74a45077c001a0e5e610367aa3392485b51eb9e6`** and `scripts` tree **`48898e01abd394acf8cffff8f76b6269dba4bb22`**. The late pull brought current capture `1b0e40d` and independent review `7c5b273`; no runtime source changed. Final documentation/evidence follows the published code pin. Historical evidence is not silently relabelled.
+
+**Late upstream boundary:** final documentation sync also received backend commit `9d128bf`, changing parsing/alignment and `.env.example`. That later implementation is **not covered by these runtime results**. README intentionally pins the published, source-verified `996512d`; do not treat the final documentation commit's newer backend ancestry as tested. The isolated checkout was moved to `996512d`; health, web HTTP 200 and full saved organiser Report equality were rechecked there.
+
+### Current verdict and portable proof
+
+Native production startup, real domain-output consumption, exact-source navigation, saved reopening, full JSON and standalone HTML **pass for the exercised scenarios**. The newly received completed OpenAI run supplies separate saved execution evidence; it is not a new Askat provider call. Expert live access, PDF/XLSX semantic acceptance, Docker, OCR/scans and public hosting remain **not closed**. No quality score is inferred from counts or exact citations.
+
+Archive: [`stage3-askat-085975f.zip`](stage3-askat-085975f.zip), **1,303,240 bytes**, SHA-256 **`80002d7937ecf02f627bbfb752053c7bd26452f8dbdc5fc897666b036948073c`**. Its 31 members contain `verification.json`, real public synthetic control Reports/reopened Reports/traces/SSE, four standalone HTML exports and seven screenshots. Organiser material is represented by a receipt and source-navigation screenshot, not duplicated full Reports. Every archived member's size/hash was verified after packing; ZIP integrity passed. Trace/SSE here are keyless server events, not a model capture.
+
+### Pinned runtime and commands actually exercised
+
+- Separate clone: `C:\Users\askat\AppData\Local\Temp\fla-stage3-final-0Exp0e\checkout`. Initial detached `b392d9b` checkout was clean; no working-tree overlays were copied. Main alone ran `uv sync --frozen --no-dev --no-install-project` (93 packages, exit 0), portable Node 24.21.0 `npm ci --no-audit --no-fund` (47 packages, exit 0), and `npm run build` (Next 16.3.5, TypeScript/static generation passed). Python 3.12.12; uv 0.9.21.
+- The same isolated clone was then checked out at committed `085975f`, with dependencies/build cache reused and the generated `next-env.d.ts` restored before rebuilding. Production build and TypeScript passed again. Only this isolated API/web pair was stopped/restarted; the common 18764/18874 services were untouched. API binds **19764**, production web **19874**, both loopback; API key explicitly empty, CORS restricted to the web origin.
+- Readiness was observed after both starts, not assumed from process creation. `/healthz`: `status: ok`, `db: ok`, `llm_configured: false`. All five saved control Reports remained exactly equal after the pinned API restart.
+- At `085975f`, the README's explicit Git shell `scripts/demo.sh` with `API_BASE_URL=http://127.0.0.1:19764` exited 0. `scripts/export_report.py --report data/demo-report.json --out data/demo-report.html` exited 0. The scoped `scripts/test_export_report.py` run passed **6 tests**. No backend/eval suite or provider was invoked.
+- Source custody: **4/4 organiser inputs** and **8/8 main control inputs** matched their manifests, including organiser TXT bytes. The old LF/CRLF blocker is resolved on the new backend pin; no expected hash was weakened by Askat. Full byte/hash receipts are in the archive.
+
+### Real output and state, by run
+
+All these runs are deterministic. The first organiser run and five control runs were captured at `b392d9b`; the last organiser run was freshly executed at `085975f`.
+
+| Input / transport | run_id | Findings | Unit changes | Risks | Clauses / located |
+| --- | --- | ---: | ---: | ---: | ---: |
+| Organiser v8/v9 DOCX, initial README script | `0cbdbff65e204209ad8ac11711eb165a` | 427 | 4 | 2 | 996 / 996 |
+| Control DOCX, public multipart HTTP | `1013c324df164fcb81b2838c53aae1a2` | 19 | 7 | 2 | 72 / 72 |
+| Same DOCX, request agent with key absent | `d9c0227ef4b545749109b662d55669e1` | 19 | 7 | 2 | 72 / 72 |
+| Control PDF, public multipart HTTP | `0497b556937546eea767caf2f507cc2f` | 20 | 8 | 1 | 102 / 102 |
+| Control one-column XLSX, public multipart HTTP | `06721f05719e4f7eaad35130cdecae91` | 0 | 0 | 0 | 72 / 72 |
+| Auxiliary table XLSX, production file pickers | `c7034be9cf254f91bb25f8b90d673096` | 0 | 12 | 0 | 178 / 178 |
+| Organiser v8/v9 DOCX, final pinned README script | `9f844a443aa3478dbc087d71377ec330` | 427 | 4 | 2 | 996 / 996 |
+
+`use_llm=false` reports `agent.status=not_requested`; requested-but-keyless DOCX reports `unavailable` with the original missing-key stop reason. Both have zero turns/tool calls and no investigated IDs. Control traces have four status events plus one final, or six status events plus one final for unavailable; zero `tool_call`/`tool_result`. Every captured stream has exactly one final and every saved Report reopens in full. System parsing steps are not evidence of model participation.
+
+### Reviewer and export checks
+
+- Real control DOCX conclusion → retained `U538fd261f400` → before-1 §1.1/а, **block 5**, exact `Отдел архивного учета (ОАУ)` highlight; conclusion → conflict `R1573e6f06e8c` → after-1 §7.4, **block 32**, exact quote. Closing the source preserved the selected table/row. PDF's same source shows **page 2**, not extracted ordinal 44. Auxiliary XLSX `Udbf2e5e483fb` opens before-1 §@t2r2u, **sheet «Функции», B2**.
+- At final `085975f`, organiser conclusion F107 opened v8 §5.3.1 with exact highlight, defining parent/role context and **block 151**, separately labelled ordinal 153. Closing the source retained F107 in the selected results page.
+- Final organiser downloaded JSON was **2,421,271 bytes**, SHA-256 `c2c3742918c42e40132a1e1f61371287b92b77de1dc1c99a5da0e1cc04abc9f6`, and equalled the entire saved API Report. Local import removed the server-run query, showed 427 / 4 / 2 sections, and explicitly stated that the file was not uploaded and contained no action journal. No fields were reconstructed from UI counters.
+- Standalone `file://` organiser HTML had 427 finding, 4 unit-change, 2 risk, 64 unit/role and 996 source anchors; zero broken links, external resource elements or resource requests. Four public-control HTML files retained all output/conclusion IDs, complete N:M references, quotes, coordinates, warnings and agent fields. Exact linked citation counts were 243 / 243 / 239 / 114 for DOCX / unavailable DOCX / PDF / auxiliary XLSX; zero broken anchors/external resources.
+- Offline DOCX split `U1b7df4635313` kept one before and two after units, including after-1 §1.1/г at block 8. Equal clause numbers in different documents retained different source anchors. Separately exported historical `f104c91` retained partial metadata (12 turns, 25 calls, 23 IDs); this was archive consumption, not new inference.
+- **Own defect fixed:** already-Russian producer limitations, including “межподразделенческие риски не оценены”, were hidden behind generic diagnostic captions. `085975f` preserves their readable text and translates the two new English parser formats, while keeping every original in details. The corrected production browser displayed the limitations and matched all original warning strings; before/after screenshots are archived. No exporter change was necessary.
+
+### Newly supplied b392d9b agent evidence
+
+- Completed archive [`stage3-capture-b392d9b-openai.zip`](stage3-capture-b392d9b-openai.zip), SHA-256 `d11036abe169ace52b1bf9e4c3480b83df31ba2d405ae3d531a6dadd7885681d`: agent run **`9c7199f33a9f4ca3a9a47abfd65b8c6f`**, `llm_assisted` / `completed`, model `gpt-5.5-2026-04-23`, **7 turns / 22 tool calls**, 19 investigated IDs, 19 findings / 7 unit changes / 2 risks.
+- Preserved partial archive [`stage3-capture-b392d9b-budget-limited.zip`](stage3-capture-b392d9b-budget-limited.zip), SHA-256 `d52753f0c406533ba1228caa4560daaa1fe93b38e5978df5198f00293869fbe9`: run **`1c3f51541f754b20925f1d50ec47ec07`**, `llm_assisted` / `partial`, **8 turns / 26 calls**, same output counts. Stop reason retains the local budget-transport 429 refusal; it is not relabelled as completed or as a new upstream request.
+- Main verified all eight manifest artifact hashes in each package and full `agent.json`/`agent-reopened.json` equality. Alibi's received [independent review](kt-quality.md) confirms saved-run source-dependent F009 resolution and selected finalization, while keeping function/conclusion/format blockers. Captured provider receipts are not an independently authenticated invoice or proof of an expert-access route.
+- These supplied runs, native keyless execution and browser replay are separate evidence categories. Original captures and the older `f104c91` partial remain unchanged. No provider credential or historical approval was reused by Askat.
+
+- Final consumer proof: [`stage3-askat-final-consumers.zip`](stage3-askat-final-consumers.zip), **339,925 bytes**, SHA-256 `9bb6387c50e57361eaff0e51700948587327939e018a6864038c639e00aadcc7`; all seven members verified after packing. Contains exact method receipts, source-identity metadata, two HTML exports and two screenshots.
+- Both supplied completed/partial Reports were imported locally and downloaded with full parsed-JSON equality. Completed saved-view replay intercepted **only two exact GET paths inside one browser tab**, serving archived Report/trace, not inserting the API database or executing a model. Its 53 raw events rendered 30 journal records/22 tool cards, no SDK spans, with the existing saved-journal/not-new-run disclaimer. F002 → before-1 §2.2 opened exact quote/context at block 14. Partial trace replay was not exercised; partial local import/download and HTML were.
+- Both standalone HTMLs retain 19 findings / 7 unit changes / 2 risks / 72 sources; **445 internal links each**, zero broken/duplicate targets/external resources. Agent 7/22 completed versus 8/26 partial and original 429 stop reason remain distinct. Public traces have paired unique IDs 22/22 and 26/26. Completed `read_clauses` 21/22 supplies after-1 §2.6 before `resolve_alignment` 45/46; verification 47/48 precedes selected `build_report` 49/50. Only F009 status/reason/method changes against each deterministic baseline. This is observable recorded dependency, not a semantic-quality or expert-access claim.
+
+### Current backend handoff to Batyrkhan
+
+These are reproducible handoff records, not claims of a private message or fixes by Askat. Use the pinned isolated API above, `POST /audits` with repeated `before_files`/`after_files` and `use_llm=false`; inspect `GET /audits/{run_id}` and `/runs/{run_id}/trace`. Inputs are under `seeds/kt/eval/control/`; upload each representation separately.
+
+1. **PDF function fragmentation:** `before.pdf` + `after.pdf`, run `0497b556937546eea767caf2f507cc2f`. After-1 §7.4/page 2 stops at `самостоятельно`; DOCX §7.4 includes the subsequent approval and no-external-agreement text. PDF has 102 extracted clauses versus DOCX's 72 and excludes 12/22 unlabelled blocks. Coordinates now exist, but they do not restore missing function boundaries.
+2. **One-column XLSX function extraction:** `before.xlsx` + `after.xlsx`, run `06721f05719e4f7eaad35130cdecae91`. All 72 source clauses are `kind=other`; coverage totals 0/0, no findings/changes/risks. Warning: sheet «Приложение» lacks explicit unit/function headers and function comparison is unavailable. Keep this limitation explicit; zero risks is not a successful risk assessment.
+3. **Auxiliary XLSX column semantics:** `before-table.xlsx` + `after-table.xlsx`, run `c7034be9cf254f91bb25f8b90d673096`. The source header is `Пункт | Подразделение | Функция/основание`, yet functions remain unrecognised: 178 clauses, 12 unit changes, zero findings/risks, repeated-number diagnostics. Sheet/cell sources are accessible, but the function-extraction gate is not closed.
+4. **Remaining agent/semantic gates:** the completed `b392d9b` capture has now arrived and is no longer a missing-package blocker. Independent `7c5b273` review retains M2 incomplete duplication/moved lineage and M5 order/scope entries counted as functions; see its exact F003/F018, F004/F005/F006/F008 and conclusion[1]/F012 reproductions in `eval/kt/HANDOFF.md`. These are backend decisions, not frontend/export repairs. Judge-accessible live inference remains unverified; supplied completion does not authorise another provider call or replace that access gate.
+
+Askat changed only frontend warning presentation and delivery documentation/evidence. Backend, eval/gold/seeds, manifests/locks and shared servers were not edited. Docker/Compose, OCR, hosting and new live inference were not tested.
+
+### Confirmed visual delivery
+
+- Production build of the visual changes passed before publication as `93f5479`. Browser checks covered 320/768/1280/1440 px, long filenames and expanded document metadata, zero-denominator accounting, warning disclosure and source navigation.
+- Measured DOCX/XLSX helper text contrast was 12.74:1; active primary action 5.86:1. These measurements cover those controls, not an accessibility certification of the entire app.
+- Real browser DOCX run `8ba9128fd89e410db617d54ea703e6a2` returned 457 findings, coverage 420/420 and 413/413, 37 unresolved refs. Full downloaded JSON equalled the persisted Report. The API was the earlier isolated `8b896c1` runtime; this is visual regression evidence, not a run of the new backend.
+- Source F080 → v8 §3.5/а still highlighted the exact quote and retained parent/unit context. Native diagnostic disclosures retain all original warning/event text; presentation does not alter Report data. Windows activation overlay is outside the web application.
+
+### Supplied historical agent evidence, not a new live run
+
+The immutable `docs/evidence/stage3-capture-f104c91.zip`, published in `d98e73b`, attests core `f104c91006c8d3d6a993881823863030e70aa4af` and the public synthetic control DOCX pair. Independent handoff `7277efa` records a genuine **partial** attempt: 25 observational calls, no proposals/build_report, 23/31 exposed finding IDs, turn-limit stop, deterministic final mode and no analytic payload change from the paired baseline. Seven unit changes are source-backed in that capture. Those facts supersede “schema-only” as a description of the current code, but do not prove completion or a fresh live-agent run at `b392d9b`.
+
+The archive records provider approval in Batyrkhan's originating session. That historical attestation is not treated as new permission for Askat to spend, copy credentials or send organiser documents. Fresh keyless runs, supplied trace replay and any subsequently authorised live run must be labelled separately. No common server is changed for this integration.
+
+## Historical native verdict at 8b896c1 — 2026-09-23
+
+**Archive boundary:** every section below concerns the earlier `8b896c1` runtime unless another historical revision is named. Its empty Stage 3 fields, null coordinates and TXT mismatch are superseded by the current integration above; they are retained as historical observations, not current blockers.
 
 **Clean native API + production browser + offline export verified at `8b896c15d56f0730a6c4fc3173c944d76c29dea8`. Full Stage 3 agent/domain acceptance is NOT closed.** The tested revision includes Batyrkhan's schema handoff `4da4390`, Alibi's public control bundle through `9a633fc`, and Askat's frontend/export implementation. Documentation-only delivery changes follow that code commit.
 
