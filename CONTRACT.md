@@ -114,3 +114,55 @@ event with a readable message. The judge runs this without our key.
 - No repo-wide lint or test runs; exercise your own slice and paste the output.
 - Keep to the locked stack: PyMuPDF is banned (AGPL), no Qdrant/pgvector, no observability servers, no auth.
 - Real logic only. A stub, a mock or a hardcoded answer on the main path is a failed slice.
+
+## Stage 3 audit contract (2026-09-23)
+
+This amendment supersedes earlier ownership: Batyrkhan owns backend/shared models/runtime/dependencies;
+Askat owns `apps/web/`, export and delivery; Alibi owns evaluation and gold. No concurrent frontend edits
+by backend builders. The Pydantic wire source is `apps/api/app/audit/models.py`.
+
+Existing seven Finding statuses, ClauseRef, Citation `{doc, clause_id, quote}`, and
+Report.mode `deterministic|llm_assisted` are unchanged. New fields:
+
+```text
+UnitRef = {doc: string, unit_id: string}
+SourceLocation = {page: integer|null, block: integer|null, sheet: string|null, cell_range: string|null}
+Clause.location: SourceLocation|null
+UnitChange = {id, status: retained|reorganised|created|unresolved,
+  before: UnitRef[], after: UnitRef[], citations: Citation[], reason,
+  method: exact|lexical|llm|human, review_required: boolean}
+Risk = {id, kind: potential_duplication|potential_conflict_of_interest,
+  units: UnitRef[], refs: ClauseRef[], citations: Citation[], reason,
+  method: exact|lexical|llm|human, review_required: true}
+Report.unit_changes: UnitChange[]
+Report.risks: Risk[]
+ConclusionItem.unit_change_ids: string[]
+ConclusionItem.risk_ids: string[]
+Report.agent = {status: not_requested|completed|partial|unavailable|failed,
+  model: string|null, turns: integer, tool_calls: integer,
+  investigated_finding_ids: string[], stop_reason: string}
+```
+
+Old saved Reports accept omitted additions: lists default empty, Clause.location and Report.agent default
+null. **Null/missing agent means Stage 3 not assessed**, not "no risks". Every new producer explicitly sets
+AgentExecution, including keyless `not_requested` and requested-but-unavailable. Completed means a bounded
+investigation finished, not that every finding was reviewed. Capped/unreviewed scope is disclosed.
+
+`POST /audits` retains multipart `before_files`, `after_files`, `use_llm`; `GET /audits/{run_id}` returns
+the saved Report. Audit API alone sequences and persists SSE, with exactly one `final` or `error`;
+`final.data={text, payload: Report}`. `/runs/{run_id}/trace` remains replayable. Tool events carry actual
+model-selected names, arguments and results, not fabricated calls or hidden reasoning.
+
+Host parses and aligns once. Audit investigation registry excludes reset-capable parse/align tools.
+The shared conversation engine must not persist audit events or apply `/run` search-hit citation rules.
+Default investigation bounds: 12 model turns, 32 tool calls, 180 seconds, plus LLM_TIMEOUT_S per request.
+Validated partial decisions survive failures; unavailable/failed deterministic fallback is never completed.
+
+Unit refs resolve to correct-edition structural units; mentioned roles cannot establish unit lineage.
+Created needs predecessor search; renamed/split/merged units need cited change evidence. Before-only units
+remain unresolved without dissolution evidence. Risks concern after-set duties, may reference units/roles,
+and require exact citations to duties and incompatibility basis. Cooperation and "control" alone do not prove
+a conflict. All recommendations remain advisory, subject to responsible human review.
+
+Source locations use physical PDF pages, 1-based DOCX body block ordinals, or workbook sheet/cell ranges.
+Unknown values remain null. Exact quote and ClauseRef validation remains mandatory.

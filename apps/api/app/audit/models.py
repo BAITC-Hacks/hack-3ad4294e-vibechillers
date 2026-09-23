@@ -38,6 +38,18 @@ class ClauseRef(BaseModel):
     clause_id: str
 
 
+class UnitRef(BaseModel):
+    doc: str
+    unit_id: str
+
+
+class SourceLocation(BaseModel):
+    page: int | None = Field(default=None, ge=1)
+    block: int | None = Field(default=None, ge=1)
+    sheet: str | None = None
+    cell_range: str | None = None
+
+
 class Clause(BaseModel):
     doc: str
     clause_id: str
@@ -47,6 +59,7 @@ class Clause(BaseModel):
     ordinal: int
     kind: ClauseKind
     unit_ids: list[str] = Field(default_factory=list)
+    location: SourceLocation | None = None
 
 
 class Unit(BaseModel):
@@ -69,9 +82,42 @@ class Finding(BaseModel):
     review_required: bool
 
 
+class UnitChange(BaseModel):
+    id: str
+    status: Literal["retained", "reorganised", "created", "unresolved"]
+    before: list[UnitRef] = Field(default_factory=list)
+    after: list[UnitRef] = Field(default_factory=list)
+    citations: list[Citation] = Field(default_factory=list)
+    reason: str
+    method: FindingMethod
+    review_required: bool
+
+
+class Risk(BaseModel):
+    id: str
+    kind: Literal["potential_duplication", "potential_conflict_of_interest"]
+    units: list[UnitRef] = Field(default_factory=list)
+    refs: list[ClauseRef] = Field(default_factory=list)
+    citations: list[Citation] = Field(default_factory=list)
+    reason: str
+    method: FindingMethod
+    review_required: Literal[True] = True
+
+
+class AgentExecution(BaseModel):
+    status: Literal["not_requested", "completed", "partial", "unavailable", "failed"]
+    model: str | None = None
+    turns: int = Field(default=0, ge=0)
+    tool_calls: int = Field(default=0, ge=0)
+    investigated_finding_ids: list[str] = Field(default_factory=list)
+    stop_reason: str
+
+
 class ConclusionItem(BaseModel):
     text: str
     finding_ids: list[str] = Field(default_factory=list)
+    unit_change_ids: list[str] = Field(default_factory=list)
+    risk_ids: list[str] = Field(default_factory=list)
     citations: list[Citation] = Field(default_factory=list)
 
 
@@ -93,6 +139,10 @@ class Report(BaseModel):
     conclusion: list[ConclusionItem]
     coverage: Coverage
     warnings: list[str] = Field(default_factory=list)
+    unit_changes: list[UnitChange] = Field(default_factory=list)
+    risks: list[Risk] = Field(default_factory=list)
+    # Null identifies historical reports where Stage 3 outputs were not assessed.
+    agent: AgentExecution | None = None
 
 
 class ParseResult(BaseModel):
