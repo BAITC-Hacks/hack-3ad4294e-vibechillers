@@ -262,6 +262,12 @@ export interface ClauseRef {
   doc: string;
   clause_id: string;
 }
+export interface SourceLocation {
+  page: number | null;
+  block: number | null;
+  sheet: string | null;
+  cell_range: string | null;
+}
 export interface Clause {
   doc: string;
   clause_id: string;
@@ -271,6 +277,7 @@ export interface Clause {
   ordinal: number;
   kind: ClauseKind;
   unit_ids: string[];
+  location?: SourceLocation | null;
 }
 export interface Unit {
   doc: string;
@@ -290,10 +297,44 @@ export interface Finding {
   method: FindingMethod;
   review_required: boolean;
 }
+export interface UnitRef {
+  doc: string;
+  unit_id: string;
+}
+export interface UnitChange {
+  id: string;
+  status: "retained" | "reorganised" | "created" | "unresolved";
+  before: UnitRef[];
+  after: UnitRef[];
+  citations: Citation[];
+  reason: string;
+  method: FindingMethod;
+  review_required: boolean;
+}
+export interface Risk {
+  id: string;
+  kind: "potential_duplication" | "potential_conflict_of_interest";
+  units: UnitRef[];
+  refs: ClauseRef[];
+  citations: Citation[];
+  reason: string;
+  method: FindingMethod;
+  review_required: true;
+}
+export interface AgentExecution {
+  status: "not_requested" | "completed" | "partial" | "unavailable" | "failed";
+  model: string | null;
+  turns: number;
+  tool_calls: number;
+  investigated_finding_ids: string[];
+  stop_reason: string;
+}
 export interface ConclusionItem {
   text: string;
   finding_ids: string[];
   citations: Citation[];
+  unit_change_ids?: string[];
+  risk_ids?: string[];
 }
 export interface Coverage {
   before_total: number;
@@ -312,6 +353,10 @@ export interface Report {
   conclusion: ConclusionItem[];
   coverage: Coverage;
   warnings: string[];
+  /** Missing Stage 3 fields in historical reports mean "not assessed". */
+  unit_changes?: UnitChange[];
+  risks?: Risk[];
+  agent?: AgentExecution | null;
 }
 
 /**
@@ -320,33 +365,90 @@ export interface Report {
  * never render as an empty-but-successful audit.
  */
 export function asReport(v: unknown): Report | null {
-  if (typeof v !== "object" || v === null) return null;
-  const r = v as Record<string, unknown>;
-  if (typeof r.run_id !== "string") return null;
-  if (r.mode !== "deterministic" && r.mode !== "llm_assisted") return null;
-  for (const key of [
-    "documents",
-    "clauses",
-    "units",
-    "findings",
-    "conclusion",
-    "warnings",
-  ]) {
-    if (!Array.isArray(r[key])) return null;
+  if (!record(v)) return null;
+  if (typeof v.run_id !== "string" || !oneOf(v.mode, ["deterministic", "llm_assisted"])) return null;
+  if (!rows(v.documents, (d) => strings(d, ["doc", "doc_id", "sha256", "source"]) &&
+    oneOf(d.edition, ["before", "after"]))) return null;
+  if (!rows(v.clauses, (c) => strings(c, ["doc", "clause_id", "label", "text"]) &&
+    nullableString(c.parent_id) && nonnegative(c.ordinal) && stringList(c.unit_ids) &&
+    oneOf(c.kind, ["heading", "function", "structure", "other"]) &&
+    (c.location === undefined || c.location === null || validLocation(c.location)))) return null;
+  if (!rows(v.units, (u) => strings(u, ["doc", "unit_id", "name"]) &&
+    nullableString(u.parent_unit_id) && oneOf(u.kind, ["unit", "role"]) &&
+    rows(u.citations, citation))) return null;
+  if (!rows(v.findings, (f) => output(f) &&
+    oneOf(f.status, ["unchanged", "changed", "moved", "added", "missing", "duplicate", "unresolved"]) &&
+    rows(f.before, clauseRef) && rows(f.after, clauseRef))) return null;
+  if (!rows(v.conclusion, (c) => typeof c.text === "string" && stringList(c.finding_ids) &&
+    rows(c.citations, citation) && (c.unit_change_ids === undefined || stringList(c.unit_change_ids)) &&
+    (c.risk_ids === undefined || stringList(c.risk_ids)))) return null;
+  if (!stringList(v.warnings) || !record(v.coverage)) return null;
+  if (!["before_total", "after_total", "before_accounted", "after_accounted", "unresolved"]
+    .every((key) => nonnegative(v.coverage && (v.coverage as Record<string, unknown>)[key]))) return null;
+  if (v.unit_changes !== undefined && !rows(v.unit_changes, (u) => output(u) &&
+    oneOf(u.status, ["retained", "reorganised", "created", "unresolved"]) &&
+    rows(u.before, unitRef) && rows(u.after, unitRef))) return null;
+  if (v.risks !== undefined && !rows(v.risks, (r) => output(r) && r.review_required === true &&
+    oneOf(r.kind, ["potential_duplication", "potential_conflict_of_interest"]) &&
+    rows(r.units, unitRef) && rows(r.refs, clauseRef))) return null;
+  if (v.agent !== undefined && v.agent !== null) {
+    const a = v.agent;
+    if (!record(a) || !oneOf(a.status, ["not_requested", "completed", "partial", "unavailable", "failed"]) ||
+      !nullableString(a.model) || !nonnegative(a.turns) || !nonnegative(a.tool_calls) ||
+      !stringList(a.investigated_finding_ids) || typeof a.stop_reason !== "string") return null;
   }
-  const cov = r.coverage;
-  if (typeof cov !== "object" || cov === null) return null;
-  const c = cov as Record<string, unknown>;
-  for (const key of [
-    "before_total",
-    "after_total",
-    "before_accounted",
-    "after_accounted",
-    "unresolved",
-  ]) {
-    if (typeof c[key] !== "number") return null;
+  for (const [items, keys] of [
+    [v.documents, ["doc"]], [v.clauses, ["doc", "clause_id"]], [v.units, ["doc", "unit_id"]],
+    [v.findings, ["id"]], [v.unit_changes ?? [], ["id"]], [v.risks ?? [], ["id"]],
+  ] as [Record<string, unknown>[], string[]][]) {
+    const seen = new Set<string>();
+    for (const row of items) {
+      const key = JSON.stringify(keys.map((field) => row[field]));
+      if (seen.has(key)) return null;
+      seen.add(key);
+    }
   }
-  return v as Report;
+  return v as unknown as Report;
+}
+
+function record(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+function strings(row: Record<string, unknown>, keys: string[]): boolean {
+  return keys.every((key) => typeof row[key] === "string");
+}
+function stringList(value: unknown): value is string[] {
+  return Array.isArray(value) && value.every((v) => typeof v === "string");
+}
+function nullableString(value: unknown): boolean {
+  return value === null || typeof value === "string";
+}
+function nonnegative(value: unknown): boolean {
+  return typeof value === "number" && Number.isSafeInteger(value) && value >= 0;
+}
+function oneOf(value: unknown, allowed: readonly string[]): boolean {
+  return typeof value === "string" && allowed.includes(value);
+}
+function rows(value: unknown, check: (row: Record<string, unknown>) => boolean): boolean {
+  return Array.isArray(value) && value.every((row) => record(row) && check(row));
+}
+function clauseRef(row: Record<string, unknown>): boolean {
+  return strings(row, ["doc", "clause_id"]);
+}
+function unitRef(row: Record<string, unknown>): boolean {
+  return strings(row, ["doc", "unit_id"]);
+}
+function citation(row: Record<string, unknown>): boolean {
+  return clauseRef(row) && typeof row.quote === "string";
+}
+function output(row: Record<string, unknown>): boolean {
+  return strings(row, ["id", "reason"]) && typeof row.review_required === "boolean" &&
+    oneOf(row.method, ["exact", "lexical", "llm", "human"]) && rows(row.citations, citation);
+}
+function validLocation(value: unknown): boolean {
+  return record(value) && (value.page === null || (nonnegative(value.page) && Number(value.page) >= 1)) &&
+    (value.block === null || (nonnegative(value.block) && Number(value.block) >= 1)) &&
+    nullableString(value.sheet) && nullableString(value.cell_range);
 }
 
 /** `POST /audits` — multipart repeated `before_files` / `after_files`, `use_llm`. Returns the raw SSE response. */
@@ -382,14 +484,38 @@ export async function fetchAuditReport(
   if (!res.ok) {
     const msg = await extractErrorMessage(res);
     if (res.status === 404)
-      throw new Error(`No audit report for run ${runId} (404): ${msg}`);
+      throw new Error(`Отчёт ${runId} не найден (404): ${msg}`);
     if (res.status === 409)
-      throw new Error(`Audit ${runId} has not completed yet (409): ${msg}`);
+      throw new Error(`Аудит ${runId} ещё не завершён (409): ${msg}`);
     throw new Error(`HTTP ${res.status}: ${msg}`);
   }
   const report = asReport(await res.json());
   if (report === null) {
-    throw new Error(`GET /audits/${runId} returned a body that is not a Report`);
+    throw new Error(`GET /audits/${runId}: ответ не соответствует контракту Report`);
   }
   return report;
+}
+
+/** Durable real events, never reconstructed from a report or model counters. */
+export async function fetchRunTrace(runId: string, signal?: AbortSignal): Promise<RunEvent[]> {
+  const response = await fetch(`${API_BASE}/runs/${encodeURIComponent(runId)}/trace`, { signal });
+  if (!response.ok) throw new Error(`Журнал HTTP ${response.status}: ${await extractErrorMessage(response)}`);
+  const body: unknown = await response.json();
+  if (!record(body) || body.run_id !== runId || !Array.isArray(body.events)) {
+    throw new Error("Некорректный ответ журнала действий");
+  }
+  const events: RunEvent[] = [];
+  for (const entry of body.events) {
+    if (!record(entry) || typeof entry.type !== "string" ||
+      (entry.run_id !== undefined && entry.run_id !== runId) || !nonnegative(entry.seq) || typeof entry.ts !== "number" ||
+      !Number.isFinite(entry.ts) || !record(entry.data)) {
+      throw new Error("Журнал содержит некорректное событие");
+    }
+    // SDK spans share the trace table, but are not public audit actions and may
+    // contain internal model text. Only the documented SSE envelope is shown.
+    if (entry.type === "span") continue;
+    if (!isRunEventType(entry.type)) throw new Error("Неизвестный тип события журнала");
+    events.push({ ...entry, run_id: runId } as RunEvent);
+  }
+  return events;
 }

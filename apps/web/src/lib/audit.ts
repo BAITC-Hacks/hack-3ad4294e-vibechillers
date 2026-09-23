@@ -52,18 +52,18 @@ export function checkCitation(index: ReportIndex, c: Citation): CitationCheck {
     return {
       ok: false,
       clause: null,
-      reason: `No clause ${c.clause_id} in document ${c.doc} of this report`,
+      reason: `Пункт ${c.clause_id} отсутствует в документе ${c.doc} этого отчёта`,
     };
   }
   if (c.quote === "") {
-    return { ok: false, clause, reason: "Citation carries an empty quote" };
+    return { ok: false, clause, reason: "Цитата пуста" };
   }
   const start = clause.text.indexOf(c.quote);
   if (start === -1) {
     return {
       ok: false,
       clause,
-      reason: "Quote is not a verbatim substring of the preserved clause text",
+      reason: "Цитата не совпадает с точным фрагментом сохранённого текста",
     };
   }
   return { ok: true, clause, start, end: start + c.quote.length };
@@ -121,15 +121,15 @@ export const STATUS_ORDER: FindingStatus[] = [
 
 /** Contract meaning of each status (docs/plan.md §3), shown as the legend/tooltips. */
 export const STATUS_MEANING: Record<FindingStatus, string> = {
-  unchanged: "Same text and context in both editions",
-  changed: "Supported match whose content changed",
-  moved: "Function preserved, location or owner changed",
-  added: "No supported predecessor in the before set",
+  unchanged: "Текст и контекст сохранены в обеих редакциях",
+  changed: "Сопоставление подтверждено, содержание изменилось",
+  moved: "Функция сохранена, изменились место или ответственный",
+  added: "Подтверждённый предшественник в комплекте «до» не найден",
   missing:
-    "No supported successor found in the supplied after set — not proven organisational loss",
+    "Преемник в переданном комплекте «после» не найден — это не доказанная утрата функции",
   duplicate:
-    "Potentially overlapping responsibilities — not merely repeated wording",
-  unresolved: "Ambiguous match; all candidate refs kept for review",
+    "Возможное пересечение обязанностей, а не просто повторение формулировки",
+  unresolved: "Сопоставление неоднозначно; кандидаты сохранены для проверки",
 };
 
 export const STATUS_STYLE: Record<FindingStatus, string> = {
@@ -141,3 +141,25 @@ export const STATUS_STYLE: Record<FindingStatus, string> = {
   duplicate: "border-orange-800 bg-orange-950/50 text-orange-300",
   unresolved: "border-amber-700 bg-amber-950/50 text-amber-300",
 };
+
+export const STATUS_LABEL: Record<FindingStatus, string> = {
+  unchanged: "Без изменений",
+  changed: "Изменена",
+  moved: "Перенесена",
+  added: "Добавлена",
+  missing: "Возможная потеря",
+  duplicate: "Возможное дублирование",
+  unresolved: "Не определено",
+};
+
+/** Physical coordinates are reported only when the producer supplied them. */
+export function sourceLocation(clause: Clause): string {
+  const location = clause.location;
+  if (!location) return "Координаты источника не указаны";
+  const parts: string[] = [];
+  if (location.page !== null) parts.push(`Страница ${location.page}`);
+  if (location.block !== null) parts.push(`Блок ${location.block}`);
+  if (location.sheet !== null) parts.push(`Лист «${location.sheet}»`);
+  if (location.cell_range !== null) parts.push(`Ячейки ${location.cell_range}`);
+  return parts.length ? parts.join(" · ") : "Координаты источника не указаны";
+}

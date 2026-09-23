@@ -25,7 +25,7 @@ export default function Home() {
           <Bot size={17} className="text-sky-400" />
           Function Lineage Auditor
         </div>
-        <nav className="flex items-center gap-1" aria-label="Workspace">
+        <nav className="flex items-center gap-1" aria-label="Рабочее пространство">
           <button
             type="button"
             onClick={() => setTab("audit")}
@@ -33,7 +33,7 @@ export default function Home() {
             className={tabClass("audit")}
           >
             <GitCompareArrows size={13} />
-            Audit
+            Аудит реорганизации
           </button>
           <button
             type="button"
@@ -42,7 +42,7 @@ export default function Home() {
             className={tabClass("chat")}
           >
             <MessagesSquare size={13} />
-            Agent chat
+            Поиск по документам (отдельный режим)
           </button>
         </nav>
         <span className="ml-auto hidden items-center gap-1 font-mono text-[11px] text-neutral-500 sm:flex">

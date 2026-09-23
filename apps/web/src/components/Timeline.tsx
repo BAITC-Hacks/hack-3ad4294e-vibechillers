@@ -52,55 +52,46 @@ export function StatusLine({ row }: { row: StatusRow }) {
   );
 }
 
-export function ToolRowView({ row }: { row: ToolRow }) {
+export function ToolRowView({ row, active = true }: { row: ToolRow; active?: boolean }) {
   const [open, setOpen] = useState(false);
   return (
-    <div
-      className={`rounded-lg border px-2.5 py-1.5 text-xs ${
-        row.done && !row.ok
-          ? "border-red-900/60 bg-red-950/30"
-          : "border-neutral-800 bg-neutral-900/60"
-      }`}
-    >
+    <div className={`rounded-lg border px-2.5 py-1.5 text-xs ${
+      row.ok === false ? "border-red-900/60 bg-red-950/30" : "border-neutral-800 bg-neutral-900/60"
+    }`}>
       <Disclosure open={open} onToggle={() => setOpen((v) => !v)}>
-        {row.done ? (
-          row.ok ? (
-            <CheckCircle2 size={13} className="shrink-0 text-emerald-500" />
-          ) : (
-            <XCircle size={13} className="shrink-0 text-red-400" />
-          )
-        ) : (
+        {!row.done && active ? (
           <Loader2 size={13} className="shrink-0 animate-spin text-sky-400" />
+        ) : row.ok === true ? (
+          <CheckCircle2 size={13} className="shrink-0 text-emerald-500" />
+        ) : row.ok === false ? (
+          <XCircle size={13} className="shrink-0 text-red-400" />
+        ) : (
+          <CircleAlert size={13} className="shrink-0 text-amber-400" />
         )}
-        <span className="font-mono font-medium text-neutral-200">{row.name}</span>
-        <span className="truncate font-mono text-neutral-500">
-          {preview(row.args, 80)}
-        </span>
+        <span className="break-all font-mono font-medium text-neutral-200">{row.name}</span>
+        <span className="truncate font-mono text-neutral-500">{preview(row.args, 80)}</span>
         <span className="ml-auto flex shrink-0 items-center gap-2 pl-2 tabular-nums">
-          {row.ms !== null && (
-            <span className="text-neutral-400">{Math.round(row.ms)} ms</span>
-          )}
-          {!row.done && <span className="text-sky-400">running…</span>}
+          {row.ms !== null && <span className="text-neutral-400">{Math.round(row.ms)} мс</span>}
+          {!row.done && <span className="text-sky-400">{active ? "выполняется…" : "нет результата"}</span>}
         </span>
       </Disclosure>
+      {row.reason && (
+        <p className="mt-1 whitespace-pre-wrap break-words text-neutral-400">Основание: {row.reason}</p>
+      )}
       {open && (
         <div className="mt-1.5 space-y-1.5 border-t border-neutral-800 pt-1.5">
           <div>
-            <div className="mb-0.5 text-[10px] uppercase tracking-wide text-neutral-500">
-              args
-            </div>
-            <pre className="overflow-x-auto whitespace-pre-wrap break-all font-mono text-[11px] text-neutral-300">
+            <div className="mb-0.5 text-[10px] uppercase tracking-wide text-neutral-500">Аргументы</div>
+            <pre className="max-h-56 overflow-auto whitespace-pre-wrap break-all font-mono text-[11px] text-neutral-300">
               {JSON.stringify(row.args, null, 2)}
             </pre>
           </div>
           <div>
             <div className="mb-0.5 text-[10px] uppercase tracking-wide text-neutral-500">
-              {row.ok === false ? "error" : "result"}
+              {row.ok === false ? "Ошибка" : "Результат"}
             </div>
-            <pre className="max-h-56 overflow-y-auto whitespace-pre-wrap break-all font-mono text-[11px] text-neutral-300">
-              {row.done
-                ? preview(row.result, 4000) || "null"
-                : "awaiting result…"}
+            <pre className="max-h-56 overflow-auto whitespace-pre-wrap break-all font-mono text-[11px] text-neutral-300">
+              {row.done ? JSON.stringify(row.result, null, 2) ?? "null" : active ? "Ожидаем результат…" : "Результат отсутствует в журнале."}
             </pre>
           </div>
         </div>
@@ -135,13 +126,13 @@ export function CitationChip({ row }: { row: CitationRow }) {
           {row.source || row.docId}
         </span>
         {row.page !== null && (
-          <span className="shrink-0 text-neutral-400">p.{row.page}</span>
+          <span className="shrink-0 text-neutral-400">стр. {row.page}</span>
         )}
         <CirclePlus size={11} className="shrink-0 text-neutral-500" />
       </span>
       {open && (
         <span className="mt-1 block max-w-md whitespace-pre-wrap text-[11px] leading-relaxed text-neutral-300">
-          {row.snippet || "[no snippet]"}
+          {row.snippet || "[текст цитаты отсутствует]"}
         </span>
       )}
     </div>
@@ -154,7 +145,7 @@ export function ErrorRowView({ row }: { row: ErrorRow }) {
       <CircleAlert size={14} className="mt-0.5 shrink-0 text-red-400" />
       <div>
         <div className="font-medium">
-          {row.recoverable ? "Recoverable error" : "Error"}
+          {row.recoverable ? "Ошибка с продолжением работы" : "Ошибка"}
         </div>
         <div className="mt-0.5 whitespace-pre-wrap break-words text-red-300">
           {row.message}

@@ -137,7 +137,7 @@ export function AuditFilePicker({
   files,
   onChange,
   disabled,
-  accept = ".docx,.txt,.pdf",
+  accept = ".docx,.pdf,.xlsx,.txt",
 }: {
   label: string;
   hint: string;
@@ -148,16 +148,26 @@ export function AuditFilePicker({
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragOver, setDragOver] = useState(false);
+  const [selectionError, setSelectionError] = useState<string | null>(null);
 
   const add = (list: FileList | null): void => {
-    if (!list || list.length === 0) return;
+    if (disabled || !list || list.length === 0) return;
+    const rejected: string[] = [];
     const next = [...files];
     for (const f of Array.from(list)) {
+      const extension = f.name.slice(f.name.lastIndexOf(".")).toLowerCase();
+      if (![".docx", ".pdf", ".xlsx", ".txt"].includes(extension)) {
+        rejected.push(f.name);
+        continue;
+      }
       const dup = next.some(
         (g) => g.name === f.name && g.size === f.size && g.lastModified === f.lastModified
       );
       if (!dup) next.push(f);
     }
+    setSelectionError(rejected.length
+      ? `Не добавлены: ${rejected.join(", ")}. Поддерживаются DOCX, PDF, XLSX и TXT. Старые DOC/XLS сначала сохраните как DOCX/XLSX в Word, Excel или LibreOffice; переименование расширения не конвертирует файл.`
+      : null);
     onChange(next);
   };
 
@@ -183,7 +193,7 @@ export function AuditFilePicker({
             onClick={() => onChange([])}
             className="ml-auto text-[10px] text-neutral-500 hover:text-neutral-300"
           >
-            clear
+            очистить
           </button>
         )}
       </div>
@@ -202,8 +212,9 @@ export function AuditFilePicker({
           if (!disabled) inputRef.current?.click();
         }}
         role="button"
-        tabIndex={0}
-        aria-label={`Add ${label} files`}
+        tabIndex={disabled ? -1 : 0}
+        aria-disabled={disabled}
+        aria-label={`Добавить файлы: ${label}`}
         onKeyDown={(e) => {
           if ((e.key === "Enter" || e.key === " ") && !disabled) {
             e.preventDefault();
@@ -218,7 +229,7 @@ export function AuditFilePicker({
       >
         <FileUp size={15} className="shrink-0 text-neutral-400" />
         <span className="text-neutral-300">
-          Drop files or click to add
+          Перетащите или выберите файлы
         </span>
         <span className="ml-auto font-mono text-[10px] text-neutral-500">
           {accept}
@@ -228,6 +239,8 @@ export function AuditFilePicker({
           type="file"
           multiple
           accept={accept}
+          disabled={disabled}
+          aria-label={`Файлы: ${label}`}
           className="hidden"
           onChange={(e) => {
             add(e.target.files);
@@ -235,6 +248,12 @@ export function AuditFilePicker({
           }}
         />
       </div>
+      <p className="mt-1 text-[10px] leading-relaxed text-neutral-500">
+        DOCX / XLSX (Office 2007+) и PDF с текстом; TXT — вспомогательный формат.
+        DOC / XLS требуют конвертации, не смены расширения.
+        Сканированные PDF и произвольные схемы могут требовать ручной проверки.
+      </p>
+      {selectionError && <p role="alert" className="mt-1 text-xs text-red-300">{selectionError}</p>}
       {files.length > 0 && (
         <ul className="mt-1.5 space-y-1">
           {files.map((f, i) => (
@@ -252,7 +271,7 @@ export function AuditFilePicker({
               {!disabled && (
                 <button
                   type="button"
-                  aria-label={`Remove ${f.name}`}
+                  aria-label={`Удалить ${f.name}`}
                   onClick={() => onChange(files.filter((_, j) => j !== i))}
                   className="shrink-0 rounded p-0.5 text-neutral-500 hover:bg-neutral-800 hover:text-neutral-200"
                 >
@@ -265,8 +284,8 @@ export function AuditFilePicker({
       )}
       {twins.length > 0 && (
         <div className="mt-1.5 rounded-md border border-amber-800/70 bg-amber-950/30 px-2 py-1.5 text-[11px] leading-snug text-amber-200">
-          {twins.map((n) => n.join(" + ")).join("; ")} look like two exports of
-          one edition. DOCX is the canonical source; keep one per edition.
+          {twins.map((n) => n.join(" + ")).join("; ")} похожи на несколько экспортов
+          одной редакции. Оставьте один источник на редакцию; для Word предпочтителен DOCX.
         </div>
       )}
     </div>

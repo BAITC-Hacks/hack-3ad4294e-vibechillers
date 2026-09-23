@@ -12,6 +12,7 @@ export interface ToolRow {
   ok: boolean | null;
   result: unknown;
   ms: number | null;
+  reason?: string;
 }
 
 export interface StatusRow {
@@ -72,9 +73,14 @@ export const initialRunState: RunState = {
  * Fold one SSE event into the run state. Ordering is trusted from `seq`:
  * events at or below the highest seen seq are dropped as stale (a duplicate
  * replay or an out-of-order tail), and token deltas never become timeline
- * rows — they append to `streamed`. Exactly one `final` completes the run.
+ * rows — they append to `streamed` unless disabled by the audit consumer.
  */
-export function applyEvent(state: RunState, ev: RunEvent): RunState {
+export function applyEvent(
+  state: RunState,
+  ev: RunEvent,
+  { includeTokens = true }: { includeTokens?: boolean } = {}
+): RunState {
+  if (state.runId && ev.run_id && state.runId !== ev.run_id) return state;
   if (Number.isFinite(ev.seq) && ev.seq <= state.lastSeq) {
     return { ...state, droppedStale: state.droppedStale + 1 };
   }
@@ -87,7 +93,9 @@ export function applyEvent(state: RunState, ev: RunEvent): RunState {
 
   switch (ev.type) {
     case "token":
-      return { ...base, streamed: base.streamed + String(ev.data.text ?? "") };
+      return includeTokens
+        ? { ...base, streamed: base.streamed + String(ev.data.text ?? "") }
+        : base;
 
     case "status":
       return {
@@ -120,6 +128,7 @@ export function applyEvent(state: RunState, ev: RunEvent): RunState {
               typeof ev.data.args === "object" && ev.data.args !== null
                 ? (ev.data.args as Record<string, unknown>)
                 : {},
+            reason: publicReason(ev.data.args),
             done: false,
             ok: null,
             result: null,
@@ -142,9 +151,11 @@ export function applyEvent(state: RunState, ev: RunEvent): RunState {
         name: String(ev.data.name ?? (idx === -1 ? "?" : (base.rows[idx] as ToolRow).name)),
         args: idx === -1 ? {} : (base.rows[idx] as ToolRow).args,
         done: true,
-        ok: ev.data.ok === true,
+        ok: typeof ev.data.ok === "boolean" ? ev.data.ok : null,
         result: ev.data.result ?? null,
         ms: typeof ev.data.ms === "number" ? ev.data.ms : null,
+        reason: publicReason(ev.data.result) ||
+          (idx === -1 ? undefined : (base.rows[idx] as ToolRow).reason),
       };
       const rows =
         idx === -1
@@ -194,4 +205,11 @@ export function applyEvent(state: RunState, ev: RunEvent): RunState {
         finalText: String(ev.data.text ?? base.streamed),
       };
   }
+}
+
+/** Only explicit, public evidence summaries; token/model reasoning is never a reason. */
+function publicReason(value: unknown): string | undefined {
+  if (!value || typeof value !== "object") return undefined;
+  const reason = (value as Record<string, unknown>).reason;
+  return typeof reason === "string" ? reason.slice(0, 600) : undefined;
 }

@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Override only for an approved local/isolated API; keep the default judge URL.
+API_BASE_URL="${API_BASE_URL:-http://localhost:8000}"
+
 # Save the SSE trace, then extract the verified final Report payload for scoring.
 mkdir -p data
 status="$(curl -sS -N -o data/demo-events.sse -w '%{http_code}' \
   -F 'before_files=@seeds/kt/v8.docx' \
   -F 'after_files=@seeds/kt/v9.docx' \
   -F 'use_llm=false' \
-  http://localhost:8000/audits)"
+  "${API_BASE_URL%/}/audits")"
 
 if [[ "$status" != 2* ]]; then
   printf 'POST /audits returned HTTP %s; response saved to data/demo-events.sse\n' "$status" >&2

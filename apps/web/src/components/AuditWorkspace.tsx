@@ -1,35 +1,60 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { CircleStop, Download, FolderOpen, GitCompareArrows, ListTree, Loader2, Play } from "lucide-react";
 import {
-  CircleStop,
-  FolderOpen,
-  GitCompareArrows,
-  ListTree,
-  Loader2,
-  Play,
-} from "lucide-react";
-import {
-  API_BASE,
-  asReport,
-  fetchAuditReport,
-  readSseEvents,
-  startAudit,
-  type Report,
-  type RunEvent,
+  API_BASE, asReport, fetchAuditReport, fetchRunTrace, readSseEvents, startAudit,
+  type Report, type RunEvent,
 } from "../lib/api";
 import { applyEvent, initialRunState, type RunState } from "../lib/timeline";
 import { ErrorRowView, StatusLine, ToolRowView } from "./Timeline";
 import { AuditFilePicker } from "./UploadDropzone";
 import { AuditReportView } from "./AuditReport";
 
-type Phase = "idle" | "running" | "done" | "failed";
+type Phase = "idle" | "loading" | "running" | "done" | "failed";
+type Operation = { controller: AbortController; timeout: number; timedOut: boolean };
+const MAX_LOCAL_BYTES = 50 * 1024 * 1024;
 
-/** Keeps `?run=<id>` in the address bar so a finished audit can be reopened via GET /audits/{run_id}. */
-function rememberRun(runId: string): void {
+function rememberRun(runId: string | null): void {
   const url = new URL(window.location.href);
-  url.searchParams.set("run", runId);
+  if (runId) url.searchParams.set("run", runId);
+  else url.searchParams.delete("run");
   window.history.replaceState(null, "", url);
+}
+
+/** Also bounds non-fetch work such as reading a local file. */
+function abortable<T>(work: Promise<T>, signal: AbortSignal): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const abort = () => reject(new Error("Операция остановлена."));
+    if (signal.aborted) {
+      work.catch(() => undefined);
+      abort();
+      return;
+    }
+    signal.addEventListener("abort", abort, { once: true });
+    work.then(resolve, reject).finally(() => signal.removeEventListener("abort", abort));
+  });
+}
+
+function errorMessage(err: unknown, operation: Operation): string {
+  if (operation.timedOut) return "Превышено время ожидания. Соединение остановлено. Сохранённый на сервере результат можно открыть по ID запуска.";
+  if (operation.controller.signal.aborted) return "Операция остановлена. Это не подтверждает остановку обработки на сервере; результат можно проверить по ID запуска.";
+  const message = err instanceof Error ? err.message : String(err);
+  if (/404/.test(message)) return "Сохранённый отчёт или журнал не найден (404). Проверьте ID запуска и адрес API.";
+  if (/409/.test(message)) return "Отчёт ещё не готов (409). Повторите открытие позже.";
+  if (/fetch|network|Failed to fetch/i.test(message)) return `Нет соединения с API (${API_BASE}). Проверьте, что сервер запущен и доступен из браузера.`;
+  return `Не удалось выполнить операцию: ${message}`;
+}
+
+function downloadReport(report: Report): void {
+  const url = URL.createObjectURL(new Blob([JSON.stringify(report, null, 2)], { type: "application/json;charset=utf-8" }));
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `audit-${report.run_id.replace(/[^a-zA-Z0-9_-]/g, "_")}.json`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 export function AuditWorkspace() {
@@ -39,49 +64,107 @@ export function AuditWorkspace() {
   const [run, setRun] = useState<RunState>(initialRunState);
   const [phase, setPhase] = useState<Phase>("idle");
   const [error, setError] = useState<string | null>(null);
+  const [traceNote, setTraceNote] = useState<string | null>(null);
   const [report, setReport] = useState<Report | null>(null);
   const [llmRequested, setLlmRequested] = useState<boolean | null>(null);
   const [runId, setRunId] = useState<string | null>(null);
   const [elapsedMs, setElapsedMs] = useState(0);
   const [lookupId, setLookupId] = useState("");
-  const [loadingReport, setLoadingReport] = useState(false);
-
-  const abortRef = useRef<AbortController | null>(null);
-  const timerRef = useRef<number | null>(null);
+  const operationRef = useRef<Operation | null>(null);
+  const localInputRef = useRef<HTMLInputElement>(null);
   const timelineEndRef = useRef<HTMLDivElement>(null);
-
   const running = phase === "running";
+  const busy = running || phase === "loading";
+
+  const begin = useCallback((nextPhase: "loading" | "running", duration: number): Operation => {
+    const previous = operationRef.current;
+    if (previous) {
+      clearTimeout(previous.timeout);
+      previous.controller.abort();
+    }
+    const operation: Operation = { controller: new AbortController(), timeout: 0, timedOut: false };
+    operation.timeout = window.setTimeout(() => {
+      operation.timedOut = true;
+      operation.controller.abort();
+    }, duration);
+    operationRef.current = operation;
+    setPhase(nextPhase);
+    setError(null);
+    setTraceNote(null);
+    setReport(null);
+    setRun(initialRunState);
+    setRunId(null);
+    setLlmRequested(null);
+    return operation;
+  }, []);
+
+  const finish = useCallback((operation: Operation): void => {
+    clearTimeout(operation.timeout);
+    if (operationRef.current === operation) operationRef.current = null;
+  }, []);
 
   useEffect(() => {
     timelineEndRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }, [run.rows.length]);
-  useEffect(
-    () => () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-      abortRef.current?.abort();
-    },
-    []
-  );
+  useEffect(() => {
+    if (!running) return;
+    const started = performance.now();
+    setElapsedMs(0);
+    const timer = window.setInterval(() => setElapsedMs(performance.now() - started), 250);
+    return () => clearInterval(timer);
+  }, [running]);
+  useEffect(() => () => {
+    const operation = operationRef.current;
+    operationRef.current = null;
+    if (operation) {
+      clearTimeout(operation.timeout);
+      operation.controller.abort();
+    }
+  }, []);
 
   const openReport = useCallback(async (id: string): Promise<void> => {
     const target = id.trim();
-    if (target === "") return;
-    setLoadingReport(true);
-    setError(null);
+    if (!target) return;
+    const operation = begin("loading", 30_000);
+    const signal = operation.controller.signal;
     try {
-      const rep = await fetchAuditReport(target);
-      setRun(initialRunState);
+      const [saved, trace] = await Promise.allSettled([
+        abortable(fetchAuditReport(target, signal), signal),
+        abortable(fetchRunTrace(target, signal), signal),
+      ]);
+      if (operationRef.current !== operation) return;
+      if (signal.aborted && !operation.timedOut) throw new Error("Открытие остановлено.");
+      if (saved.status === "rejected") throw saved.reason;
+      const rep = saved.value;
+      if (rep.run_id !== target) throw new Error("Сервер вернул отчёт другого запуска.");
       setReport(rep);
       setRunId(rep.run_id);
-      setLlmRequested(null);
+      setLookupId(rep.run_id);
       setPhase("done");
       rememberRun(rep.run_id);
+      if (trace.status === "rejected") {
+        setTraceNote(`Отчёт открыт, журнал недоступен. ${errorMessage(trace.reason, operation)}`);
+      } else if (trace.value.length === 0) {
+        setTraceNote("Сохранённый журнал пуст. Действия агента по отчёту не восстанавливаются.");
+      } else if (trace.value.some((event) => event.run_id !== rep.run_id)) {
+        setTraceNote("Журнал содержит события другого запуска и не показан.");
+      } else {
+        const replay = [...trace.value].sort((a, b) => a.seq - b.seq).reduce(
+          (state, event) => applyEvent(state, event, { includeTokens: false }), initialRunState,
+        );
+        setRun(replay);
+        setTraceNote(replay.finalText === null
+          ? "Сохранённый журнал не содержит финального события. Отчёт получен отдельно; полнота журнала не подтверждена."
+          : "Сохранённый журнал сервера. Это воспроизведение событий, не новый запуск агента.");
+      }
     } catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
+      if (operationRef.current !== operation) return;
+      setError(errorMessage(err, operation));
+      setPhase("failed");
     } finally {
-      setLoadingReport(false);
+      finish(operation);
     }
-  }, []);
+  }, [begin, finish]);
 
   useEffect(() => {
     const id = new URL(window.location.href).searchParams.get("run");
@@ -91,277 +174,146 @@ export function AuditWorkspace() {
     }
   }, [openReport]);
 
+  const loadLocal = async (file: File): Promise<void> => {
+    const operation = begin("loading", 30_000);
+    try {
+      if (file.size > MAX_LOCAL_BYTES) throw new Error("Локальный JSON превышает 50 МБ. Откройте отчёт по ID с сервера.");
+      const text = await abortable(file.text(), operation.controller.signal);
+      if (operationRef.current !== operation) return;
+      let value: unknown;
+      try { value = JSON.parse(text.replace(/^\uFEFF/, "")); }
+      catch { throw new Error("Файл не является корректным JSON."); }
+      const rep = asReport(value);
+      if (!rep) throw new Error("JSON не соответствует формату Report. Выберите сохранённый отчёт, а не журнал событий.");
+      setReport(rep);
+      setRunId(rep.run_id);
+      setLookupId(rep.run_id);
+      setPhase("done");
+      setTraceNote("Локальный Report открыт без отправки на сервер. JSON не содержит журнал действий; для журнала откройте этот ID на сервере.");
+      rememberRun(null);
+    } catch (err) {
+      if (operationRef.current !== operation) return;
+      setError(errorMessage(err, operation));
+      setPhase("failed");
+    } finally { finish(operation); }
+  };
+
   const submit = async (): Promise<void> => {
-    if (running) return;
-    if (before.length === 0 || after.length === 0) {
-      setError("Select at least one file for each side (before and after).");
+    if (busy) return;
+    if (!before.length || !after.length) {
+      setError("Выберите хотя бы один файл до и после изменений.");
       return;
     }
     const requested = useLlm;
-    setRun(initialRunState);
-    setReport(null);
-    setError(null);
-    setRunId(null);
+    const operation = begin("running", 300_000);
     setLlmRequested(requested);
-    setPhase("running");
-    setElapsedMs(0);
-    const t0 = performance.now();
-    timerRef.current = window.setInterval(() => setElapsedMs(performance.now() - t0), 100);
-
-    const controller = new AbortController();
-    abortRef.current = controller;
+    rememberRun(null);
     let acc = initialRunState;
-    let finished = false;
-
-    const onEvent = (ev: RunEvent): void => {
-      if (ev.run_id !== "") setRunId((r) => r ?? ev.run_id);
-      // A second `final` after completion is a replay artefact — drop it.
-      if (ev.type === "final" && acc.finalText !== null) return;
-      acc = applyEvent(acc, ev);
+    let terminal = false;
+    const onEvent = (event: RunEvent): void => {
+      if (operationRef.current !== operation || terminal || operation.controller.signal.aborted) return;
+      if (acc.runId && event.run_id && acc.runId !== event.run_id) return;
+      if (event.seq <= acc.lastSeq) return;
+      acc = applyEvent(acc, event, { includeTokens: false });
       setRun(acc);
-      if (ev.type === "final") {
-        finished = true;
-        const rep = asReport(ev.data.payload);
-        if (rep === null) {
+      if (acc.runId) {
+        setRunId(acc.runId);
+        setLookupId(acc.runId);
+        rememberRun(acc.runId);
+      }
+      if (event.type === "final") {
+        terminal = true;
+        const rep = asReport(event.data.payload);
+        if (!rep || (acc.runId && rep.run_id !== acc.runId)) {
+          setError("Финальное событие не содержит корректный Report этого запуска.");
           setPhase("failed");
-          setError("The final event did not carry a valid Report payload.");
-          return;
+        } else {
+          setReport(rep);
+          setRunId(rep.run_id);
+          setLookupId(rep.run_id);
+          setPhase("done");
+          rememberRun(rep.run_id);
         }
-        setReport(rep);
-        setPhase("done");
-        rememberRun(rep.run_id);
-      } else if (ev.type === "error" && ev.data.recoverable !== true) {
-        finished = true;
+        // A terminal event is enough: do not wait forever for the server to close SSE.
+        operation.controller.abort();
+      } else if (event.type === "error" && event.data.recoverable !== true) {
+        terminal = true;
+        setError(`Сервер остановил аудит: ${event.data.message || "причина не указана"}`);
         setPhase("failed");
+        operation.controller.abort();
       }
     };
-
     try {
-      const res = await startAudit({
-        before,
-        after,
-        useLlm: requested,
-        signal: controller.signal,
-      });
-      await readSseEvents(res, onEvent);
-      if (!finished) {
+      const response = await abortable(startAudit({ before, after, useLlm: requested, signal: operation.controller.signal }), operation.controller.signal);
+      await abortable(readSseEvents(response, onEvent), operation.controller.signal);
+      if (operationRef.current === operation && !terminal) {
         setPhase("failed");
-        setError("Stream ended before a final event arrived (audit did not complete).");
+        setError(acc.lastSeq < 0
+          ? "Сервер закрыл пустой поток: событий аудита нет. Проверьте API и повторите запуск."
+          : "Поток закрыт до получения Report. Аудит не подтверждён; попробуйте открыть результат по ID.");
       }
     } catch (err) {
-      if (controller.signal.aborted) {
-        setPhase(acc.finalText !== null ? "done" : "idle");
-        setError("Audit cancelled");
-      } else {
-        setPhase((p) => (p === "done" || p === "failed" ? p : "failed"));
-        setError(err instanceof Error ? err.message : String(err));
-      }
-    } finally {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-        timerRef.current = null;
-      }
-      setElapsedMs(performance.now() - t0);
-      abortRef.current = null;
-    }
+      if (operationRef.current !== operation || terminal) return;
+      setPhase("failed");
+      setError(errorMessage(err, operation));
+    } finally { finish(operation); }
   };
 
-  const lastStatus = [...run.rows].reverse().find((r) => r.kind === "status");
-
   return (
-    <div className="mx-auto grid w-full max-w-[96rem] grid-cols-1 gap-4 p-4 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
+    <div className="mx-auto grid w-full max-w-[96rem] grid-cols-1 gap-4 p-4 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
       <aside className="space-y-4 lg:sticky lg:top-4 lg:max-h-[calc(100vh-5.5rem)] lg:self-start lg:overflow-y-auto">
         <div className="space-y-3 rounded-xl border border-neutral-800 bg-neutral-900/40 p-3">
-          <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-neutral-400">
-            <GitCompareArrows size={13} className="text-sky-400" />
-            New audit
-          </div>
-          <AuditFilePicker
-            label="Before"
-            hint="previous edition(s)"
-            files={before}
-            onChange={setBefore}
-            disabled={running}
-          />
-          <AuditFilePicker
-            label="After"
-            hint="new edition(s)"
-            files={after}
-            onChange={setAfter}
-            disabled={running}
-          />
+          <h2 className="flex items-center gap-2 text-sm font-medium text-neutral-200"><GitCompareArrows size={15} className="text-sky-400" /> Сравнить редакции</h2>
+          <AuditFilePicker label="До" hint="предыдущая редакция и приложения" files={before} onChange={setBefore} disabled={busy} />
+          <AuditFilePicker label="После" hint="новая редакция и приложения" files={after} onChange={setAfter} disabled={busy} />
           <label className="flex cursor-pointer items-start gap-2 rounded-lg border border-neutral-800 bg-neutral-900/60 px-2.5 py-2 text-xs">
-            <input
-              type="checkbox"
-              checked={useLlm}
-              onChange={(e) => setUseLlm(e.target.checked)}
-              disabled={running}
-              className="mt-0.5 accent-violet-500"
-            />
-            <span>
-              <span className="text-neutral-200">LLM adjudication</span>
-              <span className="block text-[11px] text-neutral-500">
-                Optional. Off gives a deterministic report; if the model is
-                unavailable the audit still completes deterministically.
-              </span>
-            </span>
+            <input type="checkbox" checked={useLlm} onChange={(e) => setUseLlm(e.target.checked)} disabled={busy} className="mt-0.5 accent-violet-500" />
+            <span><span className="text-neutral-200">Запросить проверку ИИ-агентом</span><span className="mt-1 block text-[11px] text-neutral-400">Необязательно. Без модели работает алгоритмическое сравнение. Галочка не подтверждает выполнение агента — смотрите статус в отчёте. Включайте только для разрешённых к отправке данных.</span></span>
           </label>
-          {running ? (
-            <button
-              type="button"
-              onClick={() => abortRef.current?.abort()}
-              className="flex h-9 w-full items-center justify-center gap-1.5 rounded-lg border border-red-800 bg-red-950/40 text-sm text-red-300 hover:bg-red-950/70"
-            >
-              <CircleStop size={15} />
-              Stop · {(elapsedMs / 1000).toFixed(1)}s
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={() => void submit()}
-              disabled={before.length === 0 || after.length === 0}
-              className="flex h-9 w-full items-center justify-center gap-1.5 rounded-lg bg-sky-600 text-sm font-medium text-white hover:bg-sky-500 disabled:cursor-not-allowed disabled:bg-neutral-800 disabled:text-neutral-500"
-            >
-              <Play size={14} />
-              Run audit
-            </button>
-          )}
-          <div className="text-center font-mono text-[10px] text-neutral-600">
-            POST {API_BASE}/audits
-          </div>
+          <button type="button" onClick={() => void submit()} disabled={busy || !before.length || !after.length} className="flex h-9 w-full items-center justify-center gap-1.5 rounded-lg bg-sky-600 text-sm font-medium text-white hover:bg-sky-500 disabled:cursor-not-allowed disabled:bg-neutral-800 disabled:text-neutral-500"><Play size={14} /> Начать аудит</button>
+          {busy && <button type="button" onClick={() => operationRef.current?.controller.abort()} className="flex h-9 w-full items-center justify-center gap-1.5 rounded-lg border border-red-800 bg-red-950/40 text-sm text-red-300"><CircleStop size={15} /> Остановить ожидание{running ? ` · ${(elapsedMs / 1000).toFixed(1)} с` : ""}</button>}
+          <p className="text-[11px] text-neutral-500">Ожидание аудита ограничено 5 минутами, открытие — 30 секундами. Это предел интерфейса, не доказательство полной проверки.</p>
+          <div className="break-all text-center font-mono text-[10px] text-neutral-500">POST {API_BASE}/audits</div>
         </div>
-
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            void openReport(lookupId);
-          }}
-          className="space-y-2 rounded-xl border border-neutral-800 bg-neutral-900/40 p-3"
-        >
-          <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-neutral-400">
-            <FolderOpen size={13} className="text-neutral-500" />
-            Open saved audit
-          </div>
+        <form onSubmit={(e) => { e.preventDefault(); if (!busy) void openReport(lookupId); }} className="space-y-2 rounded-xl border border-neutral-800 bg-neutral-900/40 p-3">
+          <h2 className="flex items-center gap-2 text-sm text-neutral-200"><FolderOpen size={14} /> Открыть сохранённый аудит</h2>
+          <label htmlFor="audit-run-id" className="block text-xs text-neutral-400">ID запуска на сервере</label>
           <div className="flex gap-2">
-            <input
-              value={lookupId}
-              onChange={(e) => setLookupId(e.target.value)}
-              placeholder="run_id"
-              className="min-w-0 flex-1 rounded-md border border-neutral-700 bg-neutral-900 px-2 py-1.5 font-mono text-xs text-neutral-100 placeholder-neutral-600 outline-none focus:border-sky-600"
-            />
-            <button
-              type="submit"
-              disabled={running || loadingReport || lookupId.trim() === ""}
-              className="flex items-center gap-1 rounded-md border border-neutral-700 px-2.5 text-xs text-neutral-300 hover:border-neutral-500 disabled:opacity-50"
-            >
-              {loadingReport && <Loader2 size={12} className="animate-spin" />}
-              Open
-            </button>
+            <input id="audit-run-id" value={lookupId} onChange={(e) => setLookupId(e.target.value)} placeholder="run_id" disabled={busy} className="min-w-0 flex-1 rounded-md border border-neutral-700 bg-neutral-900 px-2 py-1.5 font-mono text-xs text-neutral-100 outline-none focus:border-sky-600" />
+            <button type="submit" disabled={busy || !lookupId.trim()} className="rounded-md border border-neutral-700 px-2.5 text-xs text-neutral-300 disabled:opacity-50">Открыть</button>
           </div>
+          <p className="text-[11px] text-neutral-500">Загружаются Report и фактический журнал событий сервера.</p>
+          <button type="button" disabled={busy} onClick={() => localInputRef.current?.click()} className="w-full rounded-md border border-neutral-700 px-2 py-2 text-xs text-neutral-300 disabled:opacity-50">Загрузить локальный Report JSON</button>
+          <input ref={localInputRef} type="file" accept=".json,application/json" disabled={busy} aria-label="Локальный Report JSON" className="hidden" onChange={(e) => { const file = e.target.files?.[0]; e.target.value = ""; if (file && !busy) void loadLocal(file); }} />
+          <p className="text-[11px] text-neutral-500">До 50 МБ. Локальный файл не отправляется на сервер.</p>
         </form>
-
-        <div className="flex max-h-96 flex-col rounded-xl border border-neutral-800 bg-neutral-900/40">
-          <div className="flex items-center gap-2 border-b border-neutral-800/80 px-3 py-2 text-xs font-medium uppercase tracking-wide text-neutral-400">
-            <ListTree size={12} className="text-neutral-600" />
-            Progress
-            <span className="ml-auto normal-case tracking-normal text-neutral-600">
-              {run.rows.length} events
-            </span>
-          </div>
+        <div className="flex max-h-[32rem] flex-col rounded-xl border border-neutral-800 bg-neutral-900/40">
+          <h2 className="flex items-center gap-2 border-b border-neutral-800/80 px-3 py-2 text-xs font-medium text-neutral-300"><ListTree size={13} /> Фактические действия <span className="ml-auto text-neutral-500">записей: {run.rows.length}</span></h2>
+          <p className="px-3 pt-2 text-[11px] text-neutral-500">Имена инструментов, аргументы, результаты и публичные основания. Скрытые рассуждения модели не выводятся. Системные шаги не доказывают участие агента.</p>
           <div className="min-h-0 flex-1 space-y-2 overflow-y-auto p-2.5">
-            {run.rows.length === 0 && !running && (
-              <div className="py-4 text-center text-xs text-neutral-600">
-                Ingestion, parsing, alignment and report events appear here.
-              </div>
-            )}
-            {run.rows.map((r) =>
-              r.kind === "tool" ? (
-                <ToolRowView key={r.id} row={r} />
-              ) : r.kind === "status" ? (
-                <StatusLine key={r.id} row={r} />
-              ) : r.kind === "error" ? (
-                <ErrorRowView key={r.id} row={r} />
-              ) : null
-            )}
-            {running && run.rows.length === 0 && (
-              <div className="flex items-center gap-2 px-1 py-2 text-xs text-neutral-500">
-                <Loader2 size={11} className="animate-spin text-sky-400" />
-                uploading and awaiting first event…
-              </div>
-            )}
+            {traceNote && <p role="status" className="rounded-md border border-amber-900/70 p-2 text-xs text-amber-200">{traceNote}</p>}
+            {run.rows.length === 0 && !busy && <p className="py-4 text-center text-xs text-neutral-500">Событий для отображения нет.</p>}
+            {run.rows.map((row) => row.kind === "tool" ? <ToolRowView key={row.id} row={row} active={running} /> : row.kind === "status" ? <StatusLine key={row.id} row={row} /> : row.kind === "error" ? <ErrorRowView key={row.id} row={row} /> : null)}
+            {running && run.rows.length === 0 && <p className="flex items-center gap-2 py-2 text-xs text-neutral-400"><Loader2 size={12} className="animate-spin text-sky-400" /> Отправляем файлы и ждём первое событие…</p>}
             <div ref={timelineEndRef} />
           </div>
         </div>
       </aside>
-
-      <section className="min-w-0 space-y-4">
-        <div className="flex flex-wrap items-center gap-2 text-xs">
-          {phase === "running" ? (
-            <span className="flex items-center gap-1.5 rounded-full border border-sky-800 bg-sky-950/40 px-2.5 py-0.5 text-sky-300">
-              <Loader2 size={11} className="animate-spin" />
-              auditing · {(elapsedMs / 1000).toFixed(1)}s
-            </span>
-          ) : phase === "done" ? (
-            <span className="rounded-full border border-emerald-800 bg-emerald-950/40 px-2.5 py-0.5 text-emerald-300">
-              audit complete
-            </span>
-          ) : phase === "failed" ? (
-            <span className="rounded-full border border-red-800 bg-red-950/40 px-2.5 py-0.5 text-red-300">
-              audit failed
-            </span>
-          ) : (
-            <span className="rounded-full border border-neutral-800 bg-neutral-900 px-2.5 py-0.5 text-neutral-500">
-              idle
-            </span>
-          )}
-          {report && (
-            <span
-              className={`rounded-full border px-2.5 py-0.5 ${
-                report.mode === "deterministic"
-                  ? "border-neutral-700 bg-neutral-900 text-neutral-300"
-                  : "border-violet-800 bg-violet-950/40 text-violet-300"
-              }`}
-            >
-              mode: {report.mode}
-            </span>
-          )}
-          {runId && (
-            <span className="truncate font-mono text-[11px] text-neutral-500" title={runId}>
-              {runId}
-            </span>
-          )}
-          {running && lastStatus?.kind === "status" && (
-            <span className="min-w-0 truncate text-neutral-500">{lastStatus.message}</span>
-          )}
+      <section className="min-w-0 space-y-4" aria-label="Результат аудита">
+        <div className="flex flex-wrap items-center gap-2 text-xs" role="status" aria-live="polite">
+          <span className="flex items-center gap-1.5 rounded-full border border-neutral-700 bg-neutral-900 px-2.5 py-1 text-neutral-200">
+            {busy && <Loader2 size={11} className="animate-spin text-sky-400" />}
+            {running ? `Аудит выполняется · ${(elapsedMs / 1000).toFixed(1)} с` : phase === "loading" ? "Открываем сохранённый аудит…" : phase === "done" ? "Отчёт получен" : phase === "failed" ? "Операция не завершена" : "Готов к загрузке"}
+          </span>
+          {report && <span className="rounded-full border border-neutral-700 px-2.5 py-1 text-neutral-300">{report.mode === "deterministic" ? "Алгоритмическое сравнение" : "С участием модели"}</span>}
+          {runId && <span className="break-all font-mono text-[11px] text-neutral-400">ID: {runId}</span>}
+          {report && <button type="button" onClick={() => downloadReport(report)} className="flex items-center gap-1.5 rounded-md border border-sky-800 px-2.5 py-1.5 text-sky-300"><Download size={13} /> Скачать Report JSON</button>}
         </div>
-
-        {error && (
-          <div className="rounded-lg border border-red-800 bg-red-950/40 px-3 py-2 text-xs text-red-300">
-            {error}
-          </div>
-        )}
-        {run.errored && phase === "failed" && run.errored !== error && (
-          <div className="rounded-lg border border-red-800 bg-red-950/40 px-3 py-2 text-xs text-red-300">
-            {run.errored}
-          </div>
-        )}
-
-        {report ? (
+        {error && <div role="alert" className="rounded-lg border border-red-800 bg-red-950/40 px-3 py-2 text-sm text-red-300">{error}</div>}
+        {report ? <>
+          <p className="text-xs text-neutral-500">JSON сохраняет полный отчёт и источники, но не журнал. Автономный HTML создаётся штатным Python-экспортёром из этого JSON; браузер не подменяет его генерацию.</p>
           <AuditReportView key={report.run_id} report={report} llmRequested={llmRequested} />
-        ) : (
-          !running && (
-            <div className="rounded-xl border border-dashed border-neutral-800 px-6 py-16 text-center text-sm text-neutral-500">
-              Select the previous edition(s) as <span className="text-neutral-300">Before</span> and
-              the new edition(s) as <span className="text-neutral-300">After</span>, then run the
-              audit.
-              <br />
-              <span className="text-xs text-neutral-600">
-                Every function clause is accounted for; each finding cites the exact preserved
-                clause text.
-              </span>
-            </div>
-          )
-        )}
+        </> : !busy && <div className="rounded-xl border border-dashed border-neutral-800 px-6 py-14 text-center text-sm text-neutral-400">Добавьте положения и приложения в комплекты «До» и «После», затем начните аудит.<p className="mt-3 text-xs">Проверьте изменения подразделений, функции и межподразделенческие риски. Из заключения перейдите к подтверждающим пунктам. Выводы рекомендательные: решение принимает ответственный эксперт.</p></div>}
       </section>
     </div>
   );
