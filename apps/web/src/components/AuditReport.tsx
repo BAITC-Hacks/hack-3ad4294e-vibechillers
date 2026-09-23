@@ -33,6 +33,8 @@ function CoverageRow({ label, accounted, total }: { label: string; accounted: nu
 function warningSummary(warning: string): string {
   let match: RegExpMatchArray | null;
   if ((match = warning.match(/^(.+): no numbered function clauses were recognised; the document cannot be compared\.$/))) return `Документ «${match[1]}»: нумерованные функциональные пункты не распознаны; сравнить документ нельзя.`;
+  if ((match = warning.match(/^(.+): no numbered or explicitly headed function clauses were recognised; function comparison is unavailable for this document\.$/))) return `Документ «${match[1]}»: нумерованные пункты или функции с явным заголовком не распознаны; сравнение функций недоступно.`;
+  if ((match = warning.match(/^Sheet '([^']+)': no explicit unit\/function column headers; rows retained as source only, not invented duties\.$/))) return `Лист «${match[1]}»: явные заголовки столбцов подразделений и функций не найдены; строки сохранены как источники, обязанности не создавались.`;
   if ((match = warning.match(/^(.+): (\d+) numbered clause\(s\) were split out of a shared text block\.$/))) return `Документ «${match[1]}»: из общего текстового блока выделены нумерованные пункты (${match[2]}).`;
   if ((match = warning.match(/^(.+): (\d+) unlabelled block\(s\) kept as kind=other and excluded from alignment\.$/))) return `Документ «${match[1]}»: блоки без меток сохранены, но не участвовали в сопоставлении (${match[2]}).`;
   if ((match = warning.match(/^(.+): (\d+) numbered marker\(s\) have no function text and were excluded from alignment: .+\.$/))) return `Документ «${match[1]}»: нумерованные метки без текста функции не участвовали в сопоставлении (${match[2]}).`;
@@ -57,7 +59,7 @@ function warningSummary(warning: string): string {
   if (/^LLM decision ignored: finding .+ was not offered in this batch or repeats\.$/.test(warning)) return "Решение модели проигнорировано: вывод не входил в предложенную группу или повторяется.";
   if (/^LLM decision for finding .+ rejected: .+$/.test(warning)) return "Решение модели по выводу отклонено; причина указана в исходном сообщении.";
   if (/^LLM assistance (?:unavailable|failed) \(.+\); deterministic report returned\.$/.test(warning)) return "Помощь модели недоступна или завершилась ошибкой; показан детерминированный отчёт. Причина — в исходном сообщении.";
-  return "Диагностическое сообщение без готового описания; исходный текст доступен ниже.";
+  return /[А-Яа-яЁё]/.test(warning) ? warning : "Диагностическое сообщение без готового описания; исходный текст доступен ниже.";
 }
 
 function StatusBadge({ status }: { status: FindingStatus }) {
