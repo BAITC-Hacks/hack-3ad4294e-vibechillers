@@ -1,4 +1,5 @@
-"""HTTP surface per CONTRACT.md: /healthz, /run (SSE), /runs/{id}/trace, /upload.
+"""HTTP surface per CONTRACT.md: /healthz, /run (SSE), /runs/{id}/trace, /upload,
+plus the Stage-1 audit routes from docs/plan.md §3: POST /audits (SSE), GET /audits/{id}.
 
 Error shape everywhere is the envelope {"error": {"message", "type"}} — never a
 bare stack trace, never FastAPI's default {"detail": ...} on our own paths.
@@ -11,9 +12,9 @@ from pathlib import Path
 from typing import Any
 from uuid import uuid4
 
-from fastapi import APIRouter, Request, UploadFile
+from fastapi import APIRouter, File, Form, Request, UploadFile
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse, StreamingResponse
+from fastapi.responses import JSONResponse, Response, StreamingResponse
 from starlette.concurrency import run_in_threadpool
 
 from .. import db
@@ -24,6 +25,17 @@ from ..config import get_settings
 from ..events import Event
 from ..ingest import pipeline
 from ..rag import search as rag_search
+from .audits import (
+    AuditConflict,
+    AuditIncomplete,
+    AuditInputError,
+    AuditNotFound,
+    AuditUpload,
+    ingest_uploads,
+    read_report,
+    run_input,
+    stream_audit,
+)
 from .schemas import HealthOut, RunRequest, TraceOut, UploadOut
 
 logger = logging.getLogger("kit.api")
@@ -135,6 +147,84 @@ async def upload(file: UploadFile) -> JSONResponse:
         return error_response(500, str(exc) or type(exc).__name__, "index_error")
     out = UploadOut(doc_id=doc.doc_id, chunks=chunks, pages=len(doc.pages))
     return JSONResponse(status_code=200, content=out.model_dump())
+
+
+async def _read_audit_side(
+    edition: str, files: list[UploadFile] | None, supported: list[str]
+) -> list[AuditUpload] | JSONResponse:
+    """Every file on a side must be a nonempty supported document; none is silently skipped."""
+    if not files:
+        return error_response(
+            400, f"at least one {edition}_files document is required", "missing_files"
+        )
+    uploads: list[AuditUpload] = []
+    for file in files:
+        filename = file.filename or ""
+        suffix = Path(filename).suffix.lower()
+        if suffix not in supported:
+            return error_response(
+                415,
+                f"{edition} file {filename!r}: unsupported suffix {suffix!r}; "
+                f"supported: {', '.join(supported)}",
+                "unsupported_media_type",
+            )
+        data = await file.read()
+        if not data:
+            return error_response(400, f"{edition} file {filename!r} is empty", "empty_upload")
+        uploads.append(AuditUpload(edition=edition, filename=filename, data=data))  # type: ignore[arg-type]
+    return uploads
+
+
+@router.post("/audits", response_model=None)
+async def create_audit(
+    before_files: list[UploadFile] | None = File(None),
+    after_files: list[UploadFile] | None = File(None),
+    use_llm: bool = Form(False),
+) -> Response:
+    """Ingest both document sets (no RAG indexing), then stream the audit as SSE.
+
+    Input problems answer with the error envelope before streaming starts; after
+    that the stream ends with exactly one `final` (payload: Report) or `error`.
+    """
+    supported = sorted(pipeline.supported_suffixes())
+    before = await _read_audit_side("before", before_files, supported)
+    if isinstance(before, JSONResponse):
+        return before
+    after = await _read_audit_side("after", after_files, supported)
+    if isinstance(after, JSONResponse):
+        return after
+    try:
+        ingested = await run_in_threadpool(ingest_uploads, before, after)
+    except AuditConflict as exc:
+        return error_response(400, str(exc), "conflicting_exports")
+    except AuditInputError as exc:
+        logger.exception("audit ingestion failed")
+        return error_response(422, str(exc), "parse_error")
+
+    run_id = uuid4().hex
+    await run_in_threadpool(db.create_run, run_id, run_input(before, after, use_llm))
+
+    async def stream():
+        events = stream_audit(run_id, ingested, use_llm=use_llm)
+        try:
+            async for event in events:
+                yield event.to_sse()
+        finally:  # client gone: close now so the run row is finished promptly
+            await events.aclose()
+
+    return StreamingResponse(stream(), media_type="text/event-stream", headers=_SSE_HEADERS)
+
+
+@router.get("/audits/{run_id}", response_model=None)
+async def get_audit(run_id: str) -> JSONResponse:
+    """The Report persisted in the run's `final` frame; 404 unknown, 409 not finished."""
+    try:
+        report = await run_in_threadpool(read_report, run_id)
+    except AuditNotFound as exc:
+        return error_response(404, str(exc), "not_found")
+    except AuditIncomplete as exc:
+        return error_response(409, str(exc), "audit_incomplete")
+    return JSONResponse(status_code=200, content=report.model_dump(mode="json"))
 
 
 async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONResponse:

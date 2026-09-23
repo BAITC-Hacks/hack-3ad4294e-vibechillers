@@ -202,3 +202,194 @@ export async function extractErrorMessage(res: Response): Promise<string> {
   }
   return text.length > 300 ? `${text.slice(0, 300)}…` : text;
 }
+
+/**
+ * Read an SSE response body to completion, handing every well-formed kit
+ * `Event` frame to `onEvent`. Shared by `/run` and `/audits`: one parser, one
+ * envelope.
+ */
+export async function readSseEvents(
+  res: Response,
+  onEvent: (ev: RunEvent) => void
+): Promise<void> {
+  if (res.body === null) throw new Error("Response has no body to stream");
+  const parser = createSseParser((frame) => {
+    const ev = parseRunEvent(frame);
+    if (ev !== null) onEvent(ev);
+  });
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder("utf-8");
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    parser.feed(decoder.decode(value, { stream: true }));
+  }
+  parser.feed(decoder.decode());
+  parser.end();
+}
+
+/* ---------------------------------------------------------------------------
+ * Function Lineage Auditor wire types — docs/plan.md §3 "Data", verbatim.
+ * ------------------------------------------------------------------------- */
+
+export type Edition = "before" | "after";
+export type ClauseKind = "heading" | "function" | "structure" | "other";
+export type UnitKind = "unit" | "role";
+export type FindingStatus =
+  | "unchanged"
+  | "changed"
+  | "moved"
+  | "added"
+  | "missing"
+  | "duplicate"
+  | "unresolved";
+export type FindingMethod = "exact" | "lexical" | "llm" | "human";
+export type ReportMode = "deterministic" | "llm_assisted";
+
+export interface AuditDocument {
+  doc: string;
+  doc_id: string;
+  sha256: string;
+  edition: Edition;
+  source: string;
+}
+export interface Citation {
+  doc: string;
+  clause_id: string;
+  quote: string;
+}
+export interface ClauseRef {
+  doc: string;
+  clause_id: string;
+}
+export interface Clause {
+  doc: string;
+  clause_id: string;
+  label: string;
+  parent_id: string | null;
+  text: string;
+  ordinal: number;
+  kind: ClauseKind;
+  unit_ids: string[];
+}
+export interface Unit {
+  doc: string;
+  unit_id: string;
+  name: string;
+  kind: UnitKind;
+  parent_unit_id: string | null;
+  citations: Citation[];
+}
+export interface Finding {
+  id: string;
+  status: FindingStatus;
+  before: ClauseRef[];
+  after: ClauseRef[];
+  citations: Citation[];
+  reason: string;
+  method: FindingMethod;
+  review_required: boolean;
+}
+export interface ConclusionItem {
+  text: string;
+  finding_ids: string[];
+  citations: Citation[];
+}
+export interface Coverage {
+  before_total: number;
+  after_total: number;
+  before_accounted: number;
+  after_accounted: number;
+  unresolved: number;
+}
+export interface Report {
+  run_id: string;
+  mode: ReportMode;
+  documents: AuditDocument[];
+  clauses: Clause[];
+  units: Unit[];
+  findings: Finding[];
+  conclusion: ConclusionItem[];
+  coverage: Coverage;
+  warnings: string[];
+}
+
+/**
+ * Structural gate on an untrusted `final.data.payload` / GET body. Returns
+ * null rather than coercing: a malformed report must surface as an error,
+ * never render as an empty-but-successful audit.
+ */
+export function asReport(v: unknown): Report | null {
+  if (typeof v !== "object" || v === null) return null;
+  const r = v as Record<string, unknown>;
+  if (typeof r.run_id !== "string") return null;
+  if (r.mode !== "deterministic" && r.mode !== "llm_assisted") return null;
+  for (const key of [
+    "documents",
+    "clauses",
+    "units",
+    "findings",
+    "conclusion",
+    "warnings",
+  ]) {
+    if (!Array.isArray(r[key])) return null;
+  }
+  const cov = r.coverage;
+  if (typeof cov !== "object" || cov === null) return null;
+  const c = cov as Record<string, unknown>;
+  for (const key of [
+    "before_total",
+    "after_total",
+    "before_accounted",
+    "after_accounted",
+    "unresolved",
+  ]) {
+    if (typeof c[key] !== "number") return null;
+  }
+  return v as Report;
+}
+
+/** `POST /audits` — multipart repeated `before_files` / `after_files`, `use_llm`. Returns the raw SSE response. */
+export async function startAudit(opts: {
+  before: File[];
+  after: File[];
+  useLlm: boolean;
+  signal?: AbortSignal;
+}): Promise<Response> {
+  const form = new FormData();
+  for (const f of opts.before) form.append("before_files", f, f.name);
+  for (const f of opts.after) form.append("after_files", f, f.name);
+  form.append("use_llm", opts.useLlm ? "true" : "false");
+  const res = await fetch(`${API_BASE}/audits`, {
+    method: "POST",
+    body: form,
+    signal: opts.signal,
+  });
+  if (!res.ok) {
+    throw new Error(`HTTP ${res.status}: ${await extractErrorMessage(res)}`);
+  }
+  return res;
+}
+
+/** `GET /audits/{run_id}` — the persisted final Report (404 absent, 409 incomplete). */
+export async function fetchAuditReport(
+  runId: string,
+  signal?: AbortSignal
+): Promise<Report> {
+  const res = await fetch(`${API_BASE}/audits/${encodeURIComponent(runId)}`, {
+    signal,
+  });
+  if (!res.ok) {
+    const msg = await extractErrorMessage(res);
+    if (res.status === 404)
+      throw new Error(`No audit report for run ${runId} (404): ${msg}`);
+    if (res.status === 409)
+      throw new Error(`Audit ${runId} has not completed yet (409): ${msg}`);
+    throw new Error(`HTTP ${res.status}: ${msg}`);
+  }
+  const report = asReport(await res.json());
+  if (report === null) {
+    throw new Error(`GET /audits/${runId} returned a body that is not a Report`);
+  }
+  return report;
+}

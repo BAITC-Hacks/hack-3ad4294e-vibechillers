@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "kit",
-  description: "kit agent workspace",
+  title: "Function Lineage Auditor",
+  description: "Before/after regulation function lineage audit with verifiable clause citations",
 };
 
 export default function RootLayout({
