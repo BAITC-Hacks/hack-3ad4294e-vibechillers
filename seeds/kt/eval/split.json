@@ -8,7 +8,8 @@
   "datasets": {
     "seeds/kt/eval/labels.jsonl": "87965da85193a0420dd2383fae056211c7cba5b1976bdc0e3f2783534526b7ed",
     "seeds/kt/eval/regression.jsonl": "87965da85193a0420dd2383fae056211c7cba5b1976bdc0e3f2783534526b7ed",
-    "seeds/kt/eval/challenge.jsonl": "b31e4f1a124548cee9bacda752de78f216432c3dfb0b75dad445d19bd00e80b9"
+    "seeds/kt/eval/challenge.jsonl": "b31e4f1a124548cee9bacda752de78f216432c3dfb0b75dad445d19bd00e80b9",
+    "seeds/kt/eval/control/labels.jsonl": "55f306a27ee780d1ea70bdda2fff467abdcd5cba8689dbedc8917d0c4fa1c31f"
   },
   "fixtures": {
     "seeds/kt/v8.txt": "f5ce4518f22ecad2701f1fed8929d93ff09bb45af6e35e8fd60726362b6bfbc8",
@@ -49,7 +50,15 @@
     "seeds/kt/eval/mutations/stage2/hold-shared/before-1.txt": "5de5905b6f473ed7ea0d6edd1ac07c503dbe538c8c547a7d8a419b2b915a9d2b",
     "seeds/kt/eval/mutations/stage2/hold-shared/after-1.txt": "5de5905b6f473ed7ea0d6edd1ac07c503dbe538c8c547a7d8a419b2b915a9d2b",
     "seeds/kt/eval/mutations/stage2/hold-uncertainty/before-1.txt": "3ce496c5a71c67fcb70c3986aca8378781b2964302338153fb09572bf9cebc9a",
-    "seeds/kt/eval/mutations/stage2/hold-uncertainty/after-1.txt": "842237ccd70248a4c9368406707415130b1cd21229c771e520472945f66bcf77"
+    "seeds/kt/eval/mutations/stage2/hold-uncertainty/after-1.txt": "842237ccd70248a4c9368406707415130b1cd21229c771e520472945f66bcf77",
+    "seeds/kt/eval/control/before.txt": "ec55a432799226339f681d6d7034e9b2f3f03c1065af45506df97595956ddb76",
+    "seeds/kt/eval/control/before.docx": "253413fd6a1b5c69d08959aaffd2838f83d7f1f2976fc02464b4711ba86483e5",
+    "seeds/kt/eval/control/before.pdf": "a867051f06c9bc5ef963eb136428319653bf3748c74a9f275c62432f45211dd4",
+    "seeds/kt/eval/control/before.xlsx": "fe41fb5d32a9cd31943c93d8e02cabbab7198c001feb732d7bd288c70aac4aed",
+    "seeds/kt/eval/control/after.txt": "4f085873ff55576b5d9d5cbe1850132d47e86e3a539e6dabc7643db79c4b8207",
+    "seeds/kt/eval/control/after.docx": "cc751b88f6b5cf5910ef6505f02a6c6bc8b7740607fa2734bcafdfd409f01b9a",
+    "seeds/kt/eval/control/after.pdf": "ec9e741b6d13b5d1a8de53340ffbaa72fcb14812f4a30ea958d151b4d9013ce5",
+    "seeds/kt/eval/control/after.xlsx": "7a8fd8054153913bbe03cef7ae2233f8dd235210e41cb53240ac0049b23f9256"
   },
   "cases": {
     "dev-owner": {
@@ -576,6 +585,158 @@
       "review_status": "pending_human",
       "selection": "report-derived: triage-026",
       "label_sha256": "290c90b21e86511231977b9316dae9f9f21bc54b4a04b33d1dd1949b4b7620d3"
+    },
+    "ctrl-unit-archive": {
+      "partition": "development",
+      "kind": "synthetic",
+      "target": "unit_change",
+      "review_status": "pending_human",
+      "selection": "source-first synthetic Stage3 control",
+      "label_sha256": "f98a268f6411978679f3a09f6add43c51e58138943d5e78efcfe60decb17406c"
+    },
+    "ctrl-unit-finance": {
+      "partition": "development",
+      "kind": "synthetic",
+      "target": "unit_change",
+      "review_status": "pending_human",
+      "selection": "source-first synthetic Stage3 control",
+      "label_sha256": "c67fe56e6411772df6989778957518fd62f9411be96b87f5ba8140baf24cc6d6"
+    },
+    "ctrl-unit-technical": {
+      "partition": "development",
+      "kind": "synthetic",
+      "target": "unit_change",
+      "review_status": "pending_human",
+      "selection": "source-first synthetic Stage3 control",
+      "label_sha256": "320e9c6c412361330c66653d75ca6dcbe76ad0cb6eaae6fe12402df9389c9cce"
+    },
+    "ctrl-unit-rename": {
+      "partition": "development",
+      "kind": "synthetic",
+      "target": "unit_change",
+      "review_status": "pending_human",
+      "selection": "source-first synthetic Stage3 control",
+      "label_sha256": "511652b319fbd0de729cc9143d41dd98e7121e963574d207766cdb46888ff02d"
+    },
+    "ctrl-unit-split": {
+      "partition": "development",
+      "kind": "synthetic",
+      "target": "unit_change",
+      "review_status": "pending_human",
+      "selection": "source-first synthetic Stage3 control",
+      "label_sha256": "db9fa7a0cb7e3958c27fc2d10900ea203946b53884ea5ac37b1420752e5e6dd3"
+    },
+    "ctrl-unit-merge": {
+      "partition": "development",
+      "kind": "synthetic",
+      "target": "unit_change",
+      "review_status": "pending_human",
+      "selection": "source-first synthetic Stage3 control",
+      "label_sha256": "2a174d539d2de150da4b351d0dae3afe7e8de168443604cfd18a9aa71278cb97"
+    },
+    "ctrl-unit-created": {
+      "partition": "development",
+      "kind": "synthetic",
+      "target": "unit_change",
+      "review_status": "pending_human",
+      "selection": "source-first synthetic Stage3 control",
+      "label_sha256": "df7bde28f829618f43df2bc19965567b3199d1a3354931bb57dc98f6bfaced22"
+    },
+    "ctrl-risk-duplication": {
+      "partition": "development",
+      "kind": "synthetic",
+      "target": "risk",
+      "review_status": "pending_human",
+      "selection": "source-first synthetic Stage3 control",
+      "label_sha256": "fcf4d8185a885104a08cba8d674cd75ea18b1e1b8e3cd00c0f0fa2bbf068e20f"
+    },
+    "ctrl-risk-self-control": {
+      "partition": "development",
+      "kind": "synthetic",
+      "target": "risk",
+      "review_status": "pending_human",
+      "selection": "source-first synthetic Stage3 control",
+      "label_sha256": "810b150124eec6bbbd0bfeb95079abe2cf38947908464401167bb97c9b078621"
+    },
+    "ctrl-risk-cooperation-negative": {
+      "partition": "development",
+      "kind": "synthetic",
+      "target": "risk",
+      "review_status": "pending_human",
+      "selection": "source-first synthetic Stage3 control",
+      "label_sha256": "2788fc5701ef913b1356a20b7cfe86f66fff226caea472b94e0890527c769384"
+    },
+    "ctrl-function-loss": {
+      "partition": "development",
+      "kind": "synthetic",
+      "target": "function",
+      "review_status": "pending_human",
+      "selection": "source-first synthetic Stage3 control",
+      "label_sha256": "e44abe57978a74d8c9603e50daf3ef5d8f00d4a80dac731888fafa3fd6d4d642"
+    },
+    "ctrl-function-duplicate": {
+      "partition": "development",
+      "kind": "synthetic",
+      "target": "function",
+      "review_status": "pending_human",
+      "selection": "source-first synthetic Stage3 control",
+      "label_sha256": "242253b7a670181b1a51862dfff53cc174946f2675ebe54efc87f6a17fb1a993"
+    },
+    "ctrl-function-split-intake": {
+      "partition": "development",
+      "kind": "synthetic",
+      "target": "function",
+      "review_status": "pending_human",
+      "selection": "source-first synthetic Stage3 control",
+      "label_sha256": "47d3580ae3888cf86359730ec785c59844ef4e7141c657da6cacf705a702e9ed"
+    },
+    "ctrl-function-split-survey": {
+      "partition": "development",
+      "kind": "synthetic",
+      "target": "function",
+      "review_status": "pending_human",
+      "selection": "source-first synthetic Stage3 control",
+      "label_sha256": "f771e3989bc251b2a17e8a58a34cabca9cff5b6b0728e21748805e9b9b93c940"
+    },
+    "ctrl-function-merge-contracts": {
+      "partition": "development",
+      "kind": "synthetic",
+      "target": "function",
+      "review_status": "pending_human",
+      "selection": "source-first synthetic Stage3 control",
+      "label_sha256": "14ca06e7b8cc2dd9e7341a79840bbdbdd5a4b6d2f0f58ad0000794e04518a016"
+    },
+    "ctrl-function-merge-stock": {
+      "partition": "development",
+      "kind": "synthetic",
+      "target": "function",
+      "review_status": "pending_human",
+      "selection": "source-first synthetic Stage3 control",
+      "label_sha256": "0bdea353993537695a3e3855d8f8949a0b02a46224526fdf224dc9b96602765e"
+    },
+    "ctrl-function-archive-preserved": {
+      "partition": "development",
+      "kind": "synthetic",
+      "target": "function",
+      "review_status": "pending_human",
+      "selection": "source-first synthetic Stage3 control",
+      "label_sha256": "0edabd0552e2e7e9cdee2886034be7ea75fc4fa9d7a83535d2ba39d0c8a89f50"
+    },
+    "ctrl-function-cooperation-finance": {
+      "partition": "development",
+      "kind": "synthetic",
+      "target": "function",
+      "review_status": "pending_human",
+      "selection": "source-first synthetic Stage3 control",
+      "label_sha256": "49d4e67273fd5406e1c6c8b12ad50e2e20b510f256bf71932e913bc1407362fd"
+    },
+    "ctrl-function-cooperation-technical": {
+      "partition": "development",
+      "kind": "synthetic",
+      "target": "function",
+      "review_status": "pending_human",
+      "selection": "source-first synthetic Stage3 control",
+      "label_sha256": "e6c9e69e52ea231dbebf4eb6f2b72d852de6a2913fbb2b46c97e2dec9f9a0b30"
     }
   },
   "development_added_at_utc": "2026-09-23T10:02:15.571339+00:00",

@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "bundle_id": "kt-stage3-synthetic-control-v1",
+  "created_date": "2026-09-23",
+  "provenance": "synthetic_author_constructed",
+  "author": "Alibi evaluation session",
+  "organiser_supplied": false,
+  "split": "development",
+  "expectations_status": "pending_human",
+  "expectations": "expectations.preliminary.md",
+  "source_first": true,
+  "expectations_sha256": "595313a6ce4ae4f872ea8e823c5794f5c5bd2d8c3c83331f8e793d5c132fb8b6",
+  "files": [
+    {
+      "path": "before.txt",
+      "edition": "before",
+      "format": "txt",
+      "sha256": "ec55a432799226339f681d6d7034e9b2f3f03c1065af45506df97595956ddb76",
+      "bytes": 3210,
+      "canonical": "before.txt",
+      "canonical_sha256": "ec55a432799226339f681d6d7034e9b2f3f03c1065af45506df97595956ddb76"
+    },
+    {
+      "path": "before.docx",
+      "edition": "before",
+      "format": "docx",
+      "sha256": "253413fd6a1b5c69d08959aaffd2838f83d7f1f2976fc02464b4711ba86483e5",
+      "bytes": 38121,
+      "canonical": "before.txt",
+      "canonical_sha256": "ec55a432799226339f681d6d7034e9b2f3f03c1065af45506df97595956ddb76"
+    },
+    {
+      "path": "before.pdf",
+      "edition": "before",
+      "format": "pdf",
+      "sha256": "a867051f06c9bc5ef963eb136428319653bf3748c74a9f275c62432f45211dd4",
+      "bytes": 52492,
+      "canonical": "before.txt",
+      "canonical_sha256": "ec55a432799226339f681d6d7034e9b2f3f03c1065af45506df97595956ddb76"
+    },
+    {
+      "path": "before.xlsx",
+      "edition": "before",
+      "format": "xlsx",
+      "sha256": "fe41fb5d32a9cd31943c93d8e02cabbab7198c001feb732d7bd288c70aac4aed",
+      "bytes": 5215,
+      "canonical": "before.txt",
+      "canonical_sha256": "ec55a432799226339f681d6d7034e9b2f3f03c1065af45506df97595956ddb76"
+    },
+    {
+      "path": "after.txt",
+      "edition": "after",
+      "format": "txt",
+      "sha256": "4f085873ff55576b5d9d5cbe1850132d47e86e3a539e6dabc7643db79c4b8207",
+      "bytes": 5729,
+      "canonical": "after.txt",
+      "canonical_sha256": "4f085873ff55576b5d9d5cbe1850132d47e86e3a539e6dabc7643db79c4b8207"
+    },
+    {
+      "path": "after.docx",
+      "edition": "after",
+      "format": "docx",
+      "sha256": "cc751b88f6b5cf5910ef6505f02a6c6bc8b7740607fa2734bcafdfd409f01b9a",
+      "bytes": 38661,
+      "canonical": "after.txt",
+      "canonical_sha256": "4f085873ff55576b5d9d5cbe1850132d47e86e3a539e6dabc7643db79c4b8207"
+    },
+    {
+      "path": "after.pdf",
+      "edition": "after",
+      "format": "pdf",
+      "sha256": "ec9e741b6d13b5d1a8de53340ffbaa72fcb14812f4a30ea958d151b4d9013ce5",
+      "bytes": 54151,
+      "canonical": "after.txt",
+      "canonical_sha256": "4f085873ff55576b5d9d5cbe1850132d47e86e3a539e6dabc7643db79c4b8207"
+    },
+    {
+      "path": "after.xlsx",
+      "edition": "after",
+      "format": "xlsx",
+      "sha256": "7a8fd8054153913bbe03cef7ae2233f8dd235210e41cb53240ac0049b23f9256",
+      "bytes": 5822,
+      "canonical": "after.txt",
+      "canonical_sha256": "4f085873ff55576b5d9d5cbe1850132d47e86e3a539e6dabc7643db79c4b8207"
+    }
+  ],
+  "usage": "Choose exactly one representation per edition; do not upload equivalent formats together.",
+  "rebuild": "TXT is authoritative; preserve recorded binary bytes for paired runs. Regeneration may change container metadata; refresh and record hashes."
+}

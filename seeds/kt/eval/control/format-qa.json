@@ -1,0 +1,135 @@
+{
+  "scope": "Source ingestion only. No audit inference or product accuracy claim.",
+  "parser_sha256": "85828f85e2b9c3f163d8a40b6ebcb038cbc18349be93ea48d8c5b57f418ee680",
+  "ingest_parsers_sha256": "f58abb9fefa7bd007d248f2a0d0c6309a0024253f29078e74d5456b6f048bf92",
+  "formats": [
+    {
+      "file": "before.txt",
+      "sha256": "ec55a432799226339f681d6d7034e9b2f3f03c1065af45506df97595956ddb76",
+      "pages_or_blocks": 1,
+      "clauses": 31,
+      "units": 7,
+      "numbered_clause_denominator": 29,
+      "numbered_clause_text_mismatches": [],
+      "normalized_extracted_text_matches_canonical": true,
+      "warnings": [
+        "before: 2 unlabelled block(s) kept as kind=other and excluded from alignment."
+      ]
+    },
+    {
+      "file": "before.docx",
+      "sha256": "253413fd6a1b5c69d08959aaffd2838f83d7f1f2976fc02464b4711ba86483e5",
+      "pages_or_blocks": 31,
+      "clauses": 31,
+      "units": 7,
+      "numbered_clause_denominator": 29,
+      "numbered_clause_text_mismatches": [],
+      "normalized_extracted_text_matches_canonical": true,
+      "warnings": [
+        "before: 2 unlabelled block(s) kept as kind=other and excluded from alignment."
+      ]
+    },
+    {
+      "file": "before.pdf",
+      "sha256": "a867051f06c9bc5ef963eb136428319653bf3748c74a9f275c62432f45211dd4",
+      "pages_or_blocks": 2,
+      "clauses": 41,
+      "units": 7,
+      "numbered_clause_denominator": 29,
+      "numbered_clause_text_mismatches": [
+        "2.2",
+        "4.1",
+        "4.2",
+        "5.2",
+        "7.1",
+        "7.2",
+        "8.1",
+        "9.1"
+      ],
+      "normalized_extracted_text_matches_canonical": true,
+      "warnings": [
+        "before: 12 unlabelled block(s) kept as kind=other and excluded from alignment."
+      ]
+    },
+    {
+      "file": "before.xlsx",
+      "sha256": "fe41fb5d32a9cd31943c93d8e02cabbab7198c001feb732d7bd288c70aac4aed",
+      "pages_or_blocks": 1,
+      "clauses": 31,
+      "units": 7,
+      "numbered_clause_denominator": 29,
+      "numbered_clause_text_mismatches": [],
+      "normalized_extracted_text_matches_canonical": true,
+      "warnings": [
+        "before: 2 unlabelled block(s) kept as kind=other and excluded from alignment."
+      ]
+    },
+    {
+      "file": "after.txt",
+      "sha256": "4f085873ff55576b5d9d5cbe1850132d47e86e3a539e6dabc7643db79c4b8207",
+      "pages_or_blocks": 1,
+      "clauses": 41,
+      "units": 8,
+      "numbered_clause_denominator": 39,
+      "numbered_clause_text_mismatches": [],
+      "normalized_extracted_text_matches_canonical": true,
+      "warnings": [
+        "after: 2 unlabelled block(s) kept as kind=other and excluded from alignment."
+      ]
+    },
+    {
+      "file": "after.docx",
+      "sha256": "cc751b88f6b5cf5910ef6505f02a6c6bc8b7740607fa2734bcafdfd409f01b9a",
+      "pages_or_blocks": 41,
+      "clauses": 41,
+      "units": 8,
+      "numbered_clause_denominator": 39,
+      "numbered_clause_text_mismatches": [],
+      "normalized_extracted_text_matches_canonical": true,
+      "warnings": [
+        "after: 2 unlabelled block(s) kept as kind=other and excluded from alignment."
+      ]
+    },
+    {
+      "file": "after.pdf",
+      "sha256": "ec9e741b6d13b5d1a8de53340ffbaa72fcb14812f4a30ea958d151b4d9013ce5",
+      "pages_or_blocks": 2,
+      "clauses": 61,
+      "units": 8,
+      "numbered_clause_denominator": 39,
+      "numbered_clause_text_mismatches": [
+        "2.1",
+        "2.2",
+        "2.3",
+        "2.4",
+        "2.5",
+        "2.6",
+        "5.1",
+        "6.1",
+        "7.2",
+        "7.4",
+        "8.1",
+        "9.1",
+        "10.1",
+        "11.1"
+      ],
+      "normalized_extracted_text_matches_canonical": true,
+      "warnings": [
+        "after: 22 unlabelled block(s) kept as kind=other and excluded from alignment."
+      ]
+    },
+    {
+      "file": "after.xlsx",
+      "sha256": "7a8fd8054153913bbe03cef7ae2233f8dd235210e41cb53240ac0049b23f9256",
+      "pages_or_blocks": 1,
+      "clauses": 41,
+      "units": 8,
+      "numbered_clause_denominator": 39,
+      "numbered_clause_text_mismatches": [],
+      "normalized_extracted_text_matches_canonical": true,
+      "warnings": [
+        "after: 2 unlabelled block(s) kept as kind=other and excluded from alignment."
+      ]
+    }
+  ]
+}

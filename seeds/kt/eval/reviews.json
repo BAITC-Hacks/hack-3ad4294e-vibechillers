@@ -304,6 +304,291 @@
       "human_decision": null,
       "disagreements": [],
       "events": []
+    },
+    "ctrl-unit-archive": {
+      "status": "pending_human",
+      "label_sha256": "f98a268f6411978679f3a09f6add43c51e58138943d5e78efcfe60decb17406c",
+      "proposed_by": "Alibi source-first AI",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": [
+        {
+          "type": "source_first_proposal",
+          "at_utc": "2026-09-23T10:55:21.787915+00:00",
+          "human_source_confirmation": false
+        }
+      ]
+    },
+    "ctrl-unit-finance": {
+      "status": "pending_human",
+      "label_sha256": "c67fe56e6411772df6989778957518fd62f9411be96b87f5ba8140baf24cc6d6",
+      "proposed_by": "Alibi source-first AI",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": [
+        {
+          "type": "source_first_proposal",
+          "at_utc": "2026-09-23T10:55:21.787915+00:00",
+          "human_source_confirmation": false
+        }
+      ]
+    },
+    "ctrl-unit-technical": {
+      "status": "pending_human",
+      "label_sha256": "320e9c6c412361330c66653d75ca6dcbe76ad0cb6eaae6fe12402df9389c9cce",
+      "proposed_by": "Alibi source-first AI",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": [
+        {
+          "type": "source_first_proposal",
+          "at_utc": "2026-09-23T10:55:21.787915+00:00",
+          "human_source_confirmation": false
+        }
+      ]
+    },
+    "ctrl-unit-rename": {
+      "status": "pending_human",
+      "label_sha256": "511652b319fbd0de729cc9143d41dd98e7121e963574d207766cdb46888ff02d",
+      "proposed_by": "Alibi source-first AI",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": [
+        {
+          "type": "source_first_proposal",
+          "at_utc": "2026-09-23T10:55:21.787915+00:00",
+          "human_source_confirmation": false
+        }
+      ]
+    },
+    "ctrl-unit-split": {
+      "status": "pending_human",
+      "label_sha256": "db9fa7a0cb7e3958c27fc2d10900ea203946b53884ea5ac37b1420752e5e6dd3",
+      "proposed_by": "Alibi source-first AI",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": [
+        {
+          "type": "source_first_proposal",
+          "at_utc": "2026-09-23T10:55:21.787915+00:00",
+          "human_source_confirmation": false
+        }
+      ]
+    },
+    "ctrl-unit-merge": {
+      "status": "pending_human",
+      "label_sha256": "2a174d539d2de150da4b351d0dae3afe7e8de168443604cfd18a9aa71278cb97",
+      "proposed_by": "Alibi source-first AI",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": [
+        {
+          "type": "source_first_proposal",
+          "at_utc": "2026-09-23T10:55:21.787915+00:00",
+          "human_source_confirmation": false
+        }
+      ]
+    },
+    "ctrl-unit-created": {
+      "status": "pending_human",
+      "label_sha256": "df7bde28f829618f43df2bc19965567b3199d1a3354931bb57dc98f6bfaced22",
+      "proposed_by": "Alibi source-first AI",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": [
+        {
+          "type": "source_first_proposal",
+          "at_utc": "2026-09-23T10:55:21.787915+00:00",
+          "human_source_confirmation": false
+        }
+      ]
+    },
+    "ctrl-risk-duplication": {
+      "status": "pending_human",
+      "label_sha256": "fcf4d8185a885104a08cba8d674cd75ea18b1e1b8e3cd00c0f0fa2bbf068e20f",
+      "proposed_by": "Alibi source-first AI",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": [
+        {
+          "type": "source_first_proposal",
+          "at_utc": "2026-09-23T10:55:21.787915+00:00",
+          "human_source_confirmation": false
+        }
+      ]
+    },
+    "ctrl-risk-self-control": {
+      "status": "pending_human",
+      "label_sha256": "810b150124eec6bbbd0bfeb95079abe2cf38947908464401167bb97c9b078621",
+      "proposed_by": "Alibi source-first AI",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": [
+        {
+          "type": "source_first_proposal",
+          "at_utc": "2026-09-23T10:55:21.787915+00:00",
+          "human_source_confirmation": false
+        }
+      ]
+    },
+    "ctrl-risk-cooperation-negative": {
+      "status": "pending_human",
+      "label_sha256": "2788fc5701ef913b1356a20b7cfe86f66fff226caea472b94e0890527c769384",
+      "proposed_by": "Alibi source-first AI",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": [
+        {
+          "type": "source_first_proposal",
+          "at_utc": "2026-09-23T10:55:21.787915+00:00",
+          "human_source_confirmation": false
+        }
+      ]
+    },
+    "ctrl-function-loss": {
+      "status": "pending_human",
+      "label_sha256": "e44abe57978a74d8c9603e50daf3ef5d8f00d4a80dac731888fafa3fd6d4d642",
+      "proposed_by": "Alibi source-first AI",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": [
+        {
+          "type": "source_first_proposal",
+          "at_utc": "2026-09-23T10:55:21.787915+00:00",
+          "human_source_confirmation": false
+        }
+      ]
+    },
+    "ctrl-function-duplicate": {
+      "status": "pending_human",
+      "label_sha256": "242253b7a670181b1a51862dfff53cc174946f2675ebe54efc87f6a17fb1a993",
+      "proposed_by": "Alibi source-first AI",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": [
+        {
+          "type": "source_first_proposal",
+          "at_utc": "2026-09-23T10:55:21.787915+00:00",
+          "human_source_confirmation": false
+        }
+      ]
+    },
+    "ctrl-function-split-intake": {
+      "status": "pending_human",
+      "label_sha256": "47d3580ae3888cf86359730ec785c59844ef4e7141c657da6cacf705a702e9ed",
+      "proposed_by": "Alibi source-first AI",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": [
+        {
+          "type": "source_first_proposal",
+          "at_utc": "2026-09-23T10:55:21.787915+00:00",
+          "human_source_confirmation": false
+        }
+      ]
+    },
+    "ctrl-function-split-survey": {
+      "status": "pending_human",
+      "label_sha256": "f771e3989bc251b2a17e8a58a34cabca9cff5b6b0728e21748805e9b9b93c940",
+      "proposed_by": "Alibi source-first AI",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": [
+        {
+          "type": "source_first_proposal",
+          "at_utc": "2026-09-23T10:55:21.787915+00:00",
+          "human_source_confirmation": false
+        }
+      ]
+    },
+    "ctrl-function-merge-contracts": {
+      "status": "pending_human",
+      "label_sha256": "14ca06e7b8cc2dd9e7341a79840bbdbdd5a4b6d2f0f58ad0000794e04518a016",
+      "proposed_by": "Alibi source-first AI",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": [
+        {
+          "type": "source_first_proposal",
+          "at_utc": "2026-09-23T10:55:21.787915+00:00",
+          "human_source_confirmation": false
+        }
+      ]
+    },
+    "ctrl-function-merge-stock": {
+      "status": "pending_human",
+      "label_sha256": "0bdea353993537695a3e3855d8f8949a0b02a46224526fdf224dc9b96602765e",
+      "proposed_by": "Alibi source-first AI",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": [
+        {
+          "type": "source_first_proposal",
+          "at_utc": "2026-09-23T10:55:21.787915+00:00",
+          "human_source_confirmation": false
+        }
+      ]
+    },
+    "ctrl-function-archive-preserved": {
+      "status": "pending_human",
+      "label_sha256": "0edabd0552e2e7e9cdee2886034be7ea75fc4fa9d7a83535d2ba39d0c8a89f50",
+      "proposed_by": "Alibi source-first AI",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": [
+        {
+          "type": "source_first_proposal",
+          "at_utc": "2026-09-23T10:55:21.787915+00:00",
+          "human_source_confirmation": false
+        }
+      ]
+    },
+    "ctrl-function-cooperation-finance": {
+      "status": "pending_human",
+      "label_sha256": "49d4e67273fd5406e1c6c8b12ad50e2e20b510f256bf71932e913bc1407362fd",
+      "proposed_by": "Alibi source-first AI",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": [
+        {
+          "type": "source_first_proposal",
+          "at_utc": "2026-09-23T10:55:21.787915+00:00",
+          "human_source_confirmation": false
+        }
+      ]
+    },
+    "ctrl-function-cooperation-technical": {
+      "status": "pending_human",
+      "label_sha256": "e6c9e69e52ea231dbebf4eb6f2b72d852de6a2913fbb2b46c97e2dec9f9a0b30",
+      "proposed_by": "Alibi source-first AI",
+      "human_reviewer": null,
+      "human_decision": null,
+      "disagreements": [],
+      "events": [
+        {
+          "type": "source_first_proposal",
+          "at_utc": "2026-09-23T10:55:21.787915+00:00",
+          "human_source_confirmation": false
+        }
+      ]
     }
   }
 }
