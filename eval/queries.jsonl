@@ -1,0 +1,20 @@
+{"qid": "q01", "query": "құжаттың бірінші бетінде қандай мәтін жазылған", "expected": ["3df79d34abbca993"]}
+{"qid": "q02", "query": "dummy PDF деген сөз кездесетін файл", "expected": ["3df79d34abbca993"]}
+{"qid": "q03", "query": "sample pdf file content", "expected": ["3df79d34abbca993"]}
+{"qid": "q04", "query": "тест ретінде жасалған кішкентай PDF", "expected": ["3df79d34abbca993"]}
+{"qid": "q05", "query": "осы PDF файлда не деп жазылыпты", "expected": ["3df79d34abbca993"]}
+{"qid": "q06", "query": "что написано на странице тестового PDF-файла", "expected": ["3df79d34abbca993"]}
+{"qid": "q07", "query": "демонстрационный документ из одной страницы", "expected": ["3df79d34abbca993"]}
+{"qid": "q08", "query": "региондар бойынша деректер қай кестеде", "expected": ["d05aae1cec0cbfa6"]}
+{"qid": "q09", "query": "Астана қаласы қай жылы көрсетілген", "expected": ["d05aae1cec0cbfa6"]}
+{"qid": "q10", "query": "электрондық кестедегі өңір статистикасы", "expected": ["d05aae1cec0cbfa6"]}
+{"qid": "q11", "query": "в таблице Excel какие регионы и годы указаны", "expected": ["d05aae1cec0cbfa6"]}
+{"qid": "q12", "query": "данные по Астане за две тысячи двадцать пятый год", "expected": ["d05aae1cec0cbfa6"]}
+{"qid": "q13", "query": "столбец со значением Регион", "expected": ["d05aae1cec0cbfa6"]}
+{"qid": "q14", "query": "уртаның сандық мәліметтері xlsx файлда", "expected": ["d05aae1cec0cbfa6"]}
+{"qid": "q15", "query": "CSV файлындағы бағандар мен жолдар қандай", "expected": ["ea14f99c47575613"]}
+{"qid": "q16", "query": "a және b бағандары бар мәлімет файлы", "expected": ["ea14f99c47575613"]}
+{"qid": "q17", "query": "символдық айнымалылары a мен b кестесі", "expected": ["ea14f99c47575613"]}
+{"qid": "q18", "query": "в CSV-файле колонки a и b и числовые значения", "expected": ["ea14f99c47575613"]}
+{"qid": "q19", "query": "простая таблица из двух строк с заголовками a и b", "expected": ["ea14f99c47575613"]}
+{"qid": "q20", "query": "одна единица и одна двойка в текстовой таблице", "expected": ["ea14f99c47575613"]}

@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    env:
+      # CI never calls the LLM: config.py defaults llm_api_key to "" and
+      # agent/llm.py builds its client lazily, so imports must succeed with
+      # an explicitly empty key. No secrets are used in this workflow.
+      LLM_API_KEY: ""
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      # uv manages Python end-to-end (no setup-python): pin the interpreter
+      # from the repo's .python-version (3.12), then install exactly the lock.
+      - name: Pin Python from .python-version
+        run: uv python pin "$(cat .python-version)"
+
+      - name: Sync dependencies (frozen lockfile)
+        run: uv sync --frozen
+
+      - name: Import check - every app module
+        run: |
+          uv run --no-sync python -c "import importlib; mods = ['apps.api.app.' + m for m in ['config', 'db', 'events', 'main', 'api.routes', 'api.schemas', 'agent.tools', 'agent.llm', 'agent.loop', 'agent.trace', 'rag.chunk', 'rag.embed', 'rag.store', 'rag.search', 'ingest.parsers', 'ingest.pipeline']]; [importlib.import_module(m) for m in mods]; print('import check OK: %d modules' % len(mods))"
+
+      - name: Pytest (only when tests exist)
+        run: |
+          if [ -n "$(ls apps/api/tests/test_*.py 2>/dev/null)" ]; then
+            # Exit code 5 means "no tests collected" - acceptable while the
+            # tests directory is still being populated.
+            uv run --no-sync pytest apps/api/tests -q || [ $? -eq 5 ]
+          else
+            echo "apps/api/tests has no test_*.py files - skipping pytest"
+          fi
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build API image
+        run: docker build -f apps/api/Dockerfile -t kit-api .

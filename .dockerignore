@@ -1,0 +1,17 @@
+# Virtualenv and package caches
+.venv
+**/__pycache__
+
+# Local runtime data and databases
+data
+*.db
+*.db-wal
+*.db-shm
+
+# Secrets and version control
+.env
+.git
+
+# Node / Next.js build trees
+**/node_modules
+**/.next
